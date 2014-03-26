@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.spontecorp.futboldata.entity.User</class>
     <class>com.spontecorp.futboldata.entity.Perfil</class>
+    <class>com.spontecorp.futboldata.entity.Pais</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
