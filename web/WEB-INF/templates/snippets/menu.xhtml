@@ -1,0 +1,21 @@
+<ui:composition 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+    <h:body>
+        <h:form id="menuForm">
+            <p:panelMenu style="width: 95%">
+                <p:submenu label="Usuarios">
+                    <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
+                                action="#{usuarioBean.gotoAdminPage}"/>
+                </p:submenu>
+                <p:submenu label="Sistema">
+                    <p:menuitem value="Salir" action="#{loginBean.logout}" 
+                                icon="ui-icon-closethick"/>
+                </p:submenu>
+            </p:panelMenu>
+        </h:form>
+    </h:body>
+</ui:composition>
+

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/images/favicon.ico"/>
+        <title><ui:insert name="title"> Facelets Template</ui:insert></title>
+    </h:head>
+
+    <h:body>
+        
+        <p:layout fullPage="true">
+            <p:layoutUnit id="top" position="north" size="120">
+                    <!--ui:insert name="top">Top</ui:insert-->
+                    <h:graphicImage id="bannerTop" name="banner.png" 
+                                    library="images" styleClass="centerImage"/>
+            </p:layoutUnit> 
+
+            <p:layoutUnit position="south" size="100">
+                Aqui va el pie de página
+            </p:layoutUnit>
+
+            <p:layoutUnit position="west" size="200" resizable="true">
+                <ui:include src="./snippets/menu.xhtml"/>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <div id="content" class="center_content">
+                    <ui:insert name="content">Content</ui:insert>
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+        <div id="top" class="top">
+            <ui:insert name="top">Top</ui:insert>
+        </div>
+
+        
+
+    </h:body>
+
+</html>

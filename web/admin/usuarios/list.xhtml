@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Administración de Usuarios
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="usersForm">
+
+            <p:fieldset style="width: 85%">
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="crear usuario" action="#{usuarioBean.prepareCreate}"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br />
+                <p:dataTable id="usuarios" var="user" value="#{usuarioBean.items}"
+                             rowKey="#{user.usuario}"
+                             selection="#{usuarioBean.user}" selectionMode="single">                
+
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{user.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{user.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Usuario">
+                        <h:outputText value="#{user.usuario}"/>
+                    </p:column>
+                    <p:column headerText="Perfil">
+                        <h:outputText value="#{user.perfilId.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Email">
+                        <h:outputText value="#{user.email}"/>
+                    </p:column>
+                    <p:column headerText="Teléfono">
+                        <h:outputText value="#{user.telefono}"/>
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{user.status == 0?'INACTIVO':'ACTIVO'}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandLink value="Editar" action="#{usuarioBean.prepareEdit}" />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+    </ui:define>   
+
+</ui:composition>
