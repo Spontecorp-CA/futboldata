@@ -9,6 +9,13 @@
                 <p:submenu label="Usuarios">
                     <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
                                 action="#{usuarioBean.gotoAdminPage}"/>
+                    
+                </p:submenu>
+                <p:submenu label="Ligas">
+                    <p:menuitem value="Configura Ligas" icon="ui-icon-clipboard"
+                                action="#{ligaBean.gotoLigaPage}"/>
+                    <p:menuitem value="Configura Categorias" icon="ui-icon-clipboard"
+                                action="#{categoriaBean.gotoCategoriasPage}"/>
                 </p:submenu>
                 <p:submenu label="Sistema">
                     <p:menuitem value="Salir" action="#{loginBean.logout}" 

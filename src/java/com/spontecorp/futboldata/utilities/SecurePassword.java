@@ -59,7 +59,11 @@ public class SecurePassword {
             if (!pswEncripted.equals(usuario.getPassword())) {
                 return null;
             } else {
-                return usuario;
+                if(usuario.getStatus() == Constantes.INACTIVO){
+                    return null;
+                } else {
+                    return usuario;
+                }
             }
         } catch (NoResultException e) {
             return null;

@@ -46,8 +46,11 @@
                     <p:column headerText="Status">
                         <h:outputText value="#{user.status == 0?'INACTIVO':'ACTIVO'}"/>
                     </p:column>
-                    <p:column>
+                    <p:column headerText="Acciones">
                         <p:commandLink value="Editar" action="#{usuarioBean.prepareEdit}" />
+                        &nbsp;
+                        <p:commandLink value="Cambiar Password" 
+                                       action="#{usuarioBean.preparePasswordChange}" />                       
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

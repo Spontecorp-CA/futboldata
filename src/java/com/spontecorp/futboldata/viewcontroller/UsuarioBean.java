@@ -18,7 +18,6 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +38,7 @@ public class UsuarioBean implements Serializable {
     private final PerfilJpaController controllerPerfil;
     private final transient EntityManagerFactory emf = Util.getEmf();
     private final String contextPath;
+    private boolean changingPassword = false;
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
 
@@ -63,6 +63,10 @@ public class UsuarioBean implements Serializable {
         return user;
     }
 
+    public boolean isChangingPassword() {
+        return changingPassword;
+    }
+
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(controllerUser.findUserEntities());
@@ -76,12 +80,12 @@ public class UsuarioBean implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "list";
+        return "listUsuarios";
     }
 
     public String gotoAdminPage() {
         recreateModel();
-        return "list";
+        return "listUsuarios";
     }
 
     public String returnAdminPage() {
@@ -115,6 +119,32 @@ public class UsuarioBean implements Serializable {
         return "edit";
     }
 
+    public String edit(){
+        try {
+            if(controllerUser.findUsuario(user.getUsuario()) == null ){
+                Util.addErrorMessage("Usuario no existente");
+                return prepareList();
+            } else {
+                if(changingPassword){
+                    user.setPassword(SecurePassword.encript(user.getPassword()));
+                }
+                controllerUser.edit(user);
+                Util.addSuccessMessage("Usuario editado con éxito");
+                changingPassword = false;
+                return prepareList();
+            }
+        } catch (Exception e) {
+            Util.addErrorMessage(e, "Error al editar el usuario");
+            return null;
+        }
+    }
+    
+    public String preparePasswordChange(){
+        user = (User) getItems().getRowData();
+        changingPassword = true;
+        return "edit";
+    }
+            
     public SelectItem[] getPerfilesAvailable() {
         return Util.getSelectItems(controllerPerfil.findPerfilEntities());
     }

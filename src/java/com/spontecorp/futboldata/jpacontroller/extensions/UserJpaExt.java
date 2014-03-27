@@ -4,6 +4,7 @@ package com.spontecorp.futboldata.jpacontroller.extensions;
 import com.spontecorp.futboldata.entity.User;
 import com.spontecorp.futboldata.jpacontroller.UserJpaController;
 import com.spontecorp.futboldata.utilities.Constantes;
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -51,4 +52,5 @@ public class UserJpaExt extends UserJpaController{
             em.close();
         }
     }
+    
 }
