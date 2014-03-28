@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,16 +25,26 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class CategoriaBean implements Serializable{
     
+    private static final long serialVersionUID = 1L;
+    
     private Categoria categoria;
     private DataModel items = null;
     private final CategoriaJpaExt controllerCategoria;
-    
+    private final transient EntityManagerFactory emf = Util.getEmf();    
     
     private static final Logger logger = LoggerFactory.getLogger(CategoriaBean.class);
 
     public CategoriaBean() {
-        controllerCategoria = new CategoriaJpaExt(Util.getEmf());
+        controllerCategoria = new CategoriaJpaExt(emf);
     }    
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
     
     public Categoria getSelected(){
         if(categoria == null){
@@ -58,6 +69,7 @@ public class CategoriaBean implements Serializable{
     }
     
     public String prepareEdit(){
+        categoria = (Categoria) getItems().getRowData();
         return "editCategoria";
     }
     
@@ -83,6 +95,21 @@ public class CategoriaBean implements Serializable{
             Util.addErrorMessage(e, "Error al crear la categoría");
             return null;
         }
-
+    }
+    
+    public String edit(){
+        try {
+            if (controllerCategoria.findCategoria(categoria.getNombre()) == null) {
+                Util.addErrorMessage("Categoria no existente, hay un error");
+                return null;
+            } else {
+                controllerCategoria.edit(categoria);
+                Util.addSuccessMessage("Categoría editada con éxito");
+                return prepareCreate();
+            }
+        } catch (Exception e) {
+            Util.addErrorMessage(e, "Error al editar la categoría");
+            return null;
+        }
     }
 }

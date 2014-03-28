@@ -22,18 +22,18 @@
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="categorias" var="categoria" value="#{categoriaBean.items}"
-                             rowKey="#{categoria.nombre}"
-                             selection="#{categoriaBean.selected}" selectionMode="single">                
+                <p:dataTable id="categorias" var="category" value="#{categoriaBean.items}"
+                             rowKey="#{category.nombre}"
+                             selection="#{categoriaBean.categoria}" selectionMode="single">                
 
                     <p:column headerText="Nombre">
-                        <h:outputText value="#{categoria.nombre}"/>
+                        <h:outputText value="#{category.nombre}"/>
                     </p:column>
                     <p:column headerText="Descripción">
-                        <h:outputText value="#{categoria.descripcion}"/>
+                        <h:outputText value="#{category.descripcion}"/>
                     </p:column>
                     <p:column headerText="Status">
-                        <h:outputText value="#{categoria.status}"/>
+                        <h:outputText value="#{category.status == 1?'Activa':'Inactiva'}"/>
                     </p:column>
                     
                     <p:column headerText="Acciones">

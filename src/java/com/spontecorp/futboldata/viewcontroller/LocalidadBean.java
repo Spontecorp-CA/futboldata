@@ -24,12 +24,15 @@ import javax.persistence.EntityManagerFactory;
 @SessionScoped
 public class LocalidadBean implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     private Pais pais;
     private DataModel items = null;
 
     private final PaisJpaController controllerPais;
     private final transient EntityManagerFactory emf = Util.getEmf();
     private final PaisJpaExt paisJpaExt;
+    
     /**
      * Creates a new instance of LocalidadBean
      */

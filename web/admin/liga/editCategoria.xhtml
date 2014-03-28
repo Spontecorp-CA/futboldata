@@ -4,21 +4,21 @@
                 template="./../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="title">
         Administración de Categorias
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="createForm">
+        <h:form id="editForm">
 
             <p:fieldset style="width: 85%">                
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Guardar" action="#{categoriaBean.create}" 
-                                         update="createForm"/>
+                        <p:commandButton value="OK" action="#{categoriaBean.edit}" 
+                                         update="editForm"/>
                         <p:commandButton value="Ver Lista" action="#{categoriaBean.prepareList}"
                                          immediate="true"/>
                         <p:commandButton value="Administración" action="#{categoriaBean.returnAdminPage}"
