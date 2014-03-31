@@ -19,30 +19,34 @@
                     <p:toolbarGroup  >
                         <p:panelGrid columns="3" >
                             <p:selectOneMenu id="pais" value="#{localidadBean.pais.nombre}">  
-                                <f:selectItem itemLabel="Selecciona el Pais" itemValue="#{localidadBean.selected.id}" />  
+                                <f:selectItem itemLabel="Selecciona el Pais" itemValue="#{localidadBean.selectedPais.id}" />  
                                 <f:selectItems value="#{localidadBean.paisAvailable}" />  
-                                <p:ajax update="suburbs"  
-                                        listener="#{pprBean.handleCityChange}" />  
-                            </p:selectOneMenu>  
-                     
 
-                       
-                            <p:selectOneMenu id="suburbs" value="#{pprBean.suburb}">  
-                                <f:selectItem itemLabel="Select Suburb" itemValue="" />  
-                                <f:selectItems value="#{pprBean.suburbs}" />  
                             </p:selectOneMenu>  
-                      
-                     <p:commandButton value="crear usuario" action="#{usuarioBean.prepareCreate}"/>
+
+                            <h:outputLabel value="* Ciudad:" for="Ciudad"/>
+                            <p:inputText id="Ciudad" value="#{localidadBean.selectedCiudad.ciudad}"
+                                         required="true" requiredMessage="Debe colocar la Ciudad"
+                                         style="width: 250px"/>
+
+
+
+                            <p:commandButton value="Crear Ciudad" action="#{localidadBean.prepareCreate()}" />
+                            
+                            
                         </p:panelGrid>
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="usuarios" var="pais" value="#{localidadBean.items}"
-                             rowKey="#{pais.nombre}"
-                             selection="#{localidadBean.pais}" selectionMode="single">                
+                <p:dataTable id="CiudadTabla" var="ciudad" value="#{localidadBean.itemsCiudad}"
+                             rowKey="#{ciudad.id}"
+                             selection="#{localidadBean.ciudad}" selectionMode="single">                
 
                     <p:column headerText="Pais">
-                        <h:outputText value="#{pais.nombre}"/>
+                        <h:outputText value="#{ciudad.paisId.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Ciudad">
+                        <h:outputText value="#{ciudad.ciudad}"/>
                     </p:column>
 
 

@@ -37,6 +37,14 @@
         </navigation-case>  
     </navigation-rule>
     
+        <navigation-rule>
+        <from-view-id>*</from-view-id>
+       <navigation-case>
+            <from-outcome>createCiudad</from-outcome>
+            <to-view-id>/admin/localidades/create.xhtml</to-view-id>
+        </navigation-case>  
+    </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
