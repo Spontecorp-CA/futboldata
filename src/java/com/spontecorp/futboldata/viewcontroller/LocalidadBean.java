@@ -5,6 +5,7 @@
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Pais;
+import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisJpaController;
 import com.spontecorp.futboldata.jpacontroller.extensions.PaisJpaExt;
 import com.spontecorp.futboldata.utilities.Util;
@@ -29,16 +30,14 @@ public class LocalidadBean implements Serializable {
     private Pais pais;
     private DataModel items = null;
 
-    private final PaisJpaController controllerPais;
+    private final PaisFacade controllerPais;
     private final transient EntityManagerFactory emf = Util.getEmf();
-    private final PaisJpaExt paisJpaExt;
     
     /**
      * Creates a new instance of LocalidadBean
      */
     public LocalidadBean() {
-        controllerPais = new PaisJpaController(emf);
-        paisJpaExt = new PaisJpaExt(emf);
+        controllerPais = new PaisFacade(Pais.class);
     }
 
     public Pais getPais() {
@@ -52,7 +51,7 @@ public class LocalidadBean implements Serializable {
     public DataModel getItems() {
 
         if (items == null) {
-            items = new ListDataModel(controllerPais.findPaisEntities());
+            items = new ListDataModel(controllerPais.findAll());
         }
         return items;
 
@@ -72,7 +71,7 @@ public class LocalidadBean implements Serializable {
     }
 
     public SelectItem[] getPaisAvailable() {
-        return Util.getSelectItems(paisJpaExt.paisxNombre());
+        return Util.getSelectItems(controllerPais.paisxNombre());
     }
 
         public Pais getSelected() {
