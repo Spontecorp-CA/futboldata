@@ -6,8 +6,9 @@ package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.User;
 import com.spontecorp.futboldata.jpacontroller.PerfilJpaController;
+import com.spontecorp.futboldata.jpacontroller.UserFacade;
 import com.spontecorp.futboldata.jpacontroller.extensions.PerfilJpaExt;
-import com.spontecorp.futboldata.jpacontroller.extensions.UserJpaExt;
+import com.spontecorp.futboldata.jpacontroller.extensions.UserFacadeExt;
 import com.spontecorp.futboldata.utilities.SecurePassword;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
@@ -34,7 +35,8 @@ public class UsuarioBean implements Serializable {
     private User user;
     private DataModel items = null;
 
-    private final UserJpaExt controllerUser;
+    //private final UserJpaExt controllerUser;
+    private final UserFacade controllerUser;
     private final PerfilJpaController controllerPerfil;
     private final transient EntityManagerFactory emf = Util.getEmf();
     private final String contextPath;
@@ -43,7 +45,7 @@ public class UsuarioBean implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
 
     public UsuarioBean() {
-        controllerUser = new UserJpaExt(emf);
+        controllerUser = new UserFacadeExt(User.class);
         controllerPerfil = new PerfilJpaExt(emf);
         contextPath = FacesContext.getCurrentInstance().getExternalContext().getContextName();
     }
@@ -69,7 +71,8 @@ public class UsuarioBean implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerUser.findUserEntities());
+            //items = new ListDataModel(controllerUser.findUserEntities());
+            items = new ListDataModel(controllerUser.findAll());
         }
         return items;
     }
