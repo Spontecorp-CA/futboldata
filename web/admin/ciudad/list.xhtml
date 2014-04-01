@@ -18,29 +18,15 @@
                 <p:toolbar>
                     <p:toolbarGroup  >
                         <p:panelGrid columns="3" >
-                            <p:selectOneMenu id="pais" value="#{localidadBean.pais.nombre}">  
-                                <f:selectItem itemLabel="Selecciona el Pais" itemValue="#{localidadBean.selectedPais.id}" />  
-                                <f:selectItems value="#{localidadBean.paisAvailable}" />  
+                            <p:commandButton value="Crear Ciudad" action="#{ciudadBean.prepareCreate()}" />                           
 
-                            </p:selectOneMenu>  
-
-                            <h:outputLabel value="* Ciudad:" for="Ciudad"/>
-                            <p:inputText id="Ciudad" value="#{localidadBean.selectedCiudad.ciudad}"
-                                         required="true" requiredMessage="Debe colocar la Ciudad"
-                                         style="width: 250px"/>
-
-
-
-                            <p:commandButton value="Crear Ciudad" action="#{localidadBean.prepareCreate()}" />
-                            
-                            
                         </p:panelGrid>
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="CiudadTabla" var="ciudad" value="#{localidadBean.itemsCiudad}"
+                <p:dataTable id="CiudadTabla" var="ciudad" value="#{ciudadBean.itemsCiudad}"
                              rowKey="#{ciudad.id}"
-                             selection="#{localidadBean.ciudad}" selectionMode="single">                
+                             selection="#{ciudadBean.ciudad}" selectionMode="single">                
 
                     <p:column headerText="Pais">
                         <h:outputText value="#{ciudad.paisId.nombre}"/>

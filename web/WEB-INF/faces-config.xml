@@ -32,8 +32,8 @@
     <navigation-rule>
         <from-view-id>*</from-view-id>
        <navigation-case>
-            <from-outcome>listLocalidad</from-outcome>
-            <to-view-id>/admin/localidades/list.xhtml</to-view-id>
+            <from-outcome>listCiudad</from-outcome>
+            <to-view-id>/admin/ciudad/list.xhtml</to-view-id>
         </navigation-case>  
     </navigation-rule>
     
@@ -41,7 +41,7 @@
         <from-view-id>*</from-view-id>
        <navigation-case>
             <from-outcome>createCiudad</from-outcome>
-            <to-view-id>/admin/localidades/create.xhtml</to-view-id>
+            <to-view-id>/admin/ciudad/create.xhtml</to-view-id>
         </navigation-case>  
     </navigation-rule>
     

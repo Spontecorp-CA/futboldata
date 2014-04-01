@@ -9,7 +9,7 @@
                 <p:submenu label="Usuarios">
                     <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
                                 action="#{usuarioBean.gotoAdminPage}"/>
-                    
+
                 </p:submenu>
                 <p:submenu label="Ligas">
                     <p:menuitem value="Configura Ligas" icon="ui-icon-clipboard"
@@ -17,11 +17,13 @@
                     <p:menuitem value="Configura Categorias" icon="ui-icon-clipboard"
                                 action="#{categoriaBean.gotoCategoriasPage}"/>
                 </p:submenu>
-                 <p:submenu label="Localidades">
-                    <p:menuitem value="Configura Localidades" icon="ui-icon-person"
+                <p:submenu label="Localidades">
+                    <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
+                                action="#{ciudadBean.gotoAdminPage}"/>
+                    <p:menuitem value="Configura Localidades" icon="ui-icon-home"
                                 action="#{localidadBean.gotoAdminPage}"/>
                 </p:submenu>
-                
+
                 <p:submenu label="Sistema">
                     <p:menuitem value="Salir" action="#{loginBean.logout}" 
                                 icon="ui-icon-closethick"/>

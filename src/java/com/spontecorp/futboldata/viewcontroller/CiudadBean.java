@@ -26,9 +26,9 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author sponte03
  */
-@ManagedBean(name = "localidadBean")
+@ManagedBean(name = "ciudadBean")
 @SessionScoped
-public class LocalidadBean implements Serializable {
+public class CiudadBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,7 +44,7 @@ public class LocalidadBean implements Serializable {
     /**
      * Creates a new instance of LocalidadBean
      */
-    public LocalidadBean() {
+    public CiudadBean() {
         controllerPais = new PaisFacade(Pais.class);
         controllerCiudad = new CiudadFacade(Ciudad.class);
     }
@@ -85,7 +85,7 @@ public class LocalidadBean implements Serializable {
 
     public String gotoAdminPage() {
         recreateModel();
-        return "listLocalidad";
+        return "listCiudad";
     }
 
     private void recreateModel() {
@@ -104,7 +104,7 @@ public class LocalidadBean implements Serializable {
     }
 
     public SelectItem[] getPaisAvailable() {
-        return Util.getSelectItems(controllerPais.paisxNombre());
+        return Util.getSelectItems(controllerPais.listaPaisxNombre());
     }
 
     public Pais getSelectedPais() {
@@ -116,11 +116,11 @@ public class LocalidadBean implements Serializable {
     
         public String create() {
         try {
-            if (controllerCiudad.find(ciudad.getCiudad())==null) {
-                Util.addErrorMessage("Ciudad ya existente, coloque otro");
+            if (controllerCiudad.findCiudadxPais(ciudad.getCiudad(),pais)!=null) {
+                Util.addErrorMessage("Ciudad ya existente, coloque otra");
                 return null;
             } else {
-                ciudad.setPaisId(pais);
+                
                 controllerCiudad.create(ciudad);
                 Util.addSuccessMessage("Ciudad creada con éxito");
                return prepareCreate();
@@ -139,7 +139,7 @@ public class LocalidadBean implements Serializable {
 
         public String prepareList() {
         recreateModelCiudad();
-        return "listLocalidad";
+        return "listCiudad";
     }    
     public String returnAdminPage() {
         return "adminPage";
@@ -153,7 +153,7 @@ public class LocalidadBean implements Serializable {
 
     public String prepareEdit() {
         pais = (Pais) getItems().getRowData();
-        return "editLocalidad";
+        return "editCiudad";
     }
 
     public void persist(Object object) {
