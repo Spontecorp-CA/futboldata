@@ -9,19 +9,26 @@
                 <p:submenu label="Usuarios">
                     <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
                                 action="#{usuarioBean.gotoAdminPage}"/>
-
-                </p:submenu>
-                <p:submenu label="Ligas">
-                    <p:menuitem value="Configura Ligas" icon="ui-icon-clipboard"
-                                action="#{ligaBean.gotoLigaPage}"/>
-                    <p:menuitem value="Configura Categorias" icon="ui-icon-clipboard"
-                                action="#{categoriaBean.gotoCategoriasPage}"/>
                 </p:submenu>
                 <p:submenu label="Localidades">
                     <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
                                 action="#{ciudadBean.gotoAdminPage}"/>
                     <p:menuitem value="Configura Localidades" icon="ui-icon-home"
                                 action="#{localidadBean.gotoAdminPage}"/>
+                </p:submenu>
+                                
+                <p:submenu label="Ligas">
+                    <p:menuitem value="Configura Cancha" icon="ui-icon-clipboard"/>
+                    <p:menuitem value="Configura Liga" icon="ui-icon-clipboard"/>
+                    <p:menuitem value="Configura Categoria" icon="ui-icon-clipboard"/>
+                    <p:menuitem value="Configura Club" icon="ui-icon-clipboard"/>
+                </p:submenu>
+                
+                <p:submenu label="Temporadas">
+                    <p:menuitem value="Configura Fase" icon="ui-icon-calculator"/>
+                    <p:menuitem value="Configura Llave" icon="ui-icon-calculator"/>
+                    <p:menuitem value="Configura Grupo" icon="ui-icon-calculator"/>
+                    <p:menuitem value="Configura Jornada" icon="ui-icon-calculator"/>
                 </p:submenu>
 
                 <p:submenu label="Sistema">

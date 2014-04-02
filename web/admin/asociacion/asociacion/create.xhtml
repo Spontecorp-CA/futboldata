@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Asociaciones
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="createForm">
+
+            <p:fieldset style="width: 85%">                
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="Guardar"  
+                                         update="createForm"/>
+                        <p:commandButton value="Listar" action="list"
+                                         immediate="true"/>
+                        <p:commandButton value="Administración" action="/admin/adminPage"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br />
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="* Nombre:" for="nombre"/>
+                    <p:inputText id="nombre" 
+                                 required="true" requiredMessage="Debe colocar un nombre"
+                                 style="width: 250px"/>
+                    <h:outputLabel value="* Pais:" for="pais"/>
+                    <p:selectOneMenu id="pais" 
+                                     style="width: 250px"
+                                     panelStyle="width:250px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar un perfil">                       
+                        <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="* Ciudad:" for="ciudad"/>
+                    <p:selectOneMenu id="ciudad" 
+                                     style="width: 250px"
+                                     panelStyle="width:250px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar un perfil">                       
+                        <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="* Dirección:" for="direccion"/>
+                    <p:inputText id="direccion" 
+                                 required="true" requiredMessage="Debe colocar un email"
+                                 validatorMessage="Email inválido"
+                                 style="width: 250px">
+                    </p:inputText>
+                    <h:outputLabel value="* Teléfono:" for="telefono"/>
+                    <p:inputText id="telefono" value="#{usuarioBean.selected.telefono}"
+                                 required="true" requiredMessage="Debe colocar un teléfono"
+                                 style="width: 250px"/>                    
+                    <h:outputLabel value="* email:" for="email"/>
+                    <p:inputText id="email" 
+                                 required="true" requiredMessage="Debe colocar un usuario"
+                                 style="width: 250px"/>                    
+                    <p:selectOneMenu id="status" value="#{usuarioBean.selected.status}"
+                                     converter= "javax.faces.Integer"
+                                     style="width: 250px"
+                                     required="true"
+                                     requiredMessage="Debe repetir el password">
+                        <f:selectItem itemLabel="Activo" itemValue="1"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
