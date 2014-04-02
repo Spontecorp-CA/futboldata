@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Administración de Usuarios
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="createForm">
+
+            <p:fieldset style="width: 85%">                
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="Guardar" action="#{ciudadBean.create}" 
+                                         update="createForm"/>
+                        <p:commandButton value="Ver Lista" action="#{ciudadBean.prepareList}"
+                                         immediate="true"/>
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br />
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="* Nombre:" for="ciudad"/>
+                    <p:inputText id="ciudad" value="#{ciudadBean.selectedCiudad.ciudad}"
+                                 required="true" requiredMessage="Debe colocar la ciudad"
+                                 style="width: 250px"/>
+    
+                              
+                    <p:separator/><p:separator/>                 
+                    <h:outputLabel value="* Pais:" for="pais" />
+                    <p:selectOneMenu id="pais" value="#{ciudadBean.selectedCiudad.paisId}"
+                                     style="width: 250px"
+                                     panelStyle="width:250px"
+                                     required="true"
+                                     
+                                     requiredMessage="Debe seleccionar un Pais">
+                        
+                        <f:selectItems value="#{ciudadBean.paisAvailable}"/>
+                    </p:selectOneMenu>
+                    
+                    
+                </h:panelGrid>
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+            </p:fieldset>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
