@@ -83,7 +83,7 @@ public class UsuarioBean implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "listUsuarios";
+        return "/admin/usuarios/list";
     }
 
     public String gotoAdminPage() {
@@ -92,7 +92,7 @@ public class UsuarioBean implements Serializable {
     }
 
     public String returnAdminPage() {
-        return "adminPage";
+        return "/admin/adminPage";
     }
 
     public String prepareCreate() {
