@@ -49,6 +49,24 @@ public class CiudadBean implements Serializable {
         controllerCiudad = new CiudadFacade(Ciudad.class);
     }
 
+        public String edit(){
+        try {
+            if(controllerCiudad.find(ciudad.getId()) == null ){
+                Util.addErrorMessage("Ciudad no existente");
+                return prepareList();
+            } else {
+            
+                controllerCiudad.edit(ciudad);
+                Util.addSuccessMessage("Ciudad editado con éxito");
+                
+                return prepareList();
+            }
+        } catch (Exception e) {
+            Util.addErrorMessage(e, "Error al editar la ciudad");
+            return null;
+        }
+    }
+        
     public Ciudad getCiudad() {
         return ciudad;
     }
