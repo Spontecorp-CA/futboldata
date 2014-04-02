@@ -5,6 +5,7 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Pais;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -13,7 +14,7 @@ import javax.persistence.Query;
  *
  * @author jgcastillo
  */
-public class PaisFacade extends AbstractFacade<Pais> {
+public class PaisFacade extends AbstractFacade<Pais> implements Serializable{
 
     public PaisFacade(Class<Pais> entityClass) {
         super(entityClass);

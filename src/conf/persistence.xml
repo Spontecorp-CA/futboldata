@@ -6,6 +6,7 @@
     <class>com.spontecorp.futboldata.entity.Perfil</class>
     <class>com.spontecorp.futboldata.entity.Categoria</class>
     <class>com.spontecorp.futboldata.entity.Pais</class>
+    <class>com.spontecorp.futboldata.entity.Localidad</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>

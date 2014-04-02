@@ -8,8 +8,6 @@ import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
-import com.spontecorp.futboldata.jpacontroller.PaisJpaController;
-import com.spontecorp.futboldata.jpacontroller.extensions.PaisJpaExt;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -28,7 +26,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @ManagedBean(name = "ciudadBean")
 @SessionScoped
-public class CiudadBean implements Serializable {
+public class LocalidadBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,7 +42,7 @@ public class CiudadBean implements Serializable {
     /**
      * Creates a new instance of LocalidadBean
      */
-    public CiudadBean()   {
+    public LocalidadBean()   {
         controllerPais = new PaisFacade(Pais.class);
         controllerCiudad = new CiudadFacade(Ciudad.class);
     }
@@ -83,9 +81,9 @@ public class CiudadBean implements Serializable {
 
     }
 
-    public String gotoCiudadPage() {
+    public String gotoAdminPage() {
         recreateModel();
-        return "/admin/localidad/ciudad/list.xhtml";
+        return "listCiudad";
     }
 
     private void recreateModel() {
@@ -139,21 +137,21 @@ public class CiudadBean implements Serializable {
 
         public String prepareList() {
         recreateModelCiudad();
-        return "/admin/localidad/ciudad/list.xhtml";
+        return "listCiudad";
     }    
     public String returnAdminPage() {
-        return "/admin/adminPage";
+        return "adminPage";
     }
 
     public String prepareCreate() {
         ciudad = new Ciudad();
         pais = new Pais();
-        return "/admin/localidad/ciudad/create.xhtml";
+        return "createCiudad";
     }
 
     public String prepareEdit() {
         pais = (Pais) getItems().getRowData();
-        return "/admin/localidad/ciudad/edit.xhtml";
+        return "editCiudad";
     }
 
     public void persist(Object object) {

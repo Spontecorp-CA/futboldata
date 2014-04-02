@@ -6,9 +6,7 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,25 +16,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author sponte03
  */
 @Entity
-@Table(name = "ciudad")
+@Table(name = "localidad")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ciudad.findAll", query = "SELECT c FROM Ciudad c"),
-    @NamedQuery(name = "Ciudad.findById", query = "SELECT c FROM Ciudad c WHERE c.id = :id"),
-    @NamedQuery(name = "Ciudad.findByCiudad", query = "SELECT c FROM Ciudad c WHERE c.ciudad = :ciudad")})
-public class Ciudad implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudadId")
-    private Collection<Localidad> localidadCollection;
+    @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
+    @NamedQuery(name = "Localidad.findById", query = "SELECT l FROM Localidad l WHERE l.id = :id"),
+    @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
+public class Localidad implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,22 +38,22 @@ public class Ciudad implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "ciudad")
-    private String ciudad;
-    @JoinColumn(name = "pais_id", referencedColumnName = "id")
+    @Column(name = "nombre")
+    private String nombre;
+    @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Pais paisId;
+    private Ciudad ciudadId;
 
-    public Ciudad() {
+    public Localidad() {
     }
 
-    public Ciudad(Integer id) {
+    public Localidad(Integer id) {
         this.id = id;
     }
 
-    public Ciudad(Integer id, String ciudad) {
+    public Localidad(Integer id, String nombre) {
         this.id = id;
-        this.ciudad = ciudad;
+        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -70,20 +64,20 @@ public class Ciudad implements Serializable {
         this.id = id;
     }
 
-    public String getCiudad() {
-        return ciudad;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public Pais getPaisId() {
-        return paisId;
+    public Ciudad getCiudadId() {
+        return ciudadId;
     }
 
-    public void setPaisId(Pais paisId) {
-        this.paisId = paisId;
+    public void setCiudadId(Ciudad ciudadId) {
+        this.ciudadId = ciudadId;
     }
 
     @Override
@@ -96,10 +90,10 @@ public class Ciudad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ciudad)) {
+        if (!(object instanceof Localidad)) {
             return false;
         }
-        Ciudad other = (Ciudad) object;
+        Localidad other = (Localidad) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -108,16 +102,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Ciudad[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Localidad> getLocalidadCollection() {
-        return localidadCollection;
-    }
-
-    public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
-        this.localidadCollection = localidadCollection;
+        return "com.spontecorp.futboldata.entity.Localidad[ id=" + id + " ]";
     }
     
 }
