@@ -2,19 +2,19 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="./../../../WEB-INF/templates/adminTemplate.xhtml"
-                xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="title">
-        Administración de Asociaciones
+        Administración de Competiciones
     </ui:define>
 
     <ui:define name="content">
         <h:form id="createForm">
 
-            <p:fieldset style="width: 85%">                
+            <p:fieldset style="width: 85%" legend="Crear competición">                
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Guardar"  
@@ -31,7 +31,11 @@
                     <p:inputText id="nombre" 
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
-                    <h:outputLabel value="* Pais:" for="pais"/>
+                    <h:outputLabel value="Descripción:" for="descripcion"/>
+                    <p:inputText id="descripcion" 
+                                 style="width: 250px">
+                    </p:inputText>
+                    <h:outputLabel value="País:" for="pais"/>
                     <p:selectOneMenu id="pais" 
                                      style="width: 250px"
                                      panelStyle="width:250px"
@@ -39,7 +43,7 @@
                                      requiredMessage="Debe seleccionar un perfil">                       
                         <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
                     </p:selectOneMenu>
-                    <h:outputLabel value="* Ciudad:" for="ciudad"/>
+                    <h:outputLabel value="Ciudad:" for="ciudad"/>
                     <p:selectOneMenu id="ciudad" 
                                      style="width: 250px"
                                      panelStyle="width:250px"
@@ -47,24 +51,25 @@
                                      requiredMessage="Debe seleccionar un perfil">                       
                         <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
                     </p:selectOneMenu>
-                    <h:outputLabel value="* Dirección:" for="direccion"/>
+                    <h:outputLabel value="Dirección:" for="direccion"/>
                     <p:inputText id="direccion" 
                                  required="true" requiredMessage="Debe colocar un email"
                                  validatorMessage="Email inválido"
                                  style="width: 250px">
                     </p:inputText>
-                    <h:outputLabel value="* Teléfono:" for="telefono"/>
+                    <h:outputLabel value="Teléfono:" for="telefono"/>
                     <p:inputText id="telefono" value="#{usuarioBean.selected.telefono}"
                                  required="true" requiredMessage="Debe colocar un teléfono"
                                  style="width: 250px"/>                    
-                    <h:outputLabel value="* email:" for="email"/>
+                    <h:outputLabel value="email:" for="email"/>
                     <p:inputText id="email" value="#{usuarioBean.selected.email}"
                                  validatorMessage="Email inválido"
                                  style="width: 250px">
                         <f:validateRegex
                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                    </p:inputText>         
-                    <h:outputLabel value="* status:" for="status"/>
+                    </p:inputText>
+                    
+                    <h:outputLabel value="* Status:" for="status"/>
                     <p:selectOneMenu id="status" value="#{usuarioBean.selected.status}"
                                      converter= "javax.faces.Integer"
                                      style="width: 250px"
@@ -73,6 +78,24 @@
                         <f:selectItem itemLabel="Activo" itemValue="1"/>
                         <f:selectItem itemLabel="Inactivo" itemValue="0"/>
                     </p:selectOneMenu>
+                    &nbsp;
+                    <h:panelGrid columns="3">
+                        <h:outputLabel value="Red Social:" for="redSocial"/>
+                        <h:outputLabel value="Dirección:" for="url"/>
+                        &nbsp;
+                        <p:selectOneMenu id="redSocial" 
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un perfil">                       
+                            <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                        </p:selectOneMenu>
+                        <h:inputText id="url" value="#{usuarioBean.selected.telefono}"
+                                     style="width: 250px"/>
+                        <p:commandButton value="Agregar"/>
+                    </h:panelGrid>
+
+                    
                 </h:panelGrid>
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>

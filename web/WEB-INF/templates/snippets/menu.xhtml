@@ -16,12 +16,31 @@
                     <p:menuitem value="Configura Localidades" icon="ui-icon-home"
                                 action="#{localidadBean.gotoAdminPage}"/>
                 </p:submenu>
+                
+                <p:submenu label="Asociaciones">
+                    <p:menuitem value="Configura Asociación" icon="ui-icon-document"
+                                action="/admin/asociacion/asociacion/list"/>
+                    <p:submenu label="Arbitros">
+                        <p:menuitem value="Tipos de Arbitro" icon="ui-icon-document"
+                                    action="/admin/asociacion/arbitro/tipo_arbitro/list"/>
+                        <p:menuitem value="Configura Arbitro" icon="ui-icon-document"
+                                    action="/admin/asociacion/arbitro/arbitro/list"/>
+                        <p:menuitem value="Premios de Arbitro" icon="ui-icon-document"
+                                    action="/admin/asociacion/arbitro/premio_arbitro/list"/>
+                    </p:submenu>
+                </p:submenu>
                                 
                 <p:submenu label="Ligas">
                     <p:menuitem value="Configura Cancha" icon="ui-icon-clipboard"/>
-                    <p:menuitem value="Configura Liga" icon="ui-icon-clipboard"/>
+                    <p:menuitem value="Configura Competición" icon="ui-icon-clipboard"
+                                action="/admin/liga/competicion/list"/>
                     <p:menuitem value="Configura Categoria" icon="ui-icon-clipboard"/>
                     <p:menuitem value="Configura Club" icon="ui-icon-clipboard"/>
+                </p:submenu>
+                
+                <p:submenu label="Equipos">
+                    <p:menuitem value="Configura Equipo" icon="ui-icon-person"/>
+                    <p:menuitem value="Configura Jugador" icon="ui-icon-person"/>                   
                 </p:submenu>
                 
                 <p:submenu label="Temporadas">
@@ -29,9 +48,10 @@
                     <p:menuitem value="Configura Llave" icon="ui-icon-calculator"/>
                     <p:menuitem value="Configura Grupo" icon="ui-icon-calculator"/>
                     <p:menuitem value="Configura Jornada" icon="ui-icon-calculator"/>
+                    <p:menuitem value="Configura Partido" icon="ui-icon-calculator"/>
                 </p:submenu>
 
-                <p:submenu label="Sistema">
+                <p:submenu label="Herramientas">
                     <p:menuitem value="Salir" action="#{loginBean.logout}" 
                                 icon="ui-icon-closethick"/>
                 </p:submenu>

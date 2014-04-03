@@ -39,3 +39,11 @@ a:link:hover, a:visited:hover  {
 table{
     font-size: 1.0em;
 }
+
+.top-aligned-columns td{
+    vertical-align: top;
+}
+
+.foo>tbody>tr>td {
+    vertical-align: top;
+}
