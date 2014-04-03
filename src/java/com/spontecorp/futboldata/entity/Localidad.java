@@ -102,7 +102,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Localidad[ id=" + id + " ]";
+        return nombre;
     }
     
 }

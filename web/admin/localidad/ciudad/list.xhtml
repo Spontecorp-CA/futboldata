@@ -12,7 +12,7 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="ciudadForm">
+        <h:form id="localidadesForm">
 
             <p:fieldset style="width: 85%">
                 <p:toolbar>
@@ -34,10 +34,11 @@
                     <p:column headerText="Ciudad">
                         <h:outputText value="#{ciudad.ciudad}"/>
                     </p:column>
-                     <p:column headerText="Acciones">
+                       <p:column headerText="Acciones">
                         <p:commandLink value="Editar" action="#{ciudadBean.prepareEdit}" />
                                      
                     </p:column>
+
 
                 </p:dataTable>
             </p:fieldset>

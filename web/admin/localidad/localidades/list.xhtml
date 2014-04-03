@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../WEB-INF/templates/adminTemplate.xhtml"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -12,29 +12,42 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="localidadesForm">
+        <h:form id="localidadForm">
 
             <p:fieldset style="width: 85%">
                 <p:toolbar>
                     <p:toolbarGroup  >
                         <p:panelGrid columns="3" >
-                            <p:commandButton value="Crear Ciudad" action="#{ciudadBean.prepareCreate()}" />                           
+                            <p:commandButton value="Crear Localidad" action="#{localidadBean.prepareCreate()}" />                           
 
                         </p:panelGrid>
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="CiudadTabla" var="ciudad" value="#{ciudadBean.itemsCiudad}"
-                             rowKey="#{ciudad.id}"
-                             selection="#{ciudadBean.ciudad}" selectionMode="single">                
+                <p:dataTable id="locadadTabla" var="localidad" value="#{localidadBean.itemsLocalidad}"
+                             rowKey="#{localidad.id}" sortMode="multiple" rows="25" paginator="true"
+                             selection="#{localidadBean.localidad}" selectionMode="single">  
 
-                    <p:column headerText="Pais">
-                        <h:outputText value="#{ciudad.paisId.nombre}"/>
+                    <p:column headerText="Pais" sortBy="ciudadId.paisId.nombre">
+                        <h:outputText value="#{localidad.ciudadId.paisId.nombre}"/>
                     </p:column>
-                    <p:column headerText="Ciudad">
-                        <h:outputText value="#{ciudad.ciudad}"/>
+                    <p:column headerText="Ciudad" sortBy="ciudadId.ciudad">
+                        <h:outputText value="#{localidad.ciudadId.ciudad}"/>
+                    </p:column>
+                    <p:column headerText="Localidad" sortBy="nombre">
+
+                        <h:outputText value="#{localidad.nombre}"/>
                     </p:column>
 
+
+                    <p:commandLink value="Editar" action="#{localidadBean.prepareEdit}" />
+
+                    <p:commandLink value="Editar" action="#{localidadBean.prepareEdit}" />
+
+                    <p:column headerText="Acciones">
+                        <p:commandLink value="Editar" action="#{localidadBean.prepareEdit}" />
+
+                    </p:column>
 
                 </p:dataTable>
             </p:fieldset>

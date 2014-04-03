@@ -50,7 +50,12 @@
                     <p:menuitem value="Configura Partido" icon="ui-icon-calculator"/>
                 </p:submenu>
 
-                <p:submenu label="Herramientas">
+          
+                    <p:menuitem value="Configura Localidad" icon="ui-icon-home"
+                                action="#{localidadBean.gotoLocalidadPage()}"/>
+
+                </p:submenu>
+                <p:submenu label="Sistema">
                     <p:menuitem value="Salir" action="#{loginBean.logout}" 
                                 icon="ui-icon-closethick"/>
                 </p:submenu>

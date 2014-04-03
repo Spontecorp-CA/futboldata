@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../WEB-INF/templates/adminTemplate.xhtml"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -17,32 +17,43 @@
             <p:fieldset style="width: 85%">                
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Guardar" action="#{ciudadBean.create}" 
+                        <p:commandButton value="Guardar" action="#{localidadBean.create}" 
                                          update="createForm"/>
-                        <p:commandButton value="Ver Lista" action="#{ciudadBean.prepareList}"
+                        <p:commandButton value="Ver Lista" action="#{localidadBean.prepareList}"
                                          immediate="true"/>
-                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                        <p:commandButton value="Administración" action="#{localidadBean.returnAdminPage}"
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="* Nombre:" for="ciudad"/>
-                    <p:inputText id="ciudad" value="#{ciudadBean.selectedCiudad.ciudad}"
-                                 required="true" requiredMessage="Debe colocar la ciudad"
+                    <h:outputLabel value="* Nombre de localidad:" for="localidad"/>
+                    <p:inputText id="localidad" value="#{localidadBean.localidad.nombre}"
+                                 required="true" requiredMessage="Debe colocar la localidad"
                                  style="width: 250px"/>
     
                               
                     <p:separator/><p:separator/>                 
                     <h:outputLabel value="* Pais:" for="pais" />
-                    <p:selectOneMenu id="pais" value="#{ciudadBean.selectedCiudad.paisId}"
+                    <p:selectOneMenu id="pais" value="#{localidadBean.pais}"
+                                     style="width: 250px"
+                                     panelStyle="width:250px"
+                                     required="true"
+                           requiredMessage="Debe seleccionar un Pais">         
+                        <f:selectItems value="#{localidadBean.paisAvailable}"/>
+                               <p:ajax update="ciudad"  
+                                       listener="#{localidadBean.ciudadAvailable}" /> 
+                    </p:selectOneMenu>
+                           
+                    <h:outputLabel value="* Ciudad:" for="ciudad" />
+                    <p:selectOneMenu id="ciudad" value="#{localidadBean.localidad.ciudadId}"
                                      style="width: 250px"
                                      panelStyle="width:250px"
                                      required="true"
                                      
-                                     requiredMessage="Debe seleccionar un Pais">
+                                     requiredMessage="Debe seleccionar un ciudad">
                         
-                        <f:selectItems value="#{ciudadBean.paisAvailable}"/>
+                        <f:selectItems value="#{localidadBean.ciudades}"/>
                     </p:selectOneMenu>
                     
                     
