@@ -13,6 +13,8 @@
                 <p:submenu label="Localidades">
                     <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
                                 action="#{ciudadBean.gotoCiudadPage}"/>
+                     <p:menuitem value="Configura Localidad" icon="ui-icon-home"
+                                action="#{localidadBean.gotoLocalidadPage()}"/>
                 
                 </p:submenu>
                 
@@ -53,9 +55,9 @@
           
                     <p:menuitem value="Configura Localidad" icon="ui-icon-home"
                                 action="#{localidadBean.gotoLocalidadPage()}"/>
-
-                </p:submenu>
-                <p:submenu label="Sistema">
+              
+                
+                <p:submenu label="Herramientas">
                     <p:menuitem value="Salir" action="#{loginBean.logout}" 
                                 icon="ui-icon-closethick"/>
                 </p:submenu>
