@@ -61,6 +61,10 @@
                                          panelStyle="width:250px">
                             <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
                         </p:selectOneMenu> 
+                        <h:outputLabel value="Foto:" for="foto"/>
+                        <p:fileUpload id="foto" mode="advanced" dragDropSupport="false" 
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                      style="width: 250px"/>
                         <h:outputLabel value="* status:" for="status"/>
                         <p:selectOneMenu id="status" value="#{usuarioBean.selected.status}"
                                          converter= "javax.faces.Integer"

@@ -65,7 +65,7 @@ public class SecurePassword {
                     return usuario;
                 }
             }
-        } catch (NoResultException e) {
+        } catch (NoResultException | NullPointerException e) {
             return null;
         }
     }
