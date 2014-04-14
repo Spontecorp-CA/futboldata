@@ -79,27 +79,32 @@ public class AsociacionBean implements Serializable {
                 Util.addErrorMessage("Asociacion no existente");
                 return prepareList();
             } else {
-                telefonos = (List<Telefono>) asociacion.getDireccionId().getTelefonoCollection();
+//                telefonos = (List<Telefono>) asociacion.getDireccionId().getTelefonoCollection();
                 for (Telefono telefonoEditar : telefonos) {
-                    controllerTelefono.edit(telefonoEditar);
+                    if(controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null){
+                        controllerTelefono.edit(telefonoEditar);
+                    } else {
+                        telefonoEditar.setDireccionId(asociacion.getDireccionId());
+                        controllerTelefono.create(telefonoEditar);
+                    }
                 }
 
-                emails = (List<Email>) asociacion.getDireccionId().getEmailCollection();
+//                emails = (List<Email>) asociacion.getDireccionId().getEmailCollection();
                 for (Email emailEditar : emails) {
-                    if (controllerEmail.findEmail(emailEditar.getEmail()) != null){
-                    controllerEmail.edit(emailEditar);
-                }
-                    else {
-                       
+                    if (controllerEmail.findEmail(emailEditar.getEmail()) != null) {
+                        controllerEmail.edit(emailEditar);
+                    } else {
                         emailEditar.setDireccionId(asociacion.getDireccionId());
                         controllerEmail.create(emailEditar);
-                        
-                    }   
+
+                    }
                 }
                 controllerDireccion.edit(asociacion.getDireccionId());
                 controllerAsociacion.edit(asociacion);
                 Util.addSuccessMessage("Asociacion editado con éxito");
 
+                telefonos = null;
+                emails = null;
                 return prepareList();
             }
         } catch (Exception e) {
@@ -150,14 +155,12 @@ public class AsociacionBean implements Serializable {
     }
 
     public List<Telefono> getTelefonos(Direccion direccion) {
-        System.out.print("Esta es la direaccion que trata de buscar " + direccion.getId().toString() + "***");
         telefonos = controllerDireccion.findListTelefonoxDireaccion(direccion);
         return telefonos;
 
     }
 
     public List<Email> getEmails(Direccion direccion) {
-        System.out.print("Esta es la direaccion que trata de buscar " + direccion.getId().toString() + "***");
         emails = controllerDireccion.findListEmailxDireaccion(direccion);
         return emails;
 
@@ -170,6 +173,10 @@ public class AsociacionBean implements Serializable {
 
     private void recreateModel() {
         itemsTelefono = null;
+        asociacion = null;
+        ciudades = null;
+        telefonos = null;
+        email = null; 
     }
 
     private void recreateModelAsociacion() {
@@ -224,12 +231,24 @@ public class AsociacionBean implements Serializable {
     }
 
     public String prepareList() {
+        asociacion = null;
         recreateModelAsociacion();
         return "/admin/asociacion/asociacion/list.xhtml";
     }
 
     public String returnAdminPage() {
         return "/admin/adminPage";
+    }
+    
+    public String cancelOption(){
+        asociacion = null;
+        pais = null;
+        direccion = null;
+        telefono = null;
+        email = null;
+        emails = null;
+        telefonos = null;
+        return prepareList();
     }
 
     public String prepareCreate() {
@@ -251,28 +270,28 @@ public class AsociacionBean implements Serializable {
     public void cargarEmail() {
         emails.add(email);
         email = new Email();
-
     }
 
-    
     public void cargarTelefonoEdit() {
-        asociacion.getDireccionId().getTelefonoCollection().add(telefono);
+//        asociacion.getDireccionId().getTelefonoCollection().add(telefono);
+        telefonos.add(telefono);
         telefono = new Telefono();
 
     }
 
     public void cargarEmailEdit() {
-        asociacion.getDireccionId().getEmailCollection().add(email);
+//        asociacion.getDireccionId().getEmailCollection().add(email);
+        emails.add(email);
         email = new Email();
-        telefono = new Telefono();
-
     }
 
     public String prepareEdit() {
-          email = new Email();
-        telefono = new Telefono();
+        email = new Email();
+        telefono = new Telefono();  
         asociacion = (Asociacion) getItemsAsociacion().getRowData();
         ciudadAvailable(asociacion.getDireccionId().getCiudadId().getPaisId());
+        telefonos = getTelefonos(asociacion.getDireccionId());
+        emails = getEmails(asociacion.getDireccionId());
         return "/admin/asociacion/asociacion/edit.xhtml";
     }
 
