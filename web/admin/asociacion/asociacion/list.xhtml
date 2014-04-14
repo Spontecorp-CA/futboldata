@@ -32,7 +32,8 @@
                              value="#{asociacionBean.itemsAsociacion}"
                              rowKey="#{asociacion.id}"
                              selection="#{asociacionBean.selectedAsociacion}" 
-                             selectionMode="single">                
+                             selectionMode="single"
+                             styleClass="top-aligned-columns">                
 
                     <p:column headerText="Nombre">
                         <h:outputText value="#{asociacion.nombre}"/>
@@ -44,7 +45,13 @@
                         <h:outputText value="#{asociacion.direccionId.direccion}"/>
                     </p:column>
                     <p:column headerText="Telefono">
-                        <h:outputText value="#{asociacionBean.getTelefonos(asociacion.direccionId)}"/>
+                        <ui:repeat value="#{asociacionBean.getTelefonos(asociacion.direccionId)}" var="tlf">
+                            <ul>
+                                <li>
+                                    <h:outputText value="#{tlf.telefono}"/>
+                                </li>
+                            </ul>
+                        </ui:repeat>
                     </p:column>
                     <p:column headerText="Email">
                         <h:outputText value="#{asociacionBean.getEmails(asociacion.direccionId)}"/>

@@ -18,17 +18,19 @@
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Guardar Cambios"
-                                         action="#{asociacionBean.edit()}"
+                                         action="#{asociacionBean.edit}"
                                          update="editForm"/>
-                        <p:commandButton value="Listar" action="#{asociacionBean.prepareList()}"
-                                         immediate="true"/>                        
+                        <p:commandButton value="Listar" action="#{asociacionBean.prepareList}"
+                                         immediate="true"/>
+                        <p:commandButton value="Cancelar" action="#{asociacionBean.cancelOption}"
+                                         immediate="true"/> 
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="#{asociacionBean.returnAdminPage()}"
+                        <p:commandButton value="Administración" action="#{asociacionBean.returnAdminPage}"
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <!--                <br />-->
+
                 <h:panelGrid columns="2" styleClass="top-aligned-columns">
                     <h:panelGrid columns="2">
                         <h:outputLabel value="* Nombre de la Asociacion:" for="nombre"/>
@@ -66,7 +68,7 @@
                         <h:outputLabel value="Pagina Web:"/>
                         <p:inputText id="paginaweb"
                                      value="#{asociacionBean.selectedAsociacion.direccionId.paginaWeb}"
-                                     style="width: 200px"/>
+                                     style="width: 250px"/>
 
                         <h:outputLabel value="* status:" for="status"/>
                         <p:selectOneMenu id="status" value="#{asociacionBean.selectedAsociacion.status}"
@@ -91,8 +93,9 @@
                                 </p:column>
                                 <p:column>
                                     <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
-                                        <f:ajax listener="#{asociacionBean.cargarTelefonoEdit()}" 
+                                        <f:ajax listener="#{asociacionBean.cargarTelefonoEdit}" 
                                                 execute="telefono" render="telefonos"/>
+                                        <f:ajax render="telefono"/>
                                     </p:commandButton>
                                 </p:column>
                             </p:row>
@@ -100,8 +103,8 @@
                                 <p:column colspan="2">
                                     <p:dataList  id="telefonos" 
                                                  var="telefono" 
-                                                 value="#{asociacionBean.selectedAsociacion.direccionId.telefonoCollection}" >
-                                        <p:column headerText="Numero Telefonico">
+                                                 value="#{asociacionBean.telefonos}"  >
+                                        <p:column headerText="Número Telefonico">
                                             <p:inputMask  value="#{telefono.telefono}"
                                                           required="true"
                                                           mask="(9999) 999.9999"/>
@@ -130,12 +133,13 @@
                                                 execute="email" 
                                                 listener="#{asociacionBean.cargarEmailEdit()}">
                                         </f:ajax>
+                                        <f:ajax render="email"/>
                                     </p:commandButton>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column colspan="2">
-                                    <p:dataList value="#{asociacionBean.selectedAsociacion.direccionId.emailCollection}" 
+                                    <p:dataList value="#{asociacionBean.emails}" 
                                                 id="emails" 
                                                 var="email">
                                         <p:inputText value="#{email.email}" 
