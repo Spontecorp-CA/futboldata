@@ -13,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,38 +25,34 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "localidad")
+@Table(name = "red_social")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
-    @NamedQuery(name = "Localidad.findById", query = "SELECT l FROM Localidad l WHERE l.id = :id"),
-    @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
-public class Localidad implements Serializable {
-    @OneToMany(mappedBy = "localidadId")
-    private Collection<Direccion> direccionCollection;
+    @NamedQuery(name = "RedSocial.findAll", query = "SELECT r FROM RedSocial r"),
+    @NamedQuery(name = "RedSocial.findById", query = "SELECT r FROM RedSocial r WHERE r.id = :id"),
+    @NamedQuery(name = "RedSocial.findByNombre", query = "SELECT r FROM RedSocial r WHERE r.nombre = :nombre"),
+    @NamedQuery(name = "RedSocial.findByUrl", query = "SELECT r FROM RedSocial r WHERE r.url = :url")})
+public class RedSocial implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
-    @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Ciudad ciudadId;
+    @Column(name = "url")
+    private String url;
+    @OneToMany(mappedBy = "redSocialId")
+    private Collection<Asociacion> asociacionCollection;
+    @OneToMany(mappedBy = "redSocialId")
+    private Collection<Persona> personaCollection;
 
-    public Localidad() {
+    public RedSocial() {
     }
 
-    public Localidad(Integer id) {
+    public RedSocial(Integer id) {
         this.id = id;
-    }
-
-    public Localidad(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -77,12 +71,30 @@ public class Localidad implements Serializable {
         this.nombre = nombre;
     }
 
-    public Ciudad getCiudadId() {
-        return ciudadId;
+    public String getUrl() {
+        return url;
     }
 
-    public void setCiudadId(Ciudad ciudadId) {
-        this.ciudadId = ciudadId;
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    @XmlTransient
+    public Collection<Asociacion> getAsociacionCollection() {
+        return asociacionCollection;
+    }
+
+    public void setAsociacionCollection(Collection<Asociacion> asociacionCollection) {
+        this.asociacionCollection = asociacionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Persona> getPersonaCollection() {
+        return personaCollection;
+    }
+
+    public void setPersonaCollection(Collection<Persona> personaCollection) {
+        this.personaCollection = personaCollection;
     }
 
     @Override
@@ -95,10 +107,10 @@ public class Localidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Localidad)) {
+        if (!(object instanceof RedSocial)) {
             return false;
         }
-        Localidad other = (Localidad) object;
+        RedSocial other = (RedSocial) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -107,16 +119,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
-    }
-
-    @XmlTransient
-    public Collection<Direccion> getDireccionCollection() {
-        return direccionCollection;
-    }
-
-    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
-        this.direccionCollection = direccionCollection;
+        return "com.spontecorp.futboldata.entity.RedSocial[ id=" + id + " ]";
     }
     
 }

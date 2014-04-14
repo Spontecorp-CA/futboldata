@@ -7,41 +7,61 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="title">
-        Administración de Asociaciones
+        Administración de Arbitros
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="asociacionForm">
+        <h:form id="listForm">
 
-            <p:fieldset style="width: 85%">
+            <p:fieldset style="width: 85%" legend="Lista de Arbitros" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nueva" action="create"/>
-                        <p:commandButton value="Administración" action="/admin/adminPage"
+                        <p:commandButton value="Nuevo" 
+                                         action="#{asociacionBean.prepareCreate()}"/>
+                        <p:commandButton value="Administración" 
+                                         action="#{asociacionBean.returnAdminPage()}"
                                          immediate="true"/>
                     </p:toolbarGroup>                    
                 </p:toolbar>
-                <br />
-                
-                Aqui va la lista
-<!--                <p:dataTable id="asociaciones" var="item" 
-                             rowKey=""
-                             selection="" 
+
+
+                <p:dataTable id="AsociacionesTabla" 
+                             var="asociacion"  
+                             value="#{asociacionBean.itemsAsociacion}"
+                             rowKey="#{asociacion.id}"
+                             selection="#{asociacionBean.selectedAsociacion}" 
                              selectionMode="single">                
 
                     <p:column headerText="Nombre">
-                        <h:outputText value="nombre"/>
+                        <h:outputText value="#{asociacion.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Ciudad">
+                        <h:outputText value="#{asociacion.direccionId.ciudadId.ciudad}"/>
                     </p:column>
                     <p:column headerText="Dirección">
-                        <h:outputText value="dirección"/>
+                        <h:outputText value="#{asociacion.direccionId.direccion}"/>
                     </p:column>
+                    <p:column headerText="Telefono">
+                        <h:outputText value="#{asociacionBean.getTelefonos(asociacion.direccionId)}"/>
+                    </p:column>
+                    <p:column headerText="Email">
+                        <h:outputText value="#{asociacionBean.getEmails(asociacion.direccionId)}"/>
+                    </p:column>
+
+                    <p:column headerText="Dirección">
+                        <h:outputText value="#{asociacion.direccionId.paginaWeb}"/>
+                    </p:column>
+
+
                     <p:column headerText="Status">
-                        <h:outputText value="status"/>
+                        <h:outputText   value="#{asociacion.status== 0?'INACTIVO':'ACTIVO'}"/>
+
                     </p:column>
                     <p:column headerText="Acciones">
-                        <p:commandLink value="Editar"/>
+                        <p:commandLink action="#{asociacionBean.prepareEdit}" value="Editar"/>
+
                     </p:column>
-                </p:dataTable>-->
+                </p:dataTable>
             </p:fieldset>
         </h:form>
     </ui:define>

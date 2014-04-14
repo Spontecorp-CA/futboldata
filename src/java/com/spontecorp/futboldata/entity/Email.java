@@ -6,9 +6,7 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,27 +16,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author sponte03
  */
 @Entity
-@Table(name = "ciudad")
+@Table(name = "email")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ciudad.findAll", query = "SELECT c FROM Ciudad c"),
-    @NamedQuery(name = "Ciudad.findById", query = "SELECT c FROM Ciudad c WHERE c.id = :id"),
-    @NamedQuery(name = "Ciudad.findByCiudad", query = "SELECT c FROM Ciudad c WHERE c.ciudad = :ciudad")})
-public class Ciudad implements Serializable {
-    @OneToMany(mappedBy = "ciudadId")
-    private Collection<Direccion> direccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudadId")
-    private Collection<Localidad> localidadCollection;
+    @NamedQuery(name = "Email.findAll", query = "SELECT e FROM Email e"),
+    @NamedQuery(name = "Email.findById", query = "SELECT e FROM Email e WHERE e.id = :id"),
+    @NamedQuery(name = "Email.findByEmail", query = "SELECT e FROM Email e WHERE e.email = :email")})
+public class Email implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,22 +38,22 @@ public class Ciudad implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "ciudad")
-    private String ciudad;
-    @JoinColumn(name = "pais_id", referencedColumnName = "id")
+    @Column(name = "email")
+    private String email;
+    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Pais paisId;
+    private Direccion direccionId;
 
-    public Ciudad() {
+    public Email() {
     }
 
-    public Ciudad(Integer id) {
+    public Email(Integer id) {
         this.id = id;
     }
 
-    public Ciudad(Integer id, String ciudad) {
+    public Email(Integer id, String email) {
         this.id = id;
-        this.ciudad = ciudad;
+        this.email = email;
     }
 
     public Integer getId() {
@@ -72,20 +64,20 @@ public class Ciudad implements Serializable {
         this.id = id;
     }
 
-    public String getCiudad() {
-        return ciudad;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Pais getPaisId() {
-        return paisId;
+    public Direccion getDireccionId() {
+        return direccionId;
     }
 
-    public void setPaisId(Pais paisId) {
-        this.paisId = paisId;
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
 
     @Override
@@ -98,10 +90,10 @@ public class Ciudad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ciudad)) {
+        if (!(object instanceof Email)) {
             return false;
         }
-        Ciudad other = (Ciudad) object;
+        Email other = (Email) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -110,17 +102,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return ciudad;
-    }
-
-    @XmlTransient
-    public Collection<Localidad> getLocalidadCollection() {
-        return localidadCollection;
-    }
-
-    public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
-        this.localidadCollection = localidadCollection;
-
+        return email;
     }
     
 }

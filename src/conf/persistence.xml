@@ -7,6 +7,13 @@
     <class>com.spontecorp.futboldata.entity.Categoria</class>
     <class>com.spontecorp.futboldata.entity.Pais</class>
     <class>com.spontecorp.futboldata.entity.Localidad</class>
+    <class>com.spontecorp.futboldata.entity.Asociacion</class>
+    <class>com.spontecorp.futboldata.entity.Persona</class>
+    <class>com.spontecorp.futboldata.entity.Direccion</class>
+    <class>com.spontecorp.futboldata.entity.Arbitro</class>
+    <class>com.spontecorp.futboldata.entity.RedSocial</class>
+    <class>com.spontecorp.futboldata.entity.Telefono</class>
+    <class>com.spontecorp.futboldata.entity.Email</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>

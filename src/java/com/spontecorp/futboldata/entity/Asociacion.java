@@ -27,38 +27,38 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "localidad")
+@Table(name = "asociacion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
-    @NamedQuery(name = "Localidad.findById", query = "SELECT l FROM Localidad l WHERE l.id = :id"),
-    @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
-public class Localidad implements Serializable {
-    @OneToMany(mappedBy = "localidadId")
-    private Collection<Direccion> direccionCollection;
+    @NamedQuery(name = "Asociacion.findAll", query = "SELECT a FROM Asociacion a"),
+    @NamedQuery(name = "Asociacion.findById", query = "SELECT a FROM Asociacion a WHERE a.id = :id"),
+    @NamedQuery(name = "Asociacion.findByNombre", query = "SELECT a FROM Asociacion a WHERE a.nombre = :nombre"),
+    @NamedQuery(name = "Asociacion.findByStatus", query = "SELECT a FROM Asociacion a WHERE a.status = :status")})
+public class Asociacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
     @Column(name = "nombre")
     private String nombre;
-    @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Ciudad ciudadId;
+    @Column(name = "status")
+    private Integer status;
+    @OneToMany(mappedBy = "asociacionId")
+    private Collection<Arbitro> arbitroCollection;
+    @JoinColumn(name = "red_social_id", referencedColumnName = "id")
+    @ManyToOne
+    private RedSocial redSocialId;
+    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Direccion direccionId;
 
-    public Localidad() {
+    public Asociacion() {
     }
 
-    public Localidad(Integer id) {
+    public Asociacion(Integer id) {
         this.id = id;
-    }
-
-    public Localidad(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -77,12 +77,37 @@ public class Localidad implements Serializable {
         this.nombre = nombre;
     }
 
-    public Ciudad getCiudadId() {
-        return ciudadId;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setCiudadId(Ciudad ciudadId) {
-        this.ciudadId = ciudadId;
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    @XmlTransient
+    public Collection<Arbitro> getArbitroCollection() {
+        return arbitroCollection;
+    }
+
+    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
+        this.arbitroCollection = arbitroCollection;
+    }
+
+    public RedSocial getRedSocialId() {
+        return redSocialId;
+    }
+
+    public void setRedSocialId(RedSocial redSocialId) {
+        this.redSocialId = redSocialId;
+    }
+
+    public Direccion getDireccionId() {
+        return direccionId;
+    }
+
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
 
     @Override
@@ -95,10 +120,10 @@ public class Localidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Localidad)) {
+        if (!(object instanceof Asociacion)) {
             return false;
         }
-        Localidad other = (Localidad) object;
+        Asociacion other = (Asociacion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -108,15 +133,6 @@ public class Localidad implements Serializable {
     @Override
     public String toString() {
         return nombre;
-    }
-
-    @XmlTransient
-    public Collection<Direccion> getDireccionCollection() {
-        return direccionCollection;
-    }
-
-    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
-        this.direccionCollection = direccionCollection;
     }
     
 }
