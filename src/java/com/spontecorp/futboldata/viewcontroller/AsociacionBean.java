@@ -281,6 +281,7 @@ public class AsociacionBean implements Serializable {
         email = new Email();
         telefono = new Telefono();
         asociacion = (Asociacion) getItemsAsociacion().getRowData();
+        ciudadAvailable(asociacion.getDireccionId().getCiudadId().getPaisId());
         return "/admin/asociacion/asociacion/edit.xhtml";
     }
 
