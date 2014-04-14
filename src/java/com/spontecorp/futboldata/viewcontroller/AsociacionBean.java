@@ -86,15 +86,14 @@ public class AsociacionBean implements Serializable {
 
                 emails = (List<Email>) asociacion.getDireccionId().getEmailCollection();
                 for (Email emailEditar : emails) {
-                    if (controllerEmail.findEmail(emailEditar.getEmail()) != null){
-                    controllerEmail.edit(emailEditar);
-                }
-                    else {
-                       
+                    if (controllerEmail.findEmail(emailEditar.getEmail()) != null) {
+                        controllerEmail.edit(emailEditar);
+                    } else {
+
                         emailEditar.setDireccionId(asociacion.getDireccionId());
                         controllerEmail.create(emailEditar);
-                        
-                    }   
+
+                    }
                 }
                 controllerDireccion.edit(asociacion.getDireccionId());
                 controllerAsociacion.edit(asociacion);
@@ -231,6 +230,17 @@ public class AsociacionBean implements Serializable {
     public String returnAdminPage() {
         return "/admin/adminPage";
     }
+    
+    public String cancelOption(){
+        asociacion = null;
+        pais = null;
+        direccion = null;
+        telefono = null;
+        email = null;
+        emails = null;
+        telefonos = null;
+        return prepareList();
+    }
 
     public String prepareCreate() {
         asociacion = new Asociacion();
@@ -254,7 +264,6 @@ public class AsociacionBean implements Serializable {
 
     }
 
-    
     public void cargarTelefonoEdit() {
         asociacion.getDireccionId().getTelefonoCollection().add(telefono);
         telefono = new Telefono();
@@ -269,7 +278,7 @@ public class AsociacionBean implements Serializable {
     }
 
     public String prepareEdit() {
-          email = new Email();
+        email = new Email();
         telefono = new Telefono();
         asociacion = (Asociacion) getItemsAsociacion().getRowData();
         return "/admin/asociacion/asociacion/edit.xhtml";

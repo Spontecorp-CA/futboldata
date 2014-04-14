@@ -13,15 +13,17 @@
     <ui:define name="content">
         <h:form id="listForm">
 
-            <p:fieldset style="width: 85%" legend="Lista de Arbitros" >
+            <p:fieldset style="width: 85%" legend="Lista de Asociaciones" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nuevo" 
-                                         action="#{asociacionBean.prepareCreate()}"/>
+                        <p:commandButton value="Nueva" 
+                                         action="#{asociacionBean.prepareCreate}"/>                        
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" 
-                                         action="#{asociacionBean.returnAdminPage()}"
+                                         action="#{asociacionBean.returnAdminPage}"
                                          immediate="true"/>
-                    </p:toolbarGroup>                    
+                    </p:toolbarGroup>
                 </p:toolbar>
 
 
