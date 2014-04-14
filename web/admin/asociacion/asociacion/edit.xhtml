@@ -44,7 +44,7 @@
                     </p:selectOneMenu>
 
                     <h:outputLabel value="* Ciudad:" for="ciudad"/>
-                    <p:selectOneMenu id="ciudad" value="#{asociacionBean.selectedAsociacion.direccionId.ciudadId}"
+                    <p:selectOneMenu id="ciudad"  value="#{asociacionBean.selectedAsociacion.direccionId.ciudadId}"
                                      style="width: 250px"
                                      panelStyle="width:250px"
                                      required="true"
@@ -66,22 +66,23 @@
                     <p:inputMask id="telefono" 
                                  value="#{asociacionBean.telefono.telefono}"
                                  style="width: 250px"
-                                 mask="(9999) 999.9999"/>
+                                 mask="(9999) 999.9999" />
 
                     <p:commandButton value="Agregar Telefono" >                             
                         <f:ajax listener="#{asociacionBean.cargarTelefonoEdit()}" 
-                                execute="telefono" render="telefonos"/>
+                                execute="telefono" render="telefonos" />
+                        <f:ajax  render="telefono"/>
                     </p:commandButton>
 
-                    <p:dataList  id="telefonos" 
+                    <p:dataList  id="telefonos"  
                                  var="telefono" 
                                  value="#{asociacionBean.selectedAsociacion.direccionId.telefonoCollection}" >
                         <p:column headerText="Numero Telefonico">
                             <p:inputMask  value="#{telefono.telefono}"
                                           required="true"
-                                           mask="(9999) 999.9999"/>
+                                           mask="(9999) 999.9999"  />
                         </p:column>
-        
+                       
                     </p:dataList>
 
 
@@ -99,6 +100,7 @@
                                 execute="email" 
                                 listener="#{asociacionBean.cargarEmailEdit()}">
                         </f:ajax>
+                        <f:ajax  render="email"/>
                     </p:commandButton>
 
                     <p:dataList value="#{asociacionBean.selectedAsociacion.direccionId.emailCollection}" 
