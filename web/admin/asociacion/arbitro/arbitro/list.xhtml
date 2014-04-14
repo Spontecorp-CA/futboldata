@@ -23,25 +23,31 @@
                 </p:toolbar>
                 <br />
                 
-                Aqui va la lista
-<!--                <p:dataTable id="asociaciones" var="item" 
-                             rowKey=""
-                             selection="" 
+                <p:dataTable id="AsociacionesTabla" var="asociacion"  value="#{asociacionBean.itemsAsociacion}"
+                             rowKey="#{asociacion.id}"
+                             selection="#{asociacionBean.asociacion.nombre}" 
                              selectionMode="single">                
 
                     <p:column headerText="Nombre">
-                        <h:outputText value="nombre"/>
+                        <h:outputText value="#{asociacion.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Ciudad">
+                        <h:outputText value="#{asociacion.direccionId.ciudadId.ciudad}"/>
                     </p:column>
                     <p:column headerText="Dirección">
-                        <h:outputText value="dirección"/>
+                        <h:outputText value="#{asociacion.direccionId.direccion}"/>
                     </p:column>
+<!--                          <p:column headerText="Telefono">
+                              <h:outputText value=""/>
+                    </p:column>-->
+                    
                     <p:column headerText="Status">
-                        <h:outputText value="status"/>
+                        <h:outputText value="#{asociacion.status}"/>
                     </p:column>
                     <p:column headerText="Acciones">
                         <p:commandLink value="Editar"/>
                     </p:column>
-                </p:dataTable>-->
+                </p:dataTable>
             </p:fieldset>
         </h:form>
     </ui:define>
