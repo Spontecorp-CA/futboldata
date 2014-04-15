@@ -48,6 +48,8 @@ public class AsociacionBean implements Serializable {
 
     private List<Email> emails = null;
     private List<Telefono> telefonos = null;
+    List<Telefono> telefonoEliminar = null;
+    List<Email> emailEliminar = null;
     private transient DataModel itemsTelefono = null;
     private transient DataModel itemsAsociacion = null;
     private SelectItem[] ciudades;
@@ -284,6 +286,10 @@ public class AsociacionBean implements Serializable {
         emails.add(email);
         email = new Email();
     }
+    
+    public void eliminarTelefono(int index){
+        telefonoEliminar.add(telefonos.remove(index));
+}
 
     public String prepareEdit() {
         email = new Email();

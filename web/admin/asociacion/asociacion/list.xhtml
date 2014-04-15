@@ -25,8 +25,6 @@
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
-
-
                 <p:dataTable id="AsociacionesTabla" 
                              var="asociacion"  
                              value="#{asociacionBean.itemsAsociacion}"
@@ -45,7 +43,8 @@
                         <h:outputText value="#{asociacion.direccionId.direccion}"/>
                     </p:column>
                     <p:column headerText="Telefono">
-                        <ui:repeat value="#{asociacionBean.getTelefonos(asociacion.direccionId)}" var="tlf">
+                        <ui:repeat value="#{asociacionBean.getTelefonos(asociacion.direccionId)}" 
+                                   var="tlf"  >
                             <ul>
                                 <li>
                                     <h:outputText value="#{tlf.telefono}"/>
@@ -54,14 +53,19 @@
                         </ui:repeat>
                     </p:column>
                     <p:column headerText="Email">
-                        <h:outputText value="#{asociacionBean.getEmails(asociacion.direccionId)}"/>
+                        <ui:repeat value="#{asociacionBean.getEmails(asociacion.direccionId)}"
+                                   var="eml">
+                            <ul>
+                                <li>
+                        <h:outputText value="#{eml.email}" />
+                                </li>
+                            </ul>
+                        </ui:repeat>
                     </p:column>
 
                     <p:column headerText="Dirección">
                         <h:outputText value="#{asociacion.direccionId.paginaWeb}"/>
                     </p:column>
-
-
                     <p:column headerText="Status">
                         <h:outputText   value="#{asociacion.status== 0?'INACTIVO':'ACTIVO'}"/>
 

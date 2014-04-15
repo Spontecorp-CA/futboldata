@@ -100,14 +100,20 @@
                                 </p:column>
                             </p:row>
                             <p:row>
+
                                 <p:column colspan="2">
                                     <p:dataList  id="telefonos" 
                                                  var="telefono" 
-                                                 value="#{asociacionBean.telefonos}"  >
+                                                 value="#{asociacionBean.telefonos}" 
+                                                 rowIndexVar="row">
                                         <p:column headerText="Número Telefonico">
                                             <p:inputMask  value="#{telefono.telefono}"
                                                           required="true"
                                                           mask="(9999) 999.9999"/>
+                                            <p:commandButton icon="ui-icon-closethick" 
+                                                             title="Eliminar Telefono" >
+                                                <f:ajax render="telefonos" listener="#{asociacionBean.eliminarTelefono(row)}"/>
+                                            </p:commandButton>
                                         </p:column>
 
                                     </p:dataList>
@@ -141,7 +147,8 @@
                                 <p:column colspan="2">
                                     <p:dataList value="#{asociacionBean.emails}" 
                                                 id="emails" 
-                                                var="email">
+                                                var="email"
+                                                rowIndexVar="row">
                                         <p:inputText value="#{email.email}" 
                                                      required="true"
                                                      validatorMessage="Email invalido"
@@ -150,6 +157,13 @@
                                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
 
                                         </p:inputText>
+                                        <p:commandButton icon="ui-icon-closethick" 
+                                                         title="Eliminar Telefono">
+                                            <f:ajax listener="#{asociacionBean.eliminarTelefono(row)}"
+                                                    render="telefonos">
+
+                                            </f:ajax>  
+                                        </p:commandButton>
                                     </p:dataList>
                                 </p:column>
                             </p:row>
