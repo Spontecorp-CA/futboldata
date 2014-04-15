@@ -81,9 +81,9 @@
                         </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="2" styleClass="panelGridSpt">
                         <h:outputLabel value="* Teléfonos:" for="phones"/>
-                        <p:panelGrid id="phones" style="border-style: none">
+                        <p:panelGrid id="phones" styleClass="panelGridSpt">
                             <p:row>
                                 <p:column>
                                     <p:inputMask id="telefono" 
@@ -100,19 +100,17 @@
                                 </p:column>
                             </p:row>
                             <p:row>
-
                                 <p:column colspan="2">
                                     <p:dataList  id="telefonos" 
                                                  var="telefono" 
-                                                 value="#{asociacionBean.telefonos}" 
-                                                 rowIndexVar="row">
+                                                 value="#{asociacionBean.telefonos}"  >
                                         <p:column headerText="Número Telefonico">
                                             <p:inputMask  value="#{telefono.telefono}"
                                                           required="true"
-                                                          mask="(9999) 999.9999"/>
-                                            <p:commandButton icon="ui-icon-closethick" 
-                                                             title="Eliminar Telefono" >
-                                                <f:ajax render="telefonos" listener="#{asociacionBean.eliminarTelefono(row)}"/>
+                                                          mask="(9999) 999.9999"
+                                                          style="width: 200px"/>
+                                            <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
+                                                
                                             </p:commandButton>
                                         </p:column>
 
@@ -122,7 +120,7 @@
                         </p:panelGrid>
 
                         <h:outputLabel value="* email:" for="correos"/>
-                        <p:panelGrid id="correos" style="border-style: none">
+                        <p:panelGrid id="correos" styleClass="panelGridSpt">
                             <p:row>
                                 <p:column>
                                     <p:inputText id="email" 
@@ -147,8 +145,7 @@
                                 <p:column colspan="2">
                                     <p:dataList value="#{asociacionBean.emails}" 
                                                 id="emails" 
-                                                var="email"
-                                                rowIndexVar="row">
+                                                var="email">
                                         <p:inputText value="#{email.email}" 
                                                      required="true"
                                                      validatorMessage="Email invalido"
@@ -157,12 +154,8 @@
                                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
 
                                         </p:inputText>
-                                        <p:commandButton icon="ui-icon-closethick" 
-                                                         title="Eliminar Telefono">
-                                            <f:ajax listener="#{asociacionBean.eliminarTelefono(row)}"
-                                                    render="telefonos">
+                                        <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
 
-                                            </f:ajax>  
                                         </p:commandButton>
                                     </p:dataList>
                                 </p:column>

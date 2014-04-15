@@ -27,15 +27,14 @@ public class EmailFacade extends AbstractFacade<Email> implements Serializable {
 
     public Email findEmail(String email) {
         try {
-                    EntityManager em = getEntityManager();
-        Query q = em.createNamedQuery("Email.findByEmail", Email.class);
-        q.setParameter("email", email);
-        return (Email) q.getSingleResult();
+            EntityManager em = getEntityManager();
+            Query q = em.createNamedQuery("Email.findByEmail", Email.class);
+            q.setParameter("email", email);
+            return (Email) q.getSingleResult();
         } catch (Exception e) {
-            logger.debug("Error al buscar el Email",e.getMessage());
+            logger.debug("Error al buscar el Email", e.getMessage());
             return null;
         }
-        
 
     }
 

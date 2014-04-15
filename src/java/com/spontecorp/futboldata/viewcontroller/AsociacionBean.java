@@ -75,13 +75,17 @@ public class AsociacionBean implements Serializable {
         controllerDireccion = new DireccionFacede(Direccion.class);
     }
 
+    /**
+     * permite la edición de los campos en la vista Asociación, devuelve un String con 
+     * la facelet de respuesta
+     * @return un String que retorna a la lista
+     */
     public String edit() {
         try {
             if (controllerAsociacion.find(asociacion.getId()) == null) {
                 Util.addErrorMessage("Asociacion no existente");
                 return prepareList();
             } else {
-//                telefonos = (List<Telefono>) asociacion.getDireccionId().getTelefonoCollection();
                 for (Telefono telefonoEditar : telefonos) {
                     if(controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null){
                         controllerTelefono.edit(telefonoEditar);
@@ -91,7 +95,6 @@ public class AsociacionBean implements Serializable {
                     }
                 }
 
-//                emails = (List<Email>) asociacion.getDireccionId().getEmailCollection();
                 for (Email emailEditar : emails) {
                     if (controllerEmail.findEmail(emailEditar.getEmail()) != null) {
                         controllerEmail.edit(emailEditar);
@@ -275,14 +278,12 @@ public class AsociacionBean implements Serializable {
     }
 
     public void cargarTelefonoEdit() {
-//        asociacion.getDireccionId().getTelefonoCollection().add(telefono);
         telefonos.add(telefono);
         telefono = new Telefono();
 
     }
 
     public void cargarEmailEdit() {
-//        asociacion.getDireccionId().getEmailCollection().add(email);
         emails.add(email);
         email = new Email();
     }

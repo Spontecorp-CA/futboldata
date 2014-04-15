@@ -43,8 +43,7 @@
                         <h:outputText value="#{asociacion.direccionId.direccion}"/>
                     </p:column>
                     <p:column headerText="Telefono">
-                        <ui:repeat value="#{asociacionBean.getTelefonos(asociacion.direccionId)}" 
-                                   var="tlf"  >
+                        <ui:repeat value="#{asociacionBean.getTelefonos(asociacion.direccionId)}" var="tlf">
                             <ul>
                                 <li>
                                     <h:outputText value="#{tlf.telefono}"/>
@@ -53,14 +52,13 @@
                         </ui:repeat>
                     </p:column>
                     <p:column headerText="Email">
-                        <ui:repeat value="#{asociacionBean.getEmails(asociacion.direccionId)}"
-                                   var="eml">
+                        <ui:repeat value="#{asociacionBean.getEmails(asociacion.direccionId)}" var="mail">
                             <ul>
                                 <li>
-                        <h:outputText value="#{eml.email}" />
+                                    <h:outputText value="#{mail.email}"/>
                                 </li>
                             </ul>
-                        </ui:repeat>
+                        </ui:repeat>                                                
                     </p:column>
 
                     <p:column headerText="Dirección">
