@@ -54,7 +54,13 @@
                         </ui:repeat>
                     </p:column>
                     <p:column headerText="Email">
-                        <h:outputText value="#{asociacionBean.getEmails(asociacion.direccionId)}"/>
+                        <ui:repeat value="#{asociacionBean.getEmails(asociacion.direccionId)}" var="mail">
+                            <ul>
+                                <li>
+                                    <h:outputText value="#{mail.email}"/>
+                                </li>
+                            </ul>
+                        </ui:repeat>                                                
                     </p:column>
 
                     <p:column headerText="Dirección">

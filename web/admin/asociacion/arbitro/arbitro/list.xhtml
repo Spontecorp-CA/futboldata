@@ -23,7 +23,7 @@
                 </p:toolbar>
                 <br />
                 
-                <p:dataTable id="AsociacionesTabla" var="asociacion"  value="#{asociacionBean.itemsAsociacion}"
+<!--                <p:dataTable id="AsociacionesTabla" var="asociacion"  value="#{asociacionBean.itemsAsociacion}"
                              rowKey="#{asociacion.id}"
                              selection="#{asociacionBean.asociacion.nombre}" 
                              selectionMode="single">                
@@ -37,9 +37,9 @@
                     <p:column headerText="Dirección">
                         <h:outputText value="#{asociacion.direccionId.direccion}"/>
                     </p:column>
-<!--                          <p:column headerText="Telefono">
+                          <p:column headerText="Telefono">
                               <h:outputText value=""/>
-                    </p:column>-->
+                    </p:column>
                     
                     <p:column headerText="Status">
                         <h:outputText value="#{asociacion.status}"/>
@@ -47,7 +47,7 @@
                     <p:column headerText="Acciones">
                         <p:commandLink value="Editar"/>
                     </p:column>
-                </p:dataTable>
+                </p:dataTable>-->
             </p:fieldset>
         </h:form>
     </ui:define>

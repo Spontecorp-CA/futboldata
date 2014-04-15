@@ -47,3 +47,10 @@ table{
 .foo>tbody>tr>td {
     vertical-align: top;
 }
+
+ul,li { 
+    list-style-type: none;
+    list-style-position:inside;
+    margin:0;
+    padding:0; 
+}
