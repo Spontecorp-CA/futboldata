@@ -5,7 +5,7 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Arbitro;
-import static com.spontecorp.futboldata.entity.Categoria_.nombre;
+
 import com.spontecorp.futboldata.entity.Persona;
 import java.io.Serializable;
 import javax.persistence.EntityManager;
@@ -31,7 +31,7 @@ public class ArbitroFacade extends AbstractFacade<Arbitro> implements Serializab
             EntityManager em = getEntityManager();
             String query = "SELECT a FROM Arbitro a where a.personaId = :persona";
             Query q = em.createNamedQuery(query, Arbitro.class);
-            q.setParameter("nombre", nombre);
+            q.setParameter("nombre", persona);
             return (Arbitro) q.getSingleResult();
         } catch (Exception e) {
             logger.debug("Error encontrando Persona en Arbitro: " + e.getLocalizedMessage(), e);
