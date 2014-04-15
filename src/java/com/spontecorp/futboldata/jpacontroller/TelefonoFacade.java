@@ -29,7 +29,7 @@ public class TelefonoFacade extends AbstractFacade<Telefono> implements Serializ
             q.setParameter("telefono", telefono);
             telef = (Telefono) q.getSingleResult();
         } catch (Exception e) {
-            logger.debug("Error encontrado en buscar Telefono: " + e.getLocalizedMessage(),e);
+            logger.debug("Error encontrado en buscar Telefono: " + e.getLocalizedMessage());
         }
         return telef;
 
@@ -44,7 +44,7 @@ public class TelefonoFacade extends AbstractFacade<Telefono> implements Serializ
             q.setParameter("direccion", direccion);
             telefonos = (List<Telefono>) q.getResultList();
         } catch (Exception e) {
-            logger.debug("Error encontrando los telefonos: " + e.getLocalizedMessage(), e);
+            logger.debug("Error encontrando los telefonos: " + e.getLocalizedMessage());
         }
         return telefonos;
     }

@@ -30,6 +30,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -62,6 +63,7 @@ public class AsociacionBean implements Serializable {
 
     private final CiudadFacade controllerCiudad;
     private final PaisFacade controllerPais;
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AsociacionBean.class);
 
     /**
      * Creates a new instance of LocalidadBean
@@ -73,11 +75,13 @@ public class AsociacionBean implements Serializable {
         controllerTelefono = new TelefonoFacade(Telefono.class);
         controllerAsociacion = new AsociacionFacade(Asociacion.class);
         controllerDireccion = new DireccionFacede(Direccion.class);
+
     }
 
     /**
-     * permite la edición de los campos en la vista Asociación, devuelve un String con 
-     * la facelet de respuesta
+     * permite la edición de los campos en la vista Asociación, devuelve un
+     * String con la facelet de respuesta
+     *
      * @return un String que retorna a la lista
      */
     public String edit() {
@@ -87,7 +91,7 @@ public class AsociacionBean implements Serializable {
                 return prepareList();
             } else {
                 for (Telefono telefonoEditar : telefonos) {
-                    if(controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null){
+                    if (controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null) {
                         controllerTelefono.edit(telefonoEditar);
                     } else {
                         telefonoEditar.setDireccionId(asociacion.getDireccionId());
@@ -104,12 +108,22 @@ public class AsociacionBean implements Serializable {
 
                     }
                 }
+
+                for (Email emailEli : emailEliminar) {
+                    controllerEmail.remove(emailEli);
+                }
+                for (Telefono telefonoEli : telefonoEliminar) {
+                    controllerTelefono.remove(telefonoEli);
+                }
+
                 controllerDireccion.edit(asociacion.getDireccionId());
                 controllerAsociacion.edit(asociacion);
                 Util.addSuccessMessage("Asociacion editado con éxito");
 
                 telefonos = null;
                 emails = null;
+                telefonoEliminar = null;
+                emailEliminar = null;
                 return prepareList();
             }
         } catch (Exception e) {
@@ -181,7 +195,7 @@ public class AsociacionBean implements Serializable {
         asociacion = null;
         ciudades = null;
         telefonos = null;
-        email = null; 
+        email = null;
     }
 
     private void recreateModelAsociacion() {
@@ -244,8 +258,8 @@ public class AsociacionBean implements Serializable {
     public String returnAdminPage() {
         return "/admin/adminPage";
     }
-    
-    public String cancelOption(){
+
+    public String cancelOption() {
         asociacion = null;
         pais = null;
         direccion = null;
@@ -279,22 +293,44 @@ public class AsociacionBean implements Serializable {
 
     public void cargarTelefonoEdit() {
         telefonos.add(telefono);
-        telefono = new Telefono();
-
+       telefono = new Telefono();
     }
 
     public void cargarEmailEdit() {
         emails.add(email);
         email = new Email();
     }
-    
-    public void eliminarTelefono(int index){
-        telefonoEliminar.add(telefonos.remove(index));
-}
+
+    public void eliminarTelefono(Telefono telefono) {
+
+        logger.debug("El numero telfono: " + telefono.getTelefono(), AsociacionBean.class);
+        if (telefonos.remove(telefono)) {
+            telefonoEliminar.add(telefono);
+            for (Telefono tlf : telefonoEliminar) {
+                logger.debug("Va a eliminar a: " + tlf.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
+
+    public void eliminarEmail(Email email) {
+
+        if (emails.remove(email)) {
+            emailEliminar.add(email);
+            for (Email eml : emailEliminar) {
+                logger.debug("Va a eliminar a: " + eml.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
 
     public String prepareEdit() {
         email = new Email();
-        telefono = new Telefono();  
+        telefono = new Telefono();
+        telefonoEliminar = new ArrayList<>();
+        emailEliminar = new ArrayList<>();
         asociacion = (Asociacion) getItemsAsociacion().getRowData();
         ciudadAvailable(asociacion.getDireccionId().getCiudadId().getPaisId());
         telefonos = getTelefonos(asociacion.getDireccionId());

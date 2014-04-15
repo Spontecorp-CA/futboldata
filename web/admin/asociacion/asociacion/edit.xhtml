@@ -92,25 +92,32 @@
                                                  mask="(9999) 999.9999"/>
                                 </p:column>
                                 <p:column>
-                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
-                                        <f:ajax listener="#{asociacionBean.cargarTelefonoEdit}" 
-                                                execute="telefono" render="telefonos"/>
-                                        <f:ajax render="telefono"/>
+                                    <p:commandButton icon="ui-icon-plusthick" 
+                                                     title="Agregar teléfono" >                             
+                                        <f:ajax listener="#{asociacionBean.cargarTelefonoEdit}"         
+                                                render="phones"
+                                                execute="telefono" >
+                                        
+                                        </f:ajax>
                                     </p:commandButton>
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column colspan="2">
                                     <p:dataList  id="telefonos" 
-                                                 var="telefono" 
-                                                 value="#{asociacionBean.telefonos}"  >
+                                                 var="telefonoVar" 
+                                                 value="#{asociacionBean.telefonos}"
+                                                 rowIndexVar="row">
                                         <p:column headerText="Número Telefonico">
-                                            <p:inputMask  value="#{telefono.telefono}"
+                                            <p:inputMask  value="#{telefonoVar.telefono}"
                                                           required="true"
                                                           mask="(9999) 999.9999"
                                                           style="width: 200px"/>
-                                            <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
-                                                
+                                            <p:commandButton icon="ui-icon-closethick" 
+                                                             title="Agregar teléfono" >
+                                                <p:ajax resetValues="true" 
+                                                        listener="#{asociacionBean.eliminarTelefono(telefonoVar)}"
+                                                        update="telefonos"/>
                                             </p:commandButton>
                                         </p:column>
 
@@ -133,11 +140,11 @@
                                 </p:column>
                                 <p:column>
                                     <p:commandButton icon="ui-icon-plusthick" title="Agregar emal" >
-                                        <f:ajax render="emails" 
+                                        <f:ajax render="correos" 
                                                 execute="email" 
                                                 listener="#{asociacionBean.cargarEmailEdit()}">
                                         </f:ajax>
-                                        <f:ajax render="email"/>
+                                       
                                     </p:commandButton>
                                 </p:column>
                             </p:row>
@@ -145,8 +152,8 @@
                                 <p:column colspan="2">
                                     <p:dataList value="#{asociacionBean.emails}" 
                                                 id="emails" 
-                                                var="email">
-                                        <p:inputText value="#{email.email}" 
+                                                var="emailVar">
+                                        <p:inputText value="#{emailVar.email}" 
                                                      required="true"
                                                      validatorMessage="Email invalido"
                                                      style="width: 200px">
@@ -155,7 +162,9 @@
 
                                         </p:inputText>
                                         <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
-
+                                            <p:ajax resetValues="true" 
+                                                    listener="#{asociacionBean.eliminarEmail(emailVar)}"
+                                                    update="emails"/>
                                         </p:commandButton>
                                     </p:dataList>
                                 </p:column>
