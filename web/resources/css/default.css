@@ -54,3 +54,11 @@ ul,li {
     margin:0;
     padding:0; 
 }
+
+.panelGridSpt tr , .panelGridSpt td{
+    border: none;
+}
+
+.ui-widget-content , .ui-panelgrid,  .ui-panelgrid-even, .ui-panelgrid-odd{
+    border: none;
+}

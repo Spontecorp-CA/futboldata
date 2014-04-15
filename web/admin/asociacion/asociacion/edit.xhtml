@@ -81,9 +81,9 @@
                         </p:selectOneMenu>
                     </h:panelGrid>
 
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="2" styleClass="panelGridSpt">
                         <h:outputLabel value="* Teléfonos:" for="phones"/>
-                        <p:panelGrid id="phones" style="border-style: none">
+                        <p:panelGrid id="phones" styleClass="panelGridSpt">
                             <p:row>
                                 <p:column>
                                     <p:inputMask id="telefono" 
@@ -107,7 +107,11 @@
                                         <p:column headerText="Número Telefonico">
                                             <p:inputMask  value="#{telefono.telefono}"
                                                           required="true"
-                                                          mask="(9999) 999.9999"/>
+                                                          mask="(9999) 999.9999"
+                                                          style="width: 200px"/>
+                                            <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
+                                                
+                                            </p:commandButton>
                                         </p:column>
 
                                     </p:dataList>
@@ -116,7 +120,7 @@
                         </p:panelGrid>
 
                         <h:outputLabel value="* email:" for="correos"/>
-                        <p:panelGrid id="correos" style="border-style: none">
+                        <p:panelGrid id="correos" styleClass="panelGridSpt">
                             <p:row>
                                 <p:column>
                                     <p:inputText id="email" 
@@ -150,6 +154,9 @@
                                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
 
                                         </p:inputText>
+                                        <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
+
+                                        </p:commandButton>
                                     </p:dataList>
                                 </p:column>
                             </p:row>
