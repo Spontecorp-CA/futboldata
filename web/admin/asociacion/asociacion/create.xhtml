@@ -51,7 +51,7 @@
                                          required="true"
                                          requiredMessage="Debe seleccionar un perfil">                       
                             <f:selectItems value="#{asociacionBean.paisAvailable}"/>
-                            <p:ajax listener="#{asociacionBean.ciudadAvailable()}" 
+                            <p:ajax listener="#{asociacionBean.ciudadAvailable}" 
                                     update="ciudad" />
                         </p:selectOneMenu>
                         <h:outputLabel value="* Ciudad:" for="ciudad"/>
@@ -123,7 +123,7 @@
                         </p:panelGrid>
 
                         <h:outputLabel value="* email:" 
-                                       for="correos"/>
+                                       for="email"/>
                         <p:panelGrid id="correos" style="border-style: none">
                             <p:row>
                                 <p:column>

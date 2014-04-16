@@ -114,7 +114,7 @@
                                                           style="width: 250px"/>
                                             &nbsp;
                                             <p:commandButton icon="ui-icon-closethick" 
-                                                             title="Agregar teléfono" >
+                                                             title="Eliminar teléfono" >
                                                 <p:ajax resetValues="true" 
                                                         listener="#{asociacionBean.eliminarTelefono(telefonoVar)}"
                                                         update="telefonos"/>
@@ -132,10 +132,8 @@
                                 <p:column>
                                     <p:inputText id="email" 
                                                  value="#{asociacionBean.email.email}"
-                                                 validatorMessage="Email inválido"
+                                                
                                                  style="width: 250px">
-                                        <f:validateRegex
-                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
                                     </p:inputText>
                                     &nbsp;
                                     <p:commandButton icon="ui-icon-plusthick" title="Agregar emal" >
