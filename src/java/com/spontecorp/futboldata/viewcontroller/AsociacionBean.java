@@ -277,6 +277,8 @@ public class AsociacionBean implements Serializable {
         telefonos = new ArrayList<>();
         emails = new ArrayList<>();
         email = new Email();
+        pais = new Pais();
+        ciudades = null;
         return "/admin/asociacion/asociacion/create.xhtml";
     }
 
