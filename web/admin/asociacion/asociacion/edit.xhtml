@@ -90,14 +90,13 @@
                                                  value="#{asociacionBean.telefono.telefono}"
                                                  style="width: 250px"
                                                  mask="(9999) 999.9999"/>
-                                </p:column>
-                                <p:column>
+                                    &nbsp;
                                     <p:commandButton icon="ui-icon-plusthick" 
                                                      title="Agregar teléfono" >                             
                                         <f:ajax listener="#{asociacionBean.cargarTelefonoEdit}"         
                                                 render="phones"
                                                 execute="telefono" >
-                                        
+
                                         </f:ajax>
                                     </p:commandButton>
                                 </p:column>
@@ -112,7 +111,8 @@
                                             <p:inputMask  value="#{telefonoVar.telefono}"
                                                           required="true"
                                                           mask="(9999) 999.9999"
-                                                          style="width: 200px"/>
+                                                          style="width: 250px"/>
+                                            &nbsp;
                                             <p:commandButton icon="ui-icon-closethick" 
                                                              title="Agregar teléfono" >
                                                 <p:ajax resetValues="true" 

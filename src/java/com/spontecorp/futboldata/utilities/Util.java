@@ -1,5 +1,6 @@
 package com.spontecorp.futboldata.utilities;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -13,9 +14,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author Casper
  */
-public class Util {
+public class Util implements Serializable {
     
-    
+    private static final long serialVersionUID = 1L;
     
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.

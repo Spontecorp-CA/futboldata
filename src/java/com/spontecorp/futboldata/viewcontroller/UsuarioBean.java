@@ -12,12 +12,13 @@ import com.spontecorp.futboldata.jpacontroller.extensions.UserFacadeExt;
 import com.spontecorp.futboldata.utilities.SecurePassword;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-@ManagedBean(name = "usuarioBean")
+@Named("usuarioBean")
 @SessionScoped
 public class UsuarioBean implements Serializable {
 
@@ -38,13 +39,14 @@ public class UsuarioBean implements Serializable {
     //private final UserJpaExt controllerUser;
     private final UserFacade controllerUser;
     private final PerfilJpaController controllerPerfil;
-    private final transient EntityManagerFactory emf = Util.getEmf();
+    private final transient EntityManagerFactory emf; 
     private final String contextPath;
     private boolean changingPassword = false;
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
 
     public UsuarioBean() {
+        emf = Util.getEmf();
         controllerUser = new UserFacadeExt(User.class);
         controllerPerfil = new PerfilJpaExt(emf);
         contextPath = FacesContext.getCurrentInstance().getExternalContext().getContextName();
