@@ -90,8 +90,7 @@
                                                  value="#{asociacionBean.telefono.telefono}"
                                                  style="width: 250px"
                                                  mask="(9999) 999.9999"/>
-                                </p:column>
-                                <p:column>
+                                    &nbsp;
                                     <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
                                         <f:ajax listener="#{asociacionBean.cargarTelefonoEdit}" 
                                                 execute="telefono" render="telefonos"/>
@@ -100,7 +99,7 @@
                                 </p:column>
                             </p:row>
                             <p:row>
-                                <p:column colspan="2">
+                                <p:column>
                                     <p:dataList  id="telefonos" 
                                                  var="telefono" 
                                                  value="#{asociacionBean.telefonos}"  >
@@ -108,7 +107,8 @@
                                             <p:inputMask  value="#{telefono.telefono}"
                                                           required="true"
                                                           mask="(9999) 999.9999"
-                                                          style="width: 200px"/>
+                                                          style="width: 250px"/>
+                                            &nbsp;
                                             <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
                                                 
                                             </p:commandButton>
@@ -129,9 +129,8 @@
                                                  style="width: 250px">
                                         <f:validateRegex
                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
-                                    </p:inputText> 
-                                </p:column>
-                                <p:column>
+                                    </p:inputText>
+                                    &nbsp;
                                     <p:commandButton icon="ui-icon-plusthick" title="Agregar emal" >
                                         <f:ajax render="emails" 
                                                 execute="email" 
@@ -142,18 +141,19 @@
                                 </p:column>
                             </p:row>
                             <p:row>
-                                <p:column colspan="2">
+                                <p:column>
                                     <p:dataList value="#{asociacionBean.emails}" 
                                                 id="emails" 
                                                 var="email">
                                         <p:inputText value="#{email.email}" 
                                                      required="true"
                                                      validatorMessage="Email invalido"
-                                                     style="width: 200px">
+                                                     style="width: 250px">
                                             <f:validateRegex
                                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"  />
 
                                         </p:inputText>
+                                        &nbsp;
                                         <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
 
                                         </p:commandButton>
