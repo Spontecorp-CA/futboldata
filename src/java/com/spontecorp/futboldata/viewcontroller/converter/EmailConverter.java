@@ -1,10 +1,7 @@
 package com.spontecorp.futboldata.viewcontroller.converter;
 
 import com.spontecorp.futboldata.entity.Email;
-import com.spontecorp.futboldata.entity.Perfil;
 import com.spontecorp.futboldata.jpacontroller.EmailFacade;
-import com.spontecorp.futboldata.jpacontroller.extensions.PerfilJpaExt;
-import com.spontecorp.futboldata.utilities.Util;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
