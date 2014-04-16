@@ -47,7 +47,7 @@ public class EmailFacade extends AbstractFacade<Email> implements Serializable {
             q.setParameter("direccion", direccion);
             email = (List<Email>) q.getResultList();
         } catch (Exception e) {
-            logger.debug("Error encontrando los Correos: " + e.getLocalizedMessage(), e);
+            logger.debug("Error encontrando los Correos: " + e.getLocalizedMessage());
         }
         return email;
     }
