@@ -38,6 +38,7 @@ a:link:hover, a:visited:hover  {
 
 table{
     font-size: 1.0em;
+    border: none;
 }
 
 .top-aligned-columns td{
@@ -55,10 +56,10 @@ ul,li {
     padding:0; 
 }
 
-.panelGridSpt tr , .panelGridSpt td{
+.panelGridSpt, .panelGridSpt tr , .panelGridSpt td{
     border: none;
 }
 
-.ui-widget-content , .ui-panelgrid,  .ui-panelgrid-even, .ui-panelgrid-odd{
+/*.ui-widget-content , .ui-panelgrid  {
     border: none;
-}
+}*/
