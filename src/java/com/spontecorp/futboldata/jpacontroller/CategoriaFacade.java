@@ -3,12 +3,11 @@
  * 
  */
 
-package com.spontecorp.futboldata.jpacontroller.extensions;
+package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Categoria;
-import com.spontecorp.futboldata.jpacontroller.CategoriaJpaController;
+import com.spontecorp.futboldata.utilities.Util;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.slf4j.Logger;
@@ -16,20 +15,23 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author jgcastillo
+ * @author Casper
  */
-public class CategoriaJpaExt extends CategoriaJpaController{
-    
-    private EntityManagerFactory emf;
-    private static final Logger logger = LoggerFactory.getLogger(CategoriaJpaExt.class);
+public class CategoriaFacade extends AbstractFacade<Categoria>{
 
-    public CategoriaJpaExt(EntityManagerFactory emf) {
-        super(emf);
-        this.emf = emf;
+    private static final Logger logger = LoggerFactory.getLogger(CategoriaFacade.class);
+    
+    public CategoriaFacade() {
+        super(Categoria.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return Util.getEmf().createEntityManager();
     }
     
-    public Categoria findCategoria(String nombre){
-        EntityManager em = emf.createEntityManager();
+    public Categoria findCategoria(String nombre) {
+        EntityManager em = getEntityManager();
         Categoria categoria = null;
         try {
             Query query = em.createNamedQuery("Categoria.findByNombre", Categoria.class);

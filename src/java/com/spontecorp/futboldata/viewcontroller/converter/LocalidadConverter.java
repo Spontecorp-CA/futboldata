@@ -2,8 +2,6 @@ package com.spontecorp.futboldata.viewcontroller.converter;
 
 import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Localidad;
-import com.spontecorp.futboldata.entity.Pais;
-import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.LocalidadFacade;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -21,7 +19,7 @@ public class LocalidadConverter implements Converter{
     
     private LocalidadFacade getController(){
         if(controller == null){
-            controller = new LocalidadFacade(Localidad.class);
+            controller = new LocalidadFacade();
         }
         return controller;
     }

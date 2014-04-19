@@ -19,7 +19,7 @@ public class CiudadConverter implements Converter{
     
     private CiudadFacade getController(){
         if(controller == null){
-            controller = new CiudadFacade(Ciudad.class);
+            controller = new CiudadFacade();
         }
         return controller;
     }

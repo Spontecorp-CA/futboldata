@@ -5,14 +5,13 @@
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Asociacion;
-import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
-import com.spontecorp.futboldata.jpacontroller.DireccionFacede;
+import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
 import com.spontecorp.futboldata.jpacontroller.EmailFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
@@ -23,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte03
  */
-@ManagedBean(name = "asociacionBean")
+@Named("asociacionBean")
 @SessionScoped
 public class AsociacionBean implements Serializable {
 
@@ -57,7 +56,7 @@ public class AsociacionBean implements Serializable {
 
     private final AsociacionFacade controllerAsociacion;
     private final transient EntityManagerFactory emf = Util.getEmf();
-    private final DireccionFacede controllerDireccion;
+    private final DireccionFacade controllerDireccion;
     private final TelefonoFacade controllerTelefono;
     private final EmailFacade controllerEmail;
 
@@ -69,12 +68,12 @@ public class AsociacionBean implements Serializable {
      * Creates a new instance of LocalidadBean
      */
     public AsociacionBean() {
-        controllerPais = new PaisFacade(Pais.class);
-        controllerCiudad = new CiudadFacade(Ciudad.class);
-        controllerEmail = new EmailFacade(Email.class);
-        controllerTelefono = new TelefonoFacade(Telefono.class);
-        controllerAsociacion = new AsociacionFacade(Asociacion.class);
-        controllerDireccion = new DireccionFacede(Direccion.class);
+        controllerPais = new PaisFacade();
+        controllerCiudad = new CiudadFacade();
+        controllerEmail = new EmailFacade();
+        controllerTelefono = new TelefonoFacade();
+        controllerAsociacion = new AsociacionFacade();
+        controllerDireccion = new DireccionFacade();
 
     }
 

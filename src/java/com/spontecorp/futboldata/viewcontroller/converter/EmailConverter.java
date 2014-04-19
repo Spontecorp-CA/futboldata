@@ -18,7 +18,7 @@ public class EmailConverter implements Converter {
 
     private EmailFacade getController() {
         if (controller == null) {
-            controller = new EmailFacade(Email.class);
+            controller = new EmailFacade();
         }
         return controller;
     }

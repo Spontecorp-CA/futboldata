@@ -1,8 +1,7 @@
 package com.spontecorp.futboldata.viewcontroller.converter;
 
 import com.spontecorp.futboldata.entity.Perfil;
-import com.spontecorp.futboldata.jpacontroller.extensions.PerfilJpaExt;
-import com.spontecorp.futboldata.utilities.Util;
+import com.spontecorp.futboldata.jpacontroller.PerfilFacade;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -15,11 +14,11 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(forClass = Perfil.class)
 public class PerfilConverter implements Converter{
 
-    private PerfilJpaExt controller = null;
+    private PerfilFacade controller = null;
     
-    private PerfilJpaExt getController(){
+    private PerfilFacade getController(){
         if(controller == null){
-            controller = new PerfilJpaExt(Util.getEmf());
+            controller = new PerfilFacade();
         }
         return controller;
     }

@@ -5,10 +5,8 @@
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.User;
-import com.spontecorp.futboldata.jpacontroller.PerfilJpaController;
+import com.spontecorp.futboldata.jpacontroller.PerfilFacade;
 import com.spontecorp.futboldata.jpacontroller.UserFacade;
-import com.spontecorp.futboldata.jpacontroller.extensions.PerfilJpaExt;
-import com.spontecorp.futboldata.jpacontroller.extensions.UserFacadeExt;
 import com.spontecorp.futboldata.utilities.SecurePassword;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
@@ -38,7 +36,7 @@ public class UsuarioBean implements Serializable {
 
     //private final UserJpaExt controllerUser;
     private final UserFacade controllerUser;
-    private final PerfilJpaController controllerPerfil;
+    private final PerfilFacade controllerPerfil;
     private final transient EntityManagerFactory emf; 
     private final String contextPath;
     private boolean changingPassword = false;
@@ -47,8 +45,8 @@ public class UsuarioBean implements Serializable {
 
     public UsuarioBean() {
         emf = Util.getEmf();
-        controllerUser = new UserFacadeExt(User.class);
-        controllerPerfil = new PerfilJpaExt(emf);
+        controllerUser = new UserFacade();
+        controllerPerfil = new PerfilFacade();
         contextPath = FacesContext.getCurrentInstance().getExternalContext().getContextName();
     }
 
@@ -85,6 +83,7 @@ public class UsuarioBean implements Serializable {
 
     public String prepareList() {
         recreateModel();
+        changingPassword = false;
         return "/admin/usuarios/list";
     }
 
@@ -151,7 +150,7 @@ public class UsuarioBean implements Serializable {
     }
             
     public SelectItem[] getPerfilesAvailable() {
-        return Util.getSelectItems(controllerPerfil.findPerfilEntities());
+        return Util.getSelectItems(controllerPerfil.findAll());
     }
 
 }

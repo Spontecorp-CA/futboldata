@@ -6,7 +6,7 @@
 package com.spontecorp.futboldata.utilities;
 
 import com.spontecorp.futboldata.entity.User;
-import com.spontecorp.futboldata.jpacontroller.extensions.UserJpaExt;
+import com.spontecorp.futboldata.jpacontroller.UserFacade;
 import java.security.MessageDigest;
 import javax.persistence.NoResultException;
 
@@ -53,13 +53,13 @@ public class SecurePassword {
     
     public static User authenticate(String username, char[] password) {
         String pswEncripted = SecurePassword.encript(password);
-        UserJpaExt service = new UserJpaExt(Util.getEmf());
+        UserFacade service = new UserFacade();
         try {
             User usuario = service.findUsuario(username);
             if (!pswEncripted.equals(usuario.getPassword())) {
                 return null;
             } else {
-                if(usuario.getStatus() == Constantes.INACTIVO){
+                if(usuario.getStatus() == Util.INACTIVO){
                     return null;
                 } else {
                     return usuario;

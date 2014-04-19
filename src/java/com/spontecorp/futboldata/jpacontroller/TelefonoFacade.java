@@ -6,6 +6,7 @@ package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Telefono;
+import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -17,40 +18,48 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte03
  */
-public class TelefonoFacade extends AbstractFacade<Telefono> implements Serializable {
+public class TelefonoFacade extends AbstractFacade<Telefono> {
 
-    private static final Logger logger = LoggerFactory.getLogger(Telefono.class);
+    private static final Logger logger = LoggerFactory.getLogger(TelefonoFacade.class);
+
+    public TelefonoFacade() {
+        super(Telefono.class);
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+        return Util.getEmf().createEntityManager();
+    }
 
     public Telefono findTelefono(String telefono) {
-       Telefono telef = null;
+        Telefono telef = null;
+        EntityManager em = getEntityManager();
         try {
-            EntityManager em = getEntityManager();
             Query q = em.createNamedQuery("Telefono.findByTelefono", Telefono.class);
             q.setParameter("telefono", telefono);
             telef = (Telefono) q.getSingleResult();
         } catch (Exception e) {
             logger.debug("Error encontrado en buscar Telefono: " + e.getLocalizedMessage());
+        } finally {
+            em.close();
         }
         return telef;
-
     }
 
     public List<Telefono> findListTelefonoxDireaccion(Direccion direccion) {
         List<Telefono> telefonos = null;
+        EntityManager em = getEntityManager();
         try {
-            EntityManager emTelefono = getEntityManager();
             String query = "SELECT t FROM Telefono t WHERE  t.direccionId = :direccion";
-            Query q = emTelefono.createQuery(query, Telefono.class);
+            Query q = em.createQuery(query, Telefono.class);
             q.setParameter("direccion", direccion);
             telefonos = (List<Telefono>) q.getResultList();
         } catch (Exception e) {
             logger.debug("Error encontrando los telefonos: " + e.getLocalizedMessage());
+        } finally {
+            em.close();
         }
         return telefonos;
-    }
-
-    public TelefonoFacade(Class<Telefono> entityClass) {
-        super(entityClass);
     }
 
 }

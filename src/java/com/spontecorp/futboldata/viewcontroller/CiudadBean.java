@@ -8,17 +8,15 @@ import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
-import com.spontecorp.futboldata.jpacontroller.PaisJpaController;
-import com.spontecorp.futboldata.jpacontroller.extensions.PaisJpaExt;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
@@ -26,7 +24,7 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author sponte03
  */
-@ManagedBean(name = "ciudadBean")
+@Named("ciudadBean")
 @SessionScoped
 public class CiudadBean implements Serializable {
 
@@ -45,8 +43,8 @@ public class CiudadBean implements Serializable {
      * Creates a new instance of LocalidadBean
      */
     public CiudadBean()   {
-        controllerPais = new PaisFacade(Pais.class);
-        controllerCiudad = new CiudadFacade(Ciudad.class);
+        controllerPais = new PaisFacade();
+        controllerCiudad = new CiudadFacade();
     }
 
         public String edit(){

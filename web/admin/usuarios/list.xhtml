@@ -19,6 +19,10 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton value="crear usuario" action="#{usuarioBean.prepareCreate}"/>
                     </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{usuarioBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
                 </p:toolbar>
                 <br />
                 <p:dataTable id="usuarios" var="user" value="#{usuarioBean.items}"

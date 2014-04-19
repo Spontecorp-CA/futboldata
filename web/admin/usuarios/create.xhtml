@@ -20,7 +20,9 @@
                         <p:commandButton value="Guardar" action="#{usuarioBean.create}" 
                                          update="createForm"/>
                         <p:commandButton value="Ver Lista" action="#{usuarioBean.prepareList}"
-                                         immediate="true"/>
+                                         immediate="true"/>                        
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{usuarioBean.returnAdminPage}"
                                          immediate="true"/>
                     </p:toolbarGroup>

@@ -18,6 +18,14 @@ public class Util implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
+    public static final int ACTIVO = 1;
+    public static final int INACTIVO = 0;
+    public static final String PERSISTENCE_UNIT = "FutbolDataPU";
+    
+    public static final int ADMINISTRATOR = 1;
+    public static final int GERENTE = 2;
+    public static final int USUARIO = 3;
+    
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.
                 getCurrentInstance().
@@ -49,7 +57,7 @@ public class Util implements Serializable {
     }
     
     public static EntityManagerFactory getEmf() {
-        return Persistence.createEntityManagerFactory(Constantes.PERSISTENCE_UNIT);
+        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
     }
     
     public static SelectItem[] getSelectItems(List<?> list){

@@ -18,7 +18,7 @@ public class AsociacionConverter implements Converter{
     
     private AsociacionFacade getController(){
         if(controller == null){
-            controller = new AsociacionFacade(Asociacion.class);
+            controller = new AsociacionFacade();
         }
         return controller;
     }

@@ -1,10 +1,7 @@
 package com.spontecorp.futboldata.viewcontroller.converter;
 
 import com.spontecorp.futboldata.entity.Pais;
-import com.spontecorp.futboldata.entity.Perfil;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
-import com.spontecorp.futboldata.jpacontroller.extensions.PerfilJpaExt;
-import com.spontecorp.futboldata.utilities.Util;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -21,7 +18,7 @@ public class PaisConverter implements Converter{
     
     private PaisFacade getController(){
         if(controller == null){
-            controller = new PaisFacade(Pais.class);
+            controller = new PaisFacade();
         }
         return controller;
     }

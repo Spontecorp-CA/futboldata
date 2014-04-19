@@ -6,13 +6,14 @@
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Categoria;
-import com.spontecorp.futboldata.jpacontroller.extensions.CategoriaJpaExt;
+import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
+import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-@ManagedBean(name = "categoriaBean")
+@Named("categoriaBean")
 @SessionScoped
 public class CategoriaBean implements Serializable{
     
@@ -29,13 +30,13 @@ public class CategoriaBean implements Serializable{
     
     private Categoria categoria;
     private DataModel items = null;
-    private final CategoriaJpaExt controllerCategoria;
+    private final CategoriaFacade controllerCategoria;
     private final transient EntityManagerFactory emf = Util.getEmf();    
     
     private static final Logger logger = LoggerFactory.getLogger(CategoriaBean.class);
 
     public CategoriaBean() {
-        controllerCategoria = new CategoriaJpaExt(emf);
+        controllerCategoria = new CategoriaFacade();
     }    
 
     public Categoria getCategoria() {
@@ -55,26 +56,26 @@ public class CategoriaBean implements Serializable{
     
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerCategoria.findCategoriaEntities());
+            items = new ListDataModel(controllerCategoria.findAll());
         }
         return items;
     }
     
     public String gotoCategoriasPage() {
-        return "listCategorias";
+        return "list";
     }
     
     public String prepareCreate(){
-        return "createCategoria";
+        return "create";
     }
     
     public String prepareEdit(){
         categoria = (Categoria) getItems().getRowData();
-        return "editCategoria";
+        return "edit";
     }
     
     public String prepareList() {
-        return "listCategorias";
+        return "list";
     }
     
     public String returnAdminPage() {

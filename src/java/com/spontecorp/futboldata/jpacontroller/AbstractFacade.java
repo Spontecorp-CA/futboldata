@@ -15,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
  * @author jgcastillo
  * @param <T>
  */
-public class AbstractFacade<T> {
+public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
     private EntityManagerFactory emf = Util.getEmf();
     
@@ -23,10 +23,8 @@ public class AbstractFacade<T> {
         this.entityClass = entityClass;
     }
 
-    protected EntityManager getEntityManager(){
-        return emf.createEntityManager();
-    }
-
+    protected abstract EntityManager getEntityManager();
+    
     public void create(T entity) {
         EntityManager em = null;
         try {
