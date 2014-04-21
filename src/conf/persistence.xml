@@ -16,8 +16,8 @@
         <class>com.spontecorp.futboldata.entity.Email</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-            <!--      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
             <property name="javax.persistence.jdbc.password" value="futbol"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="futbol"/>
