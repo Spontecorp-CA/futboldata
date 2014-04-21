@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Direccion.findByLatitud", query = "SELECT d FROM Direccion d WHERE d.latitud = :latitud"),
     @NamedQuery(name = "Direccion.findByLongitud", query = "SELECT d FROM Direccion d WHERE d.longitud = :longitud")})
 public class Direccion implements Serializable {
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Persona> personaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
     private Collection<Email> emailCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
@@ -179,6 +181,15 @@ public class Direccion implements Serializable {
 
     public void setTelefonoCollection(Collection<Telefono> telefonoCollection) {
         this.telefonoCollection = telefonoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Persona> getPersonaCollection() {
+        return personaCollection;
+    }
+
+    public void setPersonaCollection(Collection<Persona> personaCollection) {
+        this.personaCollection = personaCollection;
     }
     
 }

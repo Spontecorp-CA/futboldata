@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,6 +49,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByCelular", query = "SELECT p FROM Persona p WHERE p.celular = :celular"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "foto")
+    private String foto;
+    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Direccion direccionId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -215,6 +224,22 @@ public class Persona implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Persona[ id=" + id + " ]";
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public Direccion getDireccionId() {
+        return direccionId;
+    }
+
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
     
 }
