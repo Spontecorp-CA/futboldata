@@ -5,18 +5,15 @@
 
 package com.spontecorp.futboldata.viewcontroller;
 
-import com.spontecorp.futboldata.entity.Categoria;
-import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
+import com.spontecorp.futboldata.entity.Club;
+import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
-import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,59 +21,59 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-@Named("categoriaBean")
+@Named("clubBean")
 @SessionScoped
-public class CategoriaBean implements Serializable{
+public class ClubBean implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    private Categoria categoria;
+    private Club club;
     private DataModel items = null;
-    private final CategoriaFacade controllerCategoria;   
+    private final ClubFacade controllerClub;   
     
-    private static final Logger logger = LoggerFactory.getLogger(CategoriaBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClubBean.class);
 
-    public CategoriaBean() {
-        controllerCategoria = new CategoriaFacade();
+    public ClubBean() {
+        controllerClub = new ClubFacade();
     }    
 
-    public Categoria getCategoria() {
-        return categoria;
+    public Club getClub() {
+        return club;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setClub(Club club) {
+        this.club = club;
     }
     
-    public Categoria getSelected(){
-        if(categoria == null){
-            categoria = new Categoria();
+    public Club getSelected(){
+        if(club == null){
+            club = new Club();
         }
-        return categoria;
+        return club;
     }
     
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerCategoria.findAll());
+            items = new ListDataModel(controllerClub.findAll());
         }
         return items;
     }
     
     public void recreateModel(){
         items = null;
-        categoria = null;
+        club = null;
     }
-    public String gotoCategoriasPage() {
+    public String gotoClubsPage() {
         return "list";
     }
     
     public String prepareCreate(){
-        categoria = new Categoria();
+        club = new Club();
         return "create";
     }
     
     public String prepareEdit(){
-        categoria = (Categoria) getItems().getRowData();
+        club = (Club) getItems().getRowData();
         return "edit";
     }
     
@@ -90,11 +87,11 @@ public class CategoriaBean implements Serializable{
     
     public String create(){
         try {
-            if(controllerCategoria.findCategoria(categoria.getNombre()) != null){
-                Util.addErrorMessage("Categoria ya existente, coloque otro");
+            if(controllerClub.findClub(club.getNombre()) != null){
+                Util.addErrorMessage("Club ya existente, coloque otro");
                 return null;
             } else {
-                controllerCategoria.create(categoria);
+                controllerClub.create(club);
                 Util.addSuccessMessage("Categoría creada con éxito");
                 recreateModel();
                 return prepareCreate();
@@ -107,11 +104,11 @@ public class CategoriaBean implements Serializable{
     
     public String edit(){
         try {
-            if (controllerCategoria.findCategoria(categoria.getNombre()) == null) {
-                Util.addErrorMessage("Categoria no existente, hay un error");
+            if (controllerClub.findClub(club.getNombre()) == null) {
+                Util.addErrorMessage("Club no existente, hay un error");
                 return null;
             } else {
-                controllerCategoria.edit(categoria);
+                controllerClub.edit(club);
                 Util.addSuccessMessage("Categoría editada con éxito");
                 return prepareCreate();
             }

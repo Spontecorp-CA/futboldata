@@ -15,6 +15,11 @@
     <class>com.spontecorp.futboldata.entity.Telefono</class>
     <class>com.spontecorp.futboldata.entity.Email</class>
     <class>com.spontecorp.futboldata.entity.TipoArbitro</class>
+    <class>com.spontecorp.futboldata.entity.Club</class>
+    <class>com.spontecorp.futboldata.entity.Posicion</class>
+    <class>com.spontecorp.futboldata.entity.Jugador</class>
+    <class>com.spontecorp.futboldata.entity.Equipo</class>
+    <class>com.spontecorp.futboldata.entity.Agente</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>

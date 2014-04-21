@@ -5,7 +5,7 @@
 
 package com.spontecorp.futboldata.jpacontroller;
 
-import com.spontecorp.futboldata.entity.Categoria;
+import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.utilities.Util;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author Casper
  */
-public class CategoriaFacade extends AbstractFacade<Categoria>{
+public class ClubFacade extends AbstractFacade<Club>{
 
-    private static final Logger logger = LoggerFactory.getLogger(CategoriaFacade.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClubFacade.class);
     
-    public CategoriaFacade() {
-        super(Categoria.class);
+    public ClubFacade() {
+        super(Club.class);
     }
 
     @Override
@@ -30,18 +30,18 @@ public class CategoriaFacade extends AbstractFacade<Categoria>{
         return Util.getEmf().createEntityManager();
     }
     
-    public Categoria findCategoria(String nombre) {
+    public Club findClub(String nombre) {
         EntityManager em = getEntityManager();
-        Categoria categoria = null;
+        Club club = null;
         try {
-            Query query = em.createNamedQuery("Categoria.findByNombre", Categoria.class);
+            Query query = em.createNamedQuery("Club.findByNombre", Club.class);
             query.setParameter("nombre", nombre);
-            categoria = (Categoria) query.getSingleResult();
+            club = (Club) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.debug("Error al buscar Club ",e.getMessage());
+           logger.debug("Problema al buscar club",e.getMessage());
         } finally {
             em.close();
         }
-        return categoria;
+        return club;
     }
 }

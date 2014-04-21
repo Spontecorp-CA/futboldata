@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Administración de Categorías
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="usersForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Categorías">
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="crear Club" action="#{clubBean.prepareCreate}"/>                        
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{clubBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br />
+                <p:dataTable id="Clubs" var="club" value="#{clubBean.items}"
+                             rowKey="#{club.nombre}"
+                             selection="#{clubBean.club}" selectionMode="single">                
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{club.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Año de fundacion">
+                        <h:outputText value="#{club.yearFundacion}"/>
+                    </p:column>
+                    <p:column headerText="Direccion">
+                        <h:outputText value="#{club.direccionId.direccion}"/>
+                    </p:column>
+                     <p:column headerText="Historia">
+                         <h:outputText value="#{club.historia}"/>
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{club.status == 1?'Activa':'Inactiva'}"/>
+                    </p:column>
+
+                    <p:column headerText="Acciones">
+                        <p:commandLink value="Editar" action="#{clubBean.prepareEdit}" />                  
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+    </ui:define>   
+
+</ui:composition>
