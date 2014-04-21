@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-    <persistence-unit name="FutbolDataPU" transaction-type="RESOURCE_LOCAL">
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>com.spontecorp.futboldata.entity.User</class>
-        <class>com.spontecorp.futboldata.entity.Perfil</class>
-        <class>com.spontecorp.futboldata.entity.Categoria</class>
-        <class>com.spontecorp.futboldata.entity.Pais</class>
-        <class>com.spontecorp.futboldata.entity.Localidad</class>
-        <class>com.spontecorp.futboldata.entity.Asociacion</class>
-        <class>com.spontecorp.futboldata.entity.Persona</class>
-        <class>com.spontecorp.futboldata.entity.Direccion</class>
-        <class>com.spontecorp.futboldata.entity.Arbitro</class>
-        <class>com.spontecorp.futboldata.entity.RedSocial</class>
-        <class>com.spontecorp.futboldata.entity.Telefono</class>
-        <class>com.spontecorp.futboldata.entity.Email</class>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
-        <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
-            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
-            <property name="javax.persistence.jdbc.password" value="futbol"/>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.user" value="futbol"/>
-        </properties>
-    </persistence-unit>
+  <persistence-unit name="FutbolDataPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.spontecorp.futboldata.entity.User</class>
+    <class>com.spontecorp.futboldata.entity.Perfil</class>
+    <class>com.spontecorp.futboldata.entity.Categoria</class>
+    <class>com.spontecorp.futboldata.entity.Pais</class>
+    <class>com.spontecorp.futboldata.entity.Localidad</class>
+    <class>com.spontecorp.futboldata.entity.Asociacion</class>
+    <class>com.spontecorp.futboldata.entity.Persona</class>
+    <class>com.spontecorp.futboldata.entity.Direccion</class>
+    <class>com.spontecorp.futboldata.entity.Arbitro</class>
+    <class>com.spontecorp.futboldata.entity.RedSocial</class>
+    <class>com.spontecorp.futboldata.entity.Telefono</class>
+    <class>com.spontecorp.futboldata.entity.Email</class>
+    <class>com.spontecorp.futboldata.entity.TipoArbitro</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
+      <property name="javax.persistence.jdbc.password" value="futbol"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="futbol"/>
+    </properties>
+  </persistence-unit>
 </persistence>

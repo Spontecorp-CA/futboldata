@@ -16,32 +16,28 @@
             <p:fieldset style="width: 85%" legend="Lista de Tipos de Arbitro" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nuevo" action="create"/>
-                        <p:commandButton value="Administración" action="/admin/adminPage"
+                        <p:commandButton value="Nuevo" action="#{TipoArbitroBean.prepareCreate()}"/>
+                        <p:commandButton value="Administración" action="#{TipoArbitroBean.returnAdminPage()}"
                                          immediate="true"/>
                     </p:toolbarGroup>                    
                 </p:toolbar>
                 <br />
                 
-                Aqui va la lista
-<!--                <p:dataTable id="asociaciones" var="item" 
-                             rowKey=""
-                             selection="" 
-                             selectionMode="single">                
+                <p:dataTable id="asociaciones" 
+                             var="item" 
+                             rowKey="#{item.id}"
+                             selection="#{TipoArbitroBean.selectedTipoArbitro}" 
+                             selectionMode="single"
+                             value="#{TipoArbitroBean.itemsTipoArbitro}">                
 
                     <p:column headerText="Nombre">
-                        <h:outputText value="nombre"/>
+                        <h:outputText value="#{item.nombre}"/>
                     </p:column>
-                    <p:column headerText="Dirección">
-                        <h:outputText value="dirección"/>
-                    </p:column>
-                    <p:column headerText="Status">
-                        <h:outputText value="status"/>
-                    </p:column>
+
                     <p:column headerText="Acciones">
-                        <p:commandLink value="Editar"/>
+                        <p:commandLink action="#{TipoArbitroBean.prepareEdit}" value="Editar"/>
                     </p:column>
-                </p:dataTable>-->
+                </p:dataTable>
             </p:fieldset>
         </h:form>
     </ui:define>

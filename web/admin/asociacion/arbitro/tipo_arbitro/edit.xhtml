@@ -18,11 +18,11 @@
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton value="Guardar"  
-                                         action="#{TipoArbitroBean.create}"
+                                         action="#{TipoArbitroBean.edit()}"
                                          update="createForm"/>
-                        <p:commandButton value="Listar" action="#{TipoArbitroBean.prepareList}"
+                        <p:commandButton value="Listar" action="#{TipoArbitroBean.prepareList()}"
                                          immediate="true"/>
-                        <p:commandButton value="Administración" action="#{TipoArbitroBean.returnAdminPage}"
+                        <p:commandButton value="Administración" action="#{TipoArbitroBean.returnAdminPage()}"
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
