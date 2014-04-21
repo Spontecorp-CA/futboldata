@@ -339,28 +339,28 @@ public class AsociacionBean implements Serializable {
         return "/admin/asociacion/asociacion/edit.xhtml";
     }
 
-    public void persist(Object object) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(object);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            em.getTransaction().rollback();
-        } finally {
-            em.close();
-        }
-    }
+//    public void persist(Object object) {
+//        EntityManager em = emf.createEntityManager();
+//        try {
+//            em.getTransaction().begin();
+//            em.persist(object);
+//            em.getTransaction().commit();
+//        } catch (Exception e) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+//            em.getTransaction().rollback();
+//        } finally {
+//            em.close();
+//        }
+//    }
 
     public Telefono getTelefono() {
         return telefono;
     }
 
     public void setTelefono(Telefono telefono) {
-
-        this.telefono = new Telefono();
-
+        if(this.telefono == null){
+            this.telefono = new Telefono();
+        }
         this.telefono = telefono;
     }
 

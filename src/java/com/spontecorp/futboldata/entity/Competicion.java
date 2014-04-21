@@ -14,55 +14,66 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
-@Table(name = "asociacion")
+@Table(name = "competicion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Asociacion.findAll", query = "SELECT a FROM Asociacion a"),
-    @NamedQuery(name = "Asociacion.findById", query = "SELECT a FROM Asociacion a WHERE a.id = :id"),
-    @NamedQuery(name = "Asociacion.findByNombre", query = "SELECT a FROM Asociacion a WHERE a.nombre = :nombre"),
-    @NamedQuery(name = "Asociacion.findByStatus", query = "SELECT a FROM Asociacion a WHERE a.status = :status")})
-public class Asociacion implements Serializable {
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<RedSocial> redSocialCollection;
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<Competicion> competicionCollection;
+    @NamedQuery(name = "Competicion.findAll", query = "SELECT c FROM Competicion c"),
+    @NamedQuery(name = "Competicion.findById", query = "SELECT c FROM Competicion c WHERE c.id = :id"),
+    @NamedQuery(name = "Competicion.findByNombre", query = "SELECT c FROM Competicion c WHERE c.nombre = :nombre"),
+    @NamedQuery(name = "Competicion.findByStatus", query = "SELECT c FROM Competicion c WHERE c.status = :status")})
+public class Competicion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "status")
     private Integer status;
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<Arbitro> arbitroCollection;
-    @JoinColumn(name = "red_social_id", referencedColumnName = "id")
-    @ManyToOne
-    private RedSocial redSocialId;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "descripcion")
+    private String descripcion;
+    @OneToMany(mappedBy = "competicionId")
+    private Collection<RedSocial> redSocialCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne
     private Direccion direccionId;
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Asociacion asociacionId;
 
-    public Asociacion() {
+    public Competicion() {
     }
 
-    public Asociacion(Integer id) {
+    public Competicion(Integer id) {
         this.id = id;
+    }
+
+    public Competicion(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -89,21 +100,21 @@ public class Asociacion implements Serializable {
         this.status = status;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     @XmlTransient
-    public Collection<Arbitro> getArbitroCollection() {
-        return arbitroCollection;
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
     }
 
-    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
-        this.arbitroCollection = arbitroCollection;
-    }
-
-    public RedSocial getRedSocialId() {
-        return redSocialId;
-    }
-
-    public void setRedSocialId(RedSocial redSocialId) {
-        this.redSocialId = redSocialId;
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
     }
 
     public Direccion getDireccionId() {
@@ -112,6 +123,14 @@ public class Asociacion implements Serializable {
 
     public void setDireccionId(Direccion direccionId) {
         this.direccionId = direccionId;
+    }
+
+    public Asociacion getAsociacionId() {
+        return asociacionId;
+    }
+
+    public void setAsociacionId(Asociacion asociacionId) {
+        this.asociacionId = asociacionId;
     }
 
     @Override
@@ -124,10 +143,10 @@ public class Asociacion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Asociacion)) {
+        if (!(object instanceof Competicion)) {
             return false;
         }
-        Asociacion other = (Asociacion) object;
+        Competicion other = (Competicion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -136,25 +155,7 @@ public class Asociacion implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
-    }
-
-    @XmlTransient
-    public Collection<RedSocial> getRedSocialCollection() {
-        return redSocialCollection;
-    }
-
-    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
-        this.redSocialCollection = redSocialCollection;
-    }
-
-    @XmlTransient
-    public Collection<Competicion> getCompeticionCollection() {
-        return competicionCollection;
-    }
-
-    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
-        this.competicionCollection = competicionCollection;
+        return "com.spontecorp.futboldata.entity.Competicion[ id=" + id + " ]";
     }
     
 }

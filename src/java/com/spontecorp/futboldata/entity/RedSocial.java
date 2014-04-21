@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -33,6 +35,21 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "RedSocial.findByNombre", query = "SELECT r FROM RedSocial r WHERE r.nombre = :nombre"),
     @NamedQuery(name = "RedSocial.findByUrl", query = "SELECT r FROM RedSocial r WHERE r.url = :url")})
 public class RedSocial implements Serializable {
+    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
+    @ManyToOne
+    private Equipo equipoId;
+    @JoinColumn(name = "competicion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Competicion competicionId;
+    @JoinColumn(name = "club_id", referencedColumnName = "id")
+    @ManyToOne
+    private Club clubId;
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Asociacion asociacionId;
+    @JoinColumn(name = "persona_id", referencedColumnName = "id")
+    @ManyToOne
+    private Persona personaId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -120,6 +137,46 @@ public class RedSocial implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.RedSocial[ id=" + id + " ]";
+    }
+
+    public Equipo getEquipoId() {
+        return equipoId;
+    }
+
+    public void setEquipoId(Equipo equipoId) {
+        this.equipoId = equipoId;
+    }
+
+    public Competicion getCompeticionId() {
+        return competicionId;
+    }
+
+    public void setCompeticionId(Competicion competicionId) {
+        this.competicionId = competicionId;
+    }
+
+    public Club getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(Club clubId) {
+        this.clubId = clubId;
+    }
+
+    public Asociacion getAsociacionId() {
+        return asociacionId;
+    }
+
+    public void setAsociacionId(Asociacion asociacionId) {
+        this.asociacionId = asociacionId;
+    }
+
+    public Persona getPersonaId() {
+        return personaId;
+    }
+
+    public void setPersonaId(Persona personaId) {
+        this.personaId = personaId;
     }
     
 }

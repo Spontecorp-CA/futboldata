@@ -49,6 +49,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByCelular", query = "SELECT p FROM Persona p WHERE p.celular = :celular"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
+    @OneToMany(mappedBy = "personaId")
+    private Collection<RedSocial> redSocialCollection;
     @Lob
     @Size(max = 65535)
     @Column(name = "foto")
@@ -240,6 +242,15 @@ public class Persona implements Serializable {
 
     public void setDireccionId(Direccion direccionId) {
         this.direccionId = direccionId;
+    }
+
+    @XmlTransient
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
+    }
+
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
     }
     
 }

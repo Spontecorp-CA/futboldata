@@ -21,6 +21,8 @@
                                          update="createForm"/>
                         <p:commandButton value="Listar" action="list"
                                          immediate="true"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="/admin/adminPage"
                                          immediate="true"/>
                     </p:toolbarGroup>
@@ -30,43 +32,50 @@
                     <h:panelGrid columns="2" title="Datos Personales"
                                  styleClass="top-aligned-columns">
                         <h:outputLabel value="* Nombre:" for="nombre"/>
-                        <p:inputText id="nombre" 
+                        <p:inputText id="nombre" value="#{arbitroBean.selected.personaId.nombre}"
                                      required="true" requiredMessage="Debe colocar un nombre"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Apellido:" for="apellido"/>
-                        <p:inputText id="apellido" 
+                        <p:inputText id="apellido" value="#{arbitroBean.selected.personaId.apellido}"
                                      required="true" requiredMessage="Debe colocar un apellido"
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
-                        <p:inputText id="did" 
+                        <p:inputText id="did" value="#{arbitroBean.selected.personaId.documentoIdentidad}"
                                      required="true" requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
-                        <p:selectOneRadio id="sex" >
+                        <p:selectOneRadio id="sex" value="#{arbitroBean.selected.personaId.sexo}">
                             <f:selectItem itemLabel="M" itemValue="M"/>
                             <f:selectItem itemLabel="F" itemValue="F"/>
                         </p:selectOneRadio>
                         <h:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento"/>
-                        <p:calendar id="fechaNacimiento" navigator="true" 
-                                    pattern="dd/mm/yyyy" locale="es"/>
+                        <p:calendar id="fechaNacimiento" 
+                                    value="#{arbitroBean.selected.personaId.fechaNacimiento}"
+                                    navigator="true" 
+                                    pattern="dd/mm/yyyy" 
+                                    locale="es"/>
                         <h:outputLabel value="Nacional de:" for="nacionalidad"/>
-                        <p:selectOneMenu id="nacionalidad" 
+                        <p:selectOneMenu id="nacionalidad"
+                                         value="#{arbitroBean.selected.personaId.nacionalidad}"
                                          style="width: 250px"
                                          panelStyle="width:250px">
-                            <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                            <f:selectItems value="#{arbitroBean.paisesAvalaible}"/>
                         </p:selectOneMenu> 
                         <h:outputLabel value="Asociación:" for="asociacion"/>
                         <p:selectOneMenu id="asociacion" 
+                                         value="#{arbitroBean.selected.asociacionId}"
                                          style="width: 250px"
                                          panelStyle="width:250px">
-                            <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                            <f:selectItems value="#{arbitroBean.asociacionesAvalaible}"/>
                         </p:selectOneMenu> 
                         <h:outputLabel value="Foto:" for="foto"/>
-                        <p:fileUpload id="foto" mode="advanced" dragDropSupport="false" 
+                        <p:fileUpload id="foto" 
+                                      value="#{arbitroBean.selected.personaId.foto}"
+                                      mode="advanced" dragDropSupport="false" 
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
                                       style="width: 250px"/>
                         <h:outputLabel value="* status:" for="status"/>
-                        <p:selectOneMenu id="status" value="#{usuarioBean.selected.status}"
+                        <p:selectOneMenu id="status" value="#{arbitroBean.selected.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
                                          required="true"
@@ -78,22 +87,25 @@
                     <h:panelGrid columns="2" title="Dirección">
                         <h:outputLabel value="Pais:" for="pais"/>
                         <p:selectOneMenu id="pais" 
+                                         value="#{arbitroBean.pais}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
                                          required="true"
                                          requiredMessage="Debe seleccionar un perfil">                       
-                            <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                            <f:selectItems value="#{arbitroBean.paisesAvalaible}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Ciudad:" for="ciudad"/>
-                        <p:selectOneMenu id="ciudad" 
+                        <p:selectOneMenu id="ciudad"
+                                         value="#{arbitroBean.selected.personaId.direccionId.ciudadId}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
                                          required="true"
                                          requiredMessage="Debe seleccionar un perfil">                       
-                            <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                            <f:selectItems value="#{arbitroBean.ciudadesAvalaible}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Dirección:" for="direccion"/>
-                        <p:inputTextarea id="direccion" 
+                        <p:inputTextarea id="direccion"
+                                         value="#{arbitroBean.selected.personaId.direccionId.direccion}"
                                          required="true" requiredMessage="Debe colocar un email"
                                          validatorMessage="Email inválido"
                                          rows="3" cols="33"
@@ -102,15 +114,17 @@
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
-                        <p:inputText id="telefono" value="#{usuarioBean.selected.telefono}"
+                        <p:inputText id="telefono" 
+                                     value="#{arbitroBean.telefono}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
                         <h:outputLabel value="Celular:" for="celular"/>
-                        <p:inputText id="celular" value="#{usuarioBean.selected.telefono}"
+                        <p:inputText id="celular" 
+                                     value="#{arbitroBean.celular}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
                         <h:outputLabel value="email:" for="email"/>
-                        <p:inputText id="email" value="#{usuarioBean.selected.email}"
+                        <p:inputText id="email" value="#{usuarioBean.email}"
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
                             <f:validateRegex
@@ -118,10 +132,11 @@
                         </p:inputText>
 
                         <h:outputLabel value="Redes Sociales" for="redSocial"/>
-                        <p:selectOneMenu id="redSocial" 
+                        <p:selectOneMenu id="redSocial"
+                                         value="#{arbitroBean.selected.personaId.redSocialId}"
                                          style="width: 250px"
                                          panelStyle="width:250px">
-                            <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                            <f:selectItems value="#{arbitroBean.redSocialAvailable}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Cuenta:" for="cuenta"/>
                         <p:inputText id="cuenta" 

@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Direccion.findByLongitud", query = "SELECT d FROM Direccion d WHERE d.longitud = :longitud")})
 public class Direccion implements Serializable {
     @OneToMany(mappedBy = "direccionId")
+    private Collection<Club> clubCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Competicion> competicionCollection;
+    @OneToMany(mappedBy = "direccionId")
     private Collection<Persona> personaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
     private Collection<Email> emailCollection;
@@ -190,6 +194,24 @@ public class Direccion implements Serializable {
 
     public void setPersonaCollection(Collection<Persona> personaCollection) {
         this.personaCollection = personaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Club> getClubCollection() {
+        return clubCollection;
+    }
+
+    public void setClubCollection(Collection<Club> clubCollection) {
+        this.clubCollection = clubCollection;
+    }
+
+    @XmlTransient
+    public Collection<Competicion> getCompeticionCollection() {
+        return competicionCollection;
+    }
+
+    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
+        this.competicionCollection = competicionCollection;
     }
     
 }
