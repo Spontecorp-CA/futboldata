@@ -8,6 +8,7 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -27,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "competicion")
@@ -55,6 +57,8 @@ public class Competicion implements Serializable {
     @Size(max = 65535)
     @Column(name = "descripcion")
     private String descripcion;
+    @ManyToMany(mappedBy = "competicionCollection")
+    private Collection<Arbitro> arbitroCollection;
     @OneToMany(mappedBy = "competicionId")
     private Collection<RedSocial> redSocialCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
@@ -63,6 +67,14 @@ public class Competicion implements Serializable {
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
     private Asociacion asociacionId;
+    @OneToMany(mappedBy = "competicionId")
+    private Collection<Contrato> contratoCollection;
+    @OneToMany(mappedBy = "competicionId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(mappedBy = "competicionId")
+    private Collection<Imagen> imagenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competicionId")
+    private Collection<Temporada> temporadaCollection;
 
     public Competicion() {
     }
@@ -109,6 +121,15 @@ public class Competicion implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Arbitro> getArbitroCollection() {
+        return arbitroCollection;
+    }
+
+    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
+        this.arbitroCollection = arbitroCollection;
+    }
+
+    @XmlTransient
     public Collection<RedSocial> getRedSocialCollection() {
         return redSocialCollection;
     }
@@ -131,6 +152,42 @@ public class Competicion implements Serializable {
 
     public void setAsociacionId(Asociacion asociacionId) {
         this.asociacionId = asociacionId;
+    }
+
+    @XmlTransient
+    public Collection<Contrato> getContratoCollection() {
+        return contratoCollection;
+    }
+
+    public void setContratoCollection(Collection<Contrato> contratoCollection) {
+        this.contratoCollection = contratoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
+    }
+
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
+    @XmlTransient
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
+    }
+
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
+    }
+
+    @XmlTransient
+    public Collection<Temporada> getTemporadaCollection() {
+        return temporadaCollection;
+    }
+
+    public void setTemporadaCollection(Collection<Temporada> temporadaCollection) {
+        this.temporadaCollection = temporadaCollection;
     }
 
     @Override

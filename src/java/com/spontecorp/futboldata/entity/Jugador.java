@@ -6,18 +6,24 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -52,6 +58,18 @@ public class Jugador implements Serializable {
     private Double peso;
     @Column(name = "status")
     private Integer status;
+    @JoinTable(name = "jugador_premio", joinColumns = {
+        @JoinColumn(name = "jugador_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "premio_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Premio> premioCollection;
+    @JoinTable(name = "jugador_titulo", joinColumns = {
+        @JoinColumn(name = "jugador_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Titulo> tituloCollection;
+    @OneToMany(mappedBy = "jugadorId")
+    private Collection<Contrato> contratoCollection;
     @JoinColumn(name = "posicion_id", referencedColumnName = "id")
     @ManyToOne
     private Posicion posicionId;
@@ -64,6 +82,14 @@ public class Jugador implements Serializable {
     @JoinColumn(name = "agente_id", referencedColumnName = "id")
     @ManyToOne
     private Agente agenteId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
+    private Collection<Convocado> convocadoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugador")
+    private Collection<Transferencia> transferenciaCollection;
+    @OneToMany(mappedBy = "jugador2Id")
+    private Collection<PartidoEvento> partidoEventoCollection;
+    @OneToMany(mappedBy = "jugador1Id")
+    private Collection<PartidoEvento> partidoEventoCollection1;
 
     public Jugador() {
     }
@@ -120,6 +146,33 @@ public class Jugador implements Serializable {
         this.status = status;
     }
 
+    @XmlTransient
+    public Collection<Premio> getPremioCollection() {
+        return premioCollection;
+    }
+
+    public void setPremioCollection(Collection<Premio> premioCollection) {
+        this.premioCollection = premioCollection;
+    }
+
+    @XmlTransient
+    public Collection<Titulo> getTituloCollection() {
+        return tituloCollection;
+    }
+
+    public void setTituloCollection(Collection<Titulo> tituloCollection) {
+        this.tituloCollection = tituloCollection;
+    }
+
+    @XmlTransient
+    public Collection<Contrato> getContratoCollection() {
+        return contratoCollection;
+    }
+
+    public void setContratoCollection(Collection<Contrato> contratoCollection) {
+        this.contratoCollection = contratoCollection;
+    }
+
     public Posicion getPosicionId() {
         return posicionId;
     }
@@ -150,6 +203,42 @@ public class Jugador implements Serializable {
 
     public void setAgenteId(Agente agenteId) {
         this.agenteId = agenteId;
+    }
+
+    @XmlTransient
+    public Collection<Convocado> getConvocadoCollection() {
+        return convocadoCollection;
+    }
+
+    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
+        this.convocadoCollection = convocadoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Transferencia> getTransferenciaCollection() {
+        return transferenciaCollection;
+    }
+
+    public void setTransferenciaCollection(Collection<Transferencia> transferenciaCollection) {
+        this.transferenciaCollection = transferenciaCollection;
+    }
+
+    @XmlTransient
+    public Collection<PartidoEvento> getPartidoEventoCollection() {
+        return partidoEventoCollection;
+    }
+
+    public void setPartidoEventoCollection(Collection<PartidoEvento> partidoEventoCollection) {
+        this.partidoEventoCollection = partidoEventoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PartidoEvento> getPartidoEventoCollection1() {
+        return partidoEventoCollection1;
+    }
+
+    public void setPartidoEventoCollection1(Collection<PartidoEvento> partidoEventoCollection1) {
+        this.partidoEventoCollection1 = partidoEventoCollection1;
     }
 
     @Override

@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,13 +29,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "tipo_arbitro")
+@Table(name = "grupo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoArbitro.findAll", query = "SELECT t FROM TipoArbitro t"),
-    @NamedQuery(name = "TipoArbitro.findById", query = "SELECT t FROM TipoArbitro t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoArbitro.findByNombre", query = "SELECT t FROM TipoArbitro t WHERE t.nombre = :nombre")})
-public class TipoArbitro implements Serializable {
+    @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g"),
+    @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id"),
+    @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")})
+public class Grupo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,13 +45,16 @@ public class TipoArbitro implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoArbitroId")
-    private Collection<PartidoArbitro> partidoArbitroCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
+    private Collection<Jornada> jornadaCollection;
+    @JoinColumn(name = "fase_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Fase faseId;
 
-    public TipoArbitro() {
+    public Grupo() {
     }
 
-    public TipoArbitro(Integer id) {
+    public Grupo(Integer id) {
         this.id = id;
     }
 
@@ -70,12 +75,20 @@ public class TipoArbitro implements Serializable {
     }
 
     @XmlTransient
-    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
-        return partidoArbitroCollection;
+    public Collection<Jornada> getJornadaCollection() {
+        return jornadaCollection;
     }
 
-    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
-        this.partidoArbitroCollection = partidoArbitroCollection;
+    public void setJornadaCollection(Collection<Jornada> jornadaCollection) {
+        this.jornadaCollection = jornadaCollection;
+    }
+
+    public Fase getFaseId() {
+        return faseId;
+    }
+
+    public void setFaseId(Fase faseId) {
+        this.faseId = faseId;
     }
 
     @Override
@@ -88,10 +101,10 @@ public class TipoArbitro implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoArbitro)) {
+        if (!(object instanceof Grupo)) {
             return false;
         }
-        TipoArbitro other = (TipoArbitro) object;
+        Grupo other = (Grupo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -100,7 +113,7 @@ public class TipoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TipoArbitro[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Grupo[ id=" + id + " ]";
     }
     
 }

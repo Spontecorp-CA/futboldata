@@ -53,11 +53,13 @@ public class Agente implements Serializable {
     private Date fechaFin;
     @Column(name = "status")
     private Integer status;
-    @OneToMany(mappedBy = "agenteId")
-    private Collection<Jugador> jugadorCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Persona personaId;
+    @OneToMany(mappedBy = "agenteId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(mappedBy = "agenteId")
+    private Collection<Jugador> jugadorCollection;
 
     public Agente() {
     }
@@ -98,6 +100,23 @@ public class Agente implements Serializable {
         this.status = status;
     }
 
+    public Persona getPersonaId() {
+        return personaId;
+    }
+
+    public void setPersonaId(Persona personaId) {
+        this.personaId = personaId;
+    }
+
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
+    }
+
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
     @XmlTransient
     public Collection<Jugador> getJugadorCollection() {
         return jugadorCollection;
@@ -105,14 +124,6 @@ public class Agente implements Serializable {
 
     public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
         this.jugadorCollection = jugadorCollection;
-    }
-
-    public Persona getPersonaId() {
-        return personaId;
-    }
-
-    public void setPersonaId(Persona personaId) {
-        this.personaId = personaId;
     }
 
     @Override

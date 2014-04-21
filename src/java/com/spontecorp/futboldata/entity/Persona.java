@@ -49,47 +49,60 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByCelular", query = "SELECT p FROM Persona p WHERE p.celular = :celular"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
-    @OneToMany(mappedBy = "personaId")
-    private Collection<RedSocial> redSocialCollection;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "foto")
-    private String foto;
-    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Direccion direccionId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @Size(max = 45)
     @Column(name = "apellido")
     private String apellido;
+    @Size(max = 1)
     @Column(name = "sexo")
     private String sexo;
+    @Size(max = 45)
     @Column(name = "apodo")
     private String apodo;
+    @Size(max = 45)
     @Column(name = "documento_identidad")
     private String documentoIdentidad;
     @Column(name = "fecha_nacimiento")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
+    @Size(max = 45)
     @Column(name = "nacionalidad")
     private String nacionalidad;
+    @Size(max = 45)
     @Column(name = "telefono")
     private String telefono;
+    @Size(max = 45)
     @Column(name = "celular")
     private String celular;
     @Column(name = "status")
     private Integer status;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "foto")
+    private String foto;
+    @OneToMany(mappedBy = "personaId")
+    private Collection<RedSocial> redSocialCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Agente> agenteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Jugador> jugadorCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Arbitro> arbitroCollection;
-    @JoinColumn(name = "red_social_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "personaId")
+    private Collection<Imagen> imagenCollection;
+    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne
-    private RedSocial redSocialId;
+    private Direccion direccionId;
 
     public Persona() {
     }
@@ -186,6 +199,50 @@ public class Persona implements Serializable {
         this.status = status;
     }
 
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    @XmlTransient
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
+    }
+
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
+    }
+
+    @XmlTransient
+    public Collection<Agente> getAgenteCollection() {
+        return agenteCollection;
+    }
+
+    public void setAgenteCollection(Collection<Agente> agenteCollection) {
+        this.agenteCollection = agenteCollection;
+    }
+
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
+    }
+
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
+    @XmlTransient
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
+    }
+
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
+    }
+
     @XmlTransient
     public Collection<Arbitro> getArbitroCollection() {
         return arbitroCollection;
@@ -195,12 +252,21 @@ public class Persona implements Serializable {
         this.arbitroCollection = arbitroCollection;
     }
 
-    public RedSocial getRedSocialId() {
-        return redSocialId;
+    @XmlTransient
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
     }
 
-    public void setRedSocialId(RedSocial redSocialId) {
-        this.redSocialId = redSocialId;
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
+    }
+
+    public Direccion getDireccionId() {
+        return direccionId;
+    }
+
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
 
     @Override
@@ -226,31 +292,6 @@ public class Persona implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Persona[ id=" + id + " ]";
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
-    }
-
-    public Direccion getDireccionId() {
-        return direccionId;
-    }
-
-    public void setDireccionId(Direccion direccionId) {
-        this.direccionId = direccionId;
-    }
-
-    @XmlTransient
-    public Collection<RedSocial> getRedSocialCollection() {
-        return redSocialCollection;
-    }
-
-    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
-        this.redSocialCollection = redSocialCollection;
     }
     
 }

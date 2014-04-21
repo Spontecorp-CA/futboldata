@@ -8,7 +8,6 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,13 +26,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "tipo_arbitro")
+@Table(name = "patrocinante")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoArbitro.findAll", query = "SELECT t FROM TipoArbitro t"),
-    @NamedQuery(name = "TipoArbitro.findById", query = "SELECT t FROM TipoArbitro t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoArbitro.findByNombre", query = "SELECT t FROM TipoArbitro t WHERE t.nombre = :nombre")})
-public class TipoArbitro implements Serializable {
+    @NamedQuery(name = "Patrocinante.findAll", query = "SELECT p FROM Patrocinante p"),
+    @NamedQuery(name = "Patrocinante.findById", query = "SELECT p FROM Patrocinante p WHERE p.id = :id"),
+    @NamedQuery(name = "Patrocinante.findByNombre", query = "SELECT p FROM Patrocinante p WHERE p.nombre = :nombre"),
+    @NamedQuery(name = "Patrocinante.findByIsMarcaEquipacion", query = "SELECT p FROM Patrocinante p WHERE p.isMarcaEquipacion = :isMarcaEquipacion")})
+public class Patrocinante implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,13 +43,17 @@ public class TipoArbitro implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoArbitroId")
-    private Collection<PartidoArbitro> partidoArbitroCollection;
+    @Column(name = "is_marca_equipacion")
+    private Integer isMarcaEquipacion;
+    @OneToMany(mappedBy = "patrocinanteId")
+    private Collection<Contrato> contratoCollection;
+    @OneToMany(mappedBy = "patrocinanteId")
+    private Collection<Imagen> imagenCollection;
 
-    public TipoArbitro() {
+    public Patrocinante() {
     }
 
-    public TipoArbitro(Integer id) {
+    public Patrocinante(Integer id) {
         this.id = id;
     }
 
@@ -69,13 +73,30 @@ public class TipoArbitro implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
-    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
-        return partidoArbitroCollection;
+    public Integer getIsMarcaEquipacion() {
+        return isMarcaEquipacion;
     }
 
-    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
-        this.partidoArbitroCollection = partidoArbitroCollection;
+    public void setIsMarcaEquipacion(Integer isMarcaEquipacion) {
+        this.isMarcaEquipacion = isMarcaEquipacion;
+    }
+
+    @XmlTransient
+    public Collection<Contrato> getContratoCollection() {
+        return contratoCollection;
+    }
+
+    public void setContratoCollection(Collection<Contrato> contratoCollection) {
+        this.contratoCollection = contratoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
+    }
+
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
     }
 
     @Override
@@ -88,10 +109,10 @@ public class TipoArbitro implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoArbitro)) {
+        if (!(object instanceof Patrocinante)) {
             return false;
         }
-        TipoArbitro other = (TipoArbitro) object;
+        Patrocinante other = (Patrocinante) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -100,7 +121,7 @@ public class TipoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TipoArbitro[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Patrocinante[ id=" + id + " ]";
     }
     
 }

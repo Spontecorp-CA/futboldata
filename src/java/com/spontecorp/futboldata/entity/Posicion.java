@@ -8,6 +8,7 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +45,8 @@ public class Posicion implements Serializable {
     private String nombre;
     @OneToMany(mappedBy = "posicionId")
     private Collection<Jugador> jugadorCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "posicionId")
+    private Collection<Convocado> convocadoCollection;
 
     public Posicion() {
     }
@@ -75,6 +78,15 @@ public class Posicion implements Serializable {
 
     public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
         this.jugadorCollection = jugadorCollection;
+    }
+
+    @XmlTransient
+    public Collection<Convocado> getConvocadoCollection() {
+        return convocadoCollection;
+    }
+
+    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
+        this.convocadoCollection = convocadoCollection;
     }
 
     @Override

@@ -6,18 +6,24 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,7 +35,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Arbitro.findAll", query = "SELECT a FROM Arbitro a"),
     @NamedQuery(name = "Arbitro.findById", query = "SELECT a FROM Arbitro a WHERE a.id = :id"),
-    @NamedQuery(name = "Arbitro.findByArbitrocol", query = "SELECT a FROM Arbitro a WHERE a.arbitrocol = :arbitrocol"),
     @NamedQuery(name = "Arbitro.findByStatus", query = "SELECT a FROM Arbitro a WHERE a.status = :status")})
 public class Arbitro implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -38,16 +43,26 @@ public class Arbitro implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "arbitrocol")
-    private String arbitrocol;
     @Column(name = "status")
     private Integer status;
-    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Asociacion asociacionId;
+    @JoinTable(name = "competicion_arbitro", joinColumns = {
+        @JoinColumn(name = "arbitro_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "competicion_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Competicion> competicionCollection;
+    @JoinTable(name = "arbitro_premio", joinColumns = {
+        @JoinColumn(name = "arbitro_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "premio_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Premio> premioCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Persona personaId;
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Asociacion asociacionId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "arbitro")
+    private Collection<PartidoArbitro> partidoArbitroCollection;
 
     public Arbitro() {
     }
@@ -64,20 +79,38 @@ public class Arbitro implements Serializable {
         this.id = id;
     }
 
-    public String getArbitrocol() {
-        return arbitrocol;
-    }
-
-    public void setArbitrocol(String arbitrocol) {
-        this.arbitrocol = arbitrocol;
-    }
-
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @XmlTransient
+    public Collection<Competicion> getCompeticionCollection() {
+        return competicionCollection;
+    }
+
+    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
+        this.competicionCollection = competicionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Premio> getPremioCollection() {
+        return premioCollection;
+    }
+
+    public void setPremioCollection(Collection<Premio> premioCollection) {
+        this.premioCollection = premioCollection;
+    }
+
+    public Persona getPersonaId() {
+        return personaId;
+    }
+
+    public void setPersonaId(Persona personaId) {
+        this.personaId = personaId;
     }
 
     public Asociacion getAsociacionId() {
@@ -88,12 +121,13 @@ public class Arbitro implements Serializable {
         this.asociacionId = asociacionId;
     }
 
-    public Persona getPersonaId() {
-        return personaId;
+    @XmlTransient
+    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
+        return partidoArbitroCollection;
     }
 
-    public void setPersonaId(Persona personaId) {
-        this.personaId = personaId;
+    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
+        this.partidoArbitroCollection = partidoArbitroCollection;
     }
 
     @Override
@@ -118,7 +152,7 @@ public class Arbitro implements Serializable {
 
     @Override
     public String toString() {
-        return getPersonaId().toString();
+        return "com.spontecorp.futboldata.entity.Arbitro[ id=" + id + " ]";
     }
     
 }

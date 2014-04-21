@@ -8,16 +8,14 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,14 +26,14 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "categoria")
+@Table(name = "titulo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
-    @NamedQuery(name = "Categoria.findById", query = "SELECT c FROM Categoria c WHERE c.id = :id"),
-    @NamedQuery(name = "Categoria.findByNombre", query = "SELECT c FROM Categoria c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Categoria.findByStatus", query = "SELECT c FROM Categoria c WHERE c.status = :status")})
-public class Categoria implements Serializable {
+    @NamedQuery(name = "Titulo.findAll", query = "SELECT t FROM Titulo t"),
+    @NamedQuery(name = "Titulo.findById", query = "SELECT t FROM Titulo t WHERE t.id = :id"),
+    @NamedQuery(name = "Titulo.findByNombre", query = "SELECT t FROM Titulo t WHERE t.nombre = :nombre"),
+    @NamedQuery(name = "Titulo.findByIdTemporada", query = "SELECT t FROM Titulo t WHERE t.idTemporada = :idTemporada")})
+public class Titulo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,21 +43,19 @@ public class Categoria implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "descripcion")
-    private String descripcion;
-    @Column(name = "status")
-    private Integer status;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    @Column(name = "id_temporada")
+    private Integer idTemporada;
+    @ManyToMany(mappedBy = "tituloCollection")
+    private Collection<Jugador> jugadorCollection;
+    @ManyToMany(mappedBy = "tituloCollection")
+    private Collection<Staff> staffCollection;
+    @ManyToMany(mappedBy = "tituloCollection")
     private Collection<Equipo> equipoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoria")
-    private Collection<TemporadaCategoria> temporadaCategoriaCollection;
 
-    public Categoria() {
+    public Titulo() {
     }
 
-    public Categoria(Integer id) {
+    public Titulo(Integer id) {
         this.id = id;
     }
 
@@ -79,20 +75,30 @@ public class Categoria implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public Integer getIdTemporada() {
+        return idTemporada;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setIdTemporada(Integer idTemporada) {
+        this.idTemporada = idTemporada;
     }
 
-    public Integer getStatus() {
-        return status;
+    @XmlTransient
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
+    }
+
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
+    }
+
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
     }
 
     @XmlTransient
@@ -102,15 +108,6 @@ public class Categoria implements Serializable {
 
     public void setEquipoCollection(Collection<Equipo> equipoCollection) {
         this.equipoCollection = equipoCollection;
-    }
-
-    @XmlTransient
-    public Collection<TemporadaCategoria> getTemporadaCategoriaCollection() {
-        return temporadaCategoriaCollection;
-    }
-
-    public void setTemporadaCategoriaCollection(Collection<TemporadaCategoria> temporadaCategoriaCollection) {
-        this.temporadaCategoriaCollection = temporadaCategoriaCollection;
     }
 
     @Override
@@ -123,10 +120,10 @@ public class Categoria implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Categoria)) {
+        if (!(object instanceof Titulo)) {
             return false;
         }
-        Categoria other = (Categoria) object;
+        Titulo other = (Titulo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -135,7 +132,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Categoria[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Titulo[ id=" + id + " ]";
     }
     
 }

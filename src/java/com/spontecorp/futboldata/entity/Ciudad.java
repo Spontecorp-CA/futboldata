@@ -20,6 +20,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,10 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Ciudad.findById", query = "SELECT c FROM Ciudad c WHERE c.id = :id"),
     @NamedQuery(name = "Ciudad.findByCiudad", query = "SELECT c FROM Ciudad c WHERE c.ciudad = :ciudad")})
 public class Ciudad implements Serializable {
-    @OneToMany(mappedBy = "ciudadId")
-    private Collection<Direccion> direccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudadId")
-    private Collection<Localidad> localidadCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +44,14 @@ public class Ciudad implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "ciudad")
     private String ciudad;
+    @OneToMany(mappedBy = "ciudadId")
+    private Collection<Direccion> direccionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudadId")
+    private Collection<Localidad> localidadCollection;
     @JoinColumn(name = "pais_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Pais paisId;
@@ -80,6 +84,24 @@ public class Ciudad implements Serializable {
         this.ciudad = ciudad;
     }
 
+    @XmlTransient
+    public Collection<Direccion> getDireccionCollection() {
+        return direccionCollection;
+    }
+
+    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
+        this.direccionCollection = direccionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Localidad> getLocalidadCollection() {
+        return localidadCollection;
+    }
+
+    public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
+        this.localidadCollection = localidadCollection;
+    }
+
     public Pais getPaisId() {
         return paisId;
     }
@@ -110,17 +132,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return ciudad;
-    }
-
-    @XmlTransient
-    public Collection<Localidad> getLocalidadCollection() {
-        return localidadCollection;
-    }
-
-    public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
-        this.localidadCollection = localidadCollection;
-
+        return "com.spontecorp.futboldata.entity.Ciudad[ id=" + id + " ]";
     }
     
 }

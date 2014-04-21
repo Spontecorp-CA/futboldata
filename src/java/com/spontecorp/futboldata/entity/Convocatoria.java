@@ -8,6 +8,7 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,8 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -29,40 +28,35 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "localidad")
+@Table(name = "convocatoria")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
-    @NamedQuery(name = "Localidad.findById", query = "SELECT l FROM Localidad l WHERE l.id = :id"),
-    @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
-public class Localidad implements Serializable {
+    @NamedQuery(name = "Convocatoria.findAll", query = "SELECT c FROM Convocatoria c"),
+    @NamedQuery(name = "Convocatoria.findById", query = "SELECT c FROM Convocatoria c WHERE c.id = :id")})
+public class Convocatoria implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "nombre")
-    private String nombre;
-    @OneToMany(mappedBy = "localidadId")
-    private Collection<Direccion> direccionCollection;
-    @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
+    @JoinColumn(name = "partido_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Ciudad ciudadId;
+    private Partido partidoId;
+    @JoinColumn(name = "formacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Formacion formacionId;
+    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Equipo equipoId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoriaId")
+    private Collection<Convocado> convocadoCollection;
 
-    public Localidad() {
+    public Convocatoria() {
     }
 
-    public Localidad(Integer id) {
+    public Convocatoria(Integer id) {
         this.id = id;
-    }
-
-    public Localidad(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -73,29 +67,37 @@ public class Localidad implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Partido getPartidoId() {
+        return partidoId;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setPartidoId(Partido partidoId) {
+        this.partidoId = partidoId;
+    }
+
+    public Formacion getFormacionId() {
+        return formacionId;
+    }
+
+    public void setFormacionId(Formacion formacionId) {
+        this.formacionId = formacionId;
+    }
+
+    public Equipo getEquipoId() {
+        return equipoId;
+    }
+
+    public void setEquipoId(Equipo equipoId) {
+        this.equipoId = equipoId;
     }
 
     @XmlTransient
-    public Collection<Direccion> getDireccionCollection() {
-        return direccionCollection;
+    public Collection<Convocado> getConvocadoCollection() {
+        return convocadoCollection;
     }
 
-    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
-        this.direccionCollection = direccionCollection;
-    }
-
-    public Ciudad getCiudadId() {
-        return ciudadId;
-    }
-
-    public void setCiudadId(Ciudad ciudadId) {
-        this.ciudadId = ciudadId;
+    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
+        this.convocadoCollection = convocadoCollection;
     }
 
     @Override
@@ -108,10 +110,10 @@ public class Localidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Localidad)) {
+        if (!(object instanceof Convocatoria)) {
             return false;
         }
-        Localidad other = (Localidad) object;
+        Convocatoria other = (Convocatoria) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -120,7 +122,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Localidad[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Convocatoria[ id=" + id + " ]";
     }
     
 }

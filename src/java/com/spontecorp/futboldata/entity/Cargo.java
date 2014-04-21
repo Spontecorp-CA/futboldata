@@ -27,13 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "tipo_arbitro")
+@Table(name = "cargo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoArbitro.findAll", query = "SELECT t FROM TipoArbitro t"),
-    @NamedQuery(name = "TipoArbitro.findById", query = "SELECT t FROM TipoArbitro t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoArbitro.findByNombre", query = "SELECT t FROM TipoArbitro t WHERE t.nombre = :nombre")})
-public class TipoArbitro implements Serializable {
+    @NamedQuery(name = "Cargo.findAll", query = "SELECT c FROM Cargo c"),
+    @NamedQuery(name = "Cargo.findById", query = "SELECT c FROM Cargo c WHERE c.id = :id"),
+    @NamedQuery(name = "Cargo.findByNombre", query = "SELECT c FROM Cargo c WHERE c.nombre = :nombre")})
+public class Cargo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,13 +43,13 @@ public class TipoArbitro implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoArbitroId")
-    private Collection<PartidoArbitro> partidoArbitroCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargoId")
+    private Collection<Staff> staffCollection;
 
-    public TipoArbitro() {
+    public Cargo() {
     }
 
-    public TipoArbitro(Integer id) {
+    public Cargo(Integer id) {
         this.id = id;
     }
 
@@ -70,12 +70,12 @@ public class TipoArbitro implements Serializable {
     }
 
     @XmlTransient
-    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
-        return partidoArbitroCollection;
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
     }
 
-    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
-        this.partidoArbitroCollection = partidoArbitroCollection;
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
     }
 
     @Override
@@ -88,10 +88,10 @@ public class TipoArbitro implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoArbitro)) {
+        if (!(object instanceof Cargo)) {
             return false;
         }
-        TipoArbitro other = (TipoArbitro) object;
+        Cargo other = (Cargo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -100,7 +100,7 @@ public class TipoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TipoArbitro[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Cargo[ id=" + id + " ]";
     }
     
 }

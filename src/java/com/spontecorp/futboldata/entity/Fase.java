@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,13 +29,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "tipo_arbitro")
+@Table(name = "fase")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoArbitro.findAll", query = "SELECT t FROM TipoArbitro t"),
-    @NamedQuery(name = "TipoArbitro.findById", query = "SELECT t FROM TipoArbitro t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoArbitro.findByNombre", query = "SELECT t FROM TipoArbitro t WHERE t.nombre = :nombre")})
-public class TipoArbitro implements Serializable {
+    @NamedQuery(name = "Fase.findAll", query = "SELECT f FROM Fase f"),
+    @NamedQuery(name = "Fase.findById", query = "SELECT f FROM Fase f WHERE f.id = :id"),
+    @NamedQuery(name = "Fase.findByNombre", query = "SELECT f FROM Fase f WHERE f.nombre = :nombre")})
+public class Fase implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,13 +45,18 @@ public class TipoArbitro implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoArbitroId")
-    private Collection<PartidoArbitro> partidoArbitroCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "faseId")
+    private Collection<Grupo> grupoCollection;
+    @JoinColumn(name = "temporada_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Temporada temporadaId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "faseId")
+    private Collection<Llave> llaveCollection;
 
-    public TipoArbitro() {
+    public Fase() {
     }
 
-    public TipoArbitro(Integer id) {
+    public Fase(Integer id) {
         this.id = id;
     }
 
@@ -70,12 +77,29 @@ public class TipoArbitro implements Serializable {
     }
 
     @XmlTransient
-    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
-        return partidoArbitroCollection;
+    public Collection<Grupo> getGrupoCollection() {
+        return grupoCollection;
     }
 
-    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
-        this.partidoArbitroCollection = partidoArbitroCollection;
+    public void setGrupoCollection(Collection<Grupo> grupoCollection) {
+        this.grupoCollection = grupoCollection;
+    }
+
+    public Temporada getTemporadaId() {
+        return temporadaId;
+    }
+
+    public void setTemporadaId(Temporada temporadaId) {
+        this.temporadaId = temporadaId;
+    }
+
+    @XmlTransient
+    public Collection<Llave> getLlaveCollection() {
+        return llaveCollection;
+    }
+
+    public void setLlaveCollection(Collection<Llave> llaveCollection) {
+        this.llaveCollection = llaveCollection;
     }
 
     @Override
@@ -88,10 +112,10 @@ public class TipoArbitro implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoArbitro)) {
+        if (!(object instanceof Fase)) {
             return false;
         }
-        TipoArbitro other = (TipoArbitro) object;
+        Fase other = (Fase) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -100,7 +124,7 @@ public class TipoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TipoArbitro[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Fase[ id=" + id + " ]";
     }
     
 }

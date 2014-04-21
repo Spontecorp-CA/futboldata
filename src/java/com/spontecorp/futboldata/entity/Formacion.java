@@ -8,7 +8,6 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,30 +27,41 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "tipo_arbitro")
+@Table(name = "formacion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoArbitro.findAll", query = "SELECT t FROM TipoArbitro t"),
-    @NamedQuery(name = "TipoArbitro.findById", query = "SELECT t FROM TipoArbitro t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoArbitro.findByNombre", query = "SELECT t FROM TipoArbitro t WHERE t.nombre = :nombre")})
-public class TipoArbitro implements Serializable {
+    @NamedQuery(name = "Formacion.findAll", query = "SELECT f FROM Formacion f"),
+    @NamedQuery(name = "Formacion.findById", query = "SELECT f FROM Formacion f WHERE f.id = :id"),
+    @NamedQuery(name = "Formacion.findByNombre", query = "SELECT f FROM Formacion f WHERE f.nombre = :nombre"),
+    @NamedQuery(name = "Formacion.findByDescripcion", query = "SELECT f FROM Formacion f WHERE f.descripcion = :descripcion")})
+public class Formacion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoArbitroId")
-    private Collection<PartidoArbitro> partidoArbitroCollection;
+    @Size(max = 45)
+    @Column(name = "descripcion")
+    private String descripcion;
+    @OneToMany(mappedBy = "formacionId")
+    private Collection<Convocatoria> convocatoriaCollection;
 
-    public TipoArbitro() {
+    public Formacion() {
     }
 
-    public TipoArbitro(Integer id) {
+    public Formacion(Integer id) {
         this.id = id;
+    }
+
+    public Formacion(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -69,13 +80,21 @@ public class TipoArbitro implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
-    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
-        return partidoArbitroCollection;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
-        this.partidoArbitroCollection = partidoArbitroCollection;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public Collection<Convocatoria> getConvocatoriaCollection() {
+        return convocatoriaCollection;
+    }
+
+    public void setConvocatoriaCollection(Collection<Convocatoria> convocatoriaCollection) {
+        this.convocatoriaCollection = convocatoriaCollection;
     }
 
     @Override
@@ -88,10 +107,10 @@ public class TipoArbitro implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoArbitro)) {
+        if (!(object instanceof Formacion)) {
             return false;
         }
-        TipoArbitro other = (TipoArbitro) object;
+        Formacion other = (Formacion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -100,7 +119,7 @@ public class TipoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TipoArbitro[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Formacion[ id=" + id + " ]";
     }
     
 }

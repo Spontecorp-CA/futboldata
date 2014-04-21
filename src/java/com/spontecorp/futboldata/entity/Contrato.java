@@ -6,6 +6,7 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +14,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,26 +29,39 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author sponte03
  */
 @Entity
-@Table(name = "red_social")
+@Table(name = "contrato")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "RedSocial.findAll", query = "SELECT r FROM RedSocial r"),
-    @NamedQuery(name = "RedSocial.findById", query = "SELECT r FROM RedSocial r WHERE r.id = :id"),
-    @NamedQuery(name = "RedSocial.findByNombre", query = "SELECT r FROM RedSocial r WHERE r.nombre = :nombre"),
-    @NamedQuery(name = "RedSocial.findByUrl", query = "SELECT r FROM RedSocial r WHERE r.url = :url")})
-public class RedSocial implements Serializable {
+    @NamedQuery(name = "Contrato.findAll", query = "SELECT c FROM Contrato c"),
+    @NamedQuery(name = "Contrato.findById", query = "SELECT c FROM Contrato c WHERE c.id = :id"),
+    @NamedQuery(name = "Contrato.findByFechaInicio", query = "SELECT c FROM Contrato c WHERE c.fechaInicio = :fechaInicio"),
+    @NamedQuery(name = "Contrato.findByFechaFin", query = "SELECT c FROM Contrato c WHERE c.fechaFin = :fechaFin"),
+    @NamedQuery(name = "Contrato.findByStatus", query = "SELECT c FROM Contrato c WHERE c.status = :status")})
+public class Contrato implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
-    @Column(name = "nombre")
-    private String nombre;
-    @Size(max = 80)
-    @Column(name = "url")
-    private String url;
+    @Column(name = "fecha_inicio")
+    @Temporal(TemporalType.DATE)
+    private Date fechaInicio;
+    @Column(name = "fecha_fin")
+    @Temporal(TemporalType.DATE)
+    private Date fechaFin;
+    @Column(name = "status")
+    private Integer status;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "descripcion")
+    private String descripcion;
+    @JoinColumn(name = "patrocinante_id", referencedColumnName = "id")
+    @ManyToOne
+    private Patrocinante patrocinanteId;
+    @JoinColumn(name = "jugador_id", referencedColumnName = "id")
+    @ManyToOne
+    private Jugador jugadorId;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne
     private Equipo equipoId;
@@ -57,14 +74,11 @@ public class RedSocial implements Serializable {
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
     private Asociacion asociacionId;
-    @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne
-    private Persona personaId;
 
-    public RedSocial() {
+    public Contrato() {
     }
 
-    public RedSocial(Integer id) {
+    public Contrato(Integer id) {
         this.id = id;
     }
 
@@ -76,20 +90,52 @@ public class RedSocial implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public Date getFechaInicio() {
+        return fechaInicio;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setFechaInicio(Date fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
-    public String getUrl() {
-        return url;
+    public Date getFechaFin() {
+        return fechaFin;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Patrocinante getPatrocinanteId() {
+        return patrocinanteId;
+    }
+
+    public void setPatrocinanteId(Patrocinante patrocinanteId) {
+        this.patrocinanteId = patrocinanteId;
+    }
+
+    public Jugador getJugadorId() {
+        return jugadorId;
+    }
+
+    public void setJugadorId(Jugador jugadorId) {
+        this.jugadorId = jugadorId;
     }
 
     public Equipo getEquipoId() {
@@ -124,14 +170,6 @@ public class RedSocial implements Serializable {
         this.asociacionId = asociacionId;
     }
 
-    public Persona getPersonaId() {
-        return personaId;
-    }
-
-    public void setPersonaId(Persona personaId) {
-        this.personaId = personaId;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -142,10 +180,10 @@ public class RedSocial implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RedSocial)) {
+        if (!(object instanceof Contrato)) {
             return false;
         }
-        RedSocial other = (RedSocial) object;
+        Contrato other = (Contrato) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -154,7 +192,7 @@ public class RedSocial implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.RedSocial[ id=" + id + " ]";
+        return "com.spontecorp.futboldata.entity.Contrato[ id=" + id + " ]";
     }
     
 }
