@@ -49,6 +49,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByCelular", query = "SELECT p FROM Persona p WHERE p.celular = :celular"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Jugador> jugadorCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Agente> agenteCollection;
     @Lob
     @Size(max = 65535)
     @Column(name = "foto")
@@ -240,6 +244,24 @@ public class Persona implements Serializable {
 
     public void setDireccionId(Direccion direccionId) {
         this.direccionId = direccionId;
+    }
+
+    @XmlTransient
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
+    }
+
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
+    }
+
+    @XmlTransient
+    public Collection<Agente> getAgenteCollection() {
+        return agenteCollection;
+    }
+
+    public void setAgenteCollection(Collection<Agente> agenteCollection) {
+        this.agenteCollection = agenteCollection;
     }
     
 }

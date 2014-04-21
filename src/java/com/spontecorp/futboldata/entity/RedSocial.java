@@ -33,6 +33,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "RedSocial.findByNombre", query = "SELECT r FROM RedSocial r WHERE r.nombre = :nombre"),
     @NamedQuery(name = "RedSocial.findByUrl", query = "SELECT r FROM RedSocial r WHERE r.url = :url")})
 public class RedSocial implements Serializable {
+    @OneToMany(mappedBy = "redSocialId")
+    private Collection<Equipo> equipoCollection;
+    @OneToMany(mappedBy = "redSocialId")
+    private Collection<Club> clubCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -120,6 +124,24 @@ public class RedSocial implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.RedSocial[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Equipo> getEquipoCollection() {
+        return equipoCollection;
+    }
+
+    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
+        this.equipoCollection = equipoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Club> getClubCollection() {
+        return clubCollection;
+    }
+
+    public void setClubCollection(Collection<Club> clubCollection) {
+        this.clubCollection = clubCollection;
     }
     
 }

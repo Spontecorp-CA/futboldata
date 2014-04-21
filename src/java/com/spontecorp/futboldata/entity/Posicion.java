@@ -8,53 +8,47 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
-@Table(name = "categoria")
+@Table(name = "posicion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
-    @NamedQuery(name = "Categoria.findById", query = "SELECT c FROM Categoria c WHERE c.id = :id"),
-    @NamedQuery(name = "Categoria.findByNombre", query = "SELECT c FROM Categoria c WHERE c.nombre = :nombre"),
-    @NamedQuery(name = "Categoria.findByStatus", query = "SELECT c FROM Categoria c WHERE c.status = :status")})
-public class Categoria implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private Collection<Equipo> equipoCollection;
+    @NamedQuery(name = "Posicion.findAll", query = "SELECT p FROM Posicion p"),
+    @NamedQuery(name = "Posicion.findById", query = "SELECT p FROM Posicion p WHERE p.id = :id"),
+    @NamedQuery(name = "Posicion.findByNombre", query = "SELECT p FROM Posicion p WHERE p.nombre = :nombre")})
+public class Posicion implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @Lob
-    @Column(name = "descripcion")
-    private String descripcion;
-    @Column(name = "status")
-    private Integer status;
+    @OneToMany(mappedBy = "posicionId")
+    private Collection<Jugador> jugadorCollection;
 
-    public Categoria() {
+    public Posicion() {
     }
 
-    public Categoria(Integer id) {
+    public Posicion(Integer id) {
         this.id = id;
     }
 
@@ -74,20 +68,13 @@ public class Categoria implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    @XmlTransient
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
     }
 
     @Override
@@ -100,10 +87,10 @@ public class Categoria implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Categoria)) {
+        if (!(object instanceof Posicion)) {
             return false;
         }
-        Categoria other = (Categoria) object;
+        Posicion other = (Posicion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -112,16 +99,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
-    }
-
-    @XmlTransient
-    public Collection<Equipo> getEquipoCollection() {
-        return equipoCollection;
-    }
-
-    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
-        this.equipoCollection = equipoCollection;
+        return "com.spontecorp.futboldata.entity.Posicion[ id=" + id + " ]";
     }
     
 }
