@@ -6,8 +6,6 @@
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Arbitro;
-import com.spontecorp.futboldata.entity.Ciudad;
-import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
@@ -15,6 +13,7 @@ import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.Date;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
@@ -33,9 +32,17 @@ public class ArbitroBean implements Serializable{
 
     private Arbitro arbitro;
     private Pais pais;
+    private String nombre;
+    private String apellido;
+    private String documentoId;
+    private String sexo;
+    private Date fechaNacimiento;
+    private String paisNacimiento;
     private String telefono;
     private String celular;
     private String email;
+    private String ciudad;
+    private String direccion;
 
     private final AsociacionFacade asociacionController;
     private final PaisFacade paisController;
@@ -74,6 +81,54 @@ public class ArbitroBean implements Serializable{
         this.pais = pais;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getDocumentoId() {
+        return documentoId;
+    }
+
+    public void setDocumentoId(String documentoId) {
+        this.documentoId = documentoId;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getPaisNacimiento() {
+        return paisNacimiento;
+    }
+
+    public void setPaisNacimiento(String paisNacimiento) {
+        this.paisNacimiento = paisNacimiento;
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -97,7 +152,23 @@ public class ArbitroBean implements Serializable{
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+   
     public String prepareCreate() {
         arbitro = new Arbitro();
         return "create";

@@ -124,13 +124,5 @@ public class Categoria implements Serializable {
         this.equipoCollection = equipoCollection;
     }
 
-    @XmlTransient
-    public Collection<Equipo> getEquipoCollection() {
-        return equipoCollection;
-    }
-
-    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
-        this.equipoCollection = equipoCollection;
-    }
     
 }

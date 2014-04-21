@@ -32,25 +32,25 @@
                     <h:panelGrid columns="2" title="Datos Personales"
                                  styleClass="top-aligned-columns">
                         <h:outputLabel value="* Nombre:" for="nombre"/>
-                        <p:inputText id="nombre" value="#{arbitroBean.selected.personaId.nombre}"
+                        <p:inputText id="nombre" value="#{arbitroBean.nombre}"
                                      required="true" requiredMessage="Debe colocar un nombre"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Apellido:" for="apellido"/>
-                        <p:inputText id="apellido" value="#{arbitroBean.selected.personaId.apellido}"
+                        <p:inputText id="apellido" value="#{arbitroBean.apellido}"
                                      required="true" requiredMessage="Debe colocar un apellido"
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
-                        <p:inputText id="did" value="#{arbitroBean.selected.personaId.documentoIdentidad}"
+                        <p:inputText id="did" value="#{arbitroBean.documentoId}"
                                      required="true" requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
-                        <p:selectOneRadio id="sex" value="#{arbitroBean.selected.personaId.sexo}">
+                        <p:selectOneRadio id="sex" value="#{arbitroBean.sexo}">
                             <f:selectItem itemLabel="M" itemValue="M"/>
                             <f:selectItem itemLabel="F" itemValue="F"/>
                         </p:selectOneRadio>
                         <h:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento"/>
                         <p:calendar id="fechaNacimiento" 
-                                    value="#{arbitroBean.selected.personaId.fechaNacimiento}"
+                                    value="#{arbitroBean.fechaNacimiento}"
                                     navigator="true" 
                                     pattern="dd/mm/yyyy" 
                                     locale="es"/>
