@@ -72,6 +72,8 @@ public class CiudadFacade extends AbstractFacade<Ciudad> {
             ciudad = (Ciudad) q.getSingleResult();
         } catch (Exception e) {
             logger.debug("Error encontrando ciudad: " + e.getLocalizedMessage(), e);
+        } finally{
+            em.close();
         }
         return ciudad;
 

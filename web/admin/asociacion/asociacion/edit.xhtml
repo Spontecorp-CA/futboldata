@@ -60,8 +60,8 @@
                         <h:outputLabel value="* Dirección :" for="direccion"/>
                         <p:inputText id="direccion" 
                                      value="#{asociacionBean.selectedAsociacion.direccionId.direccion}"
-                                     required="true" requiredMessage="Debe colocar la direccion"
-                                     validatorMessage="Email inválido"
+                                     required="true" 
+                                     requiredMessage="Debe colocar la direccion"
                                      style="width: 250px">
                         </p:inputText>
 
@@ -132,7 +132,6 @@
                                 <p:column>
                                     <p:inputText id="email" 
                                                  value="#{asociacionBean.email.email}"
-                                                
                                                  style="width: 250px">
                                     </p:inputText>
                                     &nbsp;
@@ -141,7 +140,7 @@
                                                 execute="email" 
                                                 listener="#{asociacionBean.cargarEmailEdit()}">
                                         </f:ajax>
-                                       
+
                                     </p:commandButton>
                                 </p:column>
                             </p:row>
