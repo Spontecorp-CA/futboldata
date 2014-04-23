@@ -9,12 +9,16 @@ import com.spontecorp.futboldata.entity.User;
 import com.spontecorp.futboldata.jpacontroller.UserFacade;
 import java.security.MessageDigest;
 import javax.persistence.NoResultException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author jgcastillo
  */
 public class SecurePassword {
+    
+    private static final Logger logger = LoggerFactory.getLogger(SecurePassword.class);
     
     public static String encript(char[] password) {
         String algorithm = "SHA-256";

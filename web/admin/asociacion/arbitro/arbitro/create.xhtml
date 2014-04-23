@@ -93,6 +93,8 @@
                                          required="true"
                                          requiredMessage="Debe seleccionar un perfil">                       
                             <f:selectItems value="#{arbitroBean.paisesAvalaible}"/>
+                            <p:ajax listener="#{arbitroBean.ciudadesAvalaible}" 
+                                    update="ciudad" />
                         </p:selectOneMenu>
                         <h:outputLabel value="Ciudad:" for="ciudad"/>
                         <p:selectOneMenu id="ciudad"
@@ -101,7 +103,7 @@
                                          panelStyle="width:250px"
                                          required="true"
                                          requiredMessage="Debe seleccionar un perfil">                       
-                            <f:selectItems value="#{arbitroBean.ciudadesAvalaible}"/>
+                            <f:selectItems value="#{arbitroBean.ciudades}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Dirección:" for="direccion"/>
                         <p:inputTextarea id="direccion"
@@ -115,40 +117,60 @@
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputText id="telefono" 
-                                     value="#{arbitroBean.telefono}"
+                                     value="#{arbitroBean.selected.personaId.telefono}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputText id="celular" 
-                                     value="#{arbitroBean.celular}"
+                                     value="#{arbitroBean.selected.personaId.celular}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
                         <h:outputLabel value="email:" for="email"/>
-                        <p:inputText id="email" value="#{usuarioBean.email}"
+                        <p:inputText id="email" 
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
                             <f:validateRegex
                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
-
+                        
+<!--                    </h:panelGrid>
+                    <h:panelGrid columns="2">-->
                         <h:outputLabel value="Redes Sociales" for="redSocial"/>
+
                         <p:selectOneMenu id="redSocial"
-                                         value="#{arbitroBean.selected.personaId.redSocialId}"
+
                                          style="width: 250px"
                                          panelStyle="width:250px">
                             <f:selectItems value="#{arbitroBean.redSocialAvailable}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Cuenta:" for="cuenta"/>
-                        <p:inputText id="cuenta" 
-                                     style="width: 250px"/>
-                        &nbsp;
-                        <fieldset>
-                            <!--ui:repeat>
-                                usar aqui la data a presentar
-                            </ui:repeat-->
-                        </fieldset>
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <p:inputText id="cuenta"
+                                                 value="#{arbitroBean.cuenta}"
+                                                 style="width: 250px"/>
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar redSocial" >                             
+                                        <f:ajax listener="#{arbitroBean.cargarRedSocial}" 
+                                                execute="cuenta" render="redes"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:dataList id="redes" 
+                                                var="redSocial" 
+                                                value="#{arbitroBean.redes}">
+                                        #{redSocial.nombre}: #{redSocial.url}
+                                    </p:dataList>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
 
                     </h:panelGrid>
+
                 </h:panelGrid>
 
 

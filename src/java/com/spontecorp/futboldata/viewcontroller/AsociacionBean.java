@@ -284,7 +284,6 @@ public class AsociacionBean implements Serializable {
     public void cargarTelefono() {
         telefonos.add(telefono);
         telefono = new Telefono();
-
     }
 
     public void cargarEmail() {

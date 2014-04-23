@@ -178,7 +178,7 @@ public class Asociacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Asociacion[ id=" + id + " ]";
+        return nombre;
     }
     
 }

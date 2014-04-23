@@ -12,6 +12,50 @@
         <param-name>primefaces.THEME</param-name>
         <param-value>afternoon</param-value>
     </context-param>
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>auto</param-value>
+    </context-param>
+    
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>    
+        <init-param>
+            <description>
+                Set the size limit for uploaded files.
+                Format: 10  - 10 bytes
+                10k - 10 KB
+                10m - 10 MB
+                1g  - 1 GB
+            </description>
+            <param-name>uploadMaxFileSize</param-name>
+            <param-value>300k</param-value>
+        </init-param>
+        <init-param>
+            <description>
+                Set the threshold size - files below this limit are stored 
+                in memory, files above this limit are stored on disk.
+                Format: 10  - 10 bytes
+                10k - 10 KB
+                10m - 10 MB
+                1g  - 1 GB
+            </description>
+            <param-name>uploadThresholdSize</param-name>
+            <param-value>300k</param-value>
+        </init-param>
+        <init-param>
+            <description>
+                Set the path where the intermediary files will be stored.
+            </description>
+            <param-name>uploadRepositoryPath</param-name>
+            <param-value>/uploads</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
     
     <listener>
         <listener-class>org.jboss.weld.environment.servlet.Listener</listener-class>
@@ -38,9 +82,5 @@
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
-    
-    <context-param>
-        <param-name>primefaces.THEME</param-name>
-        <param-value>afternoon</param-value>
-    </context-param>
+
 </web-app>
