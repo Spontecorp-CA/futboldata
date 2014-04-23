@@ -18,12 +18,14 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "pais")
@@ -33,8 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Pais.findById", query = "SELECT p FROM Pais p WHERE p.id = :id"),
     @NamedQuery(name = "Pais.findByNombre", query = "SELECT p FROM Pais p WHERE p.nombre = :nombre")})
 public class Pais implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paisId")
-    private Collection<Ciudad> ciudadCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +42,12 @@ public class Pais implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paisId")
+    private Collection<Ciudad> ciudadCollection;
 
     public Pais() {
     }
@@ -73,6 +77,15 @@ public class Pais implements Serializable {
         this.nombre = nombre;
     }
 
+    @XmlTransient
+    public Collection<Ciudad> getCiudadCollection() {
+        return ciudadCollection;
+    }
+
+    public void setCiudadCollection(Collection<Ciudad> ciudadCollection) {
+        this.ciudadCollection = ciudadCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -96,15 +109,6 @@ public class Pais implements Serializable {
     @Override
     public String toString() {
         return nombre;
-    }
-
-    @XmlTransient
-    public Collection<Ciudad> getCiudadCollection() {
-        return ciudadCollection;
-    }
-
-    public void setCiudadCollection(Collection<Ciudad> ciudadCollection) {
-        this.ciudadCollection = ciudadCollection;
     }
     
 }

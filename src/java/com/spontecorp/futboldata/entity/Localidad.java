@@ -19,6 +19,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,8 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Localidad.findById", query = "SELECT l FROM Localidad l WHERE l.id = :id"),
     @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
 public class Localidad implements Serializable {
-    @OneToMany(mappedBy = "localidadId")
-    private Collection<Direccion> direccionCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +43,12 @@ public class Localidad implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @OneToMany(mappedBy = "localidadId")
+    private Collection<Direccion> direccionCollection;
     @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Ciudad ciudadId;
@@ -77,6 +81,15 @@ public class Localidad implements Serializable {
         this.nombre = nombre;
     }
 
+    @XmlTransient
+    public Collection<Direccion> getDireccionCollection() {
+        return direccionCollection;
+    }
+
+    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
+        this.direccionCollection = direccionCollection;
+    }
+
     public Ciudad getCiudadId() {
         return ciudadId;
     }
@@ -107,16 +120,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
-    }
-
-    @XmlTransient
-    public Collection<Direccion> getDireccionCollection() {
-        return direccionCollection;
-    }
-
-    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
-        this.direccionCollection = direccionCollection;
+        return "com.spontecorp.futboldata.entity.Localidad[ id=" + id + " ]";
     }
     
 }

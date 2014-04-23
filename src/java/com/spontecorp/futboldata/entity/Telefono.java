@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,6 +40,8 @@ public class Telefono implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "telefono")
     private String telefono;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
@@ -102,7 +106,7 @@ public class Telefono implements Serializable {
 
     @Override
     public String toString() {
-        return telefono;
+        return "com.spontecorp.futboldata.entity.Telefono[ id=" + id + " ]";
     }
     
 }

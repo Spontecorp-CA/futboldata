@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,16 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Direccion.findByLatitud", query = "SELECT d FROM Direccion d WHERE d.latitud = :latitud"),
     @NamedQuery(name = "Direccion.findByLongitud", query = "SELECT d FROM Direccion d WHERE d.longitud = :longitud")})
 public class Direccion implements Serializable {
-    @OneToMany(mappedBy = "direccionId")
-    private Collection<Club> clubCollection;
-    @OneToMany(mappedBy = "direccionId")
-    private Collection<Competicion> competicionCollection;
-    @OneToMany(mappedBy = "direccionId")
-    private Collection<Persona> personaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
-    private Collection<Email> emailCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
-    private Collection<Telefono> telefonoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,22 +46,36 @@ public class Direccion implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Lob
+    @Size(max = 65535)
     @Column(name = "direccion")
     private String direccion;
+    @Size(max = 80)
     @Column(name = "pagina_web")
     private String paginaWeb;
     @Column(name = "latitud")
     private Integer latitud;
     @Column(name = "longitud")
     private Integer longitud;
-    @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
-    @ManyToOne
-    private Ciudad ciudadId;
     @JoinColumn(name = "localidad_id", referencedColumnName = "id")
     @ManyToOne
     private Localidad localidadId;
+    @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
+    @ManyToOne
+    private Ciudad ciudadId;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Competicion> competicionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
+    private Collection<Telefono> telefonoCollection;
     @OneToMany(mappedBy = "direccionId")
     private Collection<Asociacion> asociacionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
+    private Collection<Email> emailCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Cancha> canchaCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Club> clubCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Persona> personaCollection;
 
     public Direccion() {
     }
@@ -119,6 +124,14 @@ public class Direccion implements Serializable {
         this.longitud = longitud;
     }
 
+    public Localidad getLocalidadId() {
+        return localidadId;
+    }
+
+    public void setLocalidadId(Localidad localidadId) {
+        this.localidadId = localidadId;
+    }
+
     public Ciudad getCiudadId() {
         return ciudadId;
     }
@@ -127,12 +140,22 @@ public class Direccion implements Serializable {
         this.ciudadId = ciudadId;
     }
 
-    public Localidad getLocalidadId() {
-        return localidadId;
+    @XmlTransient
+    public Collection<Competicion> getCompeticionCollection() {
+        return competicionCollection;
     }
 
-    public void setLocalidadId(Localidad localidadId) {
-        this.localidadId = localidadId;
+    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
+        this.competicionCollection = competicionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Telefono> getTelefonoCollection() {
+        return telefonoCollection;
+    }
+
+    public void setTelefonoCollection(Collection<Telefono> telefonoCollection) {
+        this.telefonoCollection = telefonoCollection;
     }
 
     @XmlTransient
@@ -142,6 +165,42 @@ public class Direccion implements Serializable {
 
     public void setAsociacionCollection(Collection<Asociacion> asociacionCollection) {
         this.asociacionCollection = asociacionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Email> getEmailCollection() {
+        return emailCollection;
+    }
+
+    public void setEmailCollection(Collection<Email> emailCollection) {
+        this.emailCollection = emailCollection;
+    }
+
+    @XmlTransient
+    public Collection<Cancha> getCanchaCollection() {
+        return canchaCollection;
+    }
+
+    public void setCanchaCollection(Collection<Cancha> canchaCollection) {
+        this.canchaCollection = canchaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Club> getClubCollection() {
+        return clubCollection;
+    }
+
+    public void setClubCollection(Collection<Club> clubCollection) {
+        this.clubCollection = clubCollection;
+    }
+
+    @XmlTransient
+    public Collection<Persona> getPersonaCollection() {
+        return personaCollection;
+    }
+
+    public void setPersonaCollection(Collection<Persona> personaCollection) {
+        this.personaCollection = personaCollection;
     }
 
     @Override
@@ -167,51 +226,6 @@ public class Direccion implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Direccion[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Email> getEmailCollection() {
-        return emailCollection;
-    }
-
-    public void setEmailCollection(Collection<Email> emailCollection) {
-        this.emailCollection = emailCollection;
-    }
-
-    @XmlTransient
-    public Collection<Telefono> getTelefonoCollection() {
-        return telefonoCollection;
-    }
-
-    public void setTelefonoCollection(Collection<Telefono> telefonoCollection) {
-        this.telefonoCollection = telefonoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Persona> getPersonaCollection() {
-        return personaCollection;
-    }
-
-    public void setPersonaCollection(Collection<Persona> personaCollection) {
-        this.personaCollection = personaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Club> getClubCollection() {
-        return clubCollection;
-    }
-
-    public void setClubCollection(Collection<Club> clubCollection) {
-        this.clubCollection = clubCollection;
-    }
-
-    @XmlTransient
-    public Collection<Competicion> getCompeticionCollection() {
-        return competicionCollection;
-    }
-
-    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
-        this.competicionCollection = competicionCollection;
     }
     
 }

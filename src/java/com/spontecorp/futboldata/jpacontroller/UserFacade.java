@@ -9,7 +9,6 @@ import com.spontecorp.futboldata.entity.User;
 import com.spontecorp.futboldata.utilities.Util;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * @author jgcastillo
  */
 public class UserFacade extends AbstractFacade<User>{
-            
+
     private static final Logger logger = LoggerFactory.getLogger(UserFacade.class);
     
     public UserFacade() {
@@ -38,8 +37,9 @@ public class UserFacade extends AbstractFacade<User>{
             Query query = em.createNamedQuery("User.findByUsuario", User.class);
             query.setParameter("usuario", user);
             usuario = (User) query.getSingleResult();
-        } catch (NoResultException e) {
+        } catch (Exception e) {
             // Do nothing
+            logger.debug("Lanzó la exception: ", e.getLocalizedMessage());
         } finally {
             em.close();
         }

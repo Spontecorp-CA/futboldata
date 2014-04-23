@@ -15,7 +15,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -28,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "club")
@@ -60,13 +62,28 @@ public class Club implements Serializable {
     private String historia;
     @Column(name = "status")
     private Integer status;
+    @JoinTable(name = "club_premio", joinColumns = {
+        @JoinColumn(name = "club_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "premio_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Premio> premioCollection;
+    @OneToMany(mappedBy = "clubId")
+    private Collection<RedSocial> redSocialCollection;
+    @OneToMany(mappedBy = "clubId")
+    private Collection<Contrato> contratoCollection;
+    @OneToMany(mappedBy = "clubId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club")
+    private Collection<ClubCancha> clubCanchaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clubId")
+    private Collection<Audio> audioCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clubId")
     private Collection<Equipo> equipoCollection;
+    @OneToMany(mappedBy = "clubId")
+    private Collection<Imagen> imagenCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne
     private Direccion direccionId;
-    @OneToMany(mappedBy = "clubId")
-    private Collection<RedSocial> redSocialCollection;
 
     public Club() {
     }
@@ -121,20 +138,12 @@ public class Club implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Equipo> getEquipoCollection() {
-        return equipoCollection;
+    public Collection<Premio> getPremioCollection() {
+        return premioCollection;
     }
 
-    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
-        this.equipoCollection = equipoCollection;
-    }
-
-    public Direccion getDireccionId() {
-        return direccionId;
-    }
-
-    public void setDireccionId(Direccion direccionId) {
-        this.direccionId = direccionId;
+    public void setPremioCollection(Collection<Premio> premioCollection) {
+        this.premioCollection = premioCollection;
     }
 
     @XmlTransient
@@ -144,6 +153,68 @@ public class Club implements Serializable {
 
     public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
         this.redSocialCollection = redSocialCollection;
+    }
+
+    @XmlTransient
+    public Collection<Contrato> getContratoCollection() {
+        return contratoCollection;
+    }
+
+    public void setContratoCollection(Collection<Contrato> contratoCollection) {
+        this.contratoCollection = contratoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
+    }
+
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
+    @XmlTransient
+    public Collection<ClubCancha> getClubCanchaCollection() {
+        return clubCanchaCollection;
+    }
+
+    public void setClubCanchaCollection(Collection<ClubCancha> clubCanchaCollection) {
+        this.clubCanchaCollection = clubCanchaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Audio> getAudioCollection() {
+        return audioCollection;
+    }
+
+    public void setAudioCollection(Collection<Audio> audioCollection) {
+        this.audioCollection = audioCollection;
+    }
+
+    @XmlTransient
+    public Collection<Equipo> getEquipoCollection() {
+        return equipoCollection;
+    }
+
+    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
+        this.equipoCollection = equipoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
+    }
+
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
+    }
+
+    public Direccion getDireccionId() {
+        return direccionId;
+    }
+
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
 
     @Override

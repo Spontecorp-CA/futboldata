@@ -8,12 +8,15 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -25,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "equipo")
@@ -51,6 +54,34 @@ public class Equipo implements Serializable {
     @Size(max = 10)
     @Column(name = "abreviacion")
     private String abreviacion;
+    @JoinTable(name = "equipo_titulo", joinColumns = {
+        @JoinColumn(name = "equipo_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Titulo> tituloCollection;
+    @JoinTable(name = "equipo_premio", joinColumns = {
+        @JoinColumn(name = "equipo_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "premio_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Premio> premioCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<Convocatoria> convocatoriaCollection;
+    @OneToMany(mappedBy = "equipoId")
+    private Collection<RedSocial> redSocialCollection;
+    @OneToMany(mappedBy = "equipoVisitanteId")
+    private Collection<Partido> partidoCollection;
+    @OneToMany(mappedBy = "equipoLocalId")
+    private Collection<Partido> partidoCollection1;
+    @OneToMany(mappedBy = "equipoId")
+    private Collection<Contrato> contratoCollection;
+    @OneToMany(mappedBy = "equipoId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<Clasificacion> clasificacionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo")
+    private Collection<EquipoCancha> equipoCanchaCollection;
+    @OneToMany(mappedBy = "equipoId")
+    private Collection<Jugador> jugadorCollection;
     @JoinColumn(name = "club_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Club clubId;
@@ -58,7 +89,11 @@ public class Equipo implements Serializable {
     @ManyToOne(optional = false)
     private Categoria categoriaId;
     @OneToMany(mappedBy = "equipoId")
-    private Collection<RedSocial> redSocialCollection;
+    private Collection<Imagen> imagenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo")
+    private Collection<Transferencia> transferenciaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo1")
+    private Collection<Transferencia> transferenciaCollection1;
 
     public Equipo() {
     }
@@ -99,6 +134,105 @@ public class Equipo implements Serializable {
         this.abreviacion = abreviacion;
     }
 
+    @XmlTransient
+    public Collection<Titulo> getTituloCollection() {
+        return tituloCollection;
+    }
+
+    public void setTituloCollection(Collection<Titulo> tituloCollection) {
+        this.tituloCollection = tituloCollection;
+    }
+
+    @XmlTransient
+    public Collection<Premio> getPremioCollection() {
+        return premioCollection;
+    }
+
+    public void setPremioCollection(Collection<Premio> premioCollection) {
+        this.premioCollection = premioCollection;
+    }
+
+    @XmlTransient
+    public Collection<Convocatoria> getConvocatoriaCollection() {
+        return convocatoriaCollection;
+    }
+
+    public void setConvocatoriaCollection(Collection<Convocatoria> convocatoriaCollection) {
+        this.convocatoriaCollection = convocatoriaCollection;
+    }
+
+    @XmlTransient
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
+    }
+
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
+    }
+
+    @XmlTransient
+    public Collection<Partido> getPartidoCollection() {
+        return partidoCollection;
+    }
+
+    public void setPartidoCollection(Collection<Partido> partidoCollection) {
+        this.partidoCollection = partidoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Partido> getPartidoCollection1() {
+        return partidoCollection1;
+    }
+
+    public void setPartidoCollection1(Collection<Partido> partidoCollection1) {
+        this.partidoCollection1 = partidoCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Contrato> getContratoCollection() {
+        return contratoCollection;
+    }
+
+    public void setContratoCollection(Collection<Contrato> contratoCollection) {
+        this.contratoCollection = contratoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
+    }
+
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
+    @XmlTransient
+    public Collection<Clasificacion> getClasificacionCollection() {
+        return clasificacionCollection;
+    }
+
+    public void setClasificacionCollection(Collection<Clasificacion> clasificacionCollection) {
+        this.clasificacionCollection = clasificacionCollection;
+    }
+
+    @XmlTransient
+    public Collection<EquipoCancha> getEquipoCanchaCollection() {
+        return equipoCanchaCollection;
+    }
+
+    public void setEquipoCanchaCollection(Collection<EquipoCancha> equipoCanchaCollection) {
+        this.equipoCanchaCollection = equipoCanchaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
+    }
+
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
+    }
+
     public Club getClubId() {
         return clubId;
     }
@@ -116,12 +250,30 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RedSocial> getRedSocialCollection() {
-        return redSocialCollection;
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
     }
 
-    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
-        this.redSocialCollection = redSocialCollection;
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
+    }
+
+    @XmlTransient
+    public Collection<Transferencia> getTransferenciaCollection() {
+        return transferenciaCollection;
+    }
+
+    public void setTransferenciaCollection(Collection<Transferencia> transferenciaCollection) {
+        this.transferenciaCollection = transferenciaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Transferencia> getTransferenciaCollection1() {
+        return transferenciaCollection1;
+    }
+
+    public void setTransferenciaCollection1(Collection<Transferencia> transferenciaCollection1) {
+        this.transferenciaCollection1 = transferenciaCollection1;
     }
 
     @Override

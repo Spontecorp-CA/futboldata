@@ -19,12 +19,13 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "categoria")
@@ -35,21 +36,25 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Categoria.findByNombre", query = "SELECT c FROM Categoria c WHERE c.nombre = :nombre"),
     @NamedQuery(name = "Categoria.findByStatus", query = "SELECT c FROM Categoria c WHERE c.status = :status")})
 public class Categoria implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private Collection<Equipo> equipoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
     @Lob
+    @Size(max = 65535)
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "status")
     private Integer status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    private Collection<Equipo> equipoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoria")
+    private Collection<TemporadaCategoria> temporadaCategoriaCollection;
 
     public Categoria() {
     }
@@ -90,6 +95,24 @@ public class Categoria implements Serializable {
         this.status = status;
     }
 
+    @XmlTransient
+    public Collection<Equipo> getEquipoCollection() {
+        return equipoCollection;
+    }
+
+    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
+        this.equipoCollection = equipoCollection;
+    }
+
+    @XmlTransient
+    public Collection<TemporadaCategoria> getTemporadaCategoriaCollection() {
+        return temporadaCategoriaCollection;
+    }
+
+    public void setTemporadaCategoriaCollection(Collection<TemporadaCategoria> temporadaCategoriaCollection) {
+        this.temporadaCategoriaCollection = temporadaCategoriaCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -112,17 +135,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.Categoria[ id=" + id + " ]";
     }
-
-    @XmlTransient
-    public Collection<Equipo> getEquipoCollection() {
-        return equipoCollection;
-    }
-
-    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
-        this.equipoCollection = equipoCollection;
-    }
-
     
 }

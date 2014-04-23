@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,7 +39,10 @@ public class Email implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 80)
     @Column(name = "email")
     private String email;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
@@ -102,7 +107,7 @@ public class Email implements Serializable {
 
     @Override
     public String toString() {
-        return email;
+        return "com.spontecorp.futboldata.entity.Email[ id=" + id + " ]";
     }
     
 }

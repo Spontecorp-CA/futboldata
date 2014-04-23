@@ -6,13 +6,13 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
-
+    
     <ui:define name="title">
         Administración de Usuarios
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="usersForm">
+        <h:form id="UserListForm">
 
             <p:fieldset style="width: 85%" legend="Lista de Usuarios">
                 <p:toolbar>
@@ -25,30 +25,33 @@
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="usuarios" var="user" value="#{usuarioBean.items}"
-                             rowKey="#{user.usuario}"
-                             selection="#{usuarioBean.user}" selectionMode="single">                
+                <p:dataTable id="usuarios" var="item" value="#{usuarioBean.items}"
+                             rowKey="#{item.usuario}"
+                             selection="#{usuarioBean.selected}" selectionMode="single">
+                    
+                    <p:ajax event="rowSelect"   update="createButton"/>
+                    <p:ajax event="rowUnselect" update="createButton"/>
 
                     <p:column headerText="Apellido">
-                        <h:outputText value="#{user.apellido}"/>
+                        <h:outputText value="#{item.apellido}"/>
                     </p:column>
                     <p:column headerText="Nombre">
-                        <h:outputText value="#{user.nombre}"/>
+                        <h:outputText value="#{item.nombre}"/>
                     </p:column>
                     <p:column headerText="Usuario">
-                        <h:outputText value="#{user.usuario}"/>
+                        <h:outputText value="#{item.usuario}"/>
                     </p:column>
                     <p:column headerText="Perfil">
-                        <h:outputText value="#{user.perfilId.nombre}"/>
+                        <h:outputText value="#{item.perfilId.nombre}"/>
                     </p:column>
                     <p:column headerText="Email">
-                        <h:outputText value="#{user.email}"/>
+                        <h:outputText value="#{item.email}"/>
                     </p:column>
                     <p:column headerText="Teléfono">
-                        <h:outputText value="#{user.telefono}"/>
+                        <h:outputText value="#{item.telefono}"/>
                     </p:column>
                     <p:column headerText="Status">
-                        <h:outputText value="#{user.status == 0?'INACTIVO':'ACTIVO'}"/>
+                        <h:outputText value="#{item.status == 0?'INACTIVO':'ACTIVO'}"/>
                     </p:column>
                     <p:column headerText="Acciones">
                         <p:commandLink value="Editar" action="#{usuarioBean.prepareEdit}" />
@@ -56,9 +59,18 @@
                         <p:commandLink value="Cambiar Password" 
                                        action="#{usuarioBean.preparePasswordChange}" />                       
                     </p:column>
+                    
+                    <f:facet name="footer">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                         value="Crear" actionListener="#{usuarioBean.prepareCreate}" 
+                                         update=":UserCreateForm" 
+                                         oncomplete="PF('UserCreateDialog').show()"/>
+                        
+                    </f:facet>
                 </p:dataTable>
             </p:fieldset>
         </h:form>
-    </ui:define>   
-
+        <ui:include src="create2.xhtml"/>
+    </ui:define>
+    
 </ui:composition>

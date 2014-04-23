@@ -20,6 +20,35 @@
     <class>com.spontecorp.futboldata.entity.Jugador</class>
     <class>com.spontecorp.futboldata.entity.Equipo</class>
     <class>com.spontecorp.futboldata.entity.Agente</class>
+    <class>com.spontecorp.futboldata.entity.Formacion</class>
+    <class>com.spontecorp.futboldata.entity.Competicion</class>
+    <class>com.spontecorp.futboldata.entity.Temporada</class>
+    <class>com.spontecorp.futboldata.entity.Evento</class>
+    <class>com.spontecorp.futboldata.entity.TemporadaCategoria</class>
+    <class>com.spontecorp.futboldata.entity.Llave</class>
+    <class>com.spontecorp.futboldata.entity.Cancha</class>
+    <class>com.spontecorp.futboldata.entity.Patrocinante</class>
+    <class>com.spontecorp.futboldata.entity.StatusPartido</class>
+    <class>com.spontecorp.futboldata.entity.ClubCancha</class>
+    <class>com.spontecorp.futboldata.entity.Contrato</class>
+    <class>com.spontecorp.futboldata.entity.Transferencia</class>
+    <class>com.spontecorp.futboldata.entity.Staff</class>
+    <class>com.spontecorp.futboldata.entity.Jornada</class>
+    <class>com.spontecorp.futboldata.entity.PartidoEvento</class>
+    <class>com.spontecorp.futboldata.entity.Partido</class>
+    <class>com.spontecorp.futboldata.entity.Clasificacion</class>
+    <class>com.spontecorp.futboldata.entity.Convocatoria</class>
+    <class>com.spontecorp.futboldata.entity.Premio</class>
+    <class>com.spontecorp.futboldata.entity.Titulo</class>
+    <class>com.spontecorp.futboldata.entity.Fase</class>
+    <class>com.spontecorp.futboldata.entity.EquipoCancha</class>
+    <class>com.spontecorp.futboldata.entity.Grupo</class>
+    <class>com.spontecorp.futboldata.entity.Ciudad</class>
+    <class>com.spontecorp.futboldata.entity.PartidoArbitro</class>
+    <class>com.spontecorp.futboldata.entity.Imagen</class>
+    <class>com.spontecorp.futboldata.entity.Audio</class>
+    <class>com.spontecorp.futboldata.entity.Cargo</class>
+    <class>com.spontecorp.futboldata.entity.Convocado</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>

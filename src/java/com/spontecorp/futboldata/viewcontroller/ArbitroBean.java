@@ -2,25 +2,26 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Arbitro;
+import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Pais;
+import com.spontecorp.futboldata.entity.Persona;
+import com.spontecorp.futboldata.entity.RedSocial;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-
 
 /**
  *
@@ -28,29 +29,25 @@ import org.slf4j.LoggerFactory;
  */
 @Named("arbitroBean")
 @SessionScoped
-public class ArbitroBean implements Serializable{
+public class ArbitroBean implements Serializable {
 
     private Arbitro arbitro;
     private Pais pais;
-    private String nombre;
-    private String apellido;
-    private String documentoId;
-    private String sexo;
-    private Date fechaNacimiento;
-    private String paisNacimiento;
-    private String telefono;
-    private String celular;
-    private String email;
-    private String ciudad;
-    private String direccion;
+    private SelectItem[] ciudades;
+
+    private Direccion direccion;
+    private Persona persona;
+    private String cuenta;
+    private RedSocial redSocial;
+    private List<RedSocial> redes;
 
     private final AsociacionFacade asociacionController;
     private final PaisFacade paisController;
     private final CiudadFacade ciudadController;
     private final RedSocialFacade redSocialController;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
-    
+
     public ArbitroBean() {
         asociacionController = new AsociacionFacade();
         paisController = new PaisFacade();
@@ -58,17 +55,16 @@ public class ArbitroBean implements Serializable{
         redSocialController = new RedSocialFacade();
     }
 
-    public Arbitro getArbitro() {
-        return arbitro;
-    }
-
-    public void setArbitro(Arbitro arbitro) {
-        this.arbitro = arbitro;
-    }
-    
-    public Arbitro getSelected(){
-        if(arbitro == null){
+    public Arbitro getSelected() {
+        if (arbitro == null) {
             arbitro = new Arbitro();
+
+            direccion = new Direccion();
+            persona = new Persona();
+            persona.setDireccionId(direccion);
+            arbitro.setPersonaId(persona);
+            ciudades = null;
+            redes = new ArrayList<>();
         }
         return arbitro;
     }
@@ -81,112 +77,60 @@ public class ArbitroBean implements Serializable{
         this.pais = pais;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getCuenta() {
+        return cuenta;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setCuenta(String cuenta) {
+        this.cuenta = cuenta;
     }
 
-    public String getApellido() {
-        return apellido;
+    public List<RedSocial> getRedes() {
+        return redes;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setRedes(List<RedSocial> redes) {
+        this.redes = redes;
     }
 
-    public String getDocumentoId() {
-        return documentoId;
-    }
-
-    public void setDocumentoId(String documentoId) {
-        this.documentoId = documentoId;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public String getPaisNacimiento() {
-        return paisNacimiento;
-    }
-
-    public void setPaisNacimiento(String paisNacimiento) {
-        this.paisNacimiento = paisNacimiento;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-   
     public String prepareCreate() {
         arbitro = new Arbitro();
         return "create";
     }
-    
-    public SelectItem[] getAsociacionesAvalaible(){
+
+    public SelectItem[] getAsociacionesAvalaible() {
         return Util.getSelectItems(asociacionController.findAll());
     }
-    
-    public SelectItem[] getPaisesAvalaible(){
+
+    public SelectItem[] getPaisesAvalaible() {
         return Util.getSelectItems(paisController.listaPaisxNombre());
     }
-    
-    public SelectItem[] getCiudadesAvalaible(){
-        return Util.getSelectItems(ciudadController.findCiudadxPais(pais));
+
+    public void ciudadesAvalaible() {
+        ciudades = Util.getSelectItems(ciudadController.findCiudadxPais(pais));
+        for (SelectItem city : ciudades) {
+            logger.debug(city.getLabel());
+        }
     }
-    
-    public SelectItem[] getRedSocialAvailable(){
+
+    public SelectItem[] getCiudades() {
+        return ciudades;
+    }
+
+    public SelectItem[] getRedSocialAvailable() {
         return Util.getSelectItems(redSocialController.findAll());
     }
+    
+    public void cargarRedSocial(){
+        redSocial = new RedSocial();
+        redSocial.setPersonaId(persona);
+        redSocial.setUrl(cuenta);
+        
+        redes.add(redSocial);
+    }
+    
+    public List<RedSocial> getRedesSocial(){
+        return redSocialController.findRedSocialxPersona(persona);
+    }
+    
 }
