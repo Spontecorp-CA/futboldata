@@ -48,8 +48,8 @@ public class AsociacionBean implements Serializable {
 
     private List<Email> emails = null;
     private List<Telefono> telefonos = null;
-    List<Telefono> telefonoEliminar = null;
-    List<Email> emailEliminar = null;
+    private List<Telefono> telefonoEliminar = null;
+    private List<Email> emailEliminar = null;
     private transient DataModel itemsTelefono = null;
     private transient DataModel itemsAsociacion = null;
     private SelectItem[] ciudades;

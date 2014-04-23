@@ -8,7 +8,7 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <ui:define name="title">
-        Administración de Clubs
+        Administración de Club
     </ui:define>
 
     <ui:define name="content">
@@ -33,10 +33,107 @@
                     <p:inputText id="nombre" value="#{clubBean.selected.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
-                    <h:outputLabel value="* Descripción:" for="descripcion"/>
-                    <p:inputText id="descripcion" value="#{clubBean.selected.descripcion}"
-                                 required="true" requiredMessage="Debe colocar un apellido"
+                    <h:outputLabel value="* Añor de Fundacion:" for="descripcion"/>
+                    <p:inputMask id="descripcion" value="#{clubBean.selected.yearFundacion}"
+                                 mask="9999"
+                                 required="true" 
+                                 requiredMessage="Debe Colocar el año de Fundacion"
                                  style="width: 250px"/>
+
+
+                    <h:outputLabel value="* Pais:" for="pais"/>
+                    <p:selectOneMenu id="pais"                                    
+                                     value="#{asociacionBean.pais}"
+                                     style="width: 250px"
+                                     panelStyle="width:250px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar un perfil">                       
+                        <f:selectItems value="#{clubBean.paisAvailable}"/>
+                        <p:ajax listener="#{clubBean.ciudadAvailable}" 
+                                update="ciudad" />
+                    </p:selectOneMenu>
+                    <h:outputLabel value="* Ciudad:" for="ciudad"/>
+
+                    <p:selectOneMenu id="ciudad" 
+                                     value="#{clubBean.selected.direccionId.ciudadId}"
+                                     style="width: 250px"
+                                     panelStyle="width:250px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar un perfil">                       
+                        <f:selectItems value="#{clubBean.ciudades}"/>
+                    </p:selectOneMenu>
+
+                    <h:outputLabel value="Direccion" for="direccion"/>
+                    <p:inputText id="direccion" value="#{clubBean.selected.direccionId.direccion}"
+                                 required="true" requiredMessage="Debe colocar la Direccion"
+                                 style="width: 250px"/>
+
+                    <h:outputLabel value="Pagina Web" for="paginaW"/>
+                    <p:inputText id="paginaW" value="#{clubBean.selected.direccionId.paginaWeb}"
+                                 style="width: 250px"/>
+
+
+                    <h:outputLabel value="* Teléfonos:" for="phones"/>
+                    <p:panelGrid id="phones" style="border-style: none">
+                        <p:row>
+                            <p:column>
+                                <p:inputMask id="telefono" 
+                                             value="#{asociacionBean.telefono.telefono}"
+                                             required="true" 
+                                             requiredMessage="Debe colocar un teléfono"
+                                             style="width: 250px"
+                                             mask="(9999) 999.9999"/>                                
+                            </p:column>
+                            <p:column>
+                                <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
+                                    <f:ajax listener="#{asociacionBean.cargarTelefono}" 
+                                            execute="telefono" render="telefonos"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:dataList id="telefonos" 
+                                            var="telefono" 
+                                            value="#{asociacionBean.telefonos}">
+                                    #{telefono.telefono}
+                                </p:dataList>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                    <h:outputLabel value="* email:" 
+                                   for="email"/>
+                    <p:panelGrid id="correos" style="border-style: none">
+                        <p:row>
+                            <p:column>
+                                <p:inputText id="email" 
+                                             value="#{asociacionBean.email.email}"
+                                             validatorMessage="Email inválido"
+                                             style="width: 250px">
+                                    <f:validateRegex
+                                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                </p:inputText>   
+                            </p:column>
+                            <p:column>
+                                <p:commandButton icon="ui-icon-plusthick" title="Agregar email" >
+                                    <f:ajax render="emails" 
+                                            execute="email" 
+                                            listener="#{asociacionBean.cargarEmail}"></f:ajax>
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:dataList value="#{asociacionBean.emails}"
+                                            id="emails" var="email">
+                                    #{email.email}
+                                </p:dataList>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+
                     <h:outputLabel value="* Status:" for="status" />
                     <p:selectOneMenu id="status" value="#{clubBean.selected.status}"
                                      converter= "javax.faces.Integer"

@@ -78,4 +78,17 @@ public class CiudadFacade extends AbstractFacade<Ciudad> {
         return ciudad;
 
     }
+        public void persist(Object object) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(object);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            logger.debug("Error en Ciudad Facade ",e.getMessage());
+            em.getTransaction().rollback();
+        } finally {
+            em.close();
+        }
+    }
 }
