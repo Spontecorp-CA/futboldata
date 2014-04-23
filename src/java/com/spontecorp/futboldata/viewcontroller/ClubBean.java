@@ -14,6 +14,7 @@ import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 
@@ -54,6 +55,22 @@ public class ClubBean implements Serializable {
         controllerClub = new ClubFacade();
         controllerCiudad = new CiudadFacade();
         controllerPais = new PaisFacade();
+    }
+
+    public List<Email> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
+    }
+
+    public List<Telefono> getTelefonos() {
+        return telefonos;
+    }
+
+    public void setTelefonos(List<Telefono> telefonos) {
+        this.telefonos = telefonos;
     }
 
     public Club getClub() {
@@ -128,6 +145,17 @@ public class ClubBean implements Serializable {
         return items;
     }
 
+    public void cargarTelefono() {
+        telefonos.add(telefono);
+        telefono = new Telefono();
+
+    }
+
+    public void cargarEmail() {
+        emails.add(email);
+        email = new Email();
+    }
+
     public void recreateModel() {
         items = null;
         club = null;
@@ -138,10 +166,16 @@ public class ClubBean implements Serializable {
     }
 
     public String prepareCreate() {
+        telefono = new Telefono();
+        email = new Email();
+        telefonos = new ArrayList<>();
+        emails = new ArrayList<>();
         direccion = new Direccion();
+        direccion.setTelefonoCollection(telefonos);
+        direccion.setEmailCollection(emails);
         club = new Club();
         club.setDireccionId(direccion);
-    
+
         return "create";
     }
 
@@ -191,17 +225,4 @@ public class ClubBean implements Serializable {
         }
     }
 
-//    public void persist(Object object) {
-//        EntityManager em = emf.createEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            em.persist(object);
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            em.getTransaction().rollback();
-//        } finally {
-//            em.close();
-//        }
-//    }
 }

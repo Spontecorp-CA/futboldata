@@ -43,7 +43,7 @@
 
                     <h:outputLabel value="* Pais:" for="pais"/>
                     <p:selectOneMenu id="pais"                                    
-                                     value="#{asociacionBean.pais}"
+                                     value="#{clubBean.pais}"
                                      style="width: 250px"
                                      panelStyle="width:250px"
                                      required="true"
@@ -78,7 +78,7 @@
                         <p:row>
                             <p:column>
                                 <p:inputMask id="telefono" 
-                                             value="#{asociacionBean.telefono.telefono}"
+                                             value="#{clubBean.telefono.telefono}"
                                              required="true" 
                                              requiredMessage="Debe colocar un teléfono"
                                              style="width: 250px"
@@ -86,7 +86,7 @@
                             </p:column>
                             <p:column>
                                 <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
-                                    <f:ajax listener="#{asociacionBean.cargarTelefono}" 
+                                    <f:ajax listener="#{clubBean.cargarTelefono}" 
                                             execute="telefono" render="telefonos"/>
                                 </p:commandButton>
                             </p:column>
@@ -95,7 +95,7 @@
                             <p:column colspan="2">
                                 <p:dataList id="telefonos" 
                                             var="telefono" 
-                                            value="#{asociacionBean.telefonos}">
+                                            value="#{clubBean.telefonos}">
                                     #{telefono.telefono}
                                 </p:dataList>
                             </p:column>
@@ -108,7 +108,7 @@
                         <p:row>
                             <p:column>
                                 <p:inputText id="email" 
-                                             value="#{asociacionBean.email.email}"
+                                             value="#{clubBean.email.email}"
                                              validatorMessage="Email inválido"
                                              style="width: 250px">
                                     <f:validateRegex
@@ -119,13 +119,13 @@
                                 <p:commandButton icon="ui-icon-plusthick" title="Agregar email" >
                                     <f:ajax render="emails" 
                                             execute="email" 
-                                            listener="#{asociacionBean.cargarEmail}"></f:ajax>
+                                            listener="#{clubBean.cargarEmail}"></f:ajax>
                                 </p:commandButton>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column colspan="2">
-                                <p:dataList value="#{asociacionBean.emails}"
+                                <p:dataList value="#{clubBean.emails}"
                                             id="emails" var="email">
                                     #{email.email}
                                 </p:dataList>
