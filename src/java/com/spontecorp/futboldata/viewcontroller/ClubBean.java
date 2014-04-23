@@ -47,7 +47,9 @@ public class ClubBean implements Serializable {
 
     private SelectItem[] ciudades;
     private List<Email> emails = null;
+    private List<Email> emailEliminar = null;
     private List<Telefono> telefonos = null;
+    private List<Telefono> telefonoEliminar = null;
     private static final Logger logger = LoggerFactory.getLogger(ClubBean.class);
 
     private final CiudadFacade controllerCiudad;
@@ -146,7 +148,7 @@ public class ClubBean implements Serializable {
         }
         return club;
     }
-    
+
     protected void setEmbeddableKeys() {
         direccion.setTelefonoCollection(telefonos);
         direccion.setEmailCollection(emails);
@@ -158,6 +160,8 @@ public class ClubBean implements Serializable {
         email = new Email();
         telefonos = new ArrayList<>();
         emails = new ArrayList<>();
+        telefonoEliminar = new ArrayList<>();
+        emailEliminar = new ArrayList<>();
         direccion = new Direccion();
     }
 
@@ -178,6 +182,55 @@ public class ClubBean implements Serializable {
         emails.add(email);
         email = new Email();
     }
+//Se elimina si en la pantalla Edit funciona con el cargarNormal
+
+    public void cargarTelefonoEdit() {
+        telefonos.add(telefono);
+        telefono = new Telefono();
+    }
+//Se elimina si en la pantalla Edit funciona con el cargarNormal
+
+    public void cargarEmailEdit() {
+        emails.add(email);
+        email = new Email();
+    }
+
+    public void eliminarTelefono(Telefono telefono) {
+
+        logger.debug("El numero telfono: " + telefono.getTelefono(), AsociacionBean.class);
+        if (telefonos.remove(telefono)) {
+            telefonoEliminar.add(telefono);
+            for (Telefono tlf : telefonoEliminar) {
+                logger.debug("Va a eliminar a: " + tlf.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
+
+    public void eliminarEmail(Email email) {
+
+        if (emails.remove(email)) {
+            emailEliminar.add(email);
+            for (Email eml : emailEliminar) {
+                logger.debug("Va a eliminar a: " + eml.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
+
+    public List<Telefono> getTelefonos(Direccion direccion) {
+        telefonos = controllerDireccion.findListTelefonoxDireaccion(direccion);
+        return telefonos;
+
+    }
+
+    public List<Email> getEmails(Direccion direccion) {
+        emails = controllerDireccion.findListEmailxDireaccion(direccion);
+        return emails;
+
+    }
 
     public void recreateModel() {
         items = null;
@@ -189,23 +242,20 @@ public class ClubBean implements Serializable {
     }
 
     public String prepareCreate() {
-//        telefono = new Telefono();
-//        email = new Email();
-//        telefonos = new ArrayList<>();
-//        emails = new ArrayList<>();
-//        direccion = new Direccion();
-//        direccion.setTelefonoCollection(telefonos);
-//        direccion.setEmailCollection(emails);
-//        club = new Club();
-//        club.setDireccionId(direccion);
+
         club = new Club();
         initializeEmbeddableKey();
-        setEmbeddableKeys();
+
         return "create";
     }
 
     public String prepareEdit() {
+        initializeEmbeddableKey();
         club = (Club) getItems().getRowData();
+        telefonos = getTelefonos(club.getDireccionId());
+        emails = getEmails(club.getDireccionId());
+        ciudadAvailable(club.getDireccionId().getCiudadId().getPaisId());
+        
         return "edit";
     }
 
@@ -224,15 +274,14 @@ public class ClubBean implements Serializable {
                 return null;
             } else {
                 controllerDireccion.create(direccion);
-                for(Telefono phone : telefonos){
+                for (Telefono phone : telefonos) {
                     phone.setDireccionId(direccion);
                     controllerTelefono.create(phone);
                 }
-                for(Email mail : emails){
+                for (Email mail : emails) {
                     mail.setDireccionId(direccion);
                     controllerEmail.create(mail);
-                }       
-                setEmbeddableKeys();
+                }
                 club.setDireccionId(direccion);
                 controllerClub.create(club);
                 Util.addSuccessMessage("Categoría creada con éxito");

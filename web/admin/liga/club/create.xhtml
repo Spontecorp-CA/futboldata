@@ -55,7 +55,7 @@
                     <h:outputLabel value="* Ciudad:" for="ciudad"/>
 
                     <p:selectOneMenu id="ciudad" 
-                                     value="#{clubBean.selected.direccionId.ciudadId}"
+                                     value="#{clubBean.direccion.ciudadId}"
                                      style="width: 250px"
                                      panelStyle="width:250px"
                                      required="true"
@@ -64,13 +64,17 @@
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Direccion" for="direccion"/>
-                    <p:inputText id="direccion" value="#{clubBean.selected.direccionId.direccion}"
+                    <p:inputText id="direccion" value="#{clubBean.direccion.direccion}"
                                  required="true" requiredMessage="Debe colocar la Direccion"
                                  style="width: 250px"/>
 
                     <h:outputLabel value="Pagina Web" for="paginaW"/>
-                    <p:inputText id="paginaW" value="#{clubBean.selected.direccionId.paginaWeb}"
+                    <p:inputText id="paginaW" value="#{clubBean.direccion.paginaWeb}"
                                  style="width: 250px"/>
+
+                    <h:outputLabel value="Historia del Club" for="historia"/>
+                    <p:inputTextarea id="historia" value="#{clubBean.selected.historia}"
+                                     style="width: 250px"/>
 
 
                     <h:outputLabel value="* Teléfonos:" for="phones"/>
