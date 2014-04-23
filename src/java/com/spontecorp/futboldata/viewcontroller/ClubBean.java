@@ -11,7 +11,10 @@ import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
+import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
+import com.spontecorp.futboldata.jpacontroller.EmailFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
+import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,11 +53,17 @@ public class ClubBean implements Serializable {
     private final CiudadFacade controllerCiudad;
     private final PaisFacade controllerPais;
     private final ClubFacade controllerClub;
+    private final DireccionFacade controllerDireccion;
+    private final TelefonoFacade controllerTelefono;
+    private final EmailFacade controllerEmail;
 
     public ClubBean() {
         controllerClub = new ClubFacade();
         controllerCiudad = new CiudadFacade();
         controllerPais = new PaisFacade();
+        controllerDireccion = new DireccionFacade();
+        controllerTelefono = new TelefonoFacade();
+        controllerEmail = new EmailFacade();
     }
 
     public List<Email> getEmails() {
@@ -131,11 +140,25 @@ public class ClubBean implements Serializable {
 
     public Club getSelected() {
         if (club == null) {
+            club = new Club();
             direccion = new Direccion();
             club.setDireccionId(direccion);
-            club = new Club();
         }
         return club;
+    }
+    
+    protected void setEmbeddableKeys() {
+        direccion.setTelefonoCollection(telefonos);
+        direccion.setEmailCollection(emails);
+        club.setDireccionId(direccion);
+    }
+
+    protected void initializeEmbeddableKey() {
+        telefono = new Telefono();
+        email = new Email();
+        telefonos = new ArrayList<>();
+        emails = new ArrayList<>();
+        direccion = new Direccion();
     }
 
     public DataModel getItems() {
@@ -166,16 +189,18 @@ public class ClubBean implements Serializable {
     }
 
     public String prepareCreate() {
-        telefono = new Telefono();
-        email = new Email();
-        telefonos = new ArrayList<>();
-        emails = new ArrayList<>();
-        direccion = new Direccion();
-        direccion.setTelefonoCollection(telefonos);
-        direccion.setEmailCollection(emails);
+//        telefono = new Telefono();
+//        email = new Email();
+//        telefonos = new ArrayList<>();
+//        emails = new ArrayList<>();
+//        direccion = new Direccion();
+//        direccion.setTelefonoCollection(telefonos);
+//        direccion.setEmailCollection(emails);
+//        club = new Club();
+//        club.setDireccionId(direccion);
         club = new Club();
-        club.setDireccionId(direccion);
-
+        initializeEmbeddableKey();
+        setEmbeddableKeys();
         return "create";
     }
 
@@ -198,6 +223,17 @@ public class ClubBean implements Serializable {
                 Util.addErrorMessage("Club ya existente, coloque otro");
                 return null;
             } else {
+                controllerDireccion.create(direccion);
+                for(Telefono phone : telefonos){
+                    phone.setDireccionId(direccion);
+                    controllerTelefono.create(phone);
+                }
+                for(Email mail : emails){
+                    mail.setDireccionId(direccion);
+                    controllerEmail.create(mail);
+                }       
+                setEmbeddableKeys();
+                club.setDireccionId(direccion);
                 controllerClub.create(club);
                 Util.addSuccessMessage("Categoría creada con éxito");
                 recreateModel();
