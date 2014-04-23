@@ -102,24 +102,6 @@ public class Ciudad implements Serializable {
         this.localidadCollection = localidadCollection;
     }
 
-    @XmlTransient
-    public Collection<Direccion> getDireccionCollection() {
-        return direccionCollection;
-    }
-
-    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
-        this.direccionCollection = direccionCollection;
-    }
-
-    @XmlTransient
-    public Collection<Localidad> getLocalidadCollection() {
-        return localidadCollection;
-    }
-
-    public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
-        this.localidadCollection = localidadCollection;
-    }
-
     public Pais getPaisId() {
         return paisId;
     }
