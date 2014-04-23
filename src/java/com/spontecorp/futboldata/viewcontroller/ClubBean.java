@@ -300,6 +300,31 @@ public class ClubBean implements Serializable {
                 Util.addErrorMessage("Club no existente, hay un error");
                 return null;
             } else {
+                                for (Telefono telefonoEditar : telefonos) {
+                    if (controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null) {
+                        controllerTelefono.edit(telefonoEditar);
+                    } else {
+                        telefonoEditar.setDireccionId(club.getDireccionId());
+                        controllerTelefono.create(telefonoEditar);
+                    }
+                }
+
+                for (Email emailEditar : emails) {
+                    if (controllerEmail.findEmail(emailEditar.getEmail()) != null) {
+                        controllerEmail.edit(emailEditar);
+                    } else {
+                        emailEditar.setDireccionId(club.getDireccionId());
+                        controllerEmail.create(emailEditar);
+
+                    }
+                }
+
+                for (Email emailEli : emailEliminar) {
+                    controllerEmail.remove(emailEli);
+                }
+                for (Telefono telefonoEli : telefonoEliminar) {
+                    controllerTelefono.remove(telefonoEli);
+                }
                 controllerClub.edit(club);
                 Util.addSuccessMessage("Categoría editada con éxito");
                 return prepareCreate();
