@@ -64,7 +64,7 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
                 <p:commandButton actionListener="#{usuarioBean.create}" value="Guardar" 
-                                 update="display,:UserListForm:usuarios" 
+                                 update="display,:UserListForm:usuarios,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'UserCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="UserCreateDialog.hide()"/>
             </h:panelGroup>

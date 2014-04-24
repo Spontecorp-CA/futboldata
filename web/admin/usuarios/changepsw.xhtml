@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+                    
+    <p:dialog id="ChangePswDlg" widgetVar="ChangePswDialog" modal="true" 
+              resizable="false" appendTo="@(body)" header="Cambiar Password">
+        <h:form id="ChangePswForm">
+            <h:panelGroup id="display">
+                <h:panelGrid columns="2" rendered="#{usuarioBean.selected != null}">
+                    <h:outputLabel value="* Usuario:" for="usuario"/>
+                    <h:outputText id="usuario" value="#{usuarioBean.selected.usuario}"/>
+                    <h:outputLabel value="* Password:" for="password"/>
+                    <p:password id="password" value="#{usuarioBean.selected.password}"
+                                style="width: 250px" match="password2"
+                                required="true"
+                                requiredMessage="Debe colocar el password"/>
+                    <h:outputLabel value="* Repita el Password:" for="password2"/>
+                    <p:password id="password2" value="#{usuarioBean.selected.password}"
+                                style="width: 250px"
+                                required="true"/>
+                </h:panelGrid>
+                <p:commandButton actionListener="#{usuarioBean.edit}" 
+                                 value="OK" update="display,:UserListForm:usuarios,:growlAdmin" 
+                                 oncomplete="handleSubmit(args, 'ChangePswDialog');"/>
+                <p:commandButton value="Cancelar" onclick="ChangePswDialog.hide()"/>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+</ui:composition>
+
