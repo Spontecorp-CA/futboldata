@@ -56,7 +56,7 @@ public class Arbitro implements Serializable {
     @ManyToMany
     private Collection<Premio> premioCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona personaId;
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne

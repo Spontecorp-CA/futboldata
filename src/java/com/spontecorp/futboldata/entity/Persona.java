@@ -101,7 +101,7 @@ public class Persona implements Serializable {
     @OneToMany(mappedBy = "personaId")
     private Collection<Imagen> imagenCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Direccion direccionId;
 
     public Persona() {
