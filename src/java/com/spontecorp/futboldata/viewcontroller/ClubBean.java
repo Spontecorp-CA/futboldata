@@ -11,9 +11,13 @@ import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
+import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
+import com.spontecorp.futboldata.jpacontroller.EmailFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
+import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 
@@ -43,17 +47,41 @@ public class ClubBean implements Serializable {
 
     private SelectItem[] ciudades;
     private List<Email> emails = null;
+    private List<Email> emailEliminar = null;
     private List<Telefono> telefonos = null;
+    private List<Telefono> telefonoEliminar = null;
     private static final Logger logger = LoggerFactory.getLogger(ClubBean.class);
 
     private final CiudadFacade controllerCiudad;
     private final PaisFacade controllerPais;
     private final ClubFacade controllerClub;
+    private final DireccionFacade controllerDireccion;
+    private final TelefonoFacade controllerTelefono;
+    private final EmailFacade controllerEmail;
 
     public ClubBean() {
         controllerClub = new ClubFacade();
         controllerCiudad = new CiudadFacade();
         controllerPais = new PaisFacade();
+        controllerDireccion = new DireccionFacade();
+        controllerTelefono = new TelefonoFacade();
+        controllerEmail = new EmailFacade();
+    }
+
+    public List<Email> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
+    }
+
+    public List<Telefono> getTelefonos() {
+        return telefonos;
+    }
+
+    public void setTelefonos(List<Telefono> telefonos) {
+        this.telefonos = telefonos;
     }
 
     public Club getClub() {
@@ -114,11 +142,27 @@ public class ClubBean implements Serializable {
 
     public Club getSelected() {
         if (club == null) {
+            club = new Club();
             direccion = new Direccion();
             club.setDireccionId(direccion);
-            club = new Club();
         }
         return club;
+    }
+
+    protected void setEmbeddableKeys() {
+        direccion.setTelefonoCollection(telefonos);
+        direccion.setEmailCollection(emails);
+        club.setDireccionId(direccion);
+    }
+
+    protected void initializeEmbeddableKey() {
+        telefono = new Telefono();
+        email = new Email();
+        telefonos = new ArrayList<>();
+        emails = new ArrayList<>();
+        telefonoEliminar = new ArrayList<>();
+        emailEliminar = new ArrayList<>();
+        direccion = new Direccion();
     }
 
     public DataModel getItems() {
@@ -126,6 +170,54 @@ public class ClubBean implements Serializable {
             items = new ListDataModel(controllerClub.findAll());
         }
         return items;
+    }
+
+    public void cargarTelefono() {
+        telefonos.add(telefono);
+        telefono = new Telefono();
+
+    }
+
+    public void cargarEmail() {
+        emails.add(email);
+        email = new Email();
+    }
+
+    public void eliminarTelefono(Telefono telefono) {
+
+        logger.debug("El numero telfono: " + telefono.getTelefono(), AsociacionBean.class);
+        if (telefonos.remove(telefono)) {
+            telefonoEliminar.add(telefono);
+            for (Telefono tlf : telefonoEliminar) {
+                logger.debug("Va a eliminar a: " + tlf.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
+
+    public void eliminarEmail(Email email) {
+
+        if (emails.remove(email)) {
+            emailEliminar.add(email);
+            for (Email eml : emailEliminar) {
+                logger.debug("Va a eliminar a: " + eml.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
+
+    public List<Telefono> getTelefonos(Direccion direccion) {
+        telefonos = controllerDireccion.findListTelefonoxDireaccion(direccion);
+        return telefonos;
+
+    }
+
+    public List<Email> getEmails(Direccion direccion) {
+        emails = controllerDireccion.findListEmailxDireaccion(direccion);
+        return emails;
+
     }
 
     public void recreateModel() {
@@ -138,15 +230,20 @@ public class ClubBean implements Serializable {
     }
 
     public String prepareCreate() {
-        direccion = new Direccion();
+
         club = new Club();
-        club.setDireccionId(direccion);
-    
+        initializeEmbeddableKey();
+
         return "create";
     }
 
     public String prepareEdit() {
+        initializeEmbeddableKey();
         club = (Club) getItems().getRowData();
+        telefonos = getTelefonos(club.getDireccionId());
+        emails = getEmails(club.getDireccionId());
+        ciudadAvailable(club.getDireccionId().getCiudadId().getPaisId());
+        
         return "edit";
     }
 
@@ -164,6 +261,16 @@ public class ClubBean implements Serializable {
                 Util.addErrorMessage("Club ya existente, coloque otro");
                 return null;
             } else {
+                controllerDireccion.create(direccion);
+                for (Telefono phone : telefonos) {
+                    phone.setDireccionId(direccion);
+                    controllerTelefono.create(phone);
+                }
+                for (Email mail : emails) {
+                    mail.setDireccionId(direccion);
+                    controllerEmail.create(mail);
+                }
+                club.setDireccionId(direccion);
                 controllerClub.create(club);
                 Util.addSuccessMessage("Categoría creada con éxito");
                 recreateModel();
@@ -181,6 +288,31 @@ public class ClubBean implements Serializable {
                 Util.addErrorMessage("Club no existente, hay un error");
                 return null;
             } else {
+                                for (Telefono telefonoEditar : telefonos) {
+                    if (controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null) {
+                        controllerTelefono.edit(telefonoEditar);
+                    } else {
+                        telefonoEditar.setDireccionId(club.getDireccionId());
+                        controllerTelefono.create(telefonoEditar);
+                    }
+                }
+
+                for (Email emailEditar : emails) {
+                    if (controllerEmail.findEmail(emailEditar.getEmail()) != null) {
+                        controllerEmail.edit(emailEditar);
+                    } else {
+                        emailEditar.setDireccionId(club.getDireccionId());
+                        controllerEmail.create(emailEditar);
+
+                    }
+                }
+
+                for (Email emailEli : emailEliminar) {
+                    controllerEmail.remove(emailEli);
+                }
+                for (Telefono telefonoEli : telefonoEliminar) {
+                    controllerTelefono.remove(telefonoEli);
+                }
                 controllerClub.edit(club);
                 Util.addSuccessMessage("Categoría editada con éxito");
                 return prepareCreate();
@@ -191,17 +323,4 @@ public class ClubBean implements Serializable {
         }
     }
 
-//    public void persist(Object object) {
-//        EntityManager em = emf.createEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            em.persist(object);
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            em.getTransaction().rollback();
-//        } finally {
-//            em.close();
-//        }
-//    }
 }
