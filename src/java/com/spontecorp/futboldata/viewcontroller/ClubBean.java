@@ -182,18 +182,6 @@ public class ClubBean implements Serializable {
         emails.add(email);
         email = new Email();
     }
-//Se elimina si en la pantalla Edit funciona con el cargarNormal
-
-    public void cargarTelefonoEdit() {
-        telefonos.add(telefono);
-        telefono = new Telefono();
-    }
-//Se elimina si en la pantalla Edit funciona con el cargarNormal
-
-    public void cargarEmailEdit() {
-        emails.add(email);
-        email = new Email();
-    }
 
     public void eliminarTelefono(Telefono telefono) {
 
