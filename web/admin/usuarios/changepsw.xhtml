@@ -3,7 +3,6 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
                     
     <p:dialog id="ChangePswDlg" widgetVar="ChangePswDialog" modal="true" 
@@ -23,7 +22,7 @@
                                 style="width: 250px"
                                 required="true"/>
                 </h:panelGrid>
-                <p:commandButton actionListener="#{usuarioBean.edit}" 
+                <p:commandButton actionListener="#{usuarioBean.changePassword}" 
                                  value="OK" update="display,:UserListForm:usuarios,:growlAdmin" 
                                  oncomplete="handleSubmit(args, 'ChangePswDialog');"
                                  ajax="false"/>
