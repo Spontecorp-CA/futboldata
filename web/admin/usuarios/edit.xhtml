@@ -46,19 +46,6 @@
                                          requiredMessage="Debe seleccionar un perfil">                       
                             <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
                         </p:selectOneMenu>
-                        <h:outputLabel value="* Password:" for="password"
-                                       rendered="#{usuarioBean.changingPassword}"/>
-                        <p:password id="password" value="#{usuarioBean.selected.password}"
-                                    style="width: 250px" match="password2"
-                                    required="true"
-                                    requiredMessage="Debe colocar el password"
-                                    rendered="#{usuarioBean.changingPassword}"/>
-                        <h:outputLabel value="* Repita el Password:" for="password2"
-                                       rendered="#{usuarioBean.changingPassword}"/>
-                        <p:password id="password2" value="#{usuarioBean.selected.password}"
-                                    style="width: 250px"
-                                    required="true"
-                                    rendered="#{usuarioBean.changingPassword}"/>
                         <h:outputLabel value="* Status:" for="status" />
                         <p:selectOneMenu id="status" value="#{usuarioBean.selected.status}"
                                          converter= "javax.faces.Integer"

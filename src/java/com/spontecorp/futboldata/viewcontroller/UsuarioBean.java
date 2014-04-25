@@ -40,7 +40,6 @@ public class UsuarioBean implements Serializable {
     private final PerfilFacade controllerPerfil;
     //private final transient EntityManagerFactory emf; 
     //private final String contextPath;
-    private boolean changingPassword = false;
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
 
@@ -70,10 +69,6 @@ public class UsuarioBean implements Serializable {
         this.selected = selected;
     }
 
-    public boolean isChangingPassword() {
-        return changingPassword;
-    }
-
 //    public DataModel getItems() {
 //        if (items == null) {
 //            //items = new ListDataModel(controllerUser.findUserEntities());
@@ -95,7 +90,6 @@ public class UsuarioBean implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        changingPassword = false;
         return "/admin/usuarios/list";
     }
 
@@ -145,20 +139,28 @@ public class UsuarioBean implements Serializable {
         try {
             if(controllerUser.findUsuario(selected.getUsuario()) == null ){
                 Util.addErrorMessage("Usuario no existente");
-                //return prepareList();
             } else {
-                if(changingPassword){
-                    selected.setPassword(SecurePassword.encript(selected.getPassword()));
-                }
                 controllerUser.edit(selected);
                 Util.addSuccessMessage("Usuario editado con éxito");
-                changingPassword = false;
-                //return prepareList();
                 items = null;
             }
         } catch (Exception e) {
             Util.addErrorMessage(e, "Error al editar el usuario");
-            //return null;
+        }
+    }
+    
+    public void changePassword(){
+        try {
+            if (controllerUser.findUsuario(selected.getUsuario()) == null) {
+                Util.addErrorMessage("Usuario no existente");
+            } else {
+                selected.setPassword(SecurePassword.encript(selected.getPassword()));
+                controllerUser.edit(selected);
+                Util.addSuccessMessage("Password cambiado con éxito");
+                items = null;
+            }
+        } catch (Exception e) {
+            Util.addErrorMessage(e, "Error cambiando el password");
         }
     }
     
