@@ -11,7 +11,10 @@
                     <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
                                 action="#{usuarioBean.gotoAdminPage}"/>
                 </p:submenu>
-                
+                <p:submenu label="Localidades">
+                    <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
+                                action="#{ciudadBean.gotoCiudadPage}"/>
+                     </p:submenu>
                 <p:submenu label="Asociaciones">
                     <p:menuitem value="Configura Asociación" icon="ui-icon-document"
                                 action="#{asociacionBean.gotoAsociacionPage()}"/>
