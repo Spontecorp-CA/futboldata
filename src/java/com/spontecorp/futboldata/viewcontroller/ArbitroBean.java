@@ -69,6 +69,7 @@ public class ArbitroBean implements Serializable {
             persona = new Persona();
             persona.setDireccionId(direccion);
             arbitro.setPersonaId(persona);
+            arbitro.setAsociacionId(asociacion);            
             ciudades = null;
             redes = new ArrayList<>();
         }
@@ -142,8 +143,7 @@ public class ArbitroBean implements Serializable {
         
         arbitro.setPersonaId(persona);        
         arbitro.setAsociacionId(asociacion);
-        controllerArbitro.create(arbitro);
-       
+        controllerArbitro.create(arbitro);       
         return null;
     }
 

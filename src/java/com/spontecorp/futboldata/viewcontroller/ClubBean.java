@@ -233,6 +233,7 @@ public class ClubBean implements Serializable {
 
         club = new Club();
         initializeEmbeddableKey();
+        setEmbeddableKeys();
 
         return "create";
     }
