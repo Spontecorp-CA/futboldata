@@ -108,7 +108,7 @@ public class Perfil implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Perfil[ id=" + id + " ]";
+        return nombre;
     }
     
 }

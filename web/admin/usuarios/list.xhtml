@@ -1,76 +1,89 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../WEB-INF/templates/adminTemplate.xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns="http://www.w3.org/1999/xhtml">
     
-    <ui:define name="title">
-        Administración de Usuarios
-    </ui:define>
+    <ui:composition template="./../../WEB-INF/templates/adminTemplate.xhtml">
 
-    <ui:define name="content">
-        <h:form id="UserListForm">
+        <ui:define name="title">
+            Administración de Usuarios
+        </ui:define>
 
-            <p:fieldset style="width: 85%" legend="Lista de Usuarios">
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="crear usuario" action="#{usuarioBean.prepareCreate}"/>
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="#{usuarioBean.returnAdminPage}"
-                                         immediate="true"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <br />
-                <p:dataTable id="usuarios" var="item" value="#{usuarioBean.items}"
-                             rowKey="#{item.usuario}"
-                             selection="#{usuarioBean.selected}" selectionMode="single">
-                    
-                    <p:ajax event="rowSelect"   update="createButton"/>
-                    <p:ajax event="rowUnselect" update="createButton"/>
+        <ui:define name="content">
+            <h:form id="UserListForm">
 
-                    <p:column headerText="Apellido">
-                        <h:outputText value="#{item.apellido}"/>
-                    </p:column>
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{item.nombre}"/>
-                    </p:column>
-                    <p:column headerText="Usuario">
-                        <h:outputText value="#{item.usuario}"/>
-                    </p:column>
-                    <p:column headerText="Perfil">
-                        <h:outputText value="#{item.perfilId.nombre}"/>
-                    </p:column>
-                    <p:column headerText="Email">
-                        <h:outputText value="#{item.email}"/>
-                    </p:column>
-                    <p:column headerText="Teléfono">
-                        <h:outputText value="#{item.telefono}"/>
-                    </p:column>
-                    <p:column headerText="Status">
-                        <h:outputText value="#{item.status == 0?'INACTIVO':'ACTIVO'}"/>
-                    </p:column>
-                    <p:column headerText="Acciones">
-                        <p:commandLink value="Editar" action="#{usuarioBean.prepareEdit}" />
-                        &nbsp;
-                        <p:commandLink value="Cambiar Password" 
-                                       action="#{usuarioBean.preparePasswordChange}" />                       
-                    </p:column>
-                    
-                    <f:facet name="footer">
-                        <p:commandButton id="createButton" icon="ui-icon-plus"  
-                                         value="Crear" actionListener="#{usuarioBean.prepareCreate}" 
-                                         update=":UserCreateForm" 
-                                         oncomplete="PF('UserCreateDialog').show()"/>
-                        
-                    </f:facet>
-                </p:dataTable>
-            </p:fieldset>
-        </h:form>
-        <ui:include src="create2.xhtml"/>
-    </ui:define>
-    
-</ui:composition>
+                <p:fieldset style="width: 85%" legend="Lista de Usuarios">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                             value="Crear Usuario" 
+                                             actionListener="#{usuarioBean.prepareCreate}" 
+                                             update=":UserCreateForm" 
+                                             oncomplete="PF('UserCreateDialog').show()"/>
+                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                             value="Editar Usuario" 
+                                             update=":UserEditForm" 
+                                             oncomplete="PF('UserEditDialog').show()" 
+                                             disabled="#{empty usuarioBean.selected}"/>
+                            <p:commandButton id="changePswButton" icon="ui-icon-pencil" 
+                                             value="Cambiar Password" 
+                                             update=":ChangePswForm" 
+                                             oncomplete="PF('ChangePswDialog').show()" 
+                                             disabled="#{empty usuarioBean.selected}"/>
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Administración" action="#{usuarioBean.returnAdminPage}"
+                                             immediate="true"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <br />
+                    <p:dataTable id="usuarios" var="item" 
+                                 value="#{usuarioBean.items}"
+                                 rowKey="#{item.id}"
+                                 selectionMode="single" 
+                                 selection="#{usuarioBean.selected}" >
+
+                        <p:ajax event="rowSelect" update=":UserListForm:createButton :UserListForm:editButton 
+                                :UserListForm:changePswButton"/>
+                        <p:ajax event="rowUnselect" update=":UserListForm:createButton :UserListForm:editButton 
+                                :UserListForm:changePswButton"/>
+
+                        <p:column headerText="Apellido">
+                            <h:outputText value="#{item.apellido}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Usuario">
+                            <h:outputText value="#{item.usuario}"/>
+                        </p:column>
+                        <p:column headerText="Perfil">
+                            <h:outputText value="#{item.perfilId.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Email">
+                            <h:outputText value="#{item.email}"/>
+                        </p:column>
+                        <p:column headerText="Teléfono">
+                            <h:outputText value="#{item.telefono}"/>
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{item.status == 0?'INACTIVO':'ACTIVO'}"/>
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandLink value="Editar" action="#{usuarioBean.prepareEdit}" />
+                            &nbsp;
+                            <p:commandLink value="Cambiar Password" 
+                                           action="#{usuarioBean.preparePasswordChange}" />                       
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <ui:include src="create2.xhtml"/>
+            <ui:include src="edit2.xhtml"/>
+            <ui:include src="changepsw.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

@@ -5,10 +5,8 @@
 
 package com.spontecorp.futboldata.jpacontroller;
 
-import com.spontecorp.futboldata.utilities.Util;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /**
  *
@@ -17,7 +15,6 @@ import javax.persistence.EntityManagerFactory;
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
-    private EntityManagerFactory emf = Util.getEmf();
     
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
