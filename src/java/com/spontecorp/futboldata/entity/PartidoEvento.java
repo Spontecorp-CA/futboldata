@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "partido_evento")
@@ -41,15 +41,15 @@ public class PartidoEvento implements Serializable {
     @JoinColumn(name = "evento_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Evento evento;
-    @JoinColumn(name = "staff_id", referencedColumnName = "id")
-    @ManyToOne
-    private Staff staffId;
-    @JoinColumn(name = "jugador2_id", referencedColumnName = "id")
-    @ManyToOne
-    private Jugador jugador2Id;
     @JoinColumn(name = "jugador1_id", referencedColumnName = "id")
     @ManyToOne
     private Jugador jugador1Id;
+    @JoinColumn(name = "jugador2_id", referencedColumnName = "id")
+    @ManyToOne
+    private Jugador jugador2Id;
+    @JoinColumn(name = "staff_id", referencedColumnName = "id")
+    @ManyToOne
+    private Staff staffId;
 
     public PartidoEvento() {
     }
@@ -94,12 +94,12 @@ public class PartidoEvento implements Serializable {
         this.evento = evento;
     }
 
-    public Staff getStaffId() {
-        return staffId;
+    public Jugador getJugador1Id() {
+        return jugador1Id;
     }
 
-    public void setStaffId(Staff staffId) {
-        this.staffId = staffId;
+    public void setJugador1Id(Jugador jugador1Id) {
+        this.jugador1Id = jugador1Id;
     }
 
     public Jugador getJugador2Id() {
@@ -110,12 +110,12 @@ public class PartidoEvento implements Serializable {
         this.jugador2Id = jugador2Id;
     }
 
-    public Jugador getJugador1Id() {
-        return jugador1Id;
+    public Staff getStaffId() {
+        return staffId;
     }
 
-    public void setJugador1Id(Jugador jugador1Id) {
-        this.jugador1Id = jugador1Id;
+    public void setStaffId(Staff staffId) {
+        this.staffId = staffId;
     }
 
     @Override

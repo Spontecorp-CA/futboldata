@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "posicion")
@@ -43,10 +43,10 @@ public class Posicion implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(mappedBy = "posicionId")
-    private Collection<Jugador> jugadorCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "posicionId")
     private Collection<Convocado> convocadoCollection;
+    @OneToMany(mappedBy = "posicionId")
+    private Collection<Jugador> jugadorCollection;
 
     public Posicion() {
     }
@@ -72,21 +72,21 @@ public class Posicion implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Jugador> getJugadorCollection() {
-        return jugadorCollection;
-    }
-
-    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
-        this.jugadorCollection = jugadorCollection;
-    }
-
-    @XmlTransient
     public Collection<Convocado> getConvocadoCollection() {
         return convocadoCollection;
     }
 
     public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
         this.convocadoCollection = convocadoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
+    }
+
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
     }
 
     @Override

@@ -138,7 +138,7 @@
                         <h:outputLabel value="Redes Sociales" for="redSocial"/>
 
                         <p:selectOneMenu id="redSocial"
-
+                                         value="#{arbitroBean.tipoRedSocial}"
                                          style="width: 250px"
                                          panelStyle="width:250px">
                             <f:selectItems value="#{arbitroBean.redSocialAvailable}"/>
@@ -148,7 +148,7 @@
                             <p:row>
                                 <p:column>
                                     <p:inputText id="cuenta"
-                                                 value="#{arbitroBean.cuenta}"
+                                                 value="#{arbitroBean.redSocial.usuario}"
                                                  style="width: 250px"/>
                                 </p:column>
                                 <p:column>
@@ -163,7 +163,7 @@
                                     <p:dataList id="redes" 
                                                 var="redSocial" 
                                                 value="#{arbitroBean.redes}">
-                                        #{redSocial.nombre}: #{redSocial.url}
+                                        #{redSocial.tipoRedSocialId.url}/#{redSocial.usuario}
                                     </p:dataList>
                                 </p:column>
                             </p:row>

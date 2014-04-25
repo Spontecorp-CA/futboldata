@@ -5,8 +5,8 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.TipoArbitro;
+import com.spontecorp.futboldata.entity.TipoRedSocial;
 import com.spontecorp.futboldata.utilities.Util;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.slf4j.Logger;
@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
-public class TipoArbitroFacade extends AbstractFacade<TipoArbitro> {
+public class TipoRedSocialFacade extends AbstractFacade<TipoRedSocial> {
 
-    private static final Logger logger = LoggerFactory.getLogger(TipoArbitroFacade.class);
+    private static final Logger logger = LoggerFactory.getLogger(TipoRedSocialFacade.class);
 
-    public TipoArbitroFacade() {
-        super(TipoArbitro.class);
+    public TipoRedSocialFacade() {
+        super(TipoRedSocial.class);
     }
 
     @Override
@@ -29,19 +29,19 @@ public class TipoArbitroFacade extends AbstractFacade<TipoArbitro> {
         return Util.getEmf().createEntityManager();
     }
 
-    public TipoArbitro findTipoArbitro(String nombre) {
+    public TipoRedSocial findTipoRedSocial(String nombre) {
         EntityManager em = getEntityManager();
-        TipoArbitro tipoArbitro = null;
+        TipoRedSocial tipoRedSocial = null;
         try {
-            Query q = em.createNamedQuery("TipoArbitro.findByNombre", TipoArbitro.class);
+            Query q = em.createNamedQuery("TipoRedSocial.findByNombre", TipoRedSocial.class);
             q.setParameter("nombre", nombre);
-            tipoArbitro = (TipoArbitro) q.getSingleResult();
+            tipoRedSocial = (TipoRedSocial) q.getSingleResult();
         } catch (Exception e) {
-            logger.debug("Error encontrando ciudad: " + e.getLocalizedMessage());
+            logger.debug("Error encontrando Red Social: " + e.getLocalizedMessage());
         } finally {
             em.close();
         }
-        return tipoArbitro;
+        return tipoRedSocial;
 
     }
 }

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "imagen")
@@ -56,27 +56,27 @@ public class Imagen implements Serializable {
     private Integer isLogo;
     @Column(name = "status")
     private Integer status;
-    @JoinColumn(name = "persona_id", referencedColumnName = "id")
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
-    private Persona personaId;
+    private Asociacion asociacionId;
+    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
+    @ManyToOne
+    private Cancha canchaId;
     @JoinColumn(name = "patrocinante_id", referencedColumnName = "id")
     @ManyToOne
     private Patrocinante patrocinanteId;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne
     private Equipo equipoId;
-    @JoinColumn(name = "competicion_id", referencedColumnName = "id")
+    @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne
-    private Competicion competicionId;
+    private Persona personaId;
     @JoinColumn(name = "club_id", referencedColumnName = "id")
     @ManyToOne
     private Club clubId;
-    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
+    @JoinColumn(name = "competicion_id", referencedColumnName = "id")
     @ManyToOne
-    private Cancha canchaId;
-    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Asociacion asociacionId;
+    private Competicion competicionId;
 
     public Imagen() {
     }
@@ -133,12 +133,20 @@ public class Imagen implements Serializable {
         this.status = status;
     }
 
-    public Persona getPersonaId() {
-        return personaId;
+    public Asociacion getAsociacionId() {
+        return asociacionId;
     }
 
-    public void setPersonaId(Persona personaId) {
-        this.personaId = personaId;
+    public void setAsociacionId(Asociacion asociacionId) {
+        this.asociacionId = asociacionId;
+    }
+
+    public Cancha getCanchaId() {
+        return canchaId;
+    }
+
+    public void setCanchaId(Cancha canchaId) {
+        this.canchaId = canchaId;
     }
 
     public Patrocinante getPatrocinanteId() {
@@ -157,12 +165,12 @@ public class Imagen implements Serializable {
         this.equipoId = equipoId;
     }
 
-    public Competicion getCompeticionId() {
-        return competicionId;
+    public Persona getPersonaId() {
+        return personaId;
     }
 
-    public void setCompeticionId(Competicion competicionId) {
-        this.competicionId = competicionId;
+    public void setPersonaId(Persona personaId) {
+        this.personaId = personaId;
     }
 
     public Club getClubId() {
@@ -173,20 +181,12 @@ public class Imagen implements Serializable {
         this.clubId = clubId;
     }
 
-    public Cancha getCanchaId() {
-        return canchaId;
+    public Competicion getCompeticionId() {
+        return competicionId;
     }
 
-    public void setCanchaId(Cancha canchaId) {
-        this.canchaId = canchaId;
-    }
-
-    public Asociacion getAsociacionId() {
-        return asociacionId;
-    }
-
-    public void setAsociacionId(Asociacion asociacionId) {
-        this.asociacionId = asociacionId;
+    public void setCompeticionId(Competicion competicionId) {
+        this.competicionId = competicionId;
     }
 
     @Override

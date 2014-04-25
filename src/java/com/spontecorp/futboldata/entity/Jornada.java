@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "jornada")
@@ -46,11 +46,11 @@ public class Jornada implements Serializable {
     private Integer nombre;
     @Column(name = "actual")
     private Integer actual;
-    @OneToMany(mappedBy = "jornadaId")
-    private Collection<Partido> partidoCollection;
     @JoinColumn(name = "grupo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Grupo grupoId;
+    @OneToMany(mappedBy = "jornadaId")
+    private Collection<Partido> partidoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jornadaId")
     private Collection<Clasificacion> clasificacionCollection;
 
@@ -85,6 +85,14 @@ public class Jornada implements Serializable {
         this.actual = actual;
     }
 
+    public Grupo getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(Grupo grupoId) {
+        this.grupoId = grupoId;
+    }
+
     @XmlTransient
     public Collection<Partido> getPartidoCollection() {
         return partidoCollection;
@@ -92,14 +100,6 @@ public class Jornada implements Serializable {
 
     public void setPartidoCollection(Collection<Partido> partidoCollection) {
         this.partidoCollection = partidoCollection;
-    }
-
-    public Grupo getGrupoId() {
-        return grupoId;
-    }
-
-    public void setGrupoId(Grupo grupoId) {
-        this.grupoId = grupoId;
     }
 
     @XmlTransient

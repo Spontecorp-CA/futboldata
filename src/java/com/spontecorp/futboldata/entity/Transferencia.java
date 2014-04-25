@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "transferencia")
@@ -47,13 +47,13 @@ public class Transferencia implements Serializable {
     private Date fechaEgreso;
     @Column(name = "alta_baja")
     private Integer altaBaja;
-    @JoinColumn(name = "equipo_receptor_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Equipo equipo;
     @JoinColumn(name = "jugador_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Jugador jugador;
     @JoinColumn(name = "equipo_provedor_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Equipo equipo;
+    @JoinColumn(name = "equipo_receptor_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Equipo equipo1;
 
@@ -100,20 +100,20 @@ public class Transferencia implements Serializable {
         this.altaBaja = altaBaja;
     }
 
-    public Equipo getEquipo() {
-        return equipo;
-    }
-
-    public void setEquipo(Equipo equipo) {
-        this.equipo = equipo;
-    }
-
     public Jugador getJugador() {
         return jugador;
     }
 
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
+    }
+
+    public Equipo getEquipo() {
+        return equipo;
+    }
+
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
     }
 
     public Equipo getEquipo1() {

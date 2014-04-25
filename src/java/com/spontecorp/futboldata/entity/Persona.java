@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "persona")
@@ -88,21 +88,21 @@ public class Persona implements Serializable {
     @Size(max = 65535)
     @Column(name = "foto")
     private String foto;
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "personaId")
-    private Collection<RedSocial> redSocialCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Agente> agenteCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Staff> staffCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Jugador> jugadorCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Agente> agenteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Arbitro> arbitroCollection;
+    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Direccion direccionId;
     @OneToMany(mappedBy = "personaId")
     private Collection<Imagen> imagenCollection;
-    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Direccion direccionId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(mappedBy = "personaId")
+    private Collection<RedSocial> redSocialCollection;
 
     public Persona() {
     }
@@ -208,12 +208,12 @@ public class Persona implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RedSocial> getRedSocialCollection() {
-        return redSocialCollection;
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
     }
 
-    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
-        this.redSocialCollection = redSocialCollection;
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
     }
 
     @XmlTransient
@@ -226,30 +226,20 @@ public class Persona implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Staff> getStaffCollection() {
-        return staffCollection;
-    }
-
-    public void setStaffCollection(Collection<Staff> staffCollection) {
-        this.staffCollection = staffCollection;
-    }
-
-    @XmlTransient
-    public Collection<Jugador> getJugadorCollection() {
-        return jugadorCollection;
-    }
-
-    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
-        this.jugadorCollection = jugadorCollection;
-    }
-
-    @XmlTransient
     public Collection<Arbitro> getArbitroCollection() {
         return arbitroCollection;
     }
 
     public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
         this.arbitroCollection = arbitroCollection;
+    }
+
+    public Direccion getDireccionId() {
+        return direccionId;
+    }
+
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
 
     @XmlTransient
@@ -261,12 +251,22 @@ public class Persona implements Serializable {
         this.imagenCollection = imagenCollection;
     }
 
-    public Direccion getDireccionId() {
-        return direccionId;
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
     }
 
-    public void setDireccionId(Direccion direccionId) {
-        this.direccionId = direccionId;
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
+    @XmlTransient
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
+    }
+
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
     }
 
     @Override

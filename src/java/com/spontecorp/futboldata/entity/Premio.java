@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "premio")
@@ -52,18 +52,18 @@ public class Premio implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @ManyToMany(mappedBy = "premioCollection")
-    private Collection<Jugador> jugadorCollection;
+    private Collection<Equipo> equipoCollection;
     @ManyToMany(mappedBy = "premioCollection")
-    private Collection<Arbitro> arbitroCollection;
+    private Collection<Club> clubCollection;
+    @ManyToMany(mappedBy = "premioCollection")
+    private Collection<Jugador> jugadorCollection;
     @JoinTable(name = "staff_has_premio", joinColumns = {
         @JoinColumn(name = "premio_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "staff_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Staff> staffCollection;
     @ManyToMany(mappedBy = "premioCollection")
-    private Collection<Club> clubCollection;
-    @ManyToMany(mappedBy = "premioCollection")
-    private Collection<Equipo> equipoCollection;
+    private Collection<Arbitro> arbitroCollection;
 
     public Premio() {
     }
@@ -97,30 +97,12 @@ public class Premio implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Jugador> getJugadorCollection() {
-        return jugadorCollection;
+    public Collection<Equipo> getEquipoCollection() {
+        return equipoCollection;
     }
 
-    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
-        this.jugadorCollection = jugadorCollection;
-    }
-
-    @XmlTransient
-    public Collection<Arbitro> getArbitroCollection() {
-        return arbitroCollection;
-    }
-
-    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
-        this.arbitroCollection = arbitroCollection;
-    }
-
-    @XmlTransient
-    public Collection<Staff> getStaffCollection() {
-        return staffCollection;
-    }
-
-    public void setStaffCollection(Collection<Staff> staffCollection) {
-        this.staffCollection = staffCollection;
+    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
+        this.equipoCollection = equipoCollection;
     }
 
     @XmlTransient
@@ -133,12 +115,30 @@ public class Premio implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Equipo> getEquipoCollection() {
-        return equipoCollection;
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
     }
 
-    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
-        this.equipoCollection = equipoCollection;
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
+    }
+
+    @XmlTransient
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
+    }
+
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
+    @XmlTransient
+    public Collection<Arbitro> getArbitroCollection() {
+        return arbitroCollection;
+    }
+
+    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
+        this.arbitroCollection = arbitroCollection;
     }
 
     @Override

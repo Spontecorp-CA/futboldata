@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "equipo")
@@ -54,34 +54,36 @@ public class Equipo implements Serializable {
     @Size(max = 10)
     @Column(name = "abreviacion")
     private String abreviacion;
-    @JoinTable(name = "equipo_titulo", joinColumns = {
-        @JoinColumn(name = "equipo_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<Titulo> tituloCollection;
     @JoinTable(name = "equipo_premio", joinColumns = {
         @JoinColumn(name = "equipo_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "premio_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Premio> premioCollection;
+    @JoinTable(name = "equipo_titulo", joinColumns = {
+        @JoinColumn(name = "equipo_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Titulo> tituloCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
     private Collection<Convocatoria> convocatoriaCollection;
     @OneToMany(mappedBy = "equipoId")
-    private Collection<RedSocial> redSocialCollection;
-    @OneToMany(mappedBy = "equipoVisitanteId")
-    private Collection<Partido> partidoCollection;
+    private Collection<Jugador> jugadorCollection;
     @OneToMany(mappedBy = "equipoLocalId")
+    private Collection<Partido> partidoCollection;
+    @OneToMany(mappedBy = "equipoVisitanteId")
     private Collection<Partido> partidoCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo")
+    private Collection<Transferencia> transferenciaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo1")
+    private Collection<Transferencia> transferenciaCollection1;
     @OneToMany(mappedBy = "equipoId")
     private Collection<Contrato> contratoCollection;
     @OneToMany(mappedBy = "equipoId")
+    private Collection<Imagen> imagenCollection;
+    @OneToMany(mappedBy = "equipoId")
     private Collection<Staff> staffCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
-    private Collection<Clasificacion> clasificacionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo")
     private Collection<EquipoCancha> equipoCanchaCollection;
-    @OneToMany(mappedBy = "equipoId")
-    private Collection<Jugador> jugadorCollection;
     @JoinColumn(name = "club_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Club clubId;
@@ -89,11 +91,9 @@ public class Equipo implements Serializable {
     @ManyToOne(optional = false)
     private Categoria categoriaId;
     @OneToMany(mappedBy = "equipoId")
-    private Collection<Imagen> imagenCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo")
-    private Collection<Transferencia> transferenciaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo1")
-    private Collection<Transferencia> transferenciaCollection1;
+    private Collection<RedSocial> redSocialCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<Clasificacion> clasificacionCollection;
 
     public Equipo() {
     }
@@ -135,21 +135,21 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Titulo> getTituloCollection() {
-        return tituloCollection;
-    }
-
-    public void setTituloCollection(Collection<Titulo> tituloCollection) {
-        this.tituloCollection = tituloCollection;
-    }
-
-    @XmlTransient
     public Collection<Premio> getPremioCollection() {
         return premioCollection;
     }
 
     public void setPremioCollection(Collection<Premio> premioCollection) {
         this.premioCollection = premioCollection;
+    }
+
+    @XmlTransient
+    public Collection<Titulo> getTituloCollection() {
+        return tituloCollection;
+    }
+
+    public void setTituloCollection(Collection<Titulo> tituloCollection) {
+        this.tituloCollection = tituloCollection;
     }
 
     @XmlTransient
@@ -162,12 +162,12 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RedSocial> getRedSocialCollection() {
-        return redSocialCollection;
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
     }
 
-    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
-        this.redSocialCollection = redSocialCollection;
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
     }
 
     @XmlTransient
@@ -189,12 +189,39 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Transferencia> getTransferenciaCollection() {
+        return transferenciaCollection;
+    }
+
+    public void setTransferenciaCollection(Collection<Transferencia> transferenciaCollection) {
+        this.transferenciaCollection = transferenciaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Transferencia> getTransferenciaCollection1() {
+        return transferenciaCollection1;
+    }
+
+    public void setTransferenciaCollection1(Collection<Transferencia> transferenciaCollection1) {
+        this.transferenciaCollection1 = transferenciaCollection1;
+    }
+
+    @XmlTransient
     public Collection<Contrato> getContratoCollection() {
         return contratoCollection;
     }
 
     public void setContratoCollection(Collection<Contrato> contratoCollection) {
         this.contratoCollection = contratoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
+    }
+
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
     }
 
     @XmlTransient
@@ -207,30 +234,12 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Clasificacion> getClasificacionCollection() {
-        return clasificacionCollection;
-    }
-
-    public void setClasificacionCollection(Collection<Clasificacion> clasificacionCollection) {
-        this.clasificacionCollection = clasificacionCollection;
-    }
-
-    @XmlTransient
     public Collection<EquipoCancha> getEquipoCanchaCollection() {
         return equipoCanchaCollection;
     }
 
     public void setEquipoCanchaCollection(Collection<EquipoCancha> equipoCanchaCollection) {
         this.equipoCanchaCollection = equipoCanchaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Jugador> getJugadorCollection() {
-        return jugadorCollection;
-    }
-
-    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
-        this.jugadorCollection = jugadorCollection;
     }
 
     public Club getClubId() {
@@ -250,30 +259,21 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Imagen> getImagenCollection() {
-        return imagenCollection;
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
     }
 
-    public void setImagenCollection(Collection<Imagen> imagenCollection) {
-        this.imagenCollection = imagenCollection;
-    }
-
-    @XmlTransient
-    public Collection<Transferencia> getTransferenciaCollection() {
-        return transferenciaCollection;
-    }
-
-    public void setTransferenciaCollection(Collection<Transferencia> transferenciaCollection) {
-        this.transferenciaCollection = transferenciaCollection;
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
     }
 
     @XmlTransient
-    public Collection<Transferencia> getTransferenciaCollection1() {
-        return transferenciaCollection1;
+    public Collection<Clasificacion> getClasificacionCollection() {
+        return clasificacionCollection;
     }
 
-    public void setTransferenciaCollection1(Collection<Transferencia> transferenciaCollection1) {
-        this.transferenciaCollection1 = transferenciaCollection1;
+    public void setClasificacionCollection(Collection<Clasificacion> clasificacionCollection) {
+        this.clasificacionCollection = clasificacionCollection;
     }
 
     @Override

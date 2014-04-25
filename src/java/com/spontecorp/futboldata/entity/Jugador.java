@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "jugador")
@@ -58,37 +58,37 @@ public class Jugador implements Serializable {
     private Double peso;
     @Column(name = "status")
     private Integer status;
-    @JoinTable(name = "jugador_premio", joinColumns = {
-        @JoinColumn(name = "jugador_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "premio_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<Premio> premioCollection;
     @JoinTable(name = "jugador_titulo", joinColumns = {
         @JoinColumn(name = "jugador_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Titulo> tituloCollection;
-    @OneToMany(mappedBy = "jugadorId")
-    private Collection<Contrato> contratoCollection;
-    @JoinColumn(name = "posicion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Posicion posicionId;
+    @JoinTable(name = "jugador_premio", joinColumns = {
+        @JoinColumn(name = "jugador_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "premio_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Premio> premioCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
+    private Collection<Convocado> convocadoCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Persona personaId;
+    @JoinColumn(name = "posicion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Posicion posicionId;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne
     private Equipo equipoId;
     @JoinColumn(name = "agente_id", referencedColumnName = "id")
     @ManyToOne
     private Agente agenteId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
-    private Collection<Convocado> convocadoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugador")
     private Collection<Transferencia> transferenciaCollection;
-    @OneToMany(mappedBy = "jugador2Id")
-    private Collection<PartidoEvento> partidoEventoCollection;
+    @OneToMany(mappedBy = "jugadorId")
+    private Collection<Contrato> contratoCollection;
     @OneToMany(mappedBy = "jugador1Id")
+    private Collection<PartidoEvento> partidoEventoCollection;
+    @OneToMany(mappedBy = "jugador2Id")
     private Collection<PartidoEvento> partidoEventoCollection1;
 
     public Jugador() {
@@ -147,15 +147,6 @@ public class Jugador implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Premio> getPremioCollection() {
-        return premioCollection;
-    }
-
-    public void setPremioCollection(Collection<Premio> premioCollection) {
-        this.premioCollection = premioCollection;
-    }
-
-    @XmlTransient
     public Collection<Titulo> getTituloCollection() {
         return tituloCollection;
     }
@@ -165,20 +156,21 @@ public class Jugador implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Contrato> getContratoCollection() {
-        return contratoCollection;
+    public Collection<Premio> getPremioCollection() {
+        return premioCollection;
     }
 
-    public void setContratoCollection(Collection<Contrato> contratoCollection) {
-        this.contratoCollection = contratoCollection;
+    public void setPremioCollection(Collection<Premio> premioCollection) {
+        this.premioCollection = premioCollection;
     }
 
-    public Posicion getPosicionId() {
-        return posicionId;
+    @XmlTransient
+    public Collection<Convocado> getConvocadoCollection() {
+        return convocadoCollection;
     }
 
-    public void setPosicionId(Posicion posicionId) {
-        this.posicionId = posicionId;
+    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
+        this.convocadoCollection = convocadoCollection;
     }
 
     public Persona getPersonaId() {
@@ -187,6 +179,14 @@ public class Jugador implements Serializable {
 
     public void setPersonaId(Persona personaId) {
         this.personaId = personaId;
+    }
+
+    public Posicion getPosicionId() {
+        return posicionId;
+    }
+
+    public void setPosicionId(Posicion posicionId) {
+        this.posicionId = posicionId;
     }
 
     public Equipo getEquipoId() {
@@ -206,21 +206,21 @@ public class Jugador implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Convocado> getConvocadoCollection() {
-        return convocadoCollection;
-    }
-
-    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
-        this.convocadoCollection = convocadoCollection;
-    }
-
-    @XmlTransient
     public Collection<Transferencia> getTransferenciaCollection() {
         return transferenciaCollection;
     }
 
     public void setTransferenciaCollection(Collection<Transferencia> transferenciaCollection) {
         this.transferenciaCollection = transferenciaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Contrato> getContratoCollection() {
+        return contratoCollection;
+    }
+
+    public void setContratoCollection(Collection<Contrato> contratoCollection) {
+        this.contratoCollection = contratoCollection;
     }
 
     @XmlTransient

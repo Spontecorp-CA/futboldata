@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "direccion")
@@ -56,26 +56,23 @@ public class Direccion implements Serializable {
     private Integer latitud;
     @Column(name = "longitud")
     private Integer longitud;
-    @JoinColumn(name = "localidad_id", referencedColumnName = "id")
-    @ManyToOne
-    private Localidad localidadId;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Asociacion> asociacionCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Club> clubCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
+    private Collection<Telefono> telefonoCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Competicion> competicionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
+    private Collection<Email> emailCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Persona> personaCollection;
     @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
     @ManyToOne
     private Ciudad ciudadId;
     @OneToMany(mappedBy = "direccionId")
-    private Collection<Competicion> competicionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
-    private Collection<Telefono> telefonoCollection;
-    @OneToMany(mappedBy = "direccionId")
-    private Collection<Asociacion> asociacionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
-    private Collection<Email> emailCollection;
-    @OneToMany(mappedBy = "direccionId")
     private Collection<Cancha> canchaCollection;
-    @OneToMany(mappedBy = "direccionId")
-    private Collection<Club> clubCollection;
-    @OneToMany(mappedBy = "direccionId")
-    private Collection<Persona> personaCollection;
 
     public Direccion() {
     }
@@ -124,40 +121,6 @@ public class Direccion implements Serializable {
         this.longitud = longitud;
     }
 
-    public Localidad getLocalidadId() {
-        return localidadId;
-    }
-
-    public void setLocalidadId(Localidad localidadId) {
-        this.localidadId = localidadId;
-    }
-
-    public Ciudad getCiudadId() {
-        return ciudadId;
-    }
-
-    public void setCiudadId(Ciudad ciudadId) {
-        this.ciudadId = ciudadId;
-    }
-
-    @XmlTransient
-    public Collection<Competicion> getCompeticionCollection() {
-        return competicionCollection;
-    }
-
-    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
-        this.competicionCollection = competicionCollection;
-    }
-
-    @XmlTransient
-    public Collection<Telefono> getTelefonoCollection() {
-        return telefonoCollection;
-    }
-
-    public void setTelefonoCollection(Collection<Telefono> telefonoCollection) {
-        this.telefonoCollection = telefonoCollection;
-    }
-
     @XmlTransient
     public Collection<Asociacion> getAsociacionCollection() {
         return asociacionCollection;
@@ -165,24 +128,6 @@ public class Direccion implements Serializable {
 
     public void setAsociacionCollection(Collection<Asociacion> asociacionCollection) {
         this.asociacionCollection = asociacionCollection;
-    }
-
-    @XmlTransient
-    public Collection<Email> getEmailCollection() {
-        return emailCollection;
-    }
-
-    public void setEmailCollection(Collection<Email> emailCollection) {
-        this.emailCollection = emailCollection;
-    }
-
-    @XmlTransient
-    public Collection<Cancha> getCanchaCollection() {
-        return canchaCollection;
-    }
-
-    public void setCanchaCollection(Collection<Cancha> canchaCollection) {
-        this.canchaCollection = canchaCollection;
     }
 
     @XmlTransient
@@ -195,12 +140,56 @@ public class Direccion implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Telefono> getTelefonoCollection() {
+        return telefonoCollection;
+    }
+
+    public void setTelefonoCollection(Collection<Telefono> telefonoCollection) {
+        this.telefonoCollection = telefonoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Competicion> getCompeticionCollection() {
+        return competicionCollection;
+    }
+
+    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
+        this.competicionCollection = competicionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Email> getEmailCollection() {
+        return emailCollection;
+    }
+
+    public void setEmailCollection(Collection<Email> emailCollection) {
+        this.emailCollection = emailCollection;
+    }
+
+    @XmlTransient
     public Collection<Persona> getPersonaCollection() {
         return personaCollection;
     }
 
     public void setPersonaCollection(Collection<Persona> personaCollection) {
         this.personaCollection = personaCollection;
+    }
+
+    public Ciudad getCiudadId() {
+        return ciudadId;
+    }
+
+    public void setCiudadId(Ciudad ciudadId) {
+        this.ciudadId = ciudadId;
+    }
+
+    @XmlTransient
+    public Collection<Cancha> getCanchaCollection() {
+        return canchaCollection;
+    }
+
+    public void setCanchaCollection(Collection<Cancha> canchaCollection) {
+        this.canchaCollection = canchaCollection;
     }
 
     @Override

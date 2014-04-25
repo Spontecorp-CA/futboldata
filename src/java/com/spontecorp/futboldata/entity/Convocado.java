@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "convocado")
@@ -49,12 +49,12 @@ public class Convocado implements Serializable {
     @Column(name = "tiempo_jugado")
     @Temporal(TemporalType.TIME)
     private Date tiempoJugado;
-    @JoinColumn(name = "posicion_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Posicion posicionId;
     @JoinColumn(name = "jugador_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Jugador jugadorId;
+    @JoinColumn(name = "posicion_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Posicion posicionId;
     @JoinColumn(name = "convocatoria_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Convocatoria convocatoriaId;
@@ -98,20 +98,20 @@ public class Convocado implements Serializable {
         this.tiempoJugado = tiempoJugado;
     }
 
-    public Posicion getPosicionId() {
-        return posicionId;
-    }
-
-    public void setPosicionId(Posicion posicionId) {
-        this.posicionId = posicionId;
-    }
-
     public Jugador getJugadorId() {
         return jugadorId;
     }
 
     public void setJugadorId(Jugador jugadorId) {
         this.jugadorId = jugadorId;
+    }
+
+    public Posicion getPosicionId() {
+        return posicionId;
+    }
+
+    public void setPosicionId(Posicion posicionId) {
+        this.posicionId = posicionId;
     }
 
     public Convocatoria getConvocatoriaId() {

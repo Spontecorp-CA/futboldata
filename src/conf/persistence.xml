@@ -49,6 +49,7 @@
     <class>com.spontecorp.futboldata.entity.Audio</class>
     <class>com.spontecorp.futboldata.entity.Cargo</class>
     <class>com.spontecorp.futboldata.entity.Convocado</class>
+    <class>com.spontecorp.futboldata.entity.TipoRedSocial</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>

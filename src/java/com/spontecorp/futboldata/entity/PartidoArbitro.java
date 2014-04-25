@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "partido_arbitro")
@@ -31,15 +31,15 @@ public class PartidoArbitro implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PartidoArbitroPK partidoArbitroPK;
-    @JoinColumn(name = "tipo_arbitro_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TipoArbitro tipoArbitroId;
     @JoinColumn(name = "partido_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Partido partido;
     @JoinColumn(name = "arbitro_id", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Arbitro arbitro;
+    @JoinColumn(name = "tipo_arbitro_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TipoArbitro tipoArbitroId;
 
     public PartidoArbitro() {
     }
@@ -60,14 +60,6 @@ public class PartidoArbitro implements Serializable {
         this.partidoArbitroPK = partidoArbitroPK;
     }
 
-    public TipoArbitro getTipoArbitroId() {
-        return tipoArbitroId;
-    }
-
-    public void setTipoArbitroId(TipoArbitro tipoArbitroId) {
-        this.tipoArbitroId = tipoArbitroId;
-    }
-
     public Partido getPartido() {
         return partido;
     }
@@ -82,6 +74,14 @@ public class PartidoArbitro implements Serializable {
 
     public void setArbitro(Arbitro arbitro) {
         this.arbitro = arbitro;
+    }
+
+    public TipoArbitro getTipoArbitroId() {
+        return tipoArbitroId;
+    }
+
+    public void setTipoArbitroId(TipoArbitro tipoArbitroId) {
+        this.tipoArbitroId = tipoArbitroId;
     }
 
     @Override

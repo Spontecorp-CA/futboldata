@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "temporada")
@@ -59,13 +59,13 @@ public class Temporada implements Serializable {
     private Date fechaFin;
     @Column(name = "status")
     private Integer status;
+    @JoinColumn(name = "competicion_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Competicion competicionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "temporadaId")
     private Collection<Fase> faseCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "temporada")
     private Collection<TemporadaCategoria> temporadaCategoriaCollection;
-    @JoinColumn(name = "competicion_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Competicion competicionId;
 
     public Temporada() {
     }
@@ -114,6 +114,14 @@ public class Temporada implements Serializable {
         this.status = status;
     }
 
+    public Competicion getCompeticionId() {
+        return competicionId;
+    }
+
+    public void setCompeticionId(Competicion competicionId) {
+        this.competicionId = competicionId;
+    }
+
     @XmlTransient
     public Collection<Fase> getFaseCollection() {
         return faseCollection;
@@ -130,14 +138,6 @@ public class Temporada implements Serializable {
 
     public void setTemporadaCategoriaCollection(Collection<TemporadaCategoria> temporadaCategoriaCollection) {
         this.temporadaCategoriaCollection = temporadaCategoriaCollection;
-    }
-
-    public Competicion getCompeticionId() {
-        return competicionId;
-    }
-
-    public void setCompeticionId(Competicion competicionId) {
-        this.competicionId = competicionId;
     }
 
     @Override

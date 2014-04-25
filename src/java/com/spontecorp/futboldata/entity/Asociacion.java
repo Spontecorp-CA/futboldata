@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "asociacion")
@@ -47,21 +47,21 @@ public class Asociacion implements Serializable {
     private String nombre;
     @Column(name = "status")
     private Integer status;
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<RedSocial> redSocialCollection;
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<Competicion> competicionCollection;
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<Contrato> contratoCollection;
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<Staff> staffCollection;
-    @OneToMany(mappedBy = "asociacionId")
-    private Collection<Arbitro> arbitroCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne
     private Direccion direccionId;
     @OneToMany(mappedBy = "asociacionId")
+    private Collection<Competicion> competicionCollection;
+    @OneToMany(mappedBy = "asociacionId")
+    private Collection<Arbitro> arbitroCollection;
+    @OneToMany(mappedBy = "asociacionId")
+    private Collection<Contrato> contratoCollection;
+    @OneToMany(mappedBy = "asociacionId")
     private Collection<Imagen> imagenCollection;
+    @OneToMany(mappedBy = "asociacionId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(mappedBy = "asociacionId")
+    private Collection<RedSocial> redSocialCollection;
 
     public Asociacion() {
     }
@@ -94,13 +94,12 @@ public class Asociacion implements Serializable {
         this.status = status;
     }
 
-    @XmlTransient
-    public Collection<RedSocial> getRedSocialCollection() {
-        return redSocialCollection;
+    public Direccion getDireccionId() {
+        return direccionId;
     }
 
-    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
-        this.redSocialCollection = redSocialCollection;
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
 
     @XmlTransient
@@ -113,12 +112,30 @@ public class Asociacion implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Arbitro> getArbitroCollection() {
+        return arbitroCollection;
+    }
+
+    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
+        this.arbitroCollection = arbitroCollection;
+    }
+
+    @XmlTransient
     public Collection<Contrato> getContratoCollection() {
         return contratoCollection;
     }
 
     public void setContratoCollection(Collection<Contrato> contratoCollection) {
         this.contratoCollection = contratoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
+    }
+
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
     }
 
     @XmlTransient
@@ -131,29 +148,12 @@ public class Asociacion implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Arbitro> getArbitroCollection() {
-        return arbitroCollection;
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
     }
 
-    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
-        this.arbitroCollection = arbitroCollection;
-    }
-
-    public Direccion getDireccionId() {
-        return direccionId;
-    }
-
-    public void setDireccionId(Direccion direccionId) {
-        this.direccionId = direccionId;
-    }
-
-    @XmlTransient
-    public Collection<Imagen> getImagenCollection() {
-        return imagenCollection;
-    }
-
-    public void setImagenCollection(Collection<Imagen> imagenCollection) {
-        this.imagenCollection = imagenCollection;
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
     }
 
     @Override
@@ -178,7 +178,7 @@ public class Asociacion implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.Asociacion[ id=" + id + " ]";
     }
     
 }

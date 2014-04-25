@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Embeddable
 public class TemporadaCategoriaPK implements Serializable {
