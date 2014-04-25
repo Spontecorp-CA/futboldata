@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Perfil;
@@ -24,13 +23,22 @@ import org.slf4j.LoggerFactory;
  */
 @Named("loginBean")
 @SessionScoped
-public class LoginBean implements Serializable{
-    
+public class LoginBean implements Serializable {
+
     private String username;
     private String password;
     private User current;
-    
+    private boolean isAdmin;
+    private boolean isSupervisor;
+    private boolean isEditor;
+    private boolean isConsultor;
+
     private static final Logger logger = LoggerFactory.getLogger(LoginBean.class);
+    private static final long serialVersionUID = 1L;
+
+    public LoginBean() {
+        resetPermissions();
+    }
 
     public String getUsername() {
         return username;
@@ -51,7 +59,27 @@ public class LoginBean implements Serializable{
     public User getCurrent() {
         return current;
     }
-    
+
+    public boolean isIsAdmin() {
+        return isAdmin;
+    }
+
+    public boolean isIsSupervisor() {
+        return isSupervisor;
+    }
+
+    public boolean isIsEditor() {
+        return isEditor;
+    }
+
+    public boolean isIsConsultor() {
+        return isConsultor;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
     public String login() {
         char[] pswChar = password.toCharArray();
         FacesMessage msg = null;
@@ -65,13 +93,23 @@ public class LoginBean implements Serializable{
             Perfil perfil = current.getPerfilId();
             switch (perfil.getId()) {
                 case Util.ADMINISTRATOR:
+                    isAdmin = true;
+                    setAdminPermissions();
                     result = "admin/adminPage?faces-redirect=true";
                     break;
-                case Util.GERENTE:
-                    result = "manager/managerPage?faces-redirect=true";
+                case Util.SUPERVISOR:
+                    isSupervisor = true;
+                    setSuperPermissions();
+                    result = "admin/adminPage?faces-redirect=true";
                     break;
-                case Util.USUARIO:
-                    result = "usuario/userPage?faces-redirect=true";
+                case Util.EDITOR:
+                    isEditor = true;
+                    setEditPermissions();
+                    result = "admin/adminPage?faces-redirect=true";
+                    break;
+                case Util.CONSULTOR:
+                    isConsultor = true;
+                    result = "admin/adminPage?faces-redirect=true";
                     break;
             }
         } else {
@@ -90,6 +128,32 @@ public class LoginBean implements Serializable{
         session.removeAttribute(username);
         session.invalidate();
         current = null;
+        resetPermissions();
         return "/index?faces-redirect=true";
+    }
+
+    private void resetPermissions() {
+        isAdmin = false;
+        isConsultor = false;
+        isEditor = false;
+        isSupervisor = false;
+    }
+    
+    private void setAdminPermissions(){
+        isAdmin = true;
+        isConsultor = true;
+        isEditor = true;
+        isSupervisor = true;
+    }
+    
+    private void setSuperPermissions(){
+        isConsultor = true;
+        isEditor = true;
+        isSupervisor = true;
+    }
+    
+    private void setEditPermissions(){
+        isConsultor = true;
+        isEditor = true;
     }
 }
