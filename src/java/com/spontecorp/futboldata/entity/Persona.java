@@ -88,7 +88,7 @@ public class Persona implements Serializable {
     @Size(max = 65535)
     @Column(name = "foto")
     private String foto;
-    @OneToMany(mappedBy = "personaId")
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "personaId")
     private Collection<RedSocial> redSocialCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Agente> agenteCollection;
