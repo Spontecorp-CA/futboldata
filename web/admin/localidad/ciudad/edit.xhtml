@@ -7,33 +7,29 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-    <ui:define name="content">
+    <p:dialog id="CiudadEditDlg" widgetVar="CiudadEditDialog" modal="true" 
+              resizable="false" appendTo="@(body)" header="Editar Ciudad">
         <h:form id="editForm">
 
             <p:fieldset style="width: 85%">                
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="Ok" action="#{ciudadBean.edit}" 
-                                         update="editForm"/>
-                        <p:commandButton value="Ver Lista" action="#{ciudadBean.prepareList}"
-                                         immediate="true"/>
-                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
-                                         immediate="true"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
                 <br />
                 <h:panelGrid columns="2">
                     <h:outputLabel value="* Nombre:" for="nombre"/>
                     <p:inputText id="nombre" value="#{ciudadBean.selectedCiudad.ciudad}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>   
-                  
+
                 </h:panelGrid>
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
+                <p:commandButton actionListener="#{ciudadBean.edit}" 
+                                 value="OK" update="display,:CiudadListForm:ciudades,:growlAdmin" 
+                                 oncomplete="handleSubmit(args, 'CiudadEditDialog');"
+                                 ajax="false"/>
+                <p:commandButton value="Cancelar" onclick="CiudadEditDialog.hide()"/>
             </p:fieldset>
         </h:form>
-    </ui:define>
+    </p:dialog>
 
 </ui:composition>

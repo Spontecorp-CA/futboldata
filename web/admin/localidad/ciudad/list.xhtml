@@ -12,19 +12,29 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="localidadesForm">
+        <h:form id="ciudadListForm">
 
             <p:fieldset style="width: 85%">
                 <p:toolbar>
-                    <p:toolbarGroup  >
-                        <p:panelGrid columns="3" >
-                            <p:commandButton value="Crear Ciudad" action="#{ciudadBean.prepareCreate()}" />                           
-
-                        </p:panelGrid>
-                    </p:toolbarGroup>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                             value="Crear Usuario" 
+                                             actionListener="#{ciudadBean.prepareCreate}" 
+                                             update=":UserCreateForm" 
+                                             oncomplete="PF('UserCreateDialog').show()"/>
+                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                             value="Editar Usuario" 
+                                             update=":UserEditForm" 
+                                             oncomplete="PF('UserEditDialog').show()" 
+                                             disabled="#{empty ciudadBean.ciudad}"/>
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Administración" action="#{usuarioBean.returnAdminPage}"
+                                             immediate="true"/>
+                        </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="CiudadTabla" var="ciudad" value="#{ciudadBean.itemsCiudad}"
+                <p:dataTable id="ciudades" var="ciudad" value="#{ciudadBean.itemsCiudad}"
                              rowKey="#{ciudad.id}"
                              selection="#{ciudadBean.ciudad}" selectionMode="single">                
 
@@ -34,15 +44,17 @@
                     <p:column headerText="Ciudad">
                         <h:outputText value="#{ciudad.ciudad}"/>
                     </p:column>
-                       <p:column headerText="Acciones">
+                    <p:column headerText="Acciones">
                         <p:commandLink value="Editar" action="#{ciudadBean.prepareEdit}" />
-                                     
+
                     </p:column>
 
 
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>
     </ui:define>   
 
 </ui:composition>
