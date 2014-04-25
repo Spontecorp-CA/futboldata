@@ -23,8 +23,9 @@ public class Util implements Serializable {
     public static final String PERSISTENCE_UNIT = "FutbolDataPU";
     
     public static final int ADMINISTRATOR = 1;
-    public static final int GERENTE = 2;
-    public static final int USUARIO = 3;
+    public static final int SUPERVISOR = 2;
+    public static final int EDITOR = 3;
+    public static final int CONSULTOR = 4;
     
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.
