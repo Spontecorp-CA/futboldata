@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "competicion")
@@ -59,22 +59,22 @@ public class Competicion implements Serializable {
     private String descripcion;
     @ManyToMany(mappedBy = "competicionCollection")
     private Collection<Arbitro> arbitroCollection;
-    @OneToMany(mappedBy = "competicionId")
-    private Collection<RedSocial> redSocialCollection;
-    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Direccion direccionId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competicionId")
+    private Collection<Temporada> temporadaCollection;
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
     private Asociacion asociacionId;
+    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Direccion direccionId;
     @OneToMany(mappedBy = "competicionId")
     private Collection<Contrato> contratoCollection;
     @OneToMany(mappedBy = "competicionId")
+    private Collection<Imagen> imagenCollection;
+    @OneToMany(mappedBy = "competicionId")
     private Collection<Staff> staffCollection;
     @OneToMany(mappedBy = "competicionId")
-    private Collection<Imagen> imagenCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competicionId")
-    private Collection<Temporada> temporadaCollection;
+    private Collection<RedSocial> redSocialCollection;
 
     public Competicion() {
     }
@@ -130,20 +130,12 @@ public class Competicion implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RedSocial> getRedSocialCollection() {
-        return redSocialCollection;
+    public Collection<Temporada> getTemporadaCollection() {
+        return temporadaCollection;
     }
 
-    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
-        this.redSocialCollection = redSocialCollection;
-    }
-
-    public Direccion getDireccionId() {
-        return direccionId;
-    }
-
-    public void setDireccionId(Direccion direccionId) {
-        this.direccionId = direccionId;
+    public void setTemporadaCollection(Collection<Temporada> temporadaCollection) {
+        this.temporadaCollection = temporadaCollection;
     }
 
     public Asociacion getAsociacionId() {
@@ -152,6 +144,14 @@ public class Competicion implements Serializable {
 
     public void setAsociacionId(Asociacion asociacionId) {
         this.asociacionId = asociacionId;
+    }
+
+    public Direccion getDireccionId() {
+        return direccionId;
+    }
+
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
     }
 
     @XmlTransient
@@ -164,15 +164,6 @@ public class Competicion implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Staff> getStaffCollection() {
-        return staffCollection;
-    }
-
-    public void setStaffCollection(Collection<Staff> staffCollection) {
-        this.staffCollection = staffCollection;
-    }
-
-    @XmlTransient
     public Collection<Imagen> getImagenCollection() {
         return imagenCollection;
     }
@@ -182,12 +173,21 @@ public class Competicion implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Temporada> getTemporadaCollection() {
-        return temporadaCollection;
+    public Collection<Staff> getStaffCollection() {
+        return staffCollection;
     }
 
-    public void setTemporadaCollection(Collection<Temporada> temporadaCollection) {
-        this.temporadaCollection = temporadaCollection;
+    public void setStaffCollection(Collection<Staff> staffCollection) {
+        this.staffCollection = staffCollection;
+    }
+
+    @XmlTransient
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
+    }
+
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
     }
 
     @Override

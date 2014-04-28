@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "contrato")
@@ -59,21 +59,21 @@ public class Contrato implements Serializable {
     @JoinColumn(name = "patrocinante_id", referencedColumnName = "id")
     @ManyToOne
     private Patrocinante patrocinanteId;
-    @JoinColumn(name = "jugador_id", referencedColumnName = "id")
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
-    private Jugador jugadorId;
-    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
-    @ManyToOne
-    private Equipo equipoId;
+    private Asociacion asociacionId;
     @JoinColumn(name = "competicion_id", referencedColumnName = "id")
     @ManyToOne
     private Competicion competicionId;
     @JoinColumn(name = "club_id", referencedColumnName = "id")
     @ManyToOne
     private Club clubId;
-    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
+    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne
-    private Asociacion asociacionId;
+    private Equipo equipoId;
+    @JoinColumn(name = "jugador_id", referencedColumnName = "id")
+    @ManyToOne
+    private Jugador jugadorId;
 
     public Contrato() {
     }
@@ -130,20 +130,12 @@ public class Contrato implements Serializable {
         this.patrocinanteId = patrocinanteId;
     }
 
-    public Jugador getJugadorId() {
-        return jugadorId;
+    public Asociacion getAsociacionId() {
+        return asociacionId;
     }
 
-    public void setJugadorId(Jugador jugadorId) {
-        this.jugadorId = jugadorId;
-    }
-
-    public Equipo getEquipoId() {
-        return equipoId;
-    }
-
-    public void setEquipoId(Equipo equipoId) {
-        this.equipoId = equipoId;
+    public void setAsociacionId(Asociacion asociacionId) {
+        this.asociacionId = asociacionId;
     }
 
     public Competicion getCompeticionId() {
@@ -162,12 +154,20 @@ public class Contrato implements Serializable {
         this.clubId = clubId;
     }
 
-    public Asociacion getAsociacionId() {
-        return asociacionId;
+    public Equipo getEquipoId() {
+        return equipoId;
     }
 
-    public void setAsociacionId(Asociacion asociacionId) {
-        this.asociacionId = asociacionId;
+    public void setEquipoId(Equipo equipoId) {
+        this.equipoId = equipoId;
+    }
+
+    public Jugador getJugadorId() {
+        return jugadorId;
+    }
+
+    public void setJugadorId(Jugador jugadorId) {
+        this.jugadorId = jugadorId;
     }
 
     @Override

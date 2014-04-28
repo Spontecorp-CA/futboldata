@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "convocatoria")
@@ -40,15 +40,15 @@ public class Convocatoria implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Equipo equipoId;
     @JoinColumn(name = "partido_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Partido partidoId;
     @JoinColumn(name = "formacion_id", referencedColumnName = "id")
     @ManyToOne
     private Formacion formacionId;
-    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Equipo equipoId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoriaId")
     private Collection<Convocado> convocadoCollection;
 
@@ -67,6 +67,14 @@ public class Convocatoria implements Serializable {
         this.id = id;
     }
 
+    public Equipo getEquipoId() {
+        return equipoId;
+    }
+
+    public void setEquipoId(Equipo equipoId) {
+        this.equipoId = equipoId;
+    }
+
     public Partido getPartidoId() {
         return partidoId;
     }
@@ -81,14 +89,6 @@ public class Convocatoria implements Serializable {
 
     public void setFormacionId(Formacion formacionId) {
         this.formacionId = formacionId;
-    }
-
-    public Equipo getEquipoId() {
-        return equipoId;
-    }
-
-    public void setEquipoId(Equipo equipoId) {
-        this.equipoId = equipoId;
     }
 
     @XmlTransient

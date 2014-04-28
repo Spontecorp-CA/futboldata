@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "arbitro")
@@ -45,16 +45,16 @@ public class Arbitro implements Serializable {
     private Integer id;
     @Column(name = "status")
     private Integer status;
-    @JoinTable(name = "competicion_arbitro", joinColumns = {
-        @JoinColumn(name = "arbitro_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "competicion_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<Competicion> competicionCollection;
     @JoinTable(name = "arbitro_premio", joinColumns = {
         @JoinColumn(name = "arbitro_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "premio_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Premio> premioCollection;
+    @JoinTable(name = "competicion_arbitro", joinColumns = {
+        @JoinColumn(name = "arbitro_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "competicion_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Competicion> competicionCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Persona personaId;
@@ -88,21 +88,21 @@ public class Arbitro implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Competicion> getCompeticionCollection() {
-        return competicionCollection;
-    }
-
-    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
-        this.competicionCollection = competicionCollection;
-    }
-
-    @XmlTransient
     public Collection<Premio> getPremioCollection() {
         return premioCollection;
     }
 
     public void setPremioCollection(Collection<Premio> premioCollection) {
         this.premioCollection = premioCollection;
+    }
+
+    @XmlTransient
+    public Collection<Competicion> getCompeticionCollection() {
+        return competicionCollection;
+    }
+
+    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
+        this.competicionCollection = competicionCollection;
     }
 
     public Persona getPersonaId() {

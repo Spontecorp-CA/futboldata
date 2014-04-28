@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "partido")
@@ -86,6 +86,15 @@ public class Partido implements Serializable {
     private Integer golesEquipoVisitante;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partidoId")
     private Collection<Convocatoria> convocatoriaCollection;
+    @JoinColumn(name = "equipo_local_id", referencedColumnName = "id")
+    @ManyToOne
+    private Equipo equipoLocalId;
+    @JoinColumn(name = "equipo_visitante_id", referencedColumnName = "id")
+    @ManyToOne
+    private Equipo equipoVisitanteId;
+    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
+    @ManyToOne
+    private Cancha canchaId;
     @JoinColumn(name = "status_partido_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private StatusPartido statusPartidoId;
@@ -95,21 +104,12 @@ public class Partido implements Serializable {
     @JoinColumn(name = "jornada_id", referencedColumnName = "id")
     @ManyToOne
     private Jornada jornadaId;
-    @JoinColumn(name = "equipo_visitante_id", referencedColumnName = "id")
-    @ManyToOne
-    private Equipo equipoVisitanteId;
-    @JoinColumn(name = "equipo_local_id", referencedColumnName = "id")
-    @ManyToOne
-    private Equipo equipoLocalId;
-    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
-    @ManyToOne
-    private Cancha canchaId;
     @OneToMany(mappedBy = "partidoId")
     private Collection<Staff> staffCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido")
-    private Collection<PartidoArbitro> partidoArbitroCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido")
     private Collection<PartidoEvento> partidoEventoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido")
+    private Collection<PartidoArbitro> partidoArbitroCollection;
 
     public Partido() {
     }
@@ -223,6 +223,30 @@ public class Partido implements Serializable {
         this.convocatoriaCollection = convocatoriaCollection;
     }
 
+    public Equipo getEquipoLocalId() {
+        return equipoLocalId;
+    }
+
+    public void setEquipoLocalId(Equipo equipoLocalId) {
+        this.equipoLocalId = equipoLocalId;
+    }
+
+    public Equipo getEquipoVisitanteId() {
+        return equipoVisitanteId;
+    }
+
+    public void setEquipoVisitanteId(Equipo equipoVisitanteId) {
+        this.equipoVisitanteId = equipoVisitanteId;
+    }
+
+    public Cancha getCanchaId() {
+        return canchaId;
+    }
+
+    public void setCanchaId(Cancha canchaId) {
+        this.canchaId = canchaId;
+    }
+
     public StatusPartido getStatusPartidoId() {
         return statusPartidoId;
     }
@@ -247,30 +271,6 @@ public class Partido implements Serializable {
         this.jornadaId = jornadaId;
     }
 
-    public Equipo getEquipoVisitanteId() {
-        return equipoVisitanteId;
-    }
-
-    public void setEquipoVisitanteId(Equipo equipoVisitanteId) {
-        this.equipoVisitanteId = equipoVisitanteId;
-    }
-
-    public Equipo getEquipoLocalId() {
-        return equipoLocalId;
-    }
-
-    public void setEquipoLocalId(Equipo equipoLocalId) {
-        this.equipoLocalId = equipoLocalId;
-    }
-
-    public Cancha getCanchaId() {
-        return canchaId;
-    }
-
-    public void setCanchaId(Cancha canchaId) {
-        this.canchaId = canchaId;
-    }
-
     @XmlTransient
     public Collection<Staff> getStaffCollection() {
         return staffCollection;
@@ -281,21 +281,21 @@ public class Partido implements Serializable {
     }
 
     @XmlTransient
-    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
-        return partidoArbitroCollection;
-    }
-
-    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
-        this.partidoArbitroCollection = partidoArbitroCollection;
-    }
-
-    @XmlTransient
     public Collection<PartidoEvento> getPartidoEventoCollection() {
         return partidoEventoCollection;
     }
 
     public void setPartidoEventoCollection(Collection<PartidoEvento> partidoEventoCollection) {
         this.partidoEventoCollection = partidoEventoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PartidoArbitro> getPartidoArbitroCollection() {
+        return partidoArbitroCollection;
+    }
+
+    public void setPartidoArbitroCollection(Collection<PartidoArbitro> partidoArbitroCollection) {
+        this.partidoArbitroCollection = partidoArbitroCollection;
     }
 
     @Override

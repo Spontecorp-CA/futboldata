@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "red_social")
@@ -30,8 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "RedSocial.findAll", query = "SELECT r FROM RedSocial r"),
     @NamedQuery(name = "RedSocial.findById", query = "SELECT r FROM RedSocial r WHERE r.id = :id"),
-    @NamedQuery(name = "RedSocial.findByNombre", query = "SELECT r FROM RedSocial r WHERE r.nombre = :nombre"),
-    @NamedQuery(name = "RedSocial.findByUrl", query = "SELECT r FROM RedSocial r WHERE r.url = :url")})
+    @NamedQuery(name = "RedSocial.findByUsuario", query = "SELECT r FROM RedSocial r WHERE r.usuario = :usuario")})
 public class RedSocial implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,27 +38,27 @@ public class RedSocial implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 45)
-    @Column(name = "nombre")
-    private String nombre;
     @Size(max = 80)
-    @Column(name = "url")
-    private String url;
-    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
-    @ManyToOne
-    private Equipo equipoId;
-    @JoinColumn(name = "competicion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Competicion competicionId;
-    @JoinColumn(name = "club_id", referencedColumnName = "id")
-    @ManyToOne
-    private Club clubId;
-    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Asociacion asociacionId;
+    @Column(name = "usuario")
+    private String usuario;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne
     private Persona personaId;
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Asociacion asociacionId;
+    @JoinColumn(name = "club_id", referencedColumnName = "id")
+    @ManyToOne
+    private Club clubId;
+    @JoinColumn(name = "competicion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Competicion competicionId;
+    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
+    @ManyToOne
+    private Equipo equipoId;
+    @JoinColumn(name = "tipo_red_social_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TipoRedSocial tipoRedSocialId;
 
     public RedSocial() {
     }
@@ -76,44 +75,20 @@ public class RedSocial implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
-    public String getUrl() {
-        return url;
+    public Persona getPersonaId() {
+        return personaId;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Equipo getEquipoId() {
-        return equipoId;
-    }
-
-    public void setEquipoId(Equipo equipoId) {
-        this.equipoId = equipoId;
-    }
-
-    public Competicion getCompeticionId() {
-        return competicionId;
-    }
-
-    public void setCompeticionId(Competicion competicionId) {
-        this.competicionId = competicionId;
-    }
-
-    public Club getClubId() {
-        return clubId;
-    }
-
-    public void setClubId(Club clubId) {
-        this.clubId = clubId;
+    public void setPersonaId(Persona personaId) {
+        this.personaId = personaId;
     }
 
     public Asociacion getAsociacionId() {
@@ -124,12 +99,36 @@ public class RedSocial implements Serializable {
         this.asociacionId = asociacionId;
     }
 
-    public Persona getPersonaId() {
-        return personaId;
+    public Club getClubId() {
+        return clubId;
     }
 
-    public void setPersonaId(Persona personaId) {
-        this.personaId = personaId;
+    public void setClubId(Club clubId) {
+        this.clubId = clubId;
+    }
+
+    public Competicion getCompeticionId() {
+        return competicionId;
+    }
+
+    public void setCompeticionId(Competicion competicionId) {
+        this.competicionId = competicionId;
+    }
+
+    public Equipo getEquipoId() {
+        return equipoId;
+    }
+
+    public void setEquipoId(Equipo equipoId) {
+        this.equipoId = equipoId;
+    }
+
+    public TipoRedSocial getTipoRedSocialId() {
+        return tipoRedSocialId;
+    }
+
+    public void setTipoRedSocialId(TipoRedSocial tipoRedSocialId) {
+        this.tipoRedSocialId = tipoRedSocialId;
     }
 
     @Override
@@ -154,7 +153,7 @@ public class RedSocial implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.RedSocial[ id=" + id + " ]";
     }
     
 }

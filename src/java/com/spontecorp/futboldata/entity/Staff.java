@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "staff")
@@ -55,19 +55,19 @@ public class Staff implements Serializable {
     @Column(name = "fecha_hasta")
     @Temporal(TemporalType.DATE)
     private Date fechaHasta;
+    @ManyToMany(mappedBy = "staffCollection")
+    private Collection<Premio> premioCollection;
     @JoinTable(name = "staff_has_titulo", joinColumns = {
         @JoinColumn(name = "staff_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Titulo> tituloCollection;
-    @ManyToMany(mappedBy = "staffCollection")
-    private Collection<Premio> premioCollection;
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Asociacion asociacionId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Persona personaId;
-    @JoinColumn(name = "partido_id", referencedColumnName = "id")
-    @ManyToOne
-    private Partido partidoId;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne
     private Equipo equipoId;
@@ -80,9 +80,9 @@ public class Staff implements Serializable {
     @JoinColumn(name = "cargo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Cargo cargoId;
-    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
+    @JoinColumn(name = "partido_id", referencedColumnName = "id")
     @ManyToOne
-    private Asociacion asociacionId;
+    private Partido partidoId;
     @JoinColumn(name = "agente_id", referencedColumnName = "id")
     @ManyToOne
     private Agente agenteId;
@@ -129,15 +129,6 @@ public class Staff implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Titulo> getTituloCollection() {
-        return tituloCollection;
-    }
-
-    public void setTituloCollection(Collection<Titulo> tituloCollection) {
-        this.tituloCollection = tituloCollection;
-    }
-
-    @XmlTransient
     public Collection<Premio> getPremioCollection() {
         return premioCollection;
     }
@@ -146,20 +137,29 @@ public class Staff implements Serializable {
         this.premioCollection = premioCollection;
     }
 
+    @XmlTransient
+    public Collection<Titulo> getTituloCollection() {
+        return tituloCollection;
+    }
+
+    public void setTituloCollection(Collection<Titulo> tituloCollection) {
+        this.tituloCollection = tituloCollection;
+    }
+
+    public Asociacion getAsociacionId() {
+        return asociacionId;
+    }
+
+    public void setAsociacionId(Asociacion asociacionId) {
+        this.asociacionId = asociacionId;
+    }
+
     public Persona getPersonaId() {
         return personaId;
     }
 
     public void setPersonaId(Persona personaId) {
         this.personaId = personaId;
-    }
-
-    public Partido getPartidoId() {
-        return partidoId;
-    }
-
-    public void setPartidoId(Partido partidoId) {
-        this.partidoId = partidoId;
     }
 
     public Equipo getEquipoId() {
@@ -194,12 +194,12 @@ public class Staff implements Serializable {
         this.cargoId = cargoId;
     }
 
-    public Asociacion getAsociacionId() {
-        return asociacionId;
+    public Partido getPartidoId() {
+        return partidoId;
     }
 
-    public void setAsociacionId(Asociacion asociacionId) {
-        this.asociacionId = asociacionId;
+    public void setPartidoId(Partido partidoId) {
+        this.partidoId = partidoId;
     }
 
     public Agente getAgenteId() {

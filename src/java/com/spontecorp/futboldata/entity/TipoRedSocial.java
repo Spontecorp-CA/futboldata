@@ -8,13 +8,10 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,43 +23,37 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
-@Table(name = "localidad")
+@Table(name = "tipo_red_social")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Localidad.findAll", query = "SELECT l FROM Localidad l"),
-    @NamedQuery(name = "Localidad.findById", query = "SELECT l FROM Localidad l WHERE l.id = :id"),
-    @NamedQuery(name = "Localidad.findByNombre", query = "SELECT l FROM Localidad l WHERE l.nombre = :nombre")})
-public class Localidad implements Serializable {
+    @NamedQuery(name = "TipoRedSocial.findAll", query = "SELECT t FROM TipoRedSocial t"),
+    @NamedQuery(name = "TipoRedSocial.findById", query = "SELECT t FROM TipoRedSocial t WHERE t.id = :id"),
+    @NamedQuery(name = "TipoRedSocial.findByNombre", query = "SELECT t FROM TipoRedSocial t WHERE t.nombre = :nombre"),
+    @NamedQuery(name = "TipoRedSocial.findByUrl", query = "SELECT t FROM TipoRedSocial t WHERE t.url = :url")})
+public class TipoRedSocial implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Column(name = "id")
+    private Integer id;
+    @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(mappedBy = "localidadId")
-    private Collection<Direccion> direccionCollection;
-    @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Ciudad ciudadId;
+    @Size(max = 45)
+    @Column(name = "url")
+    private String url;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoRedSocialId")
+    private Collection<RedSocial> redSocialCollection;
 
-    public Localidad() {
+    public TipoRedSocial() {
     }
 
-    public Localidad(Integer id) {
+    public TipoRedSocial(Integer id) {
         this.id = id;
-    }
-
-    public Localidad(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -81,21 +72,21 @@ public class Localidad implements Serializable {
         this.nombre = nombre;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     @XmlTransient
-    public Collection<Direccion> getDireccionCollection() {
-        return direccionCollection;
+    public Collection<RedSocial> getRedSocialCollection() {
+        return redSocialCollection;
     }
 
-    public void setDireccionCollection(Collection<Direccion> direccionCollection) {
-        this.direccionCollection = direccionCollection;
-    }
-
-    public Ciudad getCiudadId() {
-        return ciudadId;
-    }
-
-    public void setCiudadId(Ciudad ciudadId) {
-        this.ciudadId = ciudadId;
+    public void setRedSocialCollection(Collection<RedSocial> redSocialCollection) {
+        this.redSocialCollection = redSocialCollection;
     }
 
     @Override
@@ -108,10 +99,10 @@ public class Localidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Localidad)) {
+        if (!(object instanceof TipoRedSocial)) {
             return false;
         }
-        Localidad other = (Localidad) object;
+        TipoRedSocial other = (TipoRedSocial) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -120,7 +111,7 @@ public class Localidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Localidad[ id=" + id + " ]";
+        return nombre;
     }
     
 }

@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "cancha")
@@ -74,10 +74,10 @@ public class Cancha implements Serializable {
     private Collection<Partido> partidoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancha")
     private Collection<ClubCancha> clubCanchaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancha")
-    private Collection<EquipoCancha> equipoCanchaCollection;
     @OneToMany(mappedBy = "canchaId")
     private Collection<Imagen> imagenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancha")
+    private Collection<EquipoCancha> equipoCanchaCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne
     private Direccion direccionId;
@@ -180,21 +180,21 @@ public class Cancha implements Serializable {
     }
 
     @XmlTransient
-    public Collection<EquipoCancha> getEquipoCanchaCollection() {
-        return equipoCanchaCollection;
-    }
-
-    public void setEquipoCanchaCollection(Collection<EquipoCancha> equipoCanchaCollection) {
-        this.equipoCanchaCollection = equipoCanchaCollection;
-    }
-
-    @XmlTransient
     public Collection<Imagen> getImagenCollection() {
         return imagenCollection;
     }
 
     public void setImagenCollection(Collection<Imagen> imagenCollection) {
         this.imagenCollection = imagenCollection;
+    }
+
+    @XmlTransient
+    public Collection<EquipoCancha> getEquipoCanchaCollection() {
+        return equipoCanchaCollection;
+    }
+
+    public void setEquipoCanchaCollection(Collection<EquipoCancha> equipoCanchaCollection) {
+        this.equipoCanchaCollection = equipoCanchaCollection;
     }
 
     public Direccion getDireccionId() {

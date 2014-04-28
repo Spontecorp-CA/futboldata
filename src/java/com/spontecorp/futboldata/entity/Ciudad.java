@@ -8,7 +8,6 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "ciudad")
@@ -50,8 +49,6 @@ public class Ciudad implements Serializable {
     private String ciudad;
     @OneToMany(mappedBy = "ciudadId")
     private Collection<Direccion> direccionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudadId")
-    private Collection<Localidad> localidadCollection;
     @JoinColumn(name = "pais_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Pais paisId;
@@ -93,15 +90,6 @@ public class Ciudad implements Serializable {
         this.direccionCollection = direccionCollection;
     }
 
-    @XmlTransient
-    public Collection<Localidad> getLocalidadCollection() {
-        return localidadCollection;
-    }
-
-    public void setLocalidadCollection(Collection<Localidad> localidadCollection) {
-        this.localidadCollection = localidadCollection;
-    }
-
     public Pais getPaisId() {
         return paisId;
     }
@@ -132,7 +120,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return ciudad;
+        return "com.spontecorp.futboldata.entity.Ciudad[ id=" + id + " ]";
     }
     
 }

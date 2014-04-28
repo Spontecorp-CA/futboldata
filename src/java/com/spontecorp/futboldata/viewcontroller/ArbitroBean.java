@@ -5,14 +5,18 @@
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Arbitro;
+import com.spontecorp.futboldata.entity.Asociacion;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
+import com.spontecorp.futboldata.entity.TipoRedSocial;
+import com.spontecorp.futboldata.jpacontroller.ArbitroFacade;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
+import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +24,7 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,30 +44,37 @@ public class ArbitroBean implements Serializable {
     private Persona persona;
     private String cuenta;
     private RedSocial redSocial;
+    private TipoRedSocial tipoRedSocial;
+    private Asociacion asociacion;
     private List<RedSocial> redes;
+    private final transient EntityManagerFactory emf = Util.getEmf();
 
-    private final AsociacionFacade asociacionController;
-    private final PaisFacade paisController;
-    private final CiudadFacade ciudadController;
-    private final RedSocialFacade redSocialController;
+    private final ArbitroFacade controllerArbitro;
+    private final AsociacionFacade controllerAsociacion;
+    private final PaisFacade controllerPais;
+    private final CiudadFacade controllerCiudad;
+    private final RedSocialFacade controllerRedSocial;
+    private final TipoRedSocialFacade tipoRedSocialController;
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
 
     public ArbitroBean() {
-        asociacionController = new AsociacionFacade();
-        paisController = new PaisFacade();
-        ciudadController = new CiudadFacade();
-        redSocialController = new RedSocialFacade();
+        controllerArbitro = new ArbitroFacade();
+        controllerAsociacion = new AsociacionFacade();
+        controllerPais = new PaisFacade();
+        controllerCiudad = new CiudadFacade();
+        controllerRedSocial = new RedSocialFacade();
+        tipoRedSocialController = new TipoRedSocialFacade();
     }
 
     public Arbitro getSelected() {
         if (arbitro == null) {
             arbitro = new Arbitro();
-
             direccion = new Direccion();
             persona = new Persona();
             persona.setDireccionId(direccion);
             arbitro.setPersonaId(persona);
+
             ciudades = null;
             redes = new ArrayList<>();
         }
@@ -95,19 +107,22 @@ public class ArbitroBean implements Serializable {
 
     public String prepareCreate() {
         arbitro = new Arbitro();
+        direccion = new Direccion();
+        persona = new Persona();
+        asociacion = new Asociacion();
         return "create";
     }
 
     public SelectItem[] getAsociacionesAvalaible() {
-        return Util.getSelectItems(asociacionController.findAll());
+        return Util.getSelectItems(controllerAsociacion.findAll());
     }
 
     public SelectItem[] getPaisesAvalaible() {
-        return Util.getSelectItems(paisController.listaPaisxNombre());
+        return Util.getSelectItems(controllerPais.listaPaisxNombre());
     }
 
     public void ciudadesAvalaible() {
-        ciudades = Util.getSelectItems(ciudadController.findCiudadxPais(pais));
+        ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
         for (SelectItem city : ciudades) {
             logger.debug(city.getLabel());
         }
@@ -118,19 +133,76 @@ public class ArbitroBean implements Serializable {
     }
 
     public SelectItem[] getRedSocialAvailable() {
-        return Util.getSelectItems(redSocialController.findAll());
+        return Util.getSelectItems(tipoRedSocialController.findAll());
     }
-    
-    public void cargarRedSocial(){
+
+    public void cargarRedSocial() {
         redSocial = new RedSocial();
+        redSocial.setTipoRedSocialId(tipoRedSocial);
         redSocial.setPersonaId(persona);
-        redSocial.setUrl(cuenta);
-        
         redes.add(redSocial);
     }
-    
-    public List<RedSocial> getRedesSocial(){
-        return redSocialController.findRedSocialxPersona(persona);
+
+    public List<RedSocial> getRedesSocial() {
+        return controllerRedSocial.findRedSocialxPersona(persona);
     }
-    
+
+    public String create() {
+
+        persona.setRedSocialCollection(redes);
+        persona.setDireccionId(direccion);
+        arbitro.setPersonaId(persona);
+        arbitro.setAsociacionId(asociacion);
+        controllerArbitro.create(arbitro);
+        return prepareCreate();
+    }
+
+    public Arbitro getArbitro() {
+        return arbitro;
+    }
+
+    public void setArbitro(Arbitro arbitro) {
+        this.arbitro = arbitro;
+    }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public RedSocial getRedSocial() {
+        return redSocial;
+    }
+
+    public void setRedSocial(RedSocial redSocial) {
+        this.redSocial = redSocial;
+    }
+
+    public Asociacion getAsociacion() {
+        return asociacion;
+    }
+
+    public void setAsociacion(Asociacion asociacion) {
+        this.asociacion = asociacion;
+    }
+
+    public TipoRedSocial getTipoRedSocial() {
+        return tipoRedSocial;
+    }
+
+    public void setTipoRedSocial(TipoRedSocial tipoRedSocial) {
+        this.tipoRedSocial = tipoRedSocial;
+    }
+
 }

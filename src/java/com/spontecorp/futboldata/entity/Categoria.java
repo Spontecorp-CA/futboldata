@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "categoria")
@@ -51,10 +51,10 @@ public class Categoria implements Serializable {
     private String descripcion;
     @Column(name = "status")
     private Integer status;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
-    private Collection<Equipo> equipoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoria")
     private Collection<TemporadaCategoria> temporadaCategoriaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
+    private Collection<Equipo> equipoCollection;
 
     public Categoria() {
     }
@@ -96,21 +96,21 @@ public class Categoria implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Equipo> getEquipoCollection() {
-        return equipoCollection;
-    }
-
-    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
-        this.equipoCollection = equipoCollection;
-    }
-
-    @XmlTransient
     public Collection<TemporadaCategoria> getTemporadaCategoriaCollection() {
         return temporadaCategoriaCollection;
     }
 
     public void setTemporadaCategoriaCollection(Collection<TemporadaCategoria> temporadaCategoriaCollection) {
         this.temporadaCategoriaCollection = temporadaCategoriaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Equipo> getEquipoCollection() {
+        return equipoCollection;
+    }
+
+    public void setEquipoCollection(Collection<Equipo> equipoCollection) {
+        this.equipoCollection = equipoCollection;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.Categoria[ id=" + id + " ]";
     }
     
 }
