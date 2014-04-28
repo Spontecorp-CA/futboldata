@@ -263,7 +263,7 @@ public class Jugador implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Jugador[ id=" + id + " ]";
+        return personaId.getNombre();
     }
     
 }
