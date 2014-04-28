@@ -140,8 +140,10 @@
                         <p:selectOneMenu id="redSocial"
                                          value="#{arbitroBean.tipoRedSocial}"
                                          style="width: 250px"
-                                         panelStyle="width:250px">
+                                         panelStyle="width:250px"
+                                         >
                             <f:selectItems value="#{arbitroBean.redSocialAvailable}"/>
+                            <f:ajax execute="redSocial"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Cuenta:" for="cuenta"/>
                         <p:panelGrid>
@@ -155,6 +157,7 @@
                                     <p:commandButton icon="ui-icon-plusthick" title="Agregar redSocial" >                             
                                         <f:ajax listener="#{arbitroBean.cargarRedSocial}" 
                                                 execute="cuenta" render="redes"/>
+                                        
                                     </p:commandButton>
                                 </p:column>
                             </p:row>

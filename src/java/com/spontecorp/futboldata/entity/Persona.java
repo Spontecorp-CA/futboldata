@@ -95,13 +95,13 @@ public class Persona implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Arbitro> arbitroCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Direccion direccionId;
     @OneToMany(mappedBy = "personaId")
     private Collection<Imagen> imagenCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Staff> staffCollection;
-    @OneToMany(mappedBy = "personaId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<RedSocial> redSocialCollection;
 
     public Persona() {

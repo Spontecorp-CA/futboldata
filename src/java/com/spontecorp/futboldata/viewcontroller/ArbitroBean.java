@@ -74,7 +74,6 @@ public class ArbitroBean implements Serializable {
             persona = new Persona();
             persona.setDireccionId(direccion);
             arbitro.setPersonaId(persona);
-
             ciudades = null;
             redes = new ArrayList<>();
         }
@@ -137,10 +136,11 @@ public class ArbitroBean implements Serializable {
     }
 
     public void cargarRedSocial() {
-        redSocial = new RedSocial();
+
         redSocial.setTipoRedSocialId(tipoRedSocial);
         redSocial.setPersonaId(persona);
         redes.add(redSocial);
+        redSocial = new RedSocial();
     }
 
     public List<RedSocial> getRedesSocial() {
@@ -148,7 +148,6 @@ public class ArbitroBean implements Serializable {
     }
 
     public String create() {
-
         persona.setRedSocialCollection(redes);
         persona.setDireccionId(direccion);
         arbitro.setPersonaId(persona);
@@ -182,6 +181,9 @@ public class ArbitroBean implements Serializable {
     }
 
     public RedSocial getRedSocial() {
+        if(redSocial == null){
+            redSocial = new RedSocial();
+        }
         return redSocial;
     }
 
