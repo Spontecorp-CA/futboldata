@@ -158,10 +158,10 @@ public class ClubBean implements Serializable {
     protected void initializeEmbeddableKey() {
         telefono = new Telefono();
         email = new Email();
-        telefonos = new ArrayList<>();
-        emails = new ArrayList<>();
-        telefonoEliminar = new ArrayList<>();
-        emailEliminar = new ArrayList<>();
+        telefonos = new ArrayList<Telefono>();
+        emails = new ArrayList<Email>();
+        telefonoEliminar = new ArrayList<Telefono>();
+        emailEliminar = new ArrayList<Email>();
         direccion = new Direccion();
     }
 

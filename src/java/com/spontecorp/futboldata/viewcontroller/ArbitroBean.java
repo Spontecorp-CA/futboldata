@@ -22,6 +22,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
@@ -39,7 +41,7 @@ public class ArbitroBean implements Serializable {
     private Arbitro arbitro;
     private Pais pais;
     private SelectItem[] ciudades;
-
+    private DataModel items;
     private Direccion direccion;
     private Persona persona;
     private String cuenta;
@@ -75,7 +77,7 @@ public class ArbitroBean implements Serializable {
             persona.setDireccionId(direccion);
             arbitro.setPersonaId(persona);
             ciudades = null;
-            redes = new ArrayList<>();
+            redes = new ArrayList<RedSocial>();
         }
         return arbitro;
     }
@@ -136,7 +138,6 @@ public class ArbitroBean implements Serializable {
     }
 
     public void cargarRedSocial() {
-
         redSocial.setTipoRedSocialId(tipoRedSocial);
         redSocial.setPersonaId(persona);
         redes.add(redSocial);
@@ -147,6 +148,13 @@ public class ArbitroBean implements Serializable {
         return controllerRedSocial.findRedSocialxPersona(persona);
     }
 
+    public DataModel getItems() {
+        if (items == null) {
+            items = new ListDataModel(controllerArbitro.findAll());
+        }
+        return items;
+    }
+
     public String create() {
         persona.setRedSocialCollection(redes);
         persona.setDireccionId(direccion);
@@ -154,6 +162,11 @@ public class ArbitroBean implements Serializable {
         arbitro.setAsociacionId(asociacion);
         controllerArbitro.create(arbitro);
         return prepareCreate();
+    }
+
+    public List<RedSocial> getRedSocials(Persona persona) {
+        redes = controllerRedSocial.findRedSocialxPersona(persona);
+        return redes;
     }
 
     public Arbitro getArbitro() {
@@ -181,7 +194,7 @@ public class ArbitroBean implements Serializable {
     }
 
     public RedSocial getRedSocial() {
-        if(redSocial == null){
+        if (redSocial == null) {
             redSocial = new RedSocial();
         }
         return redSocial;
