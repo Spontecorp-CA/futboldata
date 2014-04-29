@@ -6,6 +6,7 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Jugador;
+import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.utilities.Util;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * @author Casper
  */
 public class JugadorFacade extends AbstractFacade<Jugador>{
-
+    private static final PersonaFacade controllerPersona = new PersonaFacade();            
     private static final Logger logger = LoggerFactory.getLogger(JugadorFacade.class);
     
     public JugadorFacade() {
@@ -44,5 +45,13 @@ public class JugadorFacade extends AbstractFacade<Jugador>{
             em.close();
         }
         return jugador;
+    }
+    
+    public Jugador findJugadorxDomentoId(String domentoId){
+        Persona persona =controllerPersona.findPersonaxDocumentoId(domentoId);
+        if (persona == null){
+          return null;
+      }
+        return  findJugador(persona.getNombre());
     }
 }

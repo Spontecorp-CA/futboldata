@@ -47,6 +47,20 @@ public class PersonaFacade extends AbstractFacade<Persona> {
             em.close();
         }
         return persona;
-
+    }
+    
+        public Persona findPersonaxDocumentoId(String documentoIdentidad) {
+        EntityManager em = getEntityManager();
+        Persona persona = null;
+        try {
+            Query q = em.createNamedQuery("Persona.findByDocumentoIdentidad", Persona.class);
+            q.setParameter("documentoIdentidad", documentoIdentidad);
+            persona = (Persona) q.getSingleResult();
+        } catch (Exception e) {
+            logger.debug("Error encontrando Persona: " + e.getLocalizedMessage(), e);
+        } finally {
+            em.close();
+        }
+        return persona;
     }
 }

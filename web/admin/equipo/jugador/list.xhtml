@@ -11,59 +11,70 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="listForm">
+        <h:form id="JugadorListForm">
 
             <p:fieldset style="width: 85%" legend="Lista de Jugadors" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nuevo" action="#{asociacionBean.prepareCreate}"/>
-                    </p:toolbarGroup>  
+                        <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                         value="Crear Jugador" 
+                                         actionListener="#{jugadorBean.prepareCreate}" 
+                                         update=":JugadorCreateForm" 
+                                         oncomplete="PF('JugadorCreateDialog').show()"/>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Jugador" 
+                                         actionListener="#{jugadorBean.prepareEdit}"
+                                         update=":JugadorEditForm" 
+                                         oncomplete="PF('JugadorEditDialog').show()" 
+                                         disabled="#{empty jugadorBean.jugador}"/>
+                    </p:toolbarGroup>
                     <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="/admin/adminPage"
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
                                          immediate="true"/>
-                    </p:toolbarGroup>  
+                    </p:toolbarGroup>
                 </p:toolbar>
-                <br />
 
-                <p:dataTable id="JugadoresTabla" var="jugador"  value="#{jugadorBean.items}"
+                <p:dataTable id="jugadores" var="jugador"  value="#{jugadorBean.items}"
                              rowKey="#{jugador.id}"
                              selection="#{jugadorBean.jugador}" 
-                             selectionMode="single">                
+                             selectionMode="single">   
+                    <p:ajax event="rowSelect" update=":JugadorListForm:createButton :JugadorListForm:editButton "  />
+                    <p:ajax event="rowUnselect" update=":JugadorListForm:createButton :JugadorListForm:editButton" />
 
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{jugador.personaId.nombre}"/>
-                    </p:column>
+                            <p:column headerText="Nombre">
+                            <h:outputText value="#{jugador.personaId.nombre}"/>
+                        </p:column>
 
-                    <p:column headerText="Apellido">
-                        <h:outputText value="#{jugador.personaId.apellido}"/>
-                    </p:column>
-                    <p:column headerText="Ciudad">
-                        <h:outputText value="#{jugador.personaId.direccionId.ciudadId.ciudad}"/>
-                    </p:column>
-                    <p:column headerText="Dirección">
-                        <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
-                    </p:column>
+                        <p:column headerText="Apellido">
+                            <h:outputText value="#{jugador.personaId.apellido}"/>
+                        </p:column>
+                        <p:column headerText="Ciudad">
+                            <h:outputText value="#{jugador.personaId.direccionId.ciudadId.ciudad}"/>
+                        </p:column>
+                        <p:column headerText="Dirección">
+                            <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
+                        </p:column>
 
-                    <p:column headerText="Red Social">
-                        <h:outputText value="#{jugadorBean.getRedSocials(jugador.personaId)}"/>
-                    </p:column>
+                        <p:column headerText="Red Social">
+                            <h:outputText value="#{jugadorBean.getRedSocials(jugador.personaId)}"/>
+                        </p:column>
 
-                    <p:column headerText="Telefono">
-                        <h:outputText value="#{jugador.personaId.telefono}"/>
-                    </p:column>
-                    <p:column headerText="Celular">
-                        <h:outputText value="#{jugador.personaId.celular}"/>
-                    </p:column>
+                        <p:column headerText="Telefono">
+                            <h:outputText value="#{jugador.personaId.telefono}"/>
+                        </p:column>
+                        <p:column headerText="Celular">
+                            <h:outputText value="#{jugador.personaId.celular}"/>
+                        </p:column>
 
-                    <p:column headerText="Status">
-                        <h:outputText   value="#{jugador.status== 0?'INACTIVO':'ACTIVO'}"/>
-                    </p:column>
-                    <p:column headerText="Acciones">|
-                        <p:commandLink value="Editar"/>
-                    </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText   value="#{jugador.status== 0?'INACTIVO':'ACTIVO'}"/>
+                        </p:column>
+
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>
     </ui:define>
 
 </ui:composition>

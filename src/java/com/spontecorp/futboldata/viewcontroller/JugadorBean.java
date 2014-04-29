@@ -127,6 +127,19 @@ public class JugadorBean implements Serializable {
         return "create";
     }
 
+    protected void setEmbeddableKeys() {
+        persona.setDireccionId(direccion);
+        jugador.setPersonaId(persona);
+    }
+
+    protected void initializeEmbeddableKey() {
+        redSocial = new RedSocial();
+        direccion = new Direccion();
+        persona = new Persona();
+        redes = new ArrayList<>();
+        direccion = new Direccion();
+    }
+
     public SelectItem[] getAsociacionesAvalaible() {
         return Util.getSelectItems(controllerAsociacion.findAll());
     }
@@ -137,9 +150,6 @@ public class JugadorBean implements Serializable {
 
     public void ciudadesAvalaible() {
         ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
-        for (SelectItem city : ciudades) {
-            logger.debug(city.getLabel());
-        }
     }
 
     public SelectItem[] getCiudades() {
@@ -165,17 +175,59 @@ public class JugadorBean implements Serializable {
         items = null;
     }
 
-    public String create() {
+    public void prepareEdit() {
 
-        persona.setRedSocialCollection(redes);
-        persona.setDireccionId(direccion);
-        jugador.setPersonaId(persona);
-        controllerJugador.create(jugador);
+
+
+        redes = getRedSocials(jugador.getPersonaId());
+        pais = jugador.getPersonaId().getDireccionId().getCiudadId().getPaisId();
+        ciudadesAvalaible();
+
+//        return "edit";
+    }
+
+
+    public void ciudadesAvailable(Pais pais) {
+        ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
+    }
+
+    public String create() {
+        try {
+            if (controllerJugador.findJugadorxDomentoId(persona.getDocumentoIdentidad()) != null) {
+                Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documenta de "
+                        + "identificacion");
+
+            } else {
+
+                persona.setRedSocialCollection(redes);
+                persona.setDireccionId(direccion);
+                jugador.setPersonaId(persona);
+                controllerJugador.create(jugador);
+                recreateModel();
+                Util.addSuccessMessage("Se creo exitosamente el Jugador");
+
+            }
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Jugador :", e.getMessage());
+        }
+        return prepareCreate();
+    }
+
+    public String edit() {
+
+        controllerJugador.edit(jugador);
         recreateModel();
+        Util.addSuccessMessage("Se edito exitosamente el Jugador");
         return prepareCreate();
     }
 
     public Jugador getJugador() {
+        if (jugador == null) {
+            jugador = new Jugador();
+            initializeEmbeddableKey();
+            setEmbeddableKeys();
+        }
         return jugador;
     }
 
