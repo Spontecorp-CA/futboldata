@@ -5,7 +5,9 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Persona;
+import com.spontecorp.futboldata.entity.RedSocial;
 import com.spontecorp.futboldata.utilities.Util;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.slf4j.Logger;
@@ -16,11 +18,12 @@ import org.slf4j.LoggerFactory;
  * @author sponte03
  */
 public class PersonaFacade extends AbstractFacade<Persona> {
-
+    private static final RedSocialFacade controllerRedSocial = new RedSocialFacade();
     private static final Logger logger = LoggerFactory.getLogger(PersonaFacade.class);
 
     public PersonaFacade() {
         super(Persona.class);
+        
     }
 
     @Override
@@ -28,6 +31,9 @@ public class PersonaFacade extends AbstractFacade<Persona> {
         return Util.getEmf().createEntityManager();
     }
 
+        public List<RedSocial> findListTelefonoxDireaccion(Persona persona) {
+        return controllerRedSocial.findRedSocialxPersona(persona);
+    }
     public Persona findPersona(String nombre) {
         EntityManager em = getEntityManager();
         Persona persona = null;

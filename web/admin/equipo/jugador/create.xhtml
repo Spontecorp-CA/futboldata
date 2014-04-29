@@ -32,31 +32,31 @@
                     <h:panelGrid columns="2" title="Datos Personales"
                                  styleClass="top-aligned-columns">
                         <h:outputLabel value="* Nombre:" for="nombre"/>
-                        <p:inputText id="nombre" value="#{jugadorBean.selected.personaId.nombre}"
+                        <p:inputText id="nombre" value="#{jugadorBean.jugador.personaId.nombre}"
                                      required="true" requiredMessage="Debe colocar un nombre"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Apellido:" for="apellido"/>
-                        <p:inputText id="apellido" value="#{jugadorBean.selected.personaId.apellido}"
+                        <p:inputText id="apellido" value="#{jugadorBean.jugador.personaId.apellido}"
                                      required="true" requiredMessage="Debe colocar un apellido"
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
-                        <p:inputText id="did" value="#{jugadorBean.selected.personaId.documentoIdentidad}"
+                        <p:inputText id="did" value="#{jugadorBean.jugador.personaId.documentoIdentidad}"
                                      required="true" requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
-                        <p:selectOneRadio id="sex" value="#{jugadorBean.selected.personaId.sexo}">
+                        <p:selectOneRadio id="sex" value="#{jugadorBean.jugador.personaId.sexo}">
                             <f:selectItem itemLabel="M" itemValue="M"/>
                             <f:selectItem itemLabel="F" itemValue="F"/>
                         </p:selectOneRadio>
                         <h:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento"/>
                         <p:calendar id="fechaNacimiento" 
-                                    value="#{jugadorBean.selected.personaId.fechaNacimiento}"
+                                    value="#{jugadorBean.jugador.personaId.fechaNacimiento}"
                                     navigator="true" 
                                     pattern="dd/mm/yyyy" 
                                     locale="es"/>
                         <h:outputLabel value="Nacional de:" for="nacionalidad"/>
                         <p:selectOneMenu id="nacionalidad"
-                                         value="#{jugadorBean.selected.personaId.nacionalidad}"
+                                         value="#{jugadorBean.jugador.personaId.nacionalidad}"
                                          style="width: 250px"
                                          panelStyle="width:250px">
                             <f:selectItems value="#{jugadorBean.paisesAvalaible}"/>
@@ -64,12 +64,12 @@
 
                         <h:outputLabel value="Foto:" for="foto"/>
                         <p:fileUpload id="foto" 
-                                      value="#{jugadorBean.selected.personaId.foto}"
+                                      value="#{jugadorBean.jugador.personaId.foto}"
                                       mode="advanced" dragDropSupport="false" 
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
                                       style="width: 250px"/>
                         <h:outputLabel value="* status:" for="status"/>
-                        <p:selectOneMenu id="status" value="#{jugadorBean.selected.status}"
+                        <p:selectOneMenu id="status" value="#{jugadorBean.jugador.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
                                          required="true"
@@ -92,16 +92,16 @@
                         </p:selectOneMenu>
                         <h:outputLabel value="Ciudad:" for="ciudad"/>
                         <p:selectOneMenu id="ciudad"
-                                         value="#{jugadorBean.selected.personaId.direccionId.ciudadId}"
+                                         value="#{jugadorBean.jugador.personaId.direccionId.ciudadId}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
                                          required="true"
-                                         requiredMessage="Debe seleccionar un perfil">                       
+                                         requiredMessage="Debe seleccionar una ciudad">                       
                             <f:selectItems value="#{jugadorBean.ciudades}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Dirección:" for="direccion"/>
                         <p:inputTextarea id="direccion"
-                                         value="#{jugadorBean.selected.personaId.direccionId.direccion}"
+                                         value="#{jugadorBean.jugador.personaId.direccionId.direccion}"
                                          required="true" requiredMessage="Debe colocar un email"
                                          validatorMessage="Email inválido"
                                          rows="3" cols="33"
@@ -111,20 +111,20 @@
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputText id="telefono" 
-                                     value="#{jugadorBean.selected.personaId.telefono}"
+                                     value="#{jugadorBean.jugador.personaId.telefono}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputText id="celular" 
-                                     value="#{jugadorBean.selected.personaId.celular}"
+                                     value="#{jugadorBean.jugador.personaId.celular}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
                         <h:outputLabel value="email:" for="email"/>
                         <p:inputText id="email" 
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
-                            <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+<!--                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />-->
                         </p:inputText>
                         
 <!--                    </h:panelGrid>

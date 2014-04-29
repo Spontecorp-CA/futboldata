@@ -16,7 +16,7 @@
             <p:fieldset style="width: 85%" legend="Lista de Jugadors" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nuevo" action="create"/>
+                        <p:commandButton value="Nuevo" action="#{asociacionBean.prepareCreate}"/>
                     </p:toolbarGroup>  
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="/admin/adminPage"
@@ -31,11 +31,11 @@
                              selectionMode="single">                
 
                     <p:column headerText="Nombre">
-                        <h:outputText value="#{jugadorBean.jugador.personaId.nombre}"/>
+                        <h:outputText value="#{jugador.personaId.nombre}"/>
                     </p:column>
 
                     <p:column headerText="Apellido">
-                        <h:outputText value="#{jugadorBean.jugador.personaId.apellido}"/>
+                        <h:outputText value="#{jugador.personaId.apellido}"/>
                     </p:column>
                     <p:column headerText="Ciudad">
                         <h:outputText value="#{jugador.personaId.direccionId.ciudadId.ciudad}"/>
@@ -43,12 +43,20 @@
                     <p:column headerText="Dirección">
                         <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
                     </p:column>
+
+                    <p:column headerText="Red Social">
+                        <h:outputText value="#{jugadorBean.getRedSocials(jugador.personaId)}"/>
+                    </p:column>
+
                     <p:column headerText="Telefono">
-                        <h:outputText value="#{jugador.personaId.direccionId.telefonoCollection}"/>
+                        <h:outputText value="#{jugador.personaId.telefono}"/>
+                    </p:column>
+                    <p:column headerText="Celular">
+                        <h:outputText value="#{jugador.personaId.celular}"/>
                     </p:column>
 
                     <p:column headerText="Status">
-                        <h:outputText value="#{jugador.status}"/>
+                        <h:outputText   value="#{jugador.status== 0?'INACTIVO':'ACTIVO'}"/>
                     </p:column>
                     <p:column headerText="Acciones">|
                         <p:commandLink value="Editar"/>

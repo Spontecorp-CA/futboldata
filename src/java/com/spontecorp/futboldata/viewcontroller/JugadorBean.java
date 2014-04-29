@@ -9,10 +9,12 @@ import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
+import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.entity.TipoRedSocial;
 import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
+import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
@@ -48,7 +50,6 @@ public class JugadorBean implements Serializable {
     private TipoRedSocial tipoRedSocial;
     private List<RedSocial> redes;
 
-
     private final JugadorFacade controllerJugador;
     private final AsociacionFacade controllerAsociacion;
     private final PaisFacade controllerPais;
@@ -57,6 +58,7 @@ public class JugadorBean implements Serializable {
     private final TipoRedSocialFacade tipoRedSocialController;
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
+    private DireccionFacade controllerDireccion;
 
     public JugadorBean() {
         controllerJugador = new JugadorFacade();
@@ -64,6 +66,7 @@ public class JugadorBean implements Serializable {
         controllerPais = new PaisFacade();
         controllerCiudad = new CiudadFacade();
         controllerRedSocial = new RedSocialFacade();
+        controllerDireccion = new DireccionFacade();
         tipoRedSocialController = new TipoRedSocialFacade();
     }
 
@@ -104,17 +107,23 @@ public class JugadorBean implements Serializable {
     public void setRedes(List<RedSocial> redes) {
         this.redes = redes;
     }
+
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(controllerJugador.findAll());
         }
         return items;
     }
-    
+
     public String prepareCreate() {
+        redSocial = new RedSocial();
         jugador = new Jugador();
         direccion = new Direccion();
         persona = new Persona();
+        persona.setDireccionId(direccion);
+        jugador.setPersonaId(persona);
+        ciudades = null;
+        redes = new ArrayList<>();
         return "create";
     }
 
@@ -152,12 +161,17 @@ public class JugadorBean implements Serializable {
         return controllerRedSocial.findRedSocialxPersona(persona);
     }
 
+    public void recreateModel() {
+        items = null;
+    }
+
     public String create() {
 
         persona.setRedSocialCollection(redes);
         persona.setDireccionId(direccion);
         jugador.setPersonaId(persona);
         controllerJugador.create(jugador);
+        recreateModel();
         return prepareCreate();
     }
 
@@ -178,6 +192,9 @@ public class JugadorBean implements Serializable {
     }
 
     public Persona getPersona() {
+        if (persona == null) {
+            persona = new Persona();
+        }
         return persona;
     }
 
@@ -186,7 +203,7 @@ public class JugadorBean implements Serializable {
     }
 
     public RedSocial getRedSocial() {
-        if(redSocial == null){
+        if (redSocial == null) {
             redSocial = new RedSocial();
         }
         return redSocial;
@@ -196,7 +213,6 @@ public class JugadorBean implements Serializable {
         this.redSocial = redSocial;
     }
 
-
     public TipoRedSocial getTipoRedSocial() {
         return tipoRedSocial;
     }
@@ -205,4 +221,13 @@ public class JugadorBean implements Serializable {
         this.tipoRedSocial = tipoRedSocial;
     }
 
+    public List<RedSocial> getRedSocials(Persona persona) {
+        redes = controllerRedSocial.findRedSocialxPersona(persona);
+        return redes;
+    }
+
+    public List<Telefono> getTelefonos(Direccion direccion) {
+        List<Telefono> lista = controllerDireccion.findListTelefonoxDireaccion(direccion);
+        return lista;
+    }
 }
