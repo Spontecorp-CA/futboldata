@@ -6,6 +6,7 @@ package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Direccion;
+import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
@@ -49,6 +50,7 @@ public class JugadorBean implements Serializable {
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
     private List<RedSocial> redes;
+    private List<Email> emails = null;
 
     private final JugadorFacade controllerJugador;
     private final AsociacionFacade controllerAsociacion;
@@ -136,7 +138,7 @@ public class JugadorBean implements Serializable {
         redSocial = new RedSocial();
         direccion = new Direccion();
         persona = new Persona();
-        redes = new ArrayList<>();
+        redes = new ArrayList<RedSocial>();
         direccion = new Direccion();
     }
 
