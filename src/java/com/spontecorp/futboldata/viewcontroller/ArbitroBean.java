@@ -136,7 +136,6 @@ public class ArbitroBean implements Serializable {
     }
 
     public void cargarRedSocial() {
-
         redSocial.setTipoRedSocialId(tipoRedSocial);
         redSocial.setPersonaId(persona);
         redes.add(redSocial);
