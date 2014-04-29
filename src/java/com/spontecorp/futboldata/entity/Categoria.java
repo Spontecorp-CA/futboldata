@@ -135,7 +135,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Categoria[ id=" + id + " ]";
+        return nombre;
     }
     
 }
