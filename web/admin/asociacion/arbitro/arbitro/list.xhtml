@@ -24,32 +24,35 @@
                     </p:toolbarGroup>  
                 </p:toolbar>
                 <br />
-                
-<!--                <p:dataTable id="AsociacionesTabla" var="asociacion"  value="#{asociacionBean.itemsAsociacion}"
-                             rowKey="#{asociacion.id}"
-                             selection="#{asociacionBean.asociacion.nombre}" 
-                             selectionMode="single">                
-
+                <p:dataTable id="JugadoresTabla" var="arbitro"  value="#{arbitroBean.items}"
+                             rowKey="#{arbitro.id}"
+                             selection="#{arbitroBean.arbitro}" 
+                             selectionMode="single">
                     <p:column headerText="Nombre">
-                        <h:outputText value="#{asociacion.nombre}"/>
+                        <h:outputText value="#{arbitro.personaId.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Apellido">
+                        <h:outputText value="#{arbitro.personaId.apellido}"/>
                     </p:column>
                     <p:column headerText="Ciudad">
-                        <h:outputText value="#{asociacion.direccionId.ciudadId.ciudad}"/>
+                        <h:outputText value="#{arbitro.personaId.direccionId.ciudadId.ciudad}"/>
                     </p:column>
                     <p:column headerText="Dirección">
-                        <h:outputText value="#{asociacion.direccionId.direccion}"/>
+                        <h:outputText value="#{arbitro.personaId.direccionId.direccion}"/>
                     </p:column>
-                          <p:column headerText="Telefono">
-                              <h:outputText value=""/>
+                    <p:column headerText="Red Social">
+                        <h:outputText value="#{arbitroBean.getRedSocials(arbitro.personaId)}"/>
                     </p:column>
-                    
+                    <p:column headerText="Telefono">
+                        <h:outputText value="#{arbitro.personaId.telefono}"/>
+                    </p:column>
+                    <p:column headerText="Celular">
+                        <h:outputText value="#{arbitro.personaId.celular}"/>
+                    </p:column>
                     <p:column headerText="Status">
-                        <h:outputText value="#{asociacion.status}"/>
+                        <h:outputText   value="#{arbitro.status== 0?'INACTIVO':'ACTIVO'}"/>
                     </p:column>
-                    <p:column headerText="Acciones">
-                        <p:commandLink value="Editar"/>
-                    </p:column>
-                </p:dataTable>-->
+                </p:dataTable>
             </p:fieldset>
         </h:form>
     </ui:define>
