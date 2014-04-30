@@ -43,7 +43,10 @@
                                  value="#{usuarioBean.items}"
                                  rowKey="#{item.id}"
                                  selectionMode="single" 
-                                 selection="#{usuarioBean.selected}" >
+                                 selection="#{usuarioBean.selected}" 
+                                 paginator="true" rows="10"  
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15">
 
                         <p:ajax event="rowSelect" update=":UserListForm:createButton :UserListForm:editButton 
                                 :UserListForm:changePswButton"/>
@@ -70,13 +73,7 @@
                         </p:column>
                         <p:column headerText="Status">
                             <h:outputText value="#{item.status == 0?'INACTIVO':'ACTIVO'}"/>
-                        </p:column>
-                        <p:column headerText="Acciones">
-                            <p:commandLink value="Editar" action="#{usuarioBean.prepareEdit}" />
-                            &nbsp;
-                            <p:commandLink value="Cambiar Password" 
-                                           action="#{usuarioBean.preparePasswordChange}" />                       
-                        </p:column>
+                        </p:column>                        
                     </p:dataTable>
                 </p:fieldset>
             </h:form>
