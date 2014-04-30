@@ -127,16 +127,19 @@
                                      value="#{arbitroBean.selected.personaId.celular}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
-                        <h:outputLabel value="email:" for="email"/>
-                        <p:inputText id="email" 
+
+                        <h:outputLabel value="Direcciones de correo: " for="emailes"/>
+                        <h:outputLabel value="Email:" for="email"/>
+                        <p:inputText id="email"
+                                     value="#{arbitroBean.persona.email}"
+                                     style="width: 250px"
                                      validatorMessage="Email inválido"
-                                     style="width: 250px">
+                                     >
                             <f:validateRegex
                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
 
-                        <!--                    </h:panelGrid>
-                                            <h:panelGrid columns="2">-->
+
                         <h:outputLabel value="Redes Sociales" for="redSocial"/>
 
                         <p:selectOneMenu id="redSocial"
@@ -156,10 +159,9 @@
                                                  style="width: 250px"/>
                                 </p:column>
                                 <p:column>
-                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar redSocial" >                             
+                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar Red Social" >                             
                                         <f:ajax listener="#{arbitroBean.cargarRedSocial}" 
                                                 execute="cuenta" render="redes"/>
-
                                     </p:commandButton>
                                 </p:column>
                             </p:row>

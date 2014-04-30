@@ -7,6 +7,7 @@ package com.spontecorp.futboldata.viewcontroller;
 import com.spontecorp.futboldata.entity.Arbitro;
 import com.spontecorp.futboldata.entity.Asociacion;
 import com.spontecorp.futboldata.entity.Direccion;
+import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
@@ -48,7 +49,9 @@ public class ArbitroBean implements Serializable {
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
     private Asociacion asociacion;
+    private Email email;
     private List<RedSocial> redes;
+    private List<Email> emails;
     private final transient EntityManagerFactory emf = Util.getEmf();
 
     private final ArbitroFacade controllerArbitro;
@@ -144,6 +147,13 @@ public class ArbitroBean implements Serializable {
         redSocial = new RedSocial();
     }
 
+    public void cargarEmail() {
+            
+        emails.add(email);
+        email = new Email();
+
+    }
+
     public List<RedSocial> getRedesSocial() {
         return controllerRedSocial.findRedSocialxPersona(persona);
     }
@@ -155,8 +165,9 @@ public class ArbitroBean implements Serializable {
         return items;
     }
 
-    public String create() {
+    public String create() {        
         persona.setRedSocialCollection(redes);
+        direccion.setEmailCollection(emails);
         persona.setDireccionId(direccion);
         arbitro.setPersonaId(persona);
         arbitro.setAsociacionId(asociacion);
@@ -218,6 +229,25 @@ public class ArbitroBean implements Serializable {
 
     public void setTipoRedSocial(TipoRedSocial tipoRedSocial) {
         this.tipoRedSocial = tipoRedSocial;
+    }
+
+    public Email getEmail() {
+        if(email==null){
+        email= new Email();
+        }
+        return email;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
+    public List<Email> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
     }
 
 }
