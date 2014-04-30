@@ -47,10 +47,12 @@ public class JugadorBean implements Serializable {
     private Direccion direccion;
     private Persona persona;
     private String cuenta;
+    private Email email;
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
     private List<RedSocial> redes;
     private List<Email> emails = null;
+    private List<Email> emailEliminar = null;
 
     private final JugadorFacade controllerJugador;
     private final AsociacionFacade controllerAsociacion;
@@ -85,6 +87,31 @@ public class JugadorBean implements Serializable {
         }
         return jugador;
     }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
+    public List<Email> getEmails() {
+        return emails;
+    }
+
+    public void setEmails(List<Email> emails) {
+        this.emails = emails;
+    }
+
+    public List<Email> getEmailEliminar() {
+        return emailEliminar;
+    }
+
+    public void setEmailEliminar(List<Email> emailEliminar) {
+        this.emailEliminar = emailEliminar;
+    }
+    
 
     public Pais getPais() {
         return pais;
@@ -278,10 +305,5 @@ public class JugadorBean implements Serializable {
     public List<RedSocial> getRedSocials(Persona persona) {
         redes = controllerRedSocial.findRedSocialxPersona(persona);
         return redes;
-    }
-
-    public List<Telefono> getTelefonos(Direccion direccion) {
-        List<Telefono> lista = controllerDireccion.findListTelefonoxDireaccion(direccion);
-        return lista;
     }
 }
