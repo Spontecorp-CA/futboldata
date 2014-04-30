@@ -34,7 +34,7 @@ public class RedSocialFacade extends AbstractFacade<RedSocial> {
         EntityManager em = getEntityManager();
         List<RedSocial> redes = null;
         try {
-            String query = "SELECT * FROM RedSocial rs WHERE re.personalId =: persona";
+            String query = "SELECT rs FROM RedSocial rs WHERE rs.personaId =:persona";
             Query q = em.createQuery(query, RedSocial.class);
             q.setParameter("persona", persona);
             redes = q.getResultList();

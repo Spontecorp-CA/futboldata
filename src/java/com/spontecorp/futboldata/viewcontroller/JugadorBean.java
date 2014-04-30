@@ -4,16 +4,18 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
-import com.spontecorp.futboldata.entity.Arbitro;
-import com.spontecorp.futboldata.entity.Asociacion;
+import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Direccion;
+import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
+import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.entity.TipoRedSocial;
-import com.spontecorp.futboldata.jpacontroller.ArbitroFacade;
+import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
+import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
@@ -26,7 +28,6 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,24 +35,24 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-@Named("arbitroBean")
+@Named("jugadorBean")
 @SessionScoped
-public class ArbitroBean implements Serializable {
+public class JugadorBean implements Serializable {
 
-    private Arbitro arbitro;
+    private Jugador jugador;
     private Pais pais;
     private SelectItem[] ciudades;
-    private DataModel items;
+    private DataModel items = null;
+
     private Direccion direccion;
     private Persona persona;
     private String cuenta;
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
-    private Asociacion asociacion;
     private List<RedSocial> redes;
-    private final transient EntityManagerFactory emf = Util.getEmf();
+    private List<Email> emails = null;
 
-    private final ArbitroFacade controllerArbitro;
+    private final JugadorFacade controllerJugador;
     private final AsociacionFacade controllerAsociacion;
     private final PaisFacade controllerPais;
     private final CiudadFacade controllerCiudad;
@@ -59,27 +60,30 @@ public class ArbitroBean implements Serializable {
     private final TipoRedSocialFacade tipoRedSocialController;
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
+    private DireccionFacade controllerDireccion;
 
-    public ArbitroBean() {
-        controllerArbitro = new ArbitroFacade();
+    public JugadorBean() {
+        controllerJugador = new JugadorFacade();
         controllerAsociacion = new AsociacionFacade();
         controllerPais = new PaisFacade();
         controllerCiudad = new CiudadFacade();
         controllerRedSocial = new RedSocialFacade();
+        controllerDireccion = new DireccionFacade();
         tipoRedSocialController = new TipoRedSocialFacade();
     }
 
-    public Arbitro getSelected() {
-        if (arbitro == null) {
-            arbitro = new Arbitro();
+    public Jugador getSelected() {
+        if (jugador == null) {
+            jugador = new Jugador();
             direccion = new Direccion();
             persona = new Persona();
             persona.setDireccionId(direccion);
-            arbitro.setPersonaId(persona);
+            jugador.setPersonaId(persona);
+
             ciudades = null;
             redes = new ArrayList<RedSocial>();
         }
-        return arbitro;
+        return jugador;
     }
 
     public Pais getPais() {
@@ -106,12 +110,36 @@ public class ArbitroBean implements Serializable {
         this.redes = redes;
     }
 
+    public DataModel getItems() {
+        if (items == null) {
+            items = new ListDataModel(controllerJugador.findAll());
+        }
+        return items;
+    }
+
     public String prepareCreate() {
-        arbitro = new Arbitro();
+        redSocial = new RedSocial();
+        jugador = new Jugador();
         direccion = new Direccion();
         persona = new Persona();
-        asociacion = new Asociacion();
+        persona.setDireccionId(direccion);
+        jugador.setPersonaId(persona);
+        ciudades = null;
+        redes = new ArrayList<RedSocial>();
         return "create";
+    }
+
+    protected void setEmbeddableKeys() {
+        persona.setDireccionId(direccion);
+        jugador.setPersonaId(persona);
+    }
+
+    protected void initializeEmbeddableKey() {
+        redSocial = new RedSocial();
+        direccion = new Direccion();
+        persona = new Persona();
+        redes = new ArrayList<RedSocial>();
+        direccion = new Direccion();
     }
 
     public SelectItem[] getAsociacionesAvalaible() {
@@ -124,9 +152,6 @@ public class ArbitroBean implements Serializable {
 
     public void ciudadesAvalaible() {
         ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
-        for (SelectItem city : ciudades) {
-            logger.debug(city.getLabel());
-        }
     }
 
     public SelectItem[] getCiudades() {
@@ -148,33 +173,68 @@ public class ArbitroBean implements Serializable {
         return controllerRedSocial.findRedSocialxPersona(persona);
     }
 
-    public DataModel getItems() {
-        if (items == null) {
-            items = new ListDataModel(controllerArbitro.findAll());
-        }
-        return items;
+    public void recreateModel() {
+        items = null;
+    }
+
+    public void prepareEdit() {
+
+
+
+        redes = getRedSocials(jugador.getPersonaId());
+        pais = jugador.getPersonaId().getDireccionId().getCiudadId().getPaisId();
+        ciudadesAvalaible();
+
+//        return "edit";
+    }
+
+
+    public void ciudadesAvailable(Pais pais) {
+        ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
     }
 
     public String create() {
-        persona.setRedSocialCollection(redes);
-        persona.setDireccionId(direccion);
-        arbitro.setPersonaId(persona);
-        arbitro.setAsociacionId(asociacion);
-        controllerArbitro.create(arbitro);
+        try {
+            if (controllerJugador.findJugadorxDomentoId(persona.getDocumentoIdentidad()) != null) {
+                Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documenta de "
+                        + "identificacion");
+
+            } else {
+
+                persona.setRedSocialCollection(redes);
+                persona.setDireccionId(direccion);
+                jugador.setPersonaId(persona);
+                controllerJugador.create(jugador);
+                recreateModel();
+                Util.addSuccessMessage("Se creo exitosamente el Jugador");
+
+            }
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Jugador :", e.getMessage());
+        }
         return prepareCreate();
     }
 
-    public List<RedSocial> getRedSocials(Persona persona) {
-        redes = controllerRedSocial.findRedSocialxPersona(persona);
-        return redes;
+    public String edit() {
+
+        controllerJugador.edit(jugador);
+        recreateModel();
+        Util.addSuccessMessage("Se edito exitosamente el Jugador");
+        return prepareCreate();
     }
 
-    public Arbitro getArbitro() {
-        return arbitro;
+    public Jugador getJugador() {
+        if (jugador == null) {
+            jugador = new Jugador();
+            initializeEmbeddableKey();
+            setEmbeddableKeys();
+        }
+        return jugador;
     }
 
-    public void setArbitro(Arbitro arbitro) {
-        this.arbitro = arbitro;
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
     }
 
     public Direccion getDireccion() {
@@ -186,6 +246,9 @@ public class ArbitroBean implements Serializable {
     }
 
     public Persona getPersona() {
+        if (persona == null) {
+            persona = new Persona();
+        }
         return persona;
     }
 
@@ -204,14 +267,6 @@ public class ArbitroBean implements Serializable {
         this.redSocial = redSocial;
     }
 
-    public Asociacion getAsociacion() {
-        return asociacion;
-    }
-
-    public void setAsociacion(Asociacion asociacion) {
-        this.asociacion = asociacion;
-    }
-
     public TipoRedSocial getTipoRedSocial() {
         return tipoRedSocial;
     }
@@ -220,4 +275,13 @@ public class ArbitroBean implements Serializable {
         this.tipoRedSocial = tipoRedSocial;
     }
 
+    public List<RedSocial> getRedSocials(Persona persona) {
+        redes = controllerRedSocial.findRedSocialxPersona(persona);
+        return redes;
+    }
+
+    public List<Telefono> getTelefonos(Direccion direccion) {
+        List<Telefono> lista = controllerDireccion.findListTelefonoxDireaccion(direccion);
+        return lista;
+    }
 }

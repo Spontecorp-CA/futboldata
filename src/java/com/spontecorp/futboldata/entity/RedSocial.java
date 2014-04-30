@@ -153,7 +153,7 @@ public class RedSocial implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.RedSocial[ id=" + id + " ]";
+        return getTipoRedSocialId().getNombre()+"/"+ usuario;
     }
     
 }

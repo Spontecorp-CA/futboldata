@@ -273,8 +273,8 @@ public class AsociacionBean implements Serializable {
         asociacion = new Asociacion();
         direccion = new Direccion();
         telefono = new Telefono();
-        telefonos = new ArrayList<>();
-        emails = new ArrayList<>();
+        telefonos = new ArrayList<Telefono>();
+        emails = new ArrayList<Email>();
         email = new Email();
         pais = new Pais();
         ciudades = null;
@@ -329,8 +329,8 @@ public class AsociacionBean implements Serializable {
     public String prepareEdit() {
         email = new Email();
         telefono = new Telefono();
-        telefonoEliminar = new ArrayList<>();
-        emailEliminar = new ArrayList<>();
+        telefonoEliminar = new ArrayList<Telefono>();
+        emailEliminar = new ArrayList<Email>();
         asociacion = (Asociacion) getItemsAsociacion().getRowData();
         ciudadAvailable(asociacion.getDireccionId().getCiudadId().getPaisId());
         telefonos = getTelefonos(asociacion.getDireccionId());

@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.utilities;
 
 import com.spontecorp.futboldata.entity.User;
@@ -17,9 +16,9 @@ import org.slf4j.LoggerFactory;
  * @author jgcastillo
  */
 public class SecurePassword {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(SecurePassword.class);
-    
+
     public static String encript(char[] password) {
         String algorithm = "SHA-256";
         MessageDigest md = null;
@@ -50,11 +49,11 @@ public class SecurePassword {
         }
         return sb.toString();
     }
-    
-    public static String encript(String password) {        
+
+    public static String encript(String password) {
         return encript(password.toCharArray());
     }
-    
+
     public static User authenticate(String username, char[] password) {
         String pswEncripted = SecurePassword.encript(password);
         UserFacade service = new UserFacade();
@@ -63,14 +62,17 @@ public class SecurePassword {
             if (!pswEncripted.equals(usuario.getPassword())) {
                 return null;
             } else {
-                if(usuario.getStatus() == Util.INACTIVO){
+                if (usuario.getStatus() == Util.INACTIVO) {
                     return null;
                 } else {
                     return usuario;
                 }
             }
-        } catch (NoResultException | NullPointerException e) {
+        } catch (NoResultException e) {
+            return null;
+        } catch (NullPointerException e) {
             return null;
         }
+
     }
 }

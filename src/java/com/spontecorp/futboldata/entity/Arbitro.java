@@ -59,7 +59,7 @@ public class Arbitro implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona personaId;
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Asociacion asociacionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "arbitro")
     private Collection<PartidoArbitro> partidoArbitroCollection;

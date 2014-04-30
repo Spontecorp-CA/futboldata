@@ -71,7 +71,7 @@ public class Jugador implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
     private Collection<Convocado> convocadoCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL,optional = false)
     private Persona personaId;
     @JoinColumn(name = "posicion_id", referencedColumnName = "id")
     @ManyToOne
@@ -263,7 +263,7 @@ public class Jugador implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Jugador[ id=" + id + " ]";
+        return personaId.getNombre();
     }
     
 }
