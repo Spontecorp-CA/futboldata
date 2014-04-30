@@ -6,15 +6,13 @@
     <h:body>
         <h:form id="menuForm">
             <p:panelMenu style="width: 95%">
-                <p:submenu label="Usuarios"
-                           rendered="#{loginBean.isAdmin}">
-                    <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
-                                action="#{usuarioBean.gotoAdminPage}"/>
-                </p:submenu>
+                
                 <p:submenu label="Localidades">
                     <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
                                 action="#{ciudadBean.gotoCiudadPage}"/>
-                     </p:submenu>
+                    <p:menuitem value="Configura Cancha" icon="ui-icon-clipboard"
+                                action="/admin/liga/cancha/list"/>
+                </p:submenu>
                 <p:submenu label="Asociaciones">
                     <p:menuitem value="Configura Asociación" icon="ui-icon-document"
                                 action="#{asociacionBean.gotoAsociacionPage()}"/>
@@ -27,38 +25,40 @@
                                     action="/admin/asociacion/arbitro/premio_arbitro/list"/>
                     </p:submenu>
                 </p:submenu>
-                                
+
                 <p:submenu label="Ligas">
-                    <p:menuitem value="Configura Cancha" icon="ui-icon-clipboard"
-                                action="/admin/liga/cancha/list"/>
                     <p:menuitem value="Configura Competición" icon="ui-icon-clipboard"
                                 action="/admin/liga/competicion/list"/>
                     <p:menuitem value="Configura Categoría" icon="ui-icon-clipboard"
                                 action="/admin/liga/categoria/list"/>
-                    <p:menuitem value="Configura Club" icon="ui-icon-clipboard"
-                                action="/admin/liga/club/list" />
-                </p:submenu>
-                
-                <p:submenu label="Equipos">
-                    <p:menuitem value="Configura Equipo" icon="ui-icon-person"
-                                action="/admin/equipo/equipo/list"/>
-                    <p:menuitem value="Configura Jugador" icon="ui-icon-person" />                   
-                </p:submenu>
-                
-                <p:submenu label="Temporadas">
-                    <p:menuitem value="Configura Fase" icon="ui-icon-calculator"/>
-                    <p:menuitem value="Configura Llave" icon="ui-icon-calculator"/>
-                    <p:menuitem value="Configura Grupo" icon="ui-icon-calculator"/>
-                    <p:menuitem value="Configura Jornada" icon="ui-icon-calculator"/>
-                    <p:menuitem value="Configura Partido" icon="ui-icon-calculator"/>
+                    <p:submenu label="Temporadas">
+                        <p:menuitem value="Configura Temporada" icon="ui-icon-calculator"/>
+                        <p:menuitem value="Configura Fase" icon="ui-icon-calculator"/>
+                        <p:menuitem value="Configura Llave" icon="ui-icon-calculator"/>
+                        <p:menuitem value="Configura Grupo" icon="ui-icon-calculator"/>
+                        <p:menuitem value="Configura Jornada" icon="ui-icon-calculator"/>
+                        <p:menuitem value="Configura Partido" icon="ui-icon-calculator"/>
+                    </p:submenu>
                 </p:submenu>
 
-          
-                    <p:menuitem value="Configura Localidad" icon="ui-icon-home"
-                                action="#{localidadBean.gotoLocalidadPage()}"/>
-              
-                
-                <p:submenu label="Herramientas">
+                <p:submenu label="Clubes">
+                    <p:menuitem value="Configura Club" icon="ui-icon-clipboard"
+                                action="/admin/liga/club/list" />
+                    <p:submenu label="Equipos">
+                        <p:menuitem value="Configura Equipo" icon="ui-icon-person"
+                                    action="/admin/equipo/equipo/list"/>
+                        <p:menuitem value="Configura Jugador" icon="ui-icon-person" />
+                        <p:menuitem value="Configura Staff" icon="ui-icon-person" />
+                    </p:submenu>
+                </p:submenu>
+
+                <p:submenu label="Sistema">
+                    <p:submenu label="Usuarios"
+                               rendered="#{loginBean.isAdmin}">
+                        <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
+                                    action="#{usuarioBean.gotoAdminPage}"/>
+                    </p:submenu>
+                    <p:separator/>
                     <p:menuitem value="Salir" action="#{loginBean.logout}" 
                                 icon="ui-icon-closethick"/>
                 </p:submenu>

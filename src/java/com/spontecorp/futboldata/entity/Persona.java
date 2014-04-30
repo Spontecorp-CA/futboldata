@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByNacionalidad", query = "SELECT p FROM Persona p WHERE p.nacionalidad = :nacionalidad"),
     @NamedQuery(name = "Persona.findByTelefono", query = "SELECT p FROM Persona p WHERE p.telefono = :telefono"),
     @NamedQuery(name = "Persona.findByCelular", query = "SELECT p FROM Persona p WHERE p.celular = :celular"),
+    @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -82,26 +82,20 @@ public class Persona implements Serializable {
     @Size(max = 45)
     @Column(name = "celular")
     private String celular;
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 80)
+    @Column(name = "email")
+    private String email;
     @Column(name = "status")
     private Integer status;
     @Lob
     @Size(max = 65535)
     @Column(name = "foto")
     private String foto;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Jugador> jugadorCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Agente> agenteCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Arbitro> arbitroCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Direccion direccionId;
     @OneToMany(mappedBy = "personaId")
-    private Collection<Imagen> imagenCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Staff> staffCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<RedSocial> redSocialCollection;
 
     public Persona() {
@@ -191,6 +185,14 @@ public class Persona implements Serializable {
         this.celular = celular;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -207,57 +209,12 @@ public class Persona implements Serializable {
         this.foto = foto;
     }
 
-    @XmlTransient
-    public Collection<Jugador> getJugadorCollection() {
-        return jugadorCollection;
-    }
-
-    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
-        this.jugadorCollection = jugadorCollection;
-    }
-
-    @XmlTransient
-    public Collection<Agente> getAgenteCollection() {
-        return agenteCollection;
-    }
-
-    public void setAgenteCollection(Collection<Agente> agenteCollection) {
-        this.agenteCollection = agenteCollection;
-    }
-
-    @XmlTransient
-    public Collection<Arbitro> getArbitroCollection() {
-        return arbitroCollection;
-    }
-
-    public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
-        this.arbitroCollection = arbitroCollection;
-    }
-
     public Direccion getDireccionId() {
         return direccionId;
     }
 
     public void setDireccionId(Direccion direccionId) {
         this.direccionId = direccionId;
-    }
-
-    @XmlTransient
-    public Collection<Imagen> getImagenCollection() {
-        return imagenCollection;
-    }
-
-    public void setImagenCollection(Collection<Imagen> imagenCollection) {
-        this.imagenCollection = imagenCollection;
-    }
-
-    @XmlTransient
-    public Collection<Staff> getStaffCollection() {
-        return staffCollection;
-    }
-
-    public void setStaffCollection(Collection<Staff> staffCollection) {
-        this.staffCollection = staffCollection;
     }
 
     @XmlTransient
