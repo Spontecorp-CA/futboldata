@@ -1,5 +1,5 @@
 body {
-    background-color: #ffffff;
+    background-image: -webkit-radial-gradient(50% 75%, circle cover, rgb(255, 255, 255), rgb(230, 230, 230));
     font-size: 1.0em;
     font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     color: #000000;  
