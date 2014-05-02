@@ -26,7 +26,7 @@
                                          actionListener="#{jugadorBean.prepareEdit}"
                                          update=":JugadorEditForm" 
                                          oncomplete="PF('JugadorEditDialog').show()" 
-                                         disabled="#{empty jugadorBean.jugador}"/>
+                                         disabled="#{empty jugadorBean.jugador.personaId.nombre}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"

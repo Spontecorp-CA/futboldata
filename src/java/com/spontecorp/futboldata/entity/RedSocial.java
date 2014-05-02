@@ -153,7 +153,7 @@ public class RedSocial implements Serializable {
 
     @Override
     public String toString() {
-        return getTipoRedSocialId().getNombre()+"/"+ usuario;
+        return usuario;
     }
     
 }

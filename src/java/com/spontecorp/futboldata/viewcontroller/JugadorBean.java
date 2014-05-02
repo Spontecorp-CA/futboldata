@@ -10,7 +10,6 @@ import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
-import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.entity.TipoRedSocial;
 import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
@@ -51,8 +50,7 @@ public class JugadorBean implements Serializable {
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
     private List<RedSocial> redes;
-    private List<Email> emails = null;
-    private List<Email> emailEliminar = null;
+    private List<RedSocial> redesEliminar;
 
     private final JugadorFacade controllerJugador;
     private final AsociacionFacade controllerAsociacion;
@@ -61,7 +59,7 @@ public class JugadorBean implements Serializable {
     private final RedSocialFacade controllerRedSocial;
     private final TipoRedSocialFacade tipoRedSocialController;
 
-    private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(Jugador.class);
     private DireccionFacade controllerDireccion;
 
     public JugadorBean() {
@@ -95,23 +93,6 @@ public class JugadorBean implements Serializable {
     public void setEmail(Email email) {
         this.email = email;
     }
-
-    public List<Email> getEmails() {
-        return emails;
-    }
-
-    public void setEmails(List<Email> emails) {
-        this.emails = emails;
-    }
-
-    public List<Email> getEmailEliminar() {
-        return emailEliminar;
-    }
-
-    public void setEmailEliminar(List<Email> emailEliminar) {
-        this.emailEliminar = emailEliminar;
-    }
-    
 
     public Pais getPais() {
         return pais;
@@ -166,6 +147,7 @@ public class JugadorBean implements Serializable {
         direccion = new Direccion();
         persona = new Persona();
         redes = new ArrayList<RedSocial>();
+        redesEliminar = new ArrayList<RedSocial>();
         direccion = new Direccion();
     }
 
@@ -201,20 +183,20 @@ public class JugadorBean implements Serializable {
     }
 
     public void recreateModel() {
+        redSocial = null;
+        pais = null;
+        jugador = null;
         items = null;
     }
 
     public void prepareEdit() {
-
-
-
+        
         redes = getRedSocials(jugador.getPersonaId());
         pais = jugador.getPersonaId().getDireccionId().getCiudadId().getPaisId();
         ciudadesAvalaible();
 
 //        return "edit";
     }
-
 
     public void ciudadesAvailable(Pais pais) {
         ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
@@ -243,16 +225,28 @@ public class JugadorBean implements Serializable {
         return prepareCreate();
     }
 
-    public String edit() {
+    public void edit() {
 
+        for (RedSocial red : redes) {
+            red.setPersonaId(jugador.getPersonaId());
+//            controllerRedSocial.edit(red);
+        }
+
+        jugador.getPersonaId().setRedSocialCollection(redes);
         controllerJugador.edit(jugador);
+        for (RedSocial redEliminar : redesEliminar) {
+            controllerRedSocial.remove(redEliminar);
+        }
         recreateModel();
         Util.addSuccessMessage("Se edito exitosamente el Jugador");
-        return prepareCreate();
+        
+
+
     }
 
     public Jugador getJugador() {
         if (jugador == null) {
+            logger.debug("Estoy  Creando un Jugador");
             jugador = new Jugador();
             initializeEmbeddableKey();
             setEmbeddableKeys();
@@ -305,5 +299,17 @@ public class JugadorBean implements Serializable {
     public List<RedSocial> getRedSocials(Persona persona) {
         redes = controllerRedSocial.findRedSocialxPersona(persona);
         return redes;
+    }
+
+    public void eliminarRedSocial(RedSocial redsocial) {
+
+        if (redes.remove(redsocial)) {
+            redesEliminar.add(redsocial);
+            for (RedSocial red : redesEliminar) {
+                logger.debug("Va a eliminar a: " + red.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
     }
 }

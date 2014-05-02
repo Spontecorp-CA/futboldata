@@ -154,6 +154,7 @@ public class CiudadBean implements Serializable {
     }
 
         public String prepareList() {
+        ciudad = null;
         recreateModelCiudad();
         return "/admin/localidad/ciudad/list.xhtml";
     }    
