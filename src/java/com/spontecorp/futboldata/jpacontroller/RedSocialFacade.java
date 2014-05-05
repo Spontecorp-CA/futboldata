@@ -38,6 +38,8 @@ public class RedSocialFacade extends AbstractFacade<RedSocial> {
             Query q = em.createQuery(query, RedSocial.class);
             q.setParameter("persona", persona);
             redes = q.getResultList();
+        } catch (Exception e) {
+            logger.debug("Error encontrado en buscar RedSocial: " + e.getLocalizedMessage());
         } finally {
             if (em != null) {
                 em.close();
@@ -46,4 +48,39 @@ public class RedSocialFacade extends AbstractFacade<RedSocial> {
         return redes;
     }
 
+    public RedSocial findRedSocial(String usuario) {
+        RedSocial reds = null;
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createNamedQuery("RedSocial.findByUsuario", RedSocial.class);
+            q.setParameter("usuario", usuario);
+            reds = (RedSocial) q.getSingleResult();
+        } catch (Exception e) {
+            logger.debug("Error encontrado en buscar RedSocial: " + e.getLocalizedMessage());
+        } finally {
+            em.close();
+        }
+        return reds;
+    }
+
+    public RedSocial findRedSocial(RedSocial redsocial) {
+        EntityManager em = getEntityManager();
+        RedSocial redes = null;
+
+        try {
+            String query = "SELECT rs FROM RedSocial rs WHERE rs.usuario =:usuario "
+                    + "AND rs.tipoRedSocialId =:tipoRedSocial";
+            Query q = em.createQuery(query, RedSocial.class);
+            q.setParameter("usuario", redsocial.getUsuario());
+            q.setParameter("tipoRedSocial", redsocial.getTipoRedSocialId());
+            redes = (RedSocial)q.getSingleResult();
+        } catch (Exception e) {
+            logger.debug("Error encontrado en buscar RedSocial: " + e.getLocalizedMessage());
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return redes;
+    }
 }

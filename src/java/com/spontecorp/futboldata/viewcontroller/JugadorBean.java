@@ -4,30 +4,38 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
-import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
+import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
-import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.entity.TipoRedSocial;
-import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
+import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
+import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,10 +55,11 @@ public class JugadorBean implements Serializable {
     private Direccion direccion;
     private Persona persona;
     private String cuenta;
+    private Email email;
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
     private List<RedSocial> redes;
-    private List<Email> emails = null;
+    private List<RedSocial> redesEliminar;
 
     private final JugadorFacade controllerJugador;
     private final AsociacionFacade controllerAsociacion;
@@ -58,9 +67,10 @@ public class JugadorBean implements Serializable {
     private final CiudadFacade controllerCiudad;
     private final RedSocialFacade controllerRedSocial;
     private final TipoRedSocialFacade tipoRedSocialController;
+    private final DireccionFacade controllerDireccion;
+    private static final String rutaRelativa = "resources\\images\\";
 
-    private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
-    private DireccionFacade controllerDireccion;
+    private static final Logger logger = LoggerFactory.getLogger(Jugador.class);
 
     public JugadorBean() {
         controllerJugador = new JugadorFacade();
@@ -84,6 +94,14 @@ public class JugadorBean implements Serializable {
             redes = new ArrayList<RedSocial>();
         }
         return jugador;
+    }
+
+    public Email getEmail() {
+        return email;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
     }
 
     public Pais getPais() {
@@ -126,7 +144,7 @@ public class JugadorBean implements Serializable {
         jugador.setPersonaId(persona);
         ciudades = null;
         redes = new ArrayList<RedSocial>();
-        return "create";
+        return "create?faces-redirect=true";
     }
 
     protected void setEmbeddableKeys() {
@@ -139,6 +157,7 @@ public class JugadorBean implements Serializable {
         direccion = new Direccion();
         persona = new Persona();
         redes = new ArrayList<RedSocial>();
+        redesEliminar = new ArrayList<RedSocial>();
         direccion = new Direccion();
     }
 
@@ -174,12 +193,14 @@ public class JugadorBean implements Serializable {
     }
 
     public void recreateModel() {
+        redSocial = null;
+        pais = null;
+        jugador = null;
         items = null;
+        persona = null;
     }
 
     public void prepareEdit() {
-
-
 
         redes = getRedSocials(jugador.getPersonaId());
         pais = jugador.getPersonaId().getDireccionId().getCiudadId().getPaisId();
@@ -187,7 +208,6 @@ public class JugadorBean implements Serializable {
 
 //        return "edit";
     }
-
 
     public void ciudadesAvailable(Pais pais) {
         ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
@@ -204,6 +224,7 @@ public class JugadorBean implements Serializable {
                 persona.setRedSocialCollection(redes);
                 persona.setDireccionId(direccion);
                 jugador.setPersonaId(persona);
+                logger.debug("Esta Creando  un Jugador");
                 controllerJugador.create(jugador);
                 recreateModel();
                 Util.addSuccessMessage("Se creo exitosamente el Jugador");
@@ -218,7 +239,17 @@ public class JugadorBean implements Serializable {
 
     public String edit() {
 
+        for (RedSocial red : redes) {
+            red.setPersonaId(jugador.getPersonaId());
+//            controllerRedSocial.edit(red);
+        }
+
+        jugador.getPersonaId().setRedSocialCollection(redes);
+        logger.debug("Esta editando un Jugador");
         controllerJugador.edit(jugador);
+        for (RedSocial redEliminar : redesEliminar) {
+            controllerRedSocial.remove(redEliminar);
+        }
         recreateModel();
         Util.addSuccessMessage("Se edito exitosamente el Jugador");
         return prepareCreate();
@@ -280,8 +311,62 @@ public class JugadorBean implements Serializable {
         return redes;
     }
 
-    public List<Telefono> getTelefonos(Direccion direccion) {
-        List<Telefono> lista = controllerDireccion.findListTelefonoxDireaccion(direccion);
-        return lista;
+    public void eliminarRedSocial(RedSocial redsocial) {
+
+        if (redes.remove(redsocial)) {
+            redesEliminar.add(redsocial);
+            for (RedSocial red : redesEliminar) {
+                logger.debug("Va a eliminar a: " + red.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
     }
+
+    public void handleFileUpload(FileUploadEvent event) {
+
+        long lDateTime = new Date().getTime();
+        System.out.println("Date() - Time in milliseconds: " + lDateTime);
+        String nombreArchivo = "jugador" + lDateTime;
+        Util.subirArchivo(event, "jugador\\", nombreArchivo);
+        jugador.getPersonaId().setFoto(nombreArchivo);
+
+    }
+//
+//           String rutaRelativa = "resources\\images\\";
+//        try {
+//            ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+//            String contexto = ctx.getRealPath("/");
+//            String path = contexto+rutaRelativa+"jugador\\";
+//            File targetFolder = new File(path);
+//
+//            InputStream inputStream = event.getFile().getInputstream();
+//
+//            OutputStream out = new FileOutputStream(new File(targetFolder,
+//                    event.getFile().getFileName()));
+//
+//            int read = 0;
+//
+//            byte[] bytes = new byte[1024];
+//
+//            while ((read = inputStream.read(bytes)) != -1) {
+//
+//                out.write(bytes, 0, read);
+//
+//            }
+//           jugador.getPersonaId().setFoto(event.getFile().getFileName() );
+//                   
+//            inputStream.close();
+//
+//            out.flush();
+//            out.close();
+//
+//        } catch (IOException e) {
+//
+//            logger.debug("Error al cargar la imagen :" ,e);
+//
+//        }
+//        logger.debug("El dato de Value de la imagen seria " + jugador.getPersonaId().getFoto());
+//    }
+
 }

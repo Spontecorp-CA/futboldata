@@ -50,6 +50,7 @@
 }
 
 .center_content {
+    background-image: -webkit-radial-gradient(50% 75%, circle cover, rgb(255, 255, 255), rgb(230, 230, 230));
     position: relative;
     background-color: #ffffff;
     padding: 5px;

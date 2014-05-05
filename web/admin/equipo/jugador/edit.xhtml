@@ -56,8 +56,17 @@
                                       value="#{jugadorBean.selected.personaId.foto}"
                                       mode="advanced" dragDropSupport="false" 
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                      style="width: 250px"/>
+                                      style="width: 250px"
+                                      fileUploadListener="#{jugadorBean.handleFileUpload}"
+                                      update="Perfil" >
+
+                        </p:fileUpload>
+                    
+                        &nbsp; 
+                        <h:graphicImage id="Perfil" library="images/jugador" name="#{jugadorBean.jugador.personaId.foto}"/>       
+
                         <h:outputLabel value="* status:" for="status"/>
+
                         <p:selectOneMenu id="status" value="#{jugadorBean.selected.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
@@ -110,10 +119,11 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="email:" for="email"/>
                         <p:inputText id="email" 
+                                     value="#{jugadorBean.jugador.personaId.email}"
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
-                            <!--                            <f:validateRegex
-                                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />-->
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
 
                         <!--                    </h:panelGrid>
@@ -147,12 +157,23 @@
                                     <p:dataList id="redes" 
                                                 var="redSocial" 
                                                 value="#{jugadorBean.redes}">
-                                        #{redSocial.tipoRedSocialId.url}/#{redSocial.usuario}
+                                        #{redSocial.tipoRedSocialId.url}
+                                        <p:column headerText="Redes Sociales">
+                                            <p:inputText  value="#{redSocial.usuario}"
+                                                          required="true"
+                                                          style="width: 250px"/>
+                                            &nbsp;
+                                            <p:commandButton icon="ui-icon-closethick" 
+                                                             title="Eliminar Usuario" >
+                                                <p:ajax resetValues="true" 
+                                                        listener="#{jugadorBean.eliminarRedSocial(redSocial)}"
+                                                        update="redes"/>
+                                            </p:commandButton>
+                                        </p:column>
                                     </p:dataList>
                                 </p:column>
                             </p:row>
                         </p:panelGrid>
-
                     </h:panelGrid>
 
                 </h:panelGrid>

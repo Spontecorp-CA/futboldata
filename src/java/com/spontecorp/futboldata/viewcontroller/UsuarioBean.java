@@ -44,24 +44,12 @@ public class UsuarioBean implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
 
     public UsuarioBean() {
-        //emf = Util.getEmf();
         controllerUser = new UserFacade();
         controllerPerfil = new PerfilFacade();
         //contextPath = FacesContext.getCurrentInstance().getExternalContext().getContextName();
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-
     public User getSelected() {
-//        if (user == null) {
-//            user = new User();
-//        }
         return selected;
     }
     
@@ -69,14 +57,6 @@ public class UsuarioBean implements Serializable {
         this.selected = selected;
     }
 
-//    public DataModel getItems() {
-//        if (items == null) {
-//            //items = new ListDataModel(controllerUser.findUserEntities());
-//            items = new ListDataModel(controllerUser.findAll());
-//        }
-//        return items;
-//    }
-    
     public List<User> getItems(){
         if(items == null){
             items = controllerUser.findAll();
@@ -85,6 +65,7 @@ public class UsuarioBean implements Serializable {
     }
 
     private void recreateModel() {
+        this.selected = null;
         items = null;
     }
 
@@ -102,11 +83,6 @@ public class UsuarioBean implements Serializable {
         return "/admin/adminPage";
     }
 
-//    public String prepareCreate() {
-//        user = new User();
-//        return "create";
-//    }
-    
     public User prepareCreate(){
         selected = new User();
         return selected;
@@ -122,7 +98,8 @@ public class UsuarioBean implements Serializable {
                 controllerUser.create(selected);
                 Util.addSuccessMessage("Usuario creado con éxito");
                 //return prepareCreate();
-                items = null;
+                //items = null;
+                recreateModel();
             }
         } catch (Exception e) {
             Util.addErrorMessage(e, "Error al crear el usuario");
@@ -130,11 +107,6 @@ public class UsuarioBean implements Serializable {
         }
     }
     
-//    public String prepareEdit() {
-//        user = (User) getItems().getRowData();
-//        return "edit";
-//    }
-
     public void edit(){
         try {
             if(controllerUser.findUsuario(selected.getUsuario()) == null ){
@@ -142,7 +114,8 @@ public class UsuarioBean implements Serializable {
             } else {
                 controllerUser.edit(selected);
                 Util.addSuccessMessage("Usuario editado con éxito");
-                items = null;
+                //items = null;
+                recreateModel();
             }
         } catch (Exception e) {
             Util.addErrorMessage(e, "Error al editar el usuario");
@@ -157,7 +130,8 @@ public class UsuarioBean implements Serializable {
                 selected.setPassword(SecurePassword.encript(selected.getPassword()));
                 controllerUser.edit(selected);
                 Util.addSuccessMessage("Password cambiado con éxito");
-                items = null;
+                //items = null;
+                recreateModel();
             }
         } catch (Exception e) {
             Util.addErrorMessage(e, "Error cambiando el password");
