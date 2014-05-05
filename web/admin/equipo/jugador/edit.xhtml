@@ -56,8 +56,17 @@
                                       value="#{jugadorBean.selected.personaId.foto}"
                                       mode="advanced" dragDropSupport="false" 
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                      style="width: 250px"/>
+                                      style="width: 250px"
+                                      fileUploadListener="#{jugadorBean.handleFileUpload}"
+                                      update="Perfil" >
+
+                        </p:fileUpload>
+                    
+                        &nbsp; 
+                        <h:graphicImage id="Perfil" library="images/jugador" name="#{jugadorBean.jugador.personaId.foto}"/>       
+
                         <h:outputLabel value="* status:" for="status"/>
+
                         <p:selectOneMenu id="status" value="#{jugadorBean.selected.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
@@ -149,8 +158,8 @@
                                                 var="redSocial" 
                                                 value="#{jugadorBean.redes}">
                                         #{redSocial.tipoRedSocialId.url}
-                                         <p:column headerText="Redes Sociales">
-                                             <p:inputText  value="#{redSocial.usuario}"
+                                        <p:column headerText="Redes Sociales">
+                                            <p:inputText  value="#{redSocial.usuario}"
                                                           required="true"
                                                           style="width: 250px"/>
                                             &nbsp;
