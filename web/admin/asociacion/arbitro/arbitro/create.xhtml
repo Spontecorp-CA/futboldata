@@ -128,18 +128,15 @@
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
 
-                        <h:outputLabel value="Direcciones de correo: " for="emailes"/>
+                   
                         <h:outputLabel value="Email:" for="email"/>
                         <p:inputText id="email"
                                      value="#{arbitroBean.persona.email}"
                                      style="width: 250px"
-                                     validatorMessage="Email inválido"
-                                     >
+                                     validatorMessage="Email inválido">
                             <f:validateRegex
                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
-
-
                         <h:outputLabel value="Redes Sociales" for="redSocial"/>
 
                         <p:selectOneMenu id="redSocial"
