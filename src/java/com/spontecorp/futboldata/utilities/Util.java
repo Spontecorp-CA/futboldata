@@ -8,11 +8,11 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
@@ -36,14 +36,22 @@ public class Util implements Serializable {
     public static final int EDITOR = 3;
     public static final int CONSULTOR = 4;
     public static final String rutaRelativa = "resources\\images\\";
-    
     public static final Logger logger = LoggerFactory.getLogger(Util.class);
+
+    public static final String STORAGE_ROOT = "C:/Program Files/Apache Software Foundation/Apache Tomcat 7.0.41/webapps/imagenes/";
+    private static String HostImagen = "http://" + FacesContext.getCurrentInstance().getExternalContext()
+            .getRequestServerName() + ":" + FacesContext.getCurrentInstance().getExternalContext()
+            .getRequestServerPort() + "/imagenes/";
 
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.
                 getCurrentInstance().
                 getExternalContext().
                 getSession(false);
+    }
+
+    public static String getHostImagen() {
+        return HostImagen;
     }
 
     public static HttpServletRequest getRequest() {
@@ -114,14 +122,19 @@ public class Util implements Serializable {
     public static void subirArchivo(FileUploadEvent event, String ruta, String nombreArchivo) {
 
         try {
-            ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-            String contexto = ctx.getRealPath("/");
-            String path = contexto + rutaRelativa + ruta;
-            File targetFolder = new File(path);
+            ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
 
+
+
+            File targetFolder = new File(STORAGE_ROOT + ruta, nombreArchivo);
+            if (!targetFolder.exists()) {
+                targetFolder.mkdirs();
+            }
+
+            logger.debug("Donde guardo la imagen " + targetFolder);
             InputStream inputStream = event.getFile().getInputstream();
 
-            OutputStream out = new FileOutputStream(new File(targetFolder, nombreArchivo));
+            OutputStream out = new FileOutputStream(targetFolder);
 
             int read = 0;
 
