@@ -61,9 +61,8 @@
                                       update="Perfil" >
 
                         </p:fileUpload>
-                    
                         &nbsp; 
-                        <h:graphicImage id="Perfil" library="images/jugador" name="#{jugadorBean.jugador.personaId.foto}"/>       
+                        <h:graphicImage id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>       
 
                         <h:outputLabel value="* status:" for="status"/>
 
@@ -108,15 +107,17 @@
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
-                        <p:inputText id="telefono" 
+                        <p:inputMask id="telefono" 
                                      value="#{jugadorBean.selected.personaId.telefono}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
-                                     style="width: 250px"/>
+                                     style="width: 250px"
+                                     mask="(9999) 999.9999"/>
                         <h:outputLabel value="Celular:" for="celular"/>
-                        <p:inputText id="celular" 
+                        <p:inputMask id="celular" 
                                      value="#{jugadorBean.selected.personaId.celular}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
-                                     style="width: 250px"/>
+                                     style="width: 250px"
+                                     mask="(9999) 999.9999"/>
                         <h:outputLabel value="email:" for="email"/>
                         <p:inputText id="email" 
                                      value="#{jugadorBean.jugador.personaId.email}"

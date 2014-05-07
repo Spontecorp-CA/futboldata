@@ -53,10 +53,16 @@
 
                         <h:outputLabel value="Foto:" for="foto"/>
                         <p:fileUpload id="foto" 
-                                      value="#{jugadorBean.jugador.personaId.foto}"
+                                      value="#{jugadorBean.selected.personaId.foto}"
                                       mode="advanced" dragDropSupport="false" 
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                      style="width: 250px"/>
+                                      style="width: 250px"
+                                      fileUploadListener="#{jugadorBean.handleFileUpload}"
+                                      update="Perfil" >
+
+                        </p:fileUpload>
+                        &nbsp; 
+                        <h:graphicImage id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>    
                         <h:outputLabel value="* status:" for="status"/>
                         <p:selectOneMenu id="status" value="#{jugadorBean.jugador.status}"
                                          converter= "javax.faces.Integer"
@@ -99,22 +105,24 @@
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
-                        <p:inputText id="telefono" 
+                        <p:inputMask id="telefono" 
                                      value="#{jugadorBean.jugador.personaId.telefono}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
-                                     style="width: 250px"/>
+                                     style="width: 250px"
+                                     mask="(9999) 999.9999"/>
                         <h:outputLabel value="Celular:" for="celular"/>
-                        <p:inputText id="celular" 
+                        <p:inputMask id="celular" 
                                      value="#{jugadorBean.jugador.personaId.celular}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
-                                     style="width: 250px"/>
+                                     style="width: 250px"
+                                     mask="(9999) 999.9999"/>
                         <h:outputLabel value="email:" for="email"/>
                         <p:inputText id="email" 
                                      value="#{jugadorBean.jugador.personaId.email}"
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
-                                                        <f:validateRegex
-                                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
 
                         <!--                    </h:panelGrid>

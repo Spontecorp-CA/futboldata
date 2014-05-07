@@ -328,45 +328,15 @@ public class JugadorBean implements Serializable {
         long lDateTime = new Date().getTime();
         System.out.println("Date() - Time in milliseconds: " + lDateTime);
         String nombreArchivo = "jugador" + lDateTime;
-        Util.subirArchivo(event, "jugador\\", nombreArchivo);
+        Util.subirArchivo(event, "jugador/", nombreArchivo);
         jugador.getPersonaId().setFoto(nombreArchivo);
 
     }
-//
-//           String rutaRelativa = "resources\\images\\";
-//        try {
-//            ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-//            String contexto = ctx.getRealPath("/");
-//            String path = contexto+rutaRelativa+"jugador\\";
-//            File targetFolder = new File(path);
-//
-//            InputStream inputStream = event.getFile().getInputstream();
-//
-//            OutputStream out = new FileOutputStream(new File(targetFolder,
-//                    event.getFile().getFileName()));
-//
-//            int read = 0;
-//
-//            byte[] bytes = new byte[1024];
-//
-//            while ((read = inputStream.read(bytes)) != -1) {
-//
-//                out.write(bytes, 0, read);
-//
-//            }
-//           jugador.getPersonaId().setFoto(event.getFile().getFileName() );
-//                   
-//            inputStream.close();
-//
-//            out.flush();
-//            out.close();
-//
-//        } catch (IOException e) {
-//
-//            logger.debug("Error al cargar la imagen :" ,e);
-//
-//        }
-//        logger.debug("El dato de Value de la imagen seria " + jugador.getPersonaId().getFoto());
-//    }
+
+    public String getHostImagen() {
+      String host = Util.getHostImagen()+"jugador/";
+    return host;
+    }
+
 
 }
