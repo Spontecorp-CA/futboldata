@@ -5,10 +5,10 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Arbitro;
-
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.utilities.Util;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,25 +32,28 @@ public class ArbitroFacade extends AbstractFacade<Arbitro> {
         return Util.getEmf().createEntityManager();
     }
 
-    public Arbitro findArbitroxPersona(Persona persona) {
+    public Arbitro findArbitroByPersona(Persona p) {
         EntityManager em = getEntityManager();
+        Arbitro arbitro = null;
         try {
-            String query = "SELECT a FROM Arbitro a where a.personaId = :persona";
-            Query q = em.createNamedQuery(query, Arbitro.class);
-            q.setParameter("nombre", persona);
-            return (Arbitro) q.getSingleResult();
-        } catch (Exception e) {
-            logger.debug("Error encontrando Persona en Arbitro: " + e.getLocalizedMessage(), e);
+            String query = "SELECT * FROM Jugador j WHERE j.personaId = :persona";
+            Query q = em.createQuery(query, Arbitro.class);
+            q.setParameter("persona", p);
+            arbitro = (Arbitro) q.getSingleResult();
+        } catch (NoResultException e) {
+            logger.debug("Error al buscar jugador fingJugador ",e.getMessage());
         } finally {
             em.close();
         }
-        return null;
-
+        return arbitro;
     }
-
-    public Arbitro findArbitro(String nombre) {
-        controllerPersona.findPersona(nombre);
-        return null;
+    
+    public Arbitro findArbitroByDomentoId(String domentoId){
+        Persona persona = controllerPersona.findPersonaxDocumentoId(domentoId);
+        if (persona == null){
+          return null;
+      }
+        return  findArbitroByPersona(persona);
     }
 
 }

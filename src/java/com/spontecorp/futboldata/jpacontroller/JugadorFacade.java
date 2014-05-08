@@ -31,13 +31,13 @@ public class JugadorFacade extends AbstractFacade<Jugador>{
         return Util.getEmf().createEntityManager();
     }
     
-    public Jugador findJugador(String nombre) {
+    public Jugador findJugadorByPersona(Persona p) {
         EntityManager em = getEntityManager();
         Jugador jugador = null;
         try {
-            String query = "SELECT * FROM Jugador j WHERE j.personaId.nombre=:nombre";
+            String query = "SELECT * FROM Jugador j WHERE j.personaId = :persona";
             Query q = em.createQuery(query, Jugador.class);
-            q.setParameter("nombre", nombre);
+            q.setParameter("persona", p);
             jugador = (Jugador) q.getSingleResult();
         } catch (NoResultException e) {
             logger.debug("Error al buscar jugador fingJugador ",e.getMessage());
@@ -52,6 +52,6 @@ public class JugadorFacade extends AbstractFacade<Jugador>{
         if (persona == null){
           return null;
       }
-        return  findJugador(persona.getNombre());
+        return  findJugadorByPersona(persona);
     }
 }

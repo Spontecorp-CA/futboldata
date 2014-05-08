@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../../../WEB-INF/templates/adminTemplate.xhtml"
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"              
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -11,22 +10,11 @@
         Administración de Arbitros
     </ui:define>
 
-    <ui:define name="content">
-        <h:form id="createForm">
+    <p:dialog id="ArbitroCreateDlg" widgetVar="ArbitroCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Arbitros">
+        <h:form id="ArbitroCreateForm">
+            <p:fieldset style="width: 85%" legend="Crear Arbitro">             
 
-            <p:fieldset style="width: 85%" legend="Crear Arbitro">                
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="Guardar"  
-                                         update="createForm" action="#{arbitroBean.create}" />
-                        <p:commandButton value="Listar" action="list"
-                                         immediate="true"/>
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="/admin/adminPage"
-                                         immediate="true"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
                 <br />
                 <h:panelGrid columns="3" styleClass="top-aligned-columns">
                     <h:panelGrid columns="2" title="Datos Personales"
@@ -127,16 +115,16 @@
                                      value="#{arbitroBean.selected.personaId.celular}"
                                      required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
-                        <h:outputLabel value="email:" for="email"/>
-                        <p:inputText id="email" 
-                                     validatorMessage="Email inválido"
-                                     style="width: 250px">
+
+
+                        <h:outputLabel value="Email:" for="email"/>
+                        <p:inputText id="email"
+                                     value="#{arbitroBean.persona.email}"
+                                     style="width: 250px"
+                                     validatorMessage="Email inválido">
                             <f:validateRegex
                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
-
-                        <!--                    </h:panelGrid>
-                                            <h:panelGrid columns="2">-->
                         <h:outputLabel value="Redes Sociales" for="redSocial"/>
 
                         <p:selectOneMenu id="redSocial"
@@ -156,10 +144,9 @@
                                                  style="width: 250px"/>
                                 </p:column>
                                 <p:column>
-                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar redSocial" >                             
+                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar Red Social" >                             
                                         <f:ajax listener="#{arbitroBean.cargarRedSocial}" 
                                                 execute="cuenta" render="redes"/>
-
                                     </p:commandButton>
                                 </p:column>
                             </p:row>
@@ -182,8 +169,14 @@
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
+                <p:commandButton actionListener="#{arbitro.create}" value="Guardar" 
+                                 update="display,:ArbitroListForm:arbitros,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'ArbitroCreateDialog');"
+                                 ajax="false"/>
+                <p:commandButton value="Cancelar" onclick="ArbitroCreateDialog.hide()"/>
             </p:fieldset>
         </h:form>
-    </ui:define>
+    </p:dialog>
+
 
 </ui:composition>
