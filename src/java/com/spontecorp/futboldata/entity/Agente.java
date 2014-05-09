@@ -2,9 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.entity;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;

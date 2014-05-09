@@ -138,7 +138,7 @@
                             <f:ajax execute="redSocial" /> 
                         </p:selectOneMenu>
                         <h:outputLabel value="Cuenta:" for="cuenta"/>
-                        <p:panelGrid>
+                                               <p:panelGrid>
                             <p:row>
                                 <p:column>
                                     <p:inputText id="cuenta"
@@ -157,7 +157,7 @@
                                     <p:dataList id="redes" 
                                                 var="redSocial" 
                                                 value="#{arbitroBean.redes}">
-                                        #{arbitroBean.tipoRedSocial.url}
+                                        #{redSocial.tipoRedSocialId.url}
                                         <p:column headerText="Redes Sociales">
                                             <p:inputText  value="#{redSocial.usuario}"
                                                           required="true"

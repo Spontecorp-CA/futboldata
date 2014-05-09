@@ -84,6 +84,7 @@ public class ArbitroBean implements Serializable {
             arbitro.setPersonaId(persona);
             ciudades = null;
             redes = new ArrayList<RedSocial>();
+            redesEliminar = new ArrayList<RedSocial>();
         }
         return arbitro;
     }
@@ -96,9 +97,11 @@ public class ArbitroBean implements Serializable {
         persona.setDireccionId(direccion);
         ciudades = null;
         redes = new ArrayList<RedSocial>();
+        redesEliminar = new ArrayList<RedSocial>();
         return "create?faces-redirect=true";
     }
-        public void prepareEdit() {
+
+    public void prepareEdit() {
         redes = getRedSocials(arbitro.getPersonaId());
         pais = arbitro.getPersonaId().getDireccionId().getCiudadId().getPaisId();
         ciudadesAvalaible();
@@ -152,7 +155,7 @@ public class ArbitroBean implements Serializable {
         return items;
     }
 
-     public String create() {
+    public String create() {
         try {
             if (controllerArbitro.findArbitroByDomentoId(persona.getDocumentoIdentidad()) != null) {
                 Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documenta de "
@@ -192,20 +195,18 @@ public class ArbitroBean implements Serializable {
     }
 
     public String edit() {
-
         for (RedSocial red : redes) {
             red.setPersonaId(arbitro.getPersonaId());
 //            controllerRedSocial.edit(red);
         }
-
         arbitro.getPersonaId().setRedSocialCollection(redes);
-        logger.debug("Esta editando un Jugador");
+        logger.debug("Esta editando un Arbitro");
         controllerArbitro.edit(arbitro);
         for (RedSocial redEliminar : redesEliminar) {
             controllerRedSocial.remove(redEliminar);
         }
         recreateModel();
-        Util.addSuccessMessage("Se edito exitosamente el Jugador");
+        Util.addSuccessMessage("Se edito exitosamente el Arbitro");
         return prepareCreate();
     }
 
@@ -216,7 +217,8 @@ public class ArbitroBean implements Serializable {
         items = null;
         persona = null;
     }
-   public void eliminarRedSocial(RedSocial redsocial) {
+
+    public void eliminarRedSocial(RedSocial redsocial) {
 
         if (redes.remove(redsocial)) {
             redesEliminar.add(redsocial);
@@ -227,6 +229,7 @@ public class ArbitroBean implements Serializable {
             logger.debug("No lo agrego a la lista de eliminar Telefono");
         }
     }
+
     public Arbitro getArbitro() {
         return arbitro;
     }

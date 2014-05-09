@@ -17,7 +17,7 @@
             <p:fieldset style="width: 85%" legend="Crear Jugador">                
 
                 <br />
-                <h:panelGrid columns="3" styleClass="top-aligned-columns">
+                <h:panelGrid columns="3" id="display" styleClass="top-aligned-columns">
                     <h:panelGrid columns="2" title="Datos Personales"
                                  styleClass="top-aligned-columns">
                         <h:outputLabel value="* Nombre:" for="nombre"/>
@@ -184,9 +184,9 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{jugadorBean.edit}" value="Guardar" 
-                                 update="display,:JugadorListForm:jugadores,:growlAdmin" 
+                                 update="JugadorEditForm,:JugadorListForm:jugadores,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'JugadorEditDialog');"
-                                 ajax="false"/>
+                                 />
                 <p:commandButton value="Cancelar" onclick="JugadorEditDialog.hide()"/>
             </p:fieldset>
         </h:form>

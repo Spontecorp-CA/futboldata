@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Equipo.findByStatus", query = "SELECT e FROM Equipo e WHERE e.status = :status"),
     @NamedQuery(name = "Equipo.findByAbreviacion", query = "SELECT e FROM Equipo e WHERE e.abreviacion = :abreviacion")})
 public class Equipo implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,8 +68,7 @@ public class Equipo implements Serializable {
     private Collection<Titulo> tituloCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
     private Collection<Convocatoria> convocatoriaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
-    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
+   
     @OneToMany(mappedBy = "equipoLocalId")
     private Collection<Partido> partidoCollection;
     @OneToMany(mappedBy = "equipoVisitanteId")
@@ -300,5 +301,6 @@ public class Equipo implements Serializable {
     public String toString() {
         return "com.spontecorp.futboldata.entity.Equipo[ id=" + id + " ]";
     }
+
     
 }
