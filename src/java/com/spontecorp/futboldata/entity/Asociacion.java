@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "asociacion")
@@ -53,6 +54,10 @@ public class Asociacion implements Serializable {
     private Collection<Competicion> competicionCollection;
     @OneToMany(mappedBy = "asociacionId")
     private Collection<Arbitro> arbitroCollection;
+    @OneToMany(mappedBy = "asociacionId")
+    private Collection<Afiliacion> afiliacionCollection;
+    @OneToMany(mappedBy = "asociacionSuperId")
+    private Collection<Afiliacion> afiliacionCollectionSuper;
     @OneToMany(mappedBy = "asociacionId")
     private Collection<Contrato> contratoCollection;
     @OneToMany(mappedBy = "asociacionId")
@@ -117,6 +122,24 @@ public class Asociacion implements Serializable {
 
     public void setArbitroCollection(Collection<Arbitro> arbitroCollection) {
         this.arbitroCollection = arbitroCollection;
+    }
+
+    @XmlTransient
+    public Collection<Afiliacion> getAfiliacionCollection() {
+        return afiliacionCollection;
+    }
+
+    public void setAfiliacionCollection(Collection<Afiliacion> afiliacionCollection) {
+        this.afiliacionCollection = afiliacionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Afiliacion> getAfiliacionCollectionSuper() {
+        return afiliacionCollectionSuper;
+    }
+
+    public void setAfiliacionCollectionSuper(Collection<Afiliacion> afiliacionCollectionSuper) {
+        this.afiliacionCollectionSuper = afiliacionCollectionSuper;
     }
 
     @XmlTransient
