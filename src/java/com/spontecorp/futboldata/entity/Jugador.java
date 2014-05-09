@@ -41,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Jugador.findByPeso", query = "SELECT j FROM Jugador j WHERE j.peso = :peso"),
     @NamedQuery(name = "Jugador.findByStatus", query = "SELECT j FROM Jugador j WHERE j.status = :status")})
 public class Jugador implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
+    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -264,6 +266,15 @@ public class Jugador implements Serializable {
     @Override
     public String toString() {
         return personaId.getNombre();
+    }
+
+    @XmlTransient
+    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
+        return equipoHasJugadorCollection;
+    }
+
+    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
+        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
     }
     
 }
