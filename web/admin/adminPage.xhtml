@@ -9,25 +9,30 @@
     <ui:define name="title">Panel Administrativo</ui:define>
 
     <ui:define name="content">
-        <h:panelGroup>
-            <h2>
-                Bienvenido a la página de administración de la aplicación Fútbol-Data
-            </h2>
-            <p>
-                Aqui tiene la posibilidad de:
-            </p>
-            <ul>
-                <li>Configurar Localidades,</li>
-                <li>Administrar Asociaciones,</li>
-                <li>Administrar Ligas, y</li>
-                <li>Administrar Clubes</li>
-            </ul>
-            <p>
-                Seleccione una opción del menú de la izquierda, la cual le mostrará la forma correspondiente.
-                <br />
-                Para salir del sistema, haga click en el menú Sistema -> Salir
-            </p>
-        </h:panelGroup>
+        <div id="admin_panel" class="admin_panel">
+            <h:panelGroup >
+
+                <h2>
+                    Bienvenido a la administración de Fútbol-Data
+                </h2>
+                <div class="admin_message">
+                    <p>
+                        Aqui podrá:
+                    </p>
+                    <ul>
+                        <li>Configurar Localidades,</li>
+                        <li>Administrar Asociaciones,</li>
+                        <li>Administrar Ligas, y</li>
+                        <li>Administrar Clubes</li>
+                    </ul>
+                    <p>
+                        Seleccione una opción del menú de la izquierda, la cual le mostrará la forma correspondiente.
+                        <br />
+                        Para salir del sistema, haga click en el menú Sistema -> Salir
+                    </p>
+                </div>
+            </h:panelGroup>
+        </div>
     </ui:define>
 
 </ui:composition>
