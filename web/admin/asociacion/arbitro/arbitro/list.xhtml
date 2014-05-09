@@ -34,7 +34,7 @@
                              rowKey="#{arbitro.id}"
                              selection="#{arbitroBean.arbitro}" 
                              selectionMode="single">
-                      <p:ajax event="rowSelect" update=":ArbitroListForm:createButton :ArbitroListForm:editButton "  />
+                    <p:ajax event="rowSelect" update=":ArbitroListForm:createButton :ArbitroListForm:editButton "  />
                     <p:ajax event="rowUnselect" update=":ArbitroListForm:createButton :ArbitroListForm:editButton" />
 
                     <p:column headerText="Nombre">
@@ -50,7 +50,10 @@
                         <h:outputText value="#{arbitro.personaId.direccionId.direccion}"/>
                     </p:column>
                     <p:column headerText="Red Social">
-                        <h:outputText value="#{arbitroBean.getRedSocials(arbitro.personaId)}"/>
+                        <p:dataList value="#{arbitroBean.getRedSocials(arbitro.personaId)}" var="redsocial">
+                            <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
+                        </p:dataList>
+
                     </p:column>
                     <p:column headerText="Telefono">
                         <h:outputText value="#{arbitro.personaId.telefono}"/>

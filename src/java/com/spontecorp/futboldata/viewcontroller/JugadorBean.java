@@ -238,12 +238,10 @@ public class JugadorBean implements Serializable {
     }
 
     public String edit() {
-
         for (RedSocial red : redes) {
             red.setPersonaId(jugador.getPersonaId());
 //            controllerRedSocial.edit(red);
         }
-
         jugador.getPersonaId().setRedSocialCollection(redes);
         logger.debug("Esta editando un Jugador");
         controllerJugador.edit(jugador);
