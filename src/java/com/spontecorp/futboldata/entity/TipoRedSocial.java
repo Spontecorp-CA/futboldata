@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "tipo_red_social")
@@ -111,7 +111,7 @@ public class TipoRedSocial implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.TipoRedSocial[ id=" + id + " ]";
     }
     
 }
