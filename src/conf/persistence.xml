@@ -51,6 +51,7 @@
     <class>com.spontecorp.futboldata.entity.Convocado</class>
     <class>com.spontecorp.futboldata.entity.TipoRedSocial</class>
     <class>com.spontecorp.futboldata.entity.EquipoHasJugador</class>
+    <class>com.spontecorp.futboldata.entity.Afiliacion</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
