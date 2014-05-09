@@ -70,8 +70,7 @@ public class Jugador implements Serializable {
         @JoinColumn(name = "premio_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Premio> premioCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
-    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
     private Collection<Convocado> convocadoCollection;
     @JoinColumn(name = "agente_id", referencedColumnName = "id")
@@ -268,13 +267,6 @@ public class Jugador implements Serializable {
         return "com.spontecorp.futboldata.entity.Jugador[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
-        return equipoHasJugadorCollection;
-    }
 
-    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
-        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
-    }
     
 }

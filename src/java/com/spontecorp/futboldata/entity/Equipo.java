@@ -68,8 +68,7 @@ public class Equipo implements Serializable {
     private Collection<Titulo> tituloCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
     private Collection<Convocatoria> convocatoriaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
-    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
+   
     @OneToMany(mappedBy = "equipoLocalId")
     private Collection<Partido> partidoCollection;
     @OneToMany(mappedBy = "equipoVisitanteId")
@@ -303,13 +302,5 @@ public class Equipo implements Serializable {
         return "com.spontecorp.futboldata.entity.Equipo[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
-        return equipoHasJugadorCollection;
-    }
-
-    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
-        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
-    }
     
 }
