@@ -11,23 +11,32 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="listForm">
+        <h:form id="ArbitroListForm">
 
             <p:fieldset style="width: 85%" legend="Lista de Arbitros" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nuevo" action="create"/>
-                    </p:toolbarGroup>  
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="/admin/adminPage"
-                                         immediate="true"/>
-                    </p:toolbarGroup>  
+                        <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                         value="Crear Arbitro" 
+                                         actionListener="#{arbitroBean.prepareCreate}" 
+                                         update=":ArbitroCreateForm" 
+                                         oncomplete="PF('ArbitroCreateDialog').show()"/>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Arbitro" 
+                                         actionListener="#{arbitroBean.prepareEdit}"
+                                         update=":ArbitroEditForm" 
+                                         oncomplete="PF('ArbitroEditDialog').show()" 
+                                         disabled="#{empty arbitroBean.arbitro.personaId.nombre}"/>
+                    </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="JugadoresTabla" var="arbitro"  value="#{arbitroBean.items}"
+                <p:dataTable id="ArbitrosTabla" var="arbitro"  value="#{arbitroBean.items}"
                              rowKey="#{arbitro.id}"
                              selection="#{arbitroBean.arbitro}" 
                              selectionMode="single">
+                      <p:ajax event="rowSelect" update=":ArbitroListForm:createButton :ArbitroListForm:editButton "  />
+                    <p:ajax event="rowUnselect" update=":ArbitroListForm:createButton :ArbitroListForm:editButton" />
+
                     <p:column headerText="Nombre">
                         <h:outputText value="#{arbitro.personaId.nombre}"/>
                     </p:column>
@@ -55,6 +64,8 @@
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>
     </ui:define>
 
 </ui:composition>

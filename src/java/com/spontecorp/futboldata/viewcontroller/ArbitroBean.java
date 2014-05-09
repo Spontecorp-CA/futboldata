@@ -21,6 +21,7 @@ import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
@@ -28,6 +29,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.persistence.EntityManagerFactory;
+import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +53,7 @@ public class ArbitroBean implements Serializable {
     private Asociacion asociacion;
     private Email email;
     private List<RedSocial> redes;
+    private List<RedSocial> redesEliminar;
     private List<Email> emails;
     private final transient EntityManagerFactory emf = Util.getEmf();
 
@@ -85,36 +88,20 @@ public class ArbitroBean implements Serializable {
         return arbitro;
     }
 
-    public Pais getPais() {
-        return pais;
-    }
-
-    public void setPais(Pais pais) {
-        this.pais = pais;
-    }
-
-    public String getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(String cuenta) {
-        this.cuenta = cuenta;
-    }
-
-    public List<RedSocial> getRedes() {
-        return redes;
-    }
-
-    public void setRedes(List<RedSocial> redes) {
-        this.redes = redes;
-    }
-
     public String prepareCreate() {
         arbitro = new Arbitro();
         direccion = new Direccion();
         persona = new Persona();
         asociacion = new Asociacion();
-        return "create";
+        persona.setDireccionId(direccion);
+        ciudades = null;
+        redes = new ArrayList<RedSocial>();
+        return "create?faces-redirect=true";
+    }
+        public void prepareEdit() {
+        redes = getRedSocials(arbitro.getPersonaId());
+        pais = arbitro.getPersonaId().getDireccionId().getCiudadId().getPaisId();
+        ciudadesAvalaible();
     }
 
     public SelectItem[] getAsociacionesAvalaible() {
@@ -148,7 +135,7 @@ public class ArbitroBean implements Serializable {
     }
 
     public void cargarEmail() {
-            
+
         emails.add(email);
         email = new Email();
 
@@ -165,14 +152,38 @@ public class ArbitroBean implements Serializable {
         return items;
     }
 
-    public String create() {        
-        persona.setRedSocialCollection(redes);
-        direccion.setEmailCollection(emails);
-        persona.setDireccionId(direccion);
-        arbitro.setPersonaId(persona);
-        arbitro.setAsociacionId(asociacion);
-        controllerArbitro.create(arbitro);
+     public String create() {
+        try {
+            if (controllerArbitro.findArbitroByDomentoId(persona.getDocumentoIdentidad()) != null) {
+                Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documenta de "
+                        + "identificacion");
+
+            } else {
+
+                persona.setRedSocialCollection(redes);
+                persona.setDireccionId(direccion);
+                arbitro.setPersonaId(persona);
+                logger.debug("Esta Creando  un Jugador");
+                controllerArbitro.create(arbitro);
+                recreateModel();
+                Util.addSuccessMessage("Se creo exitosamente el Jugador");
+
+            }
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Jugador :", e.getMessage());
+        }
         return prepareCreate();
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+
+        long lDateTime = new Date().getTime();
+        System.out.println("Date() - Time in milliseconds: " + lDateTime);
+        String nombreArchivo = "jugador" + lDateTime;
+        Util.subirArchivo(event, "arbitro\\", nombreArchivo);
+        arbitro.getPersonaId().setFoto(nombreArchivo);
+
     }
 
     public List<RedSocial> getRedSocials(Persona persona) {
@@ -180,6 +191,42 @@ public class ArbitroBean implements Serializable {
         return redes;
     }
 
+    public String edit() {
+
+        for (RedSocial red : redes) {
+            red.setPersonaId(arbitro.getPersonaId());
+//            controllerRedSocial.edit(red);
+        }
+
+        arbitro.getPersonaId().setRedSocialCollection(redes);
+        logger.debug("Esta editando un Jugador");
+        controllerArbitro.edit(arbitro);
+        for (RedSocial redEliminar : redesEliminar) {
+            controllerRedSocial.remove(redEliminar);
+        }
+        recreateModel();
+        Util.addSuccessMessage("Se edito exitosamente el Jugador");
+        return prepareCreate();
+    }
+
+    public void recreateModel() {
+        redSocial = null;
+        pais = null;
+        arbitro = null;
+        items = null;
+        persona = null;
+    }
+   public void eliminarRedSocial(RedSocial redsocial) {
+
+        if (redes.remove(redsocial)) {
+            redesEliminar.add(redsocial);
+            for (RedSocial red : redesEliminar) {
+                logger.debug("Va a eliminar a: " + red.toString());
+            }
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
     public Arbitro getArbitro() {
         return arbitro;
     }
@@ -232,8 +279,8 @@ public class ArbitroBean implements Serializable {
     }
 
     public Email getEmail() {
-        if(email==null){
-        email= new Email();
+        if (email == null) {
+            email = new Email();
         }
         return email;
     }
@@ -248,6 +295,30 @@ public class ArbitroBean implements Serializable {
 
     public void setEmails(List<Email> emails) {
         this.emails = emails;
+    }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    public void setPais(Pais pais) {
+        this.pais = pais;
+    }
+
+    public String getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(String cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    public List<RedSocial> getRedes() {
+        return redes;
+    }
+
+    public void setRedes(List<RedSocial> redes) {
+        this.redes = redes;
     }
 
 }
