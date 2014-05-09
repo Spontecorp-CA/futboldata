@@ -119,7 +119,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Ciudad[ id=" + id + " ]";
+        return ciudad;
     }
     
 }

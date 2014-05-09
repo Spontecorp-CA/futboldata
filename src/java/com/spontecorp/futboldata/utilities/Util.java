@@ -124,14 +124,12 @@ public class Util implements Serializable {
         try {
             ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
 
-
             File path = new File(STORAGE_ROOT + ruta);
-            if(!path.exists()){
+            if (!path.exists()) {
                 path.mkdirs();
             }
-                
-            File targetFolder = new File(path, nombreArchivo);
 
+            File targetFolder = new File(path, nombreArchivo);
 
             logger.debug("Donde guardo la imagen " + targetFolder);
             InputStream inputStream = event.getFile().getInputstream();
@@ -159,5 +157,9 @@ public class Util implements Serializable {
 
         }
 
+    }
+
+    public static boolean isValidationFailed() {
+        return FacesContext.getCurrentInstance().isValidationFailed();
     }
 }
