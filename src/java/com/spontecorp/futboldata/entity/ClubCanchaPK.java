@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Embeddable
 public class ClubCanchaPK implements Serializable {

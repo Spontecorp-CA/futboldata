@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "jugador")
@@ -71,19 +71,18 @@ public class Jugador implements Serializable {
     @ManyToMany
     private Collection<Premio> premioCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
+    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
     private Collection<Convocado> convocadoCollection;
+    @JoinColumn(name = "agente_id", referencedColumnName = "id")
+    @ManyToOne
+    private Agente agenteId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL,optional = false)
+    @ManyToOne(optional = false)
     private Persona personaId;
     @JoinColumn(name = "posicion_id", referencedColumnName = "id")
     @ManyToOne
     private Posicion posicionId;
-    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
-    @ManyToOne
-    private Equipo equipoId;
-    @JoinColumn(name = "agente_id", referencedColumnName = "id")
-    @ManyToOne
-    private Agente agenteId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugador")
     private Collection<Transferencia> transferenciaCollection;
     @OneToMany(mappedBy = "jugadorId")
@@ -167,12 +166,29 @@ public class Jugador implements Serializable {
     }
 
     @XmlTransient
+    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
+        return equipoHasJugadorCollection;
+    }
+
+    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
+        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
+    }
+
+    @XmlTransient
     public Collection<Convocado> getConvocadoCollection() {
         return convocadoCollection;
     }
 
     public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
         this.convocadoCollection = convocadoCollection;
+    }
+
+    public Agente getAgenteId() {
+        return agenteId;
+    }
+
+    public void setAgenteId(Agente agenteId) {
+        this.agenteId = agenteId;
     }
 
     public Persona getPersonaId() {
@@ -189,22 +205,6 @@ public class Jugador implements Serializable {
 
     public void setPosicionId(Posicion posicionId) {
         this.posicionId = posicionId;
-    }
-
-    public Equipo getEquipoId() {
-        return equipoId;
-    }
-
-    public void setEquipoId(Equipo equipoId) {
-        this.equipoId = equipoId;
-    }
-
-    public Agente getAgenteId() {
-        return agenteId;
-    }
-
-    public void setAgenteId(Agente agenteId) {
-        this.agenteId = agenteId;
     }
 
     @XmlTransient
@@ -265,7 +265,7 @@ public class Jugador implements Serializable {
 
     @Override
     public String toString() {
-        return personaId.getNombre();
+        return "com.spontecorp.futboldata.entity.Jugador[ id=" + id + " ]";
     }
 
     @XmlTransient

@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "red_social")
@@ -152,7 +152,7 @@ public class RedSocial implements Serializable {
 
     @Override
     public String toString() {
-        return usuario;
+        return "com.spontecorp.futboldata.entity.RedSocial[ id=" + id + " ]";
     }
     
 }

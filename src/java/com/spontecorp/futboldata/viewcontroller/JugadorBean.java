@@ -19,22 +19,15 @@ import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,7 +137,7 @@ public class JugadorBean implements Serializable {
         jugador.setPersonaId(persona);
         ciudades = null;
         redes = new ArrayList<RedSocial>();
-        return "create?faces-redirect=true";
+        return "list?faces-redirect=true";
     }
 
     protected void setEmbeddableKeys() {
@@ -238,6 +231,7 @@ public class JugadorBean implements Serializable {
     }
 
     public String edit() {
+        
         for (RedSocial red : redes) {
             red.setPersonaId(jugador.getPersonaId());
 //            controllerRedSocial.edit(red);
@@ -335,6 +329,4 @@ public class JugadorBean implements Serializable {
       String host = Util.getHostImagen()+"jugador/";
     return host;
     }
-
-
 }

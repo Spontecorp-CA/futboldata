@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "arbitro")
@@ -56,7 +56,7 @@ public class Arbitro implements Serializable {
     @ManyToMany
     private Collection<Competicion> competicionCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     private Persona personaId;
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne

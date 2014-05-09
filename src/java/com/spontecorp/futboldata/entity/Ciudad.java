@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author jgcastillo
+ * @author sponte03
  */
 @Entity
 @Table(name = "ciudad")
@@ -119,7 +119,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return ciudad;
+        return "com.spontecorp.futboldata.entity.Ciudad[ id=" + id + " ]";
     }
     
 }
