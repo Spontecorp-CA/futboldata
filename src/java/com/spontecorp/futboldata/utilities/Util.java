@@ -125,11 +125,13 @@ public class Util implements Serializable {
             ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
 
 
-
-            File targetFolder = new File(STORAGE_ROOT + ruta, nombreArchivo);
-            if (!targetFolder.exists()) {
-                targetFolder.mkdirs();
+            File path = new File(STORAGE_ROOT + ruta);
+            if(!path.exists()){
+                path.mkdirs();
             }
+                
+            File targetFolder = new File(path, nombreArchivo);
+
 
             logger.debug("Donde guardo la imagen " + targetFolder);
             InputStream inputStream = event.getFile().getInputstream();
