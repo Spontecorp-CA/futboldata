@@ -60,6 +60,34 @@ ul,li {
     border: none;
 }
 
+.admin_panel{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url(#{resource['images:background_admin.png']});
+    background-repeat: no-repeat;
+    height: 100%;    
+}
+
+.admin_panel h2{
+    text-align: center;
+    color: orangered;
+    text-shadow: 0px 2px 3px #ffff66;
+}
+
+.admin_message{    
+    color: white;
+    font-size: medium;
+    font-weight: 700;
+    text-shadow: 0px 1px 2px #000000;
+    position: relative;
+    left: 40px;
+}
+
+.admin_message ul{
+    list-style-image: url(#{resource['images:bullet_green.png']});
+}
+
 /*.ui-widget-content , .ui-panelgrid  {
     border: none;
 }*/

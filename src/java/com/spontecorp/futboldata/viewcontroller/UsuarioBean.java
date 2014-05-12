@@ -12,9 +12,6 @@ import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -71,16 +68,16 @@ public class UsuarioBean implements Serializable {
 
     public String prepareList() {
         recreateModel();
-        return "/admin/usuarios/list";
+        return "/admin/usuarios/list?faces-redirect=true";
     }
 
     public String gotoAdminPage() {
         recreateModel();
-        return "listUsuarios";
+        return "listUsuarios?faces-redirect=true";
     }
 
     public String returnAdminPage() {
-        return "/admin/adminPage";
+        return "/admin/adminPage?faces-redirect=true";
     }
 
     public User prepareCreate(){
