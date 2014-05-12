@@ -105,7 +105,7 @@ public class Persona implements Serializable {
     private String foto;
    
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Direccion direccionId;
    
     @OneToMany(mappedBy = "personaId")

@@ -82,7 +82,7 @@ public class JugadorBean implements Serializable {
             persona = new Persona();
             persona.setDireccionId(direccion);
             jugador.setPersonaId(persona);
-
+            
             ciudades = null;
             redes = new ArrayList<RedSocial>();
         }
