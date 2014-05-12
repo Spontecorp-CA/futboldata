@@ -6,7 +6,7 @@
     <h:body>
         <h:form id="menuForm">
             <p:panelMenu style="width: 95%">
-                
+
                 <p:submenu label="Localidades">
                     <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
                                 action="#{ciudadBean.gotoCiudadPage}"/>
@@ -46,10 +46,13 @@
                                 action="/admin/club/list?faces-redirect=true" />
                     <p:submenu label="Equipos">
                         <p:menuitem value="Configura Equipo" icon="ui-icon-person"
-                                    action="/admin/equipo/equipo/list?faces-redirect=true"/>
-                        <p:menuitem value="Configura Jugador" icon="ui-icon-person"
-                                    action="/admin/equipo/jugador/list?faces-redirect=true"/>
+                                    action="/admin/equipo/equipo/list?faces-redirect=true"/>                       
                         <p:menuitem value="Configura Staff" icon="ui-icon-person" />
+                        <p:submenu label="Jugadores">
+                            <p:menuitem value="Configura Jugador" icon="ui-icon-person"
+                                        action="/admin/equipo/jugador/list?faces-redirect=true"/>
+                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"/>
+                        </p:submenu>
                     </p:submenu>
                 </p:submenu>
 
