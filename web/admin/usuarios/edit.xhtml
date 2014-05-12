@@ -58,8 +58,8 @@
                     </h:panelGrid>
                     <p:commandButton actionListener="#{usuarioBean.edit}" 
                                      value="OK" update="display,:UserListForm:usuarios,:growlAdmin" 
-                                     oncomplete="handleSubmit(args, 'UserEditDialog');"
-                                     ajax="false"/>
+                                     oncomplete="handleSubmit(args, 'UserEditDialog');"/>
+<!--                                     ajax="false"/>-->
                     <p:commandButton value="Cancelar" onclick="UserEditDialog.hide()"/>
                 </h:panelGroup>
             </h:form>
