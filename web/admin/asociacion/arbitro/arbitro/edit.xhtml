@@ -183,9 +183,8 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{arbitroBean.edit}" value="Guardar" 
-                                 update="display,:ArbitroListForm:arbitros,:growlAdmin" 
-                                 oncomplete="handleSubmit(args,'ArbitroEditDialog');"
-                                 ajax="false"/>
+                                 update="ArbitroEditForm,:ArbitroListForm:arbitros,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'ArbitroEditDialog');"/>
                 <p:commandButton value="Cancelar" onclick="ArbitroEditDialog.hide()"/>
             </p:fieldset>
         </h:form>

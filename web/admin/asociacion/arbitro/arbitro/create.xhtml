@@ -170,9 +170,8 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{arbitro.create}" value="Guardar" 
-                                 update="display,:ArbitroListForm:arbitros,:growlAdmin" 
-                                 oncomplete="handleSubmit(args,'ArbitroCreateDialog');"
-                                 ajax="false"/>
+                                 update="ArbitroCreateForm,:ArbitroListForm:arbitros,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'ArbitroCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="ArbitroCreateDialog.hide()"/>
             </p:fieldset>
         </h:form>
