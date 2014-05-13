@@ -51,7 +51,8 @@
                         <p:submenu label="Jugadores">
                             <p:menuitem value="Configura Jugador" icon="ui-icon-person"
                                         action="/admin/equipo/jugador/list?faces-redirect=true"/>
-                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"/>
+                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"
+                                        action="#{equipoHasJugadorBean.gotoEquipoHasJugadorPage()}"/>
                         </p:submenu>
                     </p:submenu>
                 </p:submenu>

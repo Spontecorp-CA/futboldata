@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Jugadores
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="JugadorListForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Jugadores" >
+               
+               
+                <h:outputText value="Nombre del Equipo : #{equipoHasJugadorBean.equipo.nombre} " /> <br/>
+                <h:outputText value="Nombre del Club : #{equipoHasJugadorBean.equipo.clubId.nombre} " /><br/>
+                <h:outputText value="Nombre de la  Categoria : #{equipoHasJugadorBean.equipo.categoriaId.nombre} " />
+                
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="createButton" icon="ui-icon-pencil" 
+                                         value="Agregar Jugadores" 
+                                         actionListener="#{equipoHasJugadorBean.prepareEdit}"
+                                         update=":JugadorEditForm" 
+                                         oncomplete="PF('JugadorEditDialog').show()" 
+                                         disabled="#{empty equipoHasJugadorBean.equipo.nombre}"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="jugadores" var="equipoHasJugador"  value="#{equipoHasJugadorBean.items}"
+                             rowKey="#{equipohasjugador}"
+                             selection="#{equipoHasJugadorBean.equipoHasJugador}" 
+                             selectionMode="single"
+                             paginator="true" rows="10"
+                             filteredValue="#{equipoHasJugadorBean.filteredEquipoHasJugador}" >   
+                    <p:ajax event="rowSelect" update=":JugadorListForm:createButton"  />
+                    <p:ajax event="rowUnselect" update=":JugadorListForm:createButton" />
+
+                    <f:facet name="header">
+                        Lista de Jugadores
+                    </f:facet>
+                    <p:column headerText="Nombre" sortBy="nombre" filterBy="nombre">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre} 
+                                      #{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Camiseta" sortBy="camiseta" filterBy="camiseta">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.camiseta}"/>
+                    </p:column>
+                    <p:column headerText="Posicion" sortBy="nombre" filterBy="nombre">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.posicionId.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha Entrada" sortBy="fechaEntrada" filterBy="fechaEntrada">
+                        <h:outputText value="#{equipoHasJugador.fechaEntrada}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha Salida" sortBy="fechaSalida" filterBy="fechaSalida">
+                        <h:outputText value="#{equipoHasJugador.fechaSalida}"/>
+                    </p:column>
+
+
+                    <p:column headerText="Status">
+                        <h:outputText value="#{equipoHasJugador.status == 1?'Activa':'Inactiva'}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+        <ui:include src="agregarjugador.xhtml"/>
+    </ui:define>
+
+</ui:composition>

@@ -6,13 +6,8 @@ package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
-import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoFacade;
-import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
-import com.spontecorp.futboldata.jpacontroller.EmailFacade;
-import com.spontecorp.futboldata.jpacontroller.PaisFacade;
-import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
@@ -21,7 +16,6 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.persistence.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +34,8 @@ public class EquipoBean implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
 
-    private CategoriaFacade controllerCategoria;
-    private ClubFacade controllerClub;
+    private final CategoriaFacade controllerCategoria;
+    private final ClubFacade controllerClub;
     private final EquipoFacade controllerEquipo;
 
     public EquipoBean() {
