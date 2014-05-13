@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -37,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Arbitro.findById", query = "SELECT a FROM Arbitro a WHERE a.id = :id"),
     @NamedQuery(name = "Arbitro.findByStatus", query = "SELECT a FROM Arbitro a WHERE a.status = :status")})
 public class Arbitro implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +56,7 @@ public class Arbitro implements Serializable {
     @ManyToMany
     private Collection<Competicion> competicionCollection;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona personaId;
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
@@ -74,7 +74,6 @@ public class Arbitro implements Serializable {
     public Integer getId() {
         return id;
     }
-    
 
     public void setId(Integer id) {
         this.id = id;
@@ -155,5 +154,5 @@ public class Arbitro implements Serializable {
     public String toString() {
         return "com.spontecorp.futboldata.entity.Arbitro[ id=" + id + " ]";
     }
-    
+
 }

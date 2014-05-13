@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "categoria")
@@ -134,7 +135,7 @@ public class Categoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Categoria[ id=" + id + " ]";
+        return nombre;
     }
     
 }
