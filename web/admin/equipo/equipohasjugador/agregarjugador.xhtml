@@ -7,7 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="title">
-        Administración de Jugadores
+        Lista de Jugadores para Agregar al Equipo
     </ui:define>
 
     <p:dialog id="JugadorEditDlg" widgetVar="JugadorEditDialog" modal="true"
@@ -27,24 +27,35 @@
                     <p:ajax event="rowUnselect" update=":JugadorEditForm:editButton" />
 
                     <f:facet name="header">
-                        Lista de Jugadores
+                        Lista de Jugadores para Agregar al Equipo
                     </f:facet>
-                    <p:column headerText="Nombre" sortBy="nombre" filterBy="nombre">
-                        <h:outputText value="#{jugador.personaId.nombre} 
-                                      #{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                    <p:column headerText="Nombre" 
+                              sortBy="personaId.nombre" 
+                              filterBy="personaId.nombre">
+                        <h:outputText value="#{jugador.personaId.nombre}"/>
                     </p:column>
-                    <p:column headerText="Camiseta" sortBy="camiseta" filterBy="camiseta">
+
+                    <p:column headerText="Apellido" 
+                              sortBy="personaId.apellido" 
+                              filterBy="personaId.apellido">
+                        <h:outputText value="#{jugador.personaId.apellido}"/>
+                    </p:column>
+
+                    <p:column headerText="Camiseta" sortBy=".camiseta" filterBy="camiseta">
                         <h:outputText value="#{jugador.camiseta}"/>
                     </p:column>
-                    <p:column headerText="Posicion" sortBy="nombre" filterBy="nombre">
+                    <p:column headerText="Posicion" sortBy="posicionId.nombre" 
+                              filterBy="posicionId.nombre">
                         <h:outputText value="#{jugador.posicionId.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="Nacionalidad" sortBy="nacionadlidad" filterBy="nacionalidad">
+                    <p:column headerText="Nacionalidad" sortBy="jugador.personaId.nacionalidad"
+                              filterBy="personaId.nacionalidad">
                         <h:outputText value="#{jugador.personaId.nacionalidad}"/>
                     </p:column>
 
-                    <p:column headerText="Documento Identidad" sortBy="documentoIdentidad" filterBy="documentoIdentidad">
+                    <p:column headerText="Documento Identidad" sortBy="jugador.personaId.documentoIdentidad"
+                              filterBy="personaId.documentoIdentidad">
                         <h:outputText value="#{jugador.personaId.documentoIdentidad}"/>
                     </p:column>
 

@@ -9,14 +9,11 @@ import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
-import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

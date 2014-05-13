@@ -28,20 +28,19 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class EquipoHasJugadorBean implements Serializable {
 
-
     private DataModel items = null;
     private DataModel itemsJugador = null;
     private DataModel itemsEquipo = null;
-    private DataModel   filtereditemsEquipo = null;
-    private List<Equipo> filteredEquipo ;
-     private List<EquipoHasJugador> filteredEquipoHasJugador ;
-     private List<Jugador> filteredJugador ;
+    private DataModel filtereditemsEquipo = null;
+    private List<Equipo> filteredEquipo;
+    private List<EquipoHasJugador> filteredEquipoHasJugador;
+    private List<Jugador> filteredJugador;
 
     private final EquipoHasJugadorFacade controllerEquipoHasJugador;
     private final EquipoFacade controllerEquipo;
     private final JugadorFacade controllerJugador;
 
-    private static final Logger logger = LoggerFactory.getLogger(EquipoHasJugador.class);
+    private static final Logger logger = LoggerFactory.getLogger(EquipoHasJugadorBean.class);
     private Jugador jugador;
     private Equipo equipo;
     private EquipoHasJugador equipoHasJugador;
@@ -53,6 +52,28 @@ public class EquipoHasJugadorBean implements Serializable {
 
     }
 
+    public EquipoHasJugador getEquipoHasJugador() {
+        if (equipoHasJugador == null) {
+            equipoHasJugador = new EquipoHasJugador();
+            initializeEmbeddableKey();
+            setEmbeddableKeys();
+        }
+        return equipoHasJugador;
+    }
+
+    public void setEquipoHasJugador(EquipoHasJugador equipoHasJugador) {
+        this.equipoHasJugador = equipoHasJugador;
+    }
+
+    public void getSelect() {
+        equipoHasJugador = new EquipoHasJugador();
+        equipoHasJugador = (EquipoHasJugador) items.getRowData();
+    }
+
+    public void setSelect(EquipoHasJugador equipoHasJugador) {
+        this.equipoHasJugador = equipoHasJugador;
+    }
+
     public List<Jugador> getFilteredJugador() {
         return filteredJugador;
     }
@@ -61,7 +82,6 @@ public class EquipoHasJugadorBean implements Serializable {
         this.filteredJugador = filteredJugador;
     }
 
-    
     public List<EquipoHasJugador> getFilteredEquipoHasJugador() {
         return filteredEquipoHasJugador;
     }
@@ -70,7 +90,6 @@ public class EquipoHasJugadorBean implements Serializable {
         this.filteredEquipoHasJugador = filteredEquipoHasJugador;
     }
 
-    
     public List<Equipo> getFilteredEquipo() {
         return filteredEquipo;
     }
@@ -79,7 +98,6 @@ public class EquipoHasJugadorBean implements Serializable {
         this.filteredEquipo = filteredEquipo;
     }
 
-    
     public DataModel getFiltereditemsEquipo() {
         return filtereditemsEquipo;
     }
@@ -104,8 +122,6 @@ public class EquipoHasJugadorBean implements Serializable {
         this.equipo = equipo;
     }
 
-    
-    
     public DataModel getItems() {
         if (items == null) {
             items = new ListDataModel(controllerEquipoHasJugador.getListEquipoHasJugador(this.equipo));
@@ -127,8 +143,9 @@ public class EquipoHasJugadorBean implements Serializable {
         return itemsEquipo;
     }
 
-    public String prepareCreate() {      
+    public String prepareCreate() {
         equipoHasJugador = new EquipoHasJugador();
+        recreateModel();
         return "listjugador?faces-redirect=true";
     }
 
@@ -143,28 +160,28 @@ public class EquipoHasJugadorBean implements Serializable {
 
     public void recreateModel() {
         jugador = new Jugador();
-        equipoHasJugador = null;
+        equipoHasJugador = new EquipoHasJugador();
         items = null;
 
     }
 
-    public String prepareEdit() {
-        return "edit";
+    public void prepareEdit() {
+        equipoHasJugador = new EquipoHasJugador();
     }
 
     public String create() {
         try {
 
-            equipoHasJugador.setJugadorId(jugador);
-            logger.debug("Nombre del jugador "+jugador.getPersonaId().getNombre());
-            equipoHasJugador.setEquipoId(equipo);
-            logger.debug("Nombre del Equipo "+ equipo.getNombre());
+            equipoHasJugador.setJugadorId(this.jugador);
+            logger.debug("Nombre del jugador " + jugador.getPersonaId().getNombre());
+            equipoHasJugador.setEquipoId(this.equipo);
+            logger.debug("Nombre del Equipo " + equipo.getNombre());
             logger.debug("Esta Creando  un EquipoHasJugador");
             controllerEquipoHasJugador.create(equipoHasJugador);
             recreateModel();
             Util.addSuccessMessage("Se Agrego Exitosamente el Jugador");
         } catch (Exception e) {
-            logger.debug("Error al crear EquipoHasJugador :", e.getMessage());
+            logger.debug("Error al crear EquipoHasJugador :", e);
         }
         return prepareCreate();
     }
@@ -179,25 +196,12 @@ public class EquipoHasJugadorBean implements Serializable {
         return prepareCreate();
     }
 
-    public EquipoHasJugador getEquipoHasJugador() {
-        if (equipoHasJugador == null) {
-            equipoHasJugador = new EquipoHasJugador();
-            initializeEmbeddableKey();
-            setEmbeddableKeys();
-        }
-        return equipoHasJugador;
-    }
-
-    public void setEquipoHasJugador(EquipoHasJugador equipoHasJugador) {
-        this.equipoHasJugador = equipoHasJugador;
-    }
-
     public String getHostImagen() {
-        String host = Util.getHostImagen() + "equipoHasJugador/";
+        String host = Util.getHostImagen() + "jugador/";
         return host;
     }
-    
-        public String gotoEquipoHasJugadorPage() {
+
+    public String gotoEquipoHasJugadorPage() {
         recreateModel();
         equipo = new Equipo();
         return "/admin/equipo/equipohasjugador/listequipo?faces-redirect=true";

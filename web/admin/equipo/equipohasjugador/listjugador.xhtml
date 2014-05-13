@@ -15,16 +15,16 @@
         <h:form id="JugadorListForm">
 
             <p:fieldset style="width: 85%" legend="Lista de Jugadores" >
-               
-               
+
+
                 <h:outputText value="Nombre del Equipo : #{equipoHasJugadorBean.equipo.nombre} " /> <br/>
                 <h:outputText value="Nombre del Club : #{equipoHasJugadorBean.equipo.clubId.nombre} " /><br/>
                 <h:outputText value="Nombre de la  Categoria : #{equipoHasJugadorBean.equipo.categoriaId.nombre} " />
-                
+
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="createButton" icon="ui-icon-pencil" 
-                                         value="Agregar Jugadores" 
+                                         value="Agregar Jugador" 
                                          actionListener="#{equipoHasJugadorBean.prepareEdit}"
                                          update=":JugadorEditForm" 
                                          oncomplete="PF('JugadorEditDialog').show()" 
@@ -37,33 +37,45 @@
                 </p:toolbar>
 
                 <p:dataTable id="jugadores" var="equipoHasJugador"  value="#{equipoHasJugadorBean.items}"
-                             rowKey="#{equipohasjugador}"
+                             rowKey="#{equipoHasJugador.id}"
                              selection="#{equipoHasJugadorBean.equipoHasJugador}" 
                              selectionMode="single"
                              paginator="true" rows="10"
                              filteredValue="#{equipoHasJugadorBean.filteredEquipoHasJugador}" >   
-                    <p:ajax event="rowSelect" update=":JugadorListForm:createButton"  />
-                    <p:ajax event="rowUnselect" update=":JugadorListForm:createButton" />
+                    <p:ajax event="rowSelect" 
+                            update=":JugadorListForm:display"  oncomplete="PF('carDialog').show()" />
+                    <f:ajax execute="jugadores" event="rowSelect"  />
+
 
                     <f:facet name="header">
-                        Lista de Jugadores
+                        Lista de Jugadores en el Equipo
                     </f:facet>
-                    <p:column headerText="Nombre" sortBy="nombre" filterBy="nombre">
-                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre} 
-                                      #{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                    <p:column headerText="Jugador" sortBy="jugadorId.personaId.nombre"
+                              filterBy="jugadorId.personaId.nombre">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
                     </p:column>
-                    <p:column headerText="Camiseta" sortBy="camiseta" filterBy="camiseta">
+
+                    <p:column headerText="Apellido" 
+                              sortBy="jugadorId.personaId.apellido"
+                              filterBy="jugadorId.personaId.apellido">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Camiseta" sortBy="jugadorId.camiseta"
+                              filterBy="jugadorId.camiseta">
                         <h:outputText value="#{equipoHasJugador.jugadorId.camiseta}"/>
                     </p:column>
-                    <p:column headerText="Posicion" sortBy="nombre" filterBy="nombre">
+                    <p:column headerText="Posicion" sortBy="jugadorId.posicionId.nombre" 
+                              filterBy="jugadorId.posicionId.nombre">
                         <h:outputText value="#{equipoHasJugador.jugadorId.posicionId.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="Fecha Entrada" sortBy="fechaEntrada" filterBy="fechaEntrada">
+                    <p:column headerText="Fecha Entrada" sortBy="fechaEntrada"
+                              filterBy="fechaEntrada">
                         <h:outputText value="#{equipoHasJugador.fechaEntrada}"/>
                     </p:column>
 
-                    <p:column headerText="Fecha Salida" sortBy="fechaSalida" filterBy="fechaSalida">
+                    <p:column headerText="Fecha Salida" sortBy="fechaSalida" 
+                              filterBy="fechaSalida">
                         <h:outputText value="#{equipoHasJugador.fechaSalida}"/>
                     </p:column>
 
@@ -75,6 +87,17 @@
 
                 </p:dataTable>
             </p:fieldset>
+            <p:dialog id="dialog" header="Car Detail" widgetVar="carDialog" resizable="false"
+                      showEffect="fade" hideEffect="explode">
+
+                <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                    <f:facet name="header">
+                        <p:graphicImage value="#{equipoHasJugadorBean.hostImagen}#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.foto}"/>
+                    </f:facet>
+
+                </h:panelGrid>
+            </p:dialog>
         </h:form>
         <ui:include src="agregarjugador.xhtml"/>
     </ui:define>
