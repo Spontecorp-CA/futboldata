@@ -35,11 +35,7 @@ public class EquipoBean implements Serializable {
     private DataModel items = null;
     private List<Equipo> filteredEquipos;
     private SelectItem[] clubOptions;    
-
-    private CategoriaFacade controllerCategoria;
-    private ClubFacade controllerClub;
-    
-    private final EquipoFacade controllerEquipo;    
+ 
     private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
     private final CategoriaFacade controllerCategoria;
     private final ClubFacade controllerClub;
