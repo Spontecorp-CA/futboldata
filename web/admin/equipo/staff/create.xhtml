@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Staff
+    </ui:define>
+
+    <p:dialog id="StaffCreateDlg" widgetVar="StaffCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Staff">
+        <h:form id="StaffCreateForm">
+
+            <p:fieldset style="width: 85%" legend="Crear Staff">                
+
+                <br />
+                <h:panelGrid columns="3" styleClass="top-aligned-columns">
+                    <h:panelGrid columns="2" title="Datos Personales"
+                                 styleClass="top-aligned-columns">
+                        <h:outputLabel value="* Nombre:" for="nombre"/>
+                        <p:inputText id="nombre" value="#{staffBean.staff.personaId.nombre}"
+                                     required="true" requiredMessage="Debe colocar un nombre"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="* Apellido:" for="apellido"/>
+                        <p:inputText id="apellido" value="#{staffBean.staff.personaId.apellido}"
+                                     required="true" requiredMessage="Debe colocar un apellido"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="Documento Id:" for="did"/>
+                        <p:inputText id="did" value="#{staffBean.staff.personaId.documentoIdentidad}"
+                                     required="true" requiredMessage="Debe colocar el documento"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="* Sexo:" for="sex"/>
+                        <p:selectOneRadio id="sex" value="#{staffBean.staff.personaId.sexo}">
+                            <f:selectItem itemLabel="M" itemValue="M"/>
+                            <f:selectItem itemLabel="F" itemValue="F"/>
+                        </p:selectOneRadio>
+                        <h:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento"/>
+                        <p:calendar id="fechaNacimiento" 
+                                    value="#{staffBean.staff.personaId.fechaNacimiento}"
+                                    navigator="true" 
+                                    pattern="dd/mm/yyyy" 
+                                    locale="es"/>
+                        <h:outputLabel value="Nacional de:" for="nacionalidad"/>
+                        <p:selectOneMenu id="nacionalidad"
+                                         value="#{staffBean.staff.personaId.nacionalidad}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px">
+                            <f:selectItems value="#{staffBean.paisesAvalaible}"/>
+                        </p:selectOneMenu> 
+
+                        <h:outputLabel value="Foto:" for="foto"/>
+                        <p:fileUpload id="foto" 
+                                      value="#{staffBean.selected.personaId.foto}"
+                                      mode="advanced" dragDropSupport="false" 
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                      style="width: 250px"
+                                      fileUploadListener="#{StaffBean.handleFileUpload}"
+                                      update="Perfil" >
+
+                        </p:fileUpload>
+                        &nbsp; 
+                        <h:graphicImage id="Perfil" url="#{staffBean.hostImagen}#{staffBean.staff.personaId.foto}"/>    
+                        <h:outputLabel value="* status:" for="status"/>
+                        <p:selectOneMenu id="status" value="#{staffBean.staff.status}"
+                                         converter= "javax.faces.Integer"
+                                         style="width: 250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un valor">
+                            <f:selectItem itemLabel="Activo" itemValue="1"/>
+                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" title="Dirección">
+                        <h:outputLabel value="Pais:" for="pais"/>
+                        <p:selectOneMenu id="pais" 
+                                         value="#{staffBean.pais}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un perfil">                       
+                            <f:selectItems value="#{staffBean.paisesAvalaible}"/>
+                            <p:ajax listener="#{staffBean.ciudadesAvalaible}" 
+                                    update="ciudad" />
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Ciudad:" for="ciudad"/>
+                        <p:selectOneMenu id="ciudad"
+                                         value="#{staffBean.staff.personaId.direccionId.ciudadId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar una ciudad">                       
+                            <f:selectItems value="#{staffBean.ciudades}"/>
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Dirección:" for="direccion"/>
+                        <p:inputTextarea id="direccion"
+                                         value="#{staffBean.staff.personaId.direccionId.direccion}"
+                                         required="true" requiredMessage="Debe colocar un email"
+                                         validatorMessage="Email inválido"
+                                         rows="3" cols="33"
+                                         style="width: 250px">
+                        </p:inputTextarea>
+                        <p:selectOneMenu id="asociacion" 
+                                         value="#{staffBean.staff.asociacionId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px">
+                            <f:selectItems value="#{staffBean.asociacionesAvalaible}"/>
+                        </p:selectOneMenu> 
+                        <h:outputLabel value="Cargo: " for="cargo"/>
+                        <p:selectOneMenu id="cargo"
+                                         value="#{staffBean.staff.cargoId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px">
+                            <f:selectItems value="#{staffBean.cargosAvalaible}"/>
+                        </p:selectOneMenu> 
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" title="Contacto">
+                        <h:outputLabel value="Teléfono:" for="telefono"/>
+                        <p:inputMask id="telefono" 
+                                     value="#{staffBean.staff.personaId.telefono}"
+                                     required="true" requiredMessage="Debe colocar un teléfono"
+                                     style="width: 250px"
+                                     mask="(9999) 999.9999"/>
+                        <h:outputLabel value="Celular:" for="celular"/>
+                        <p:inputMask id="celular" 
+                                     value="#{staffBean.staff.personaId.celular}"
+                                     required="true" requiredMessage="Debe colocar un teléfono"
+                                     style="width: 250px"
+                                     mask="(9999) 999.9999"/>
+                        <h:outputLabel value="email:" for="email"/>
+                        <p:inputText id="email" 
+                                     value="#{staffBean.staff.personaId.email}"
+                                     validatorMessage="Email inválido"
+                                     style="width: 250px">
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+
+                        <!--                    </h:panelGrid>
+                                            <h:panelGrid columns="2">-->
+                        <h:outputLabel value="Redes Sociales" for="redSocial"/>
+
+                        <p:selectOneMenu id="redSocial"
+                                         value="#{staffBean.tipoRedSocial}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px">
+                            <f:selectItems value="#{staffBean.redSocialAvailable}"/>
+                            <f:ajax execute="redSocial" /> 
+                        </p:selectOneMenu>
+                        <h:outputLabel value="Cuenta:" for="cuenta"/>
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <p:inputText id="cuenta"
+                                                 value="#{staffBean.redSocial.usuario}"
+                                                 style="width: 250px"/>
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar redSocial" >                             
+                                        <f:ajax listener="#{staffBean.cargarRedSocial}" 
+                                                execute="cuenta" render="redes"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:dataList id="redes" 
+                                                var="redSocial" 
+                                                value="#{staffBean.redes}">
+                                        #{redSocial.tipoRedSocialId.url}/#{redSocial.usuario}
+                                    </p:dataList>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                    </h:panelGrid>
+
+                </h:panelGrid>
+
+
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <p:commandButton actionListener="#{staffBean.create}" value="Guardar" 
+                                 update="display,:StaffListForm:staffs,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'StaffCreateDialog');"
+                                 ajax="false"/>
+                <p:commandButton value="Cancelar" onclick="StaffCreateDialog.hide()"/>
+            </p:fieldset>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>

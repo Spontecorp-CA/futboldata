@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Staff.findByFechaDesde", query = "SELECT s FROM Staff s WHERE s.fechaDesde = :fechaDesde"),
     @NamedQuery(name = "Staff.findByFechaHasta", query = "SELECT s FROM Staff s WHERE s.fechaHasta = :fechaHasta")})
 public class Staff implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,7 +67,7 @@ public class Staff implements Serializable {
     @ManyToOne
     private Asociacion asociacionId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona personaId;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne
@@ -242,5 +244,5 @@ public class Staff implements Serializable {
     public String toString() {
         return "com.spontecorp.futboldata.entity.Staff[ id=" + id + " ]";
     }
-    
+
 }
