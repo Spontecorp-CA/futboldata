@@ -4,24 +4,20 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
-import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoFacade;
-import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
-import com.spontecorp.futboldata.jpacontroller.EmailFacade;
-import com.spontecorp.futboldata.jpacontroller.PaisFacade;
-import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.persistence.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,18 +33,20 @@ public class EquipoBean implements Serializable {
 
     private Equipo equipo;
     private DataModel items = null;
-
-    private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
+    private List<Equipo> filteredEquipos;
+    private SelectItem[] clubOptions;    
 
     private CategoriaFacade controllerCategoria;
     private ClubFacade controllerClub;
-    private final EquipoFacade controllerEquipo;
+    
+    private final EquipoFacade controllerEquipo;    
+    private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
 
     public EquipoBean() {
         controllerEquipo = new EquipoFacade();
         controllerCategoria = new CategoriaFacade();
         controllerClub = new ClubFacade();
-
+        //clubOptions = createClubOptions();
     }
 
     public Equipo getEquipo() {
@@ -71,6 +69,13 @@ public class EquipoBean implements Serializable {
 
     }
 
+    public SelectItem[] getClubOptions() {
+        if(clubOptions == null){
+            clubOptions = createClubOptions();
+        }
+        return clubOptions;
+    }
+
     protected void initializeEmbeddableKey() {
 
     }
@@ -80,6 +85,14 @@ public class EquipoBean implements Serializable {
             items = new ListDataModel(controllerEquipo.findAll());
         }
         return items;
+    }
+
+    public List<Equipo> getFilteredEquipos() {
+        return filteredEquipos;
+    }
+
+    public void setFilteredEquipos(List<Equipo> filteredEquipos) {
+        this.filteredEquipos = filteredEquipos;
     }
 
     public void recreateModel() {
@@ -157,4 +170,16 @@ public class EquipoBean implements Serializable {
         }
     }
 
+    private SelectItem[] createClubOptions() {
+        List<Club> listClubes = controllerClub.findAll();
+        SelectItem[] options = new SelectItem[listClubes.size() + 1];
+        int i = 1;
+        for (Club club : listClubes) {
+            options[i] = new SelectItem(club.getNombre(), club.getNombre());
+            i++;
+        }
+        
+        return options;
+    }
+    
 }

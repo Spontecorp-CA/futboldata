@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+          
+    <ui:composition>
+        <p:dialog id="ClubViewDlg" widgetVar="ClubViewDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" header="Detalle del Club">
+            <h:form id="ClubViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{clubBean.selected != null}">
+                        <h:outputLabel value="Nombre: " for="nombre"/>
+                        <h:outputText id="nombre" value="#{clubBean.selected.nombre}"/>
+                        <h:outputLabel value="Año de Fundación: " for="fundacion"/>
+                        <h:outputText id="fundacion" value="#{clubBean.selected.yearFundacion}"/>
+                        <h:outputLabel value="País: " for="pais"/>
+                        <h:outputText id="pais" value="#{clubBean.selected.direccionId.ciudadId.paisId.nombre}"/>
+                        <h:outputLabel value="Ciudad: " for="ciudad"/>
+                        <h:outputText id="ciudad" value="#{clubBean.selected.direccionId.ciudadId.ciudad}"/>
+                        <h:outputLabel value="Dirección: " for="dirección"/>
+                        <h:outputText id="direccion" value="#{clubBean.selected.direccionId.direccion}"/>
+                        <h:outputLabel value="Página Web: " for="web"/>
+                        <h:outputText id="web" value="#{clubBean.selected.direccionId.paginaWeb}"/>
+                        <h:outputLabel value="Teléfonos: " for="telefonos"/>
+                        <h:panelGroup id="telefonos">
+                            <ui:repeat var="telefono" value="#{clubBean.selected.direccionId.telefonoCollection}">
+                                <ul>
+                                    <li><h:outputText value="#{telefono.telefono}"/></li>
+                                </ul>
+                            </ui:repeat>
+                        </h:panelGroup>
+                        <h:outputLabel value="Emails: " for="emails"/>
+                        <h:panelGroup id="emails">
+                            <ui:repeat var="email" value="#{clubBean.selected.direccionId.emailCollection}">
+                                <ul>
+                                    <li><h:outputText value="#{email.email}"/></li>
+                                </ul>
+                            </ui:repeat>
+                        </h:panelGroup>
+                        <h:outputLabel value="Historia: " for="historia"/>
+                        <h:outputText id="historia" value="#{clubBean.selected.historia}"/>
+                        <h:outputLabel value="Status: " for="status"/>
+                        <h:outputText id="status" value="#{clubBean.selected.status == 1?'Activo':'Inactivo'}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Cancelar" onclick="ClubViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+
