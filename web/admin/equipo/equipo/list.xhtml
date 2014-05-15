@@ -4,7 +4,8 @@
                 template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="title">
         Administración de Categorías
@@ -13,10 +14,11 @@
     <ui:define name="content">
         <h:form id="equipoForm">
 
-            <p:fieldset style="width: 85%" legend="Lista de Categorías">
+            <p:fieldset style="width: 85%" legend="Lista de Equipos">
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="crear Equipo" action="#{equipoBean.prepareCreate}"/>                        
+                        <p:commandButton value="Crear Equipo" action="#{equipoBean.prepareCreate}"/>
+                        <p:commandButton value="Editar Equipo"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{equipoBean.returnAdminPage}"
@@ -24,24 +26,34 @@
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="Equipos" var="equipo" value="#{equipoBean.items}"
-                             rowKey="#{equipo.nombre}"
-                             selection="#{equipoBean.equipo}" selectionMode="single">                
 
-                    <p:column headerText="Nombre">
+                <p:dataTable id="equipos" var="equipo" value="#{equipoBean.items}"
+                             widgetVar="equiposTable"
+                             rowKey="#{equipo.nombre}"
+                             selection="#{equipoBean.equipo}" selectionMode="single"
+                             emptyMessage="No se encontraron equipos para ese criterio" 
+                             filteredValue="#{equipoBean.filteredEquipos}">                
+
+                    <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre"
+                              filterMatchMode="exact">
+                              <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('equiposTable').filter()" >
+                                <f:selectItems value="#{equipoBean.clubOptions}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{equipo.clubId.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Equipo">
                         <h:outputText value="#{equipo.nombre}"/>
                     </p:column>
-                    <p:column headerText="Abrevicacion del Equipo">
+                    <p:column headerText="Siglas">
                         <h:outputText value="#{equipo.abreviacion}"/>
                     </p:column>
-                    <p:column headerText="Categoria">
+                    <p:column headerText="Categoría">
                         <h:outputText value="#{equipo.categoriaId.nombre}"/>
-                    </p:column>
-                     <p:column headerText="Club">
-                         <h:outputText value="#{equipo.clubId.nombre}"/>
-                    </p:column>
+                    </p:column>                    
                     <p:column headerText="Status">
-                        <h:outputText value="#{equipo.status == 1?'Activa':'Inactiva'}"/>
+                        <h:outputText value="#{equipo.status == 1?'Activo':'Inactivo'}"/>
                     </p:column>
 
                     <p:column headerText="Acciones">

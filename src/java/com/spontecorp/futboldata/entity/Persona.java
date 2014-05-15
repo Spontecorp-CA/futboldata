@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -50,6 +49,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Agente> agenteCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
@@ -103,12 +103,12 @@ public class Persona implements Serializable {
     @Size(max = 65535)
     @Column(name = "foto")
     private String foto;
-   
+
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne(cascade = CascadeType.ALL)
     private Direccion direccionId;
-   
-    @OneToMany(mappedBy = "personaId")
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<RedSocial> redSocialCollection;
 
     public Persona() {
@@ -309,6 +309,4 @@ public class Persona implements Serializable {
         return "com.spontecorp.futboldata.entity.Persona[ id=" + id + " ]";
     }
 
-  
-    
 }

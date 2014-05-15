@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Administración de Staff
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="StaffListForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Staff" >
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                         value="Crear Staff" 
+                                         actionListener="#{staffBean.prepareCreate}" 
+                                         update=":StaffCreateForm" 
+                                         oncomplete="PF('StaffCreateDialog').show()"/>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Staff" 
+                                         actionListener="#{staffBean.prepareEdit}"
+                                         update=":StaffEditForm" 
+                                         oncomplete="PF('StaffEditDialog').show()" 
+                                         disabled="#{empty staffBean.staff.personaId.nombre}"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="staffs" var="staff"  value="#{staffBean.items}"
+                             rowKey="#{staff.id}"
+                             selection="#{staffBean.staff}" 
+                             selectionMode="single">   
+                    <p:ajax event="rowSelect" update=":StaffListForm:createButton :StaffListForm:editButton "  />
+                    <p:ajax event="rowUnselect" update=":StaffListForm:createButton :StaffListForm:editButton" />
+
+                            <p:column headerText="Nombre">
+                            <h:outputText value="#{staff.personaId.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Apellido">
+                            <h:outputText value="#{staff.personaId.apellido}"/>
+                        </p:column>
+                        <p:column headerText="Ciudad">
+                            <h:outputText value="#{staff.personaId.direccionId.ciudadId.ciudad}"/>
+                        </p:column>
+                        <p:column headerText="Dirección">
+                            <h:outputText value="#{staff.personaId.direccionId.direccion}"/>
+                        </p:column>
+
+                        <p:column headerText="Red Social">
+                            <p:dataList value="#{staffBean.getRedSocials(staff.personaId)}" var="redsocial">
+                                <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
+                            </p:dataList>
+        
+                        </p:column>
+
+                        <p:column headerText="Telefono">
+                            <h:outputText value="#{staff.personaId.telefono}"/>
+                        </p:column>
+                        <p:column headerText="Celular">
+                            <h:outputText value="#{staff.personaId.celular}"/>
+                        </p:column>
+
+                        <p:column headerText="Status">
+                            <h:outputText   value="#{staff.status== 0?'INACTIVO':'ACTIVO'}"/>
+                        </p:column>
+
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>
+    </ui:define>
+
+</ui:composition>

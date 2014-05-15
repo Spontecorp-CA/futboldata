@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
@@ -19,6 +20,7 @@ import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;
@@ -41,6 +43,7 @@ public class ClubBean implements Serializable {
     private Club club;
     private DataModel items = null;
     private Pais pais;
+    private Ciudad ciudad;
     private Direccion direccion;
     private Telefono telefono;
     private Email email;
@@ -67,7 +70,7 @@ public class ClubBean implements Serializable {
         controllerTelefono = new TelefonoFacade();
         controllerEmail = new EmailFacade();
     }
-
+    
     public List<Email> getEmails() {
         return emails;
     }
@@ -85,6 +88,11 @@ public class ClubBean implements Serializable {
     }
 
     public Club getClub() {
+        if(club == null){
+            club = new Club();
+            initializeEmbeddableKey();
+            setEmbeddableKeys();
+        }
         return club;
     }
 
@@ -98,6 +106,14 @@ public class ClubBean implements Serializable {
 
     public void setPais(Pais pais) {
         this.pais = pais;
+    }
+
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
     }
 
     public Direccion getDireccion() {
@@ -144,7 +160,14 @@ public class ClubBean implements Serializable {
         if (club == null) {
             club = new Club();
             direccion = new Direccion();
+            ciudad = new Ciudad();
+            telefono = new Telefono();
+            email = new Email();
+            direccion.setCiudadId(ciudad);
             club.setDireccionId(direccion);
+            
+            ciudades = null;
+            telefonos = null;
         }
         return club;
     }
@@ -172,6 +195,10 @@ public class ClubBean implements Serializable {
         return items;
     }
 
+    public List<Club> getClubes() {
+        return controllerClub.findAll();
+    }
+
     public void cargarTelefono() {
         telefonos.add(telefono);
         telefono = new Telefono();
@@ -197,7 +224,6 @@ public class ClubBean implements Serializable {
     }
 
     public void eliminarEmail(Email email) {
-
         if (emails.remove(email)) {
             emailEliminar.add(email);
             for (Email eml : emailEliminar) {
@@ -209,15 +235,13 @@ public class ClubBean implements Serializable {
     }
 
     public List<Telefono> getTelefonos(Direccion direccion) {
-        telefonos = controllerDireccion.findListTelefonoxDireaccion(direccion);
+        telefonos = controllerDireccion.findListTelefonoxDireccion(direccion);
         return telefonos;
-
     }
 
     public List<Email> getEmails(Direccion direccion) {
         emails = controllerDireccion.findListEmailxDireaccion(direccion);
         return emails;
-
     }
 
     public void recreateModel() {
@@ -229,23 +253,28 @@ public class ClubBean implements Serializable {
         return "list";
     }
 
-    public String prepareCreate() {
-
+//    public String prepareCreate() {
+//
+//        club = new Club();
+//        initializeEmbeddableKey();
+//        setEmbeddableKeys();
+//
+//        return "create";
+//    }
+    public Club prepareCreate() {
         club = new Club();
-        initializeEmbeddableKey();
-        setEmbeddableKeys();
-
-        return "create";
+        return club;
     }
 
-    public String prepareEdit() {
+    public void prepareEdit() {
         initializeEmbeddableKey();
-        club = (Club) getItems().getRowData();
+        //club = (Club) getItems().getRowData();
+        pais = club.getDireccionId().getCiudadId().getPaisId();
         telefonos = getTelefonos(club.getDireccionId());
         emails = getEmails(club.getDireccionId());
         ciudadAvailable(club.getDireccionId().getCiudadId().getPaisId());
-        
-        return "edit";
+
+        //return "edit";
     }
 
     public String prepareList() {
@@ -256,40 +285,40 @@ public class ClubBean implements Serializable {
         return "adminPage";
     }
 
-    public String create() {
+    public void create() {
         try {
             if (controllerClub.findClub(club.getNombre()) != null) {
                 Util.addErrorMessage("Club ya existente, coloque otro");
-                return null;
+                //return null;
             } else {
-                controllerDireccion.create(direccion);
+                club.setDireccionId(direccion);
+
                 for (Telefono phone : telefonos) {
                     phone.setDireccionId(direccion);
-                    controllerTelefono.create(phone);
                 }
+                
                 for (Email mail : emails) {
                     mail.setDireccionId(direccion);
-                    controllerEmail.create(mail);
                 }
-                club.setDireccionId(direccion);
                 controllerClub.create(club);
-                Util.addSuccessMessage("Categoría creada con éxito");
+
+                Util.addSuccessMessage("Club creado con éxito");
                 recreateModel();
-                return prepareCreate();
+                //return prepareCreate();
             }
         } catch (Exception e) {
-            Util.addErrorMessage(e, "Error al crear la categoría");
-            return null;
+            Util.addErrorMessage(e, "Error al crear el club");
+            //return null;
         }
     }
 
-    public String edit() {
+    public void edit() {
         try {
-            if (controllerClub.findClub(club.getNombre()) == null) {
+            if (controllerClub.find(club.getId()) == null) {
                 Util.addErrorMessage("Club no existente, hay un error");
-                return null;
+                //return null;
             } else {
-                                for (Telefono telefonoEditar : telefonos) {
+                for (Telefono telefonoEditar : telefonos) {
                     if (controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null) {
                         controllerTelefono.edit(telefonoEditar);
                     } else {
@@ -311,16 +340,18 @@ public class ClubBean implements Serializable {
                 for (Email emailEli : emailEliminar) {
                     controllerEmail.remove(emailEli);
                 }
+                
                 for (Telefono telefonoEli : telefonoEliminar) {
                     controllerTelefono.remove(telefonoEli);
                 }
+                
                 controllerClub.edit(club);
-                Util.addSuccessMessage("Categoría editada con éxito");
-                return prepareCreate();
+                Util.addSuccessMessage("Club editado con éxito");
+                //return prepareCreate();
             }
         } catch (Exception e) {
             Util.addErrorMessage(e, "Error al editar la categoría");
-            return null;
+            //return null;
         }
     }
 

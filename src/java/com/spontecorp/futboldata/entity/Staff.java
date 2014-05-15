@@ -2,12 +2,14 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author sponte07
  */
 @Entity
 @Table(name = "staff")
@@ -40,6 +41,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Staff.findByFechaDesde", query = "SELECT s FROM Staff s WHERE s.fechaDesde = :fechaDesde"),
     @NamedQuery(name = "Staff.findByFechaHasta", query = "SELECT s FROM Staff s WHERE s.fechaHasta = :fechaHasta")})
 public class Staff implements Serializable {
+    @JoinTable(name = "staff_has_titulo", joinColumns = {
+        @JoinColumn(name = "staff_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Titulo> tituloCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,19 +60,12 @@ public class Staff implements Serializable {
     @Column(name = "fecha_hasta")
     @Temporal(TemporalType.DATE)
     private Date fechaHasta;
-    @ManyToMany(mappedBy = "staffCollection")
-    private Collection<Premio> premioCollection;
-    @JoinTable(name = "staff_has_titulo", joinColumns = {
-        @JoinColumn(name = "staff_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
-    @ManyToMany
-    private Collection<Titulo> tituloCollection;
-    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
-    @ManyToOne
-    private Asociacion asociacionId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL,optional = false)
     private Persona personaId;
+    @JoinColumn(name = "partido_id", referencedColumnName = "id")
+    @ManyToOne
+    private Partido partidoId;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne
     private Equipo equipoId;
@@ -76,17 +75,15 @@ public class Staff implements Serializable {
     @JoinColumn(name = "club_id", referencedColumnName = "id")
     @ManyToOne
     private Club clubId;
-    @JoinColumn(name = "cargo_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Cargo cargoId;
-    @JoinColumn(name = "partido_id", referencedColumnName = "id")
+    @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
-    private Partido partidoId;
+    private Asociacion asociacionId;
     @JoinColumn(name = "agente_id", referencedColumnName = "id")
     @ManyToOne
     private Agente agenteId;
-    @OneToMany(mappedBy = "staffId")
-    private Collection<PartidoEvento> partidoEventoCollection;
+    @JoinColumn(name = "cargo_id", referencedColumnName = "id")
+    @ManyToOne
+    private Cargo cargoId;
 
     public Staff() {
     }
@@ -127,38 +124,20 @@ public class Staff implements Serializable {
         this.fechaHasta = fechaHasta;
     }
 
-    @XmlTransient
-    public Collection<Premio> getPremioCollection() {
-        return premioCollection;
-    }
-
-    public void setPremioCollection(Collection<Premio> premioCollection) {
-        this.premioCollection = premioCollection;
-    }
-
-    @XmlTransient
-    public Collection<Titulo> getTituloCollection() {
-        return tituloCollection;
-    }
-
-    public void setTituloCollection(Collection<Titulo> tituloCollection) {
-        this.tituloCollection = tituloCollection;
-    }
-
-    public Asociacion getAsociacionId() {
-        return asociacionId;
-    }
-
-    public void setAsociacionId(Asociacion asociacionId) {
-        this.asociacionId = asociacionId;
-    }
-
     public Persona getPersonaId() {
         return personaId;
     }
 
     public void setPersonaId(Persona personaId) {
         this.personaId = personaId;
+    }
+
+    public Partido getPartidoId() {
+        return partidoId;
+    }
+
+    public void setPartidoId(Partido partidoId) {
+        this.partidoId = partidoId;
     }
 
     public Equipo getEquipoId() {
@@ -185,20 +164,12 @@ public class Staff implements Serializable {
         this.clubId = clubId;
     }
 
-    public Cargo getCargoId() {
-        return cargoId;
+    public Asociacion getAsociacionId() {
+        return asociacionId;
     }
 
-    public void setCargoId(Cargo cargoId) {
-        this.cargoId = cargoId;
-    }
-
-    public Partido getPartidoId() {
-        return partidoId;
-    }
-
-    public void setPartidoId(Partido partidoId) {
-        this.partidoId = partidoId;
+    public void setAsociacionId(Asociacion asociacionId) {
+        this.asociacionId = asociacionId;
     }
 
     public Agente getAgenteId() {
@@ -209,13 +180,12 @@ public class Staff implements Serializable {
         this.agenteId = agenteId;
     }
 
-    @XmlTransient
-    public Collection<PartidoEvento> getPartidoEventoCollection() {
-        return partidoEventoCollection;
+    public Cargo getCargoId() {
+        return cargoId;
     }
 
-    public void setPartidoEventoCollection(Collection<PartidoEvento> partidoEventoCollection) {
-        this.partidoEventoCollection = partidoEventoCollection;
+    public void setCargoId(Cargo cargoId) {
+        this.cargoId = cargoId;
     }
 
     @Override
@@ -241,6 +211,15 @@ public class Staff implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Staff[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Titulo> getTituloCollection() {
+        return tituloCollection;
+    }
+
+    public void setTituloCollection(Collection<Titulo> tituloCollection) {
+        this.tituloCollection = tituloCollection;
     }
     
 }

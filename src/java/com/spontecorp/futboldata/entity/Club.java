@@ -67,7 +67,7 @@ public class Club implements Serializable {
     @ManyToMany
     private Collection<Premio> premioCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)    
     private Direccion direccionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clubId")
     private Collection<Audio> audioCollection;
@@ -238,7 +238,7 @@ public class Club implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Club[ id=" + id + " ]";
+        return nombre;
     }
     
 }
