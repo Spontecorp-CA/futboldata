@@ -102,20 +102,8 @@
                                          rows="3" cols="33"
                                          style="width: 250px">
                         </p:inputTextarea>
-                        <p:selectOneMenu id="asociacion" 
-                                         value="#{staffBean.staff.asociacionId}"
-                                         style="width: 250px"
-                                         panelStyle="width:250px">
-                            <f:selectItems value="#{staffBean.asociacionesAvalaible}"/>
-                        </p:selectOneMenu> 
-                        <h:outputLabel value="Cargo: " for="cargo"/>
-                        <p:selectOneMenu id="cargo"
-                                         value="#{staffBean.staff.cargoId}"
-                                         style="width: 250px"
-                                         panelStyle="width:250px">
-                            <f:selectItems value="#{staffBean.cargosAvalaible}"/>
-                        </p:selectOneMenu> 
-
+                      
+          
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
