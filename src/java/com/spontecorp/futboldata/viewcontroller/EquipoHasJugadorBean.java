@@ -17,6 +17,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Named;
+import jdk.nashorn.internal.parser.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -170,8 +171,10 @@ public class EquipoHasJugadorBean implements Serializable {
     }
 
     public String create() {
-        try {
-
+      
+        if (controllerEquipoHasJugador.getEquipoHasJugador(equipo, jugador) == null) {
+            
+           try {
             equipoHasJugador.setJugadorId(this.jugador);
             logger.debug("Nombre del jugador " + jugador.getPersonaId().getNombre());
             equipoHasJugador.setEquipoId(this.equipo);
@@ -183,6 +186,10 @@ public class EquipoHasJugadorBean implements Serializable {
         } catch (Exception e) {
             logger.debug("Error al crear EquipoHasJugador :", e);
         }
+        
+        }else{
+            Util.addErrorMessage("El Jugador ya esta en el equipo, Seleccion otro");         
+        }                      
         return prepareCreate();
     }
 
@@ -195,7 +202,17 @@ public class EquipoHasJugadorBean implements Serializable {
         Util.addSuccessMessage("Se edito exitosamente el EquipoHasJugador");
         return prepareCreate();
     }
+   public String delete() {
+       try {
+                  controllerEquipoHasJugador.remove(equipoHasJugador);
+                  Util.addSuccessMessage("Se elimino exitosamente");
+       } catch (Exception e) {
+           logger.debug("Error al eliminar la entidad EquipoHasJugador : ",e.getMessage());
+           Util.addErrorMessage("Error al eliminar al Jugador del Equipo");
+       }
 
+       return prepareCreate();
+   }
     public String getHostImagen() {
         String host = Util.getHostImagen() + "jugador/";
         return host;

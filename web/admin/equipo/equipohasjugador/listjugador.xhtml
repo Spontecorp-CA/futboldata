@@ -29,6 +29,16 @@
                                          update=":JugadorEditForm" 
                                          oncomplete="PF('JugadorEditDialog').show()" 
                                          disabled="#{empty equipoHasJugadorBean.equipo.nombre}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-pencil" 
+                                         value="Eliminar Jugador" 
+                                         actionListener="#{equipoHasJugadorBean.delete}"
+                                         disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}"
+                                         update="jugadores">
+
+                            <p:confirm header="Confirmacion" 
+                                       message="¿Esta Seguro que desea Eliminar el Jugador del Equipo?"
+                                       icon="ui-icon-alert" />
+                        </p:commandButton>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
@@ -43,7 +53,7 @@
                              paginator="true" rows="10"
                              filteredValue="#{equipoHasJugadorBean.filteredEquipoHasJugador}" >   
                     <p:ajax event="rowSelect" 
-                            update=":JugadorListForm:display"  oncomplete="PF('carDialog').show()" />
+                            update=":JugadorListForm:display :JugadorListForm:deleteButton" oncomplete="PF('jugadorDialog').show()" />
                     <f:ajax execute="jugadores" event="rowSelect"  />
 
 
@@ -71,7 +81,10 @@
 
                     <p:column headerText="Fecha Entrada" sortBy="fechaEntrada"
                               filterBy="fechaEntrada">
-                        <h:outputText value="#{equipoHasJugador.fechaEntrada}"/>
+                        <h:outputText  value="#{equipoHasJugador.fechaEntrada}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+
                     </p:column>
 
                     <p:column headerText="Fecha Salida" sortBy="fechaSalida" 
@@ -87,7 +100,7 @@
 
                 </p:dataTable>
             </p:fieldset>
-            <p:dialog id="dialog" header="Car Detail" widgetVar="carDialog" resizable="false"
+            <p:dialog id="dialog" header="Detelles Jugador" widgetVar="jugadorDialog" resizable="false"
                       showEffect="fade" hideEffect="explode">
 
                 <h:panelGrid id="display" columns="2" cellpadding="4">
@@ -98,6 +111,10 @@
 
                 </h:panelGrid>
             </p:dialog>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>     
+            </p:confirmDialog>
         </h:form>
         <ui:include src="agregarjugador.xhtml"/>
     </ui:define>
