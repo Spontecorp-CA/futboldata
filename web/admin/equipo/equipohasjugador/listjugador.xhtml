@@ -30,14 +30,10 @@
                                          oncomplete="PF('JugadorEditDialog').show()" 
                                          disabled="#{empty equipoHasJugadorBean.equipo.nombre}"/>
                         <p:commandButton id="deleteButton" icon="ui-icon-pencil" 
-                                         value="Eliminar Jugador" 
-                                         actionListener="#{equipoHasJugadorBean.delete}"
-                                         disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}"
-                                         update="jugadores">
-
-                            <p:confirm header="Confirmacion" 
-                                       message="¿Esta Seguro que desea Eliminar el Jugador del Equipo?"
-                                       icon="ui-icon-alert" />
+                                         value="Desvincular Jugador" 
+                                         oncomplete="PF('JugadorDeleteDialog').show()"
+                                         update=":JugadorDeleteForm"
+                                         disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}">
                         </p:commandButton>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
@@ -53,7 +49,8 @@
                              paginator="true" rows="10"
                              filteredValue="#{equipoHasJugadorBean.filteredEquipoHasJugador}" >   
                     <p:ajax event="rowSelect" 
-                            update=":JugadorListForm:display :JugadorListForm:deleteButton" oncomplete="PF('jugadorDialog').show()" />
+                            update=":JugadorListForm:display :JugadorListForm:deleteButton :JugadorListForm:confirdialog" 
+                            oncomplete="PF('jugadorDialog').show()"  />
                     <f:ajax execute="jugadores" event="rowSelect"  />
 
 
@@ -94,7 +91,7 @@
 
 
                     <p:column headerText="Status">
-                        <h:outputText value="#{equipoHasJugador.status == 1?'Activa':'Inactiva'}"/>
+                        <h:outputText value="#{equipoHasJugador.status == 1?'Activo':'Inactivo'}"/>
                     </p:column>
 
 
@@ -111,11 +108,12 @@
 
                 </h:panelGrid>
             </p:dialog>
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+            <p:confirmDialog id="confirdialog" global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton  id="siButton" value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>     
             </p:confirmDialog>
         </h:form>
+        <ui:include src="deletejugador.xhtml"/>
         <ui:include src="agregarjugador.xhtml"/>
     </ui:define>
 

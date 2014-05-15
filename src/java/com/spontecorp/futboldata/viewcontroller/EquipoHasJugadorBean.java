@@ -11,13 +11,14 @@ import com.spontecorp.futboldata.jpacontroller.EquipoFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoHasJugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.utilities.Util;
+import static com.spontecorp.futboldata.utilities.Util.ACTIVO;
+import static com.spontecorp.futboldata.utilities.Util.INACTIVO;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Named;
-import jdk.nashorn.internal.parser.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,16 +66,7 @@ public class EquipoHasJugadorBean implements Serializable {
     public void setEquipoHasJugador(EquipoHasJugador equipoHasJugador) {
         this.equipoHasJugador = equipoHasJugador;
     }
-
-    public void getSelect() {
-        equipoHasJugador = new EquipoHasJugador();
-        equipoHasJugador = (EquipoHasJugador) items.getRowData();
-    }
-
-    public void setSelect(EquipoHasJugador equipoHasJugador) {
-        this.equipoHasJugador = equipoHasJugador;
-    }
-
+    
     public List<Jugador> getFilteredJugador() {
         return filteredJugador;
     }
@@ -180,6 +172,7 @@ public class EquipoHasJugadorBean implements Serializable {
             equipoHasJugador.setEquipoId(this.equipo);
             logger.debug("Nombre del Equipo " + equipo.getNombre());
             logger.debug("Esta Creando  un EquipoHasJugador");
+            equipoHasJugador.setStatus(ACTIVO);
             controllerEquipoHasJugador.create(equipoHasJugador);
             recreateModel();
             Util.addSuccessMessage("Se Agrego Exitosamente el Jugador");
@@ -204,7 +197,9 @@ public class EquipoHasJugadorBean implements Serializable {
     }
    public String delete() {
        try {
-                  controllerEquipoHasJugador.remove(equipoHasJugador);
+           equipoHasJugador.setStatus(INACTIVO);
+           controllerEquipoHasJugador.edit(equipoHasJugador);
+           equipoHasJugador = null;
                   Util.addSuccessMessage("Se elimino exitosamente");
        } catch (Exception e) {
            logger.debug("Error al eliminar la entidad EquipoHasJugador : ",e.getMessage());

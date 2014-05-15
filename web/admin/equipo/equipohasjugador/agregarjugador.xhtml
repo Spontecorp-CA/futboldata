@@ -15,20 +15,16 @@
         <h:form id="JugadorEditForm">
 
             <p:fieldset style="width: 85%" legend="Agregar  Jugador">                
-                <p:panelGrid columns="4" >
+                <p:panelGrid columns="2" >
                     <h:outputText value="Fecha de Ingreso:"/>
                     <p:calendar id="fechaEntrada" 
                                 value="#{equipoHasJugadorBean.equipoHasJugador.fechaEntrada}"
                                 navigator="true" 
                                 pattern="dd/mm/yyyy" 
-                                locale="es"/>
+                                locale="es"
+                                showOn="button"/>
 
-                    <h:outputText value="Fecha de Salida:"/>
-                    <p:calendar id="fechaSalida" 
-                                value="#{equipoHasJugadorBean.equipoHasJugador.fechaSalida}"
-                                navigator="true" 
-                                pattern="dd/mm/yyyy" 
-                                locale="es"/>
+
                 </p:panelGrid>
 
                 <p:dataTable id="jugador" var="jugador"  value="#{equipoHasJugadorBean.itemJugador}"

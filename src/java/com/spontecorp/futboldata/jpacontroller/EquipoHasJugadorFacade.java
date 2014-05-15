@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public class EquipoHasJugadorFacade extends AbstractFacade<EquipoHasJugador> {
 
     private static final Logger logger = LoggerFactory.getLogger(EquipoHasJugadorFacade.class);
-
+    private final int ACTIVO = 1 ;
     public EquipoHasJugadorFacade() {
         super(EquipoHasJugador.class);
     }
@@ -34,10 +34,13 @@ public class EquipoHasJugadorFacade extends AbstractFacade<EquipoHasJugador> {
     public List<EquipoHasJugador> getListEquipoHasJugador(Equipo equipo) {
         List<EquipoHasJugador> equipoHasJugador = null;
         EntityManager em = getEntityManager();
+
         try {
-            String query = "SELECT e FROM EquipoHasJugador e WHERE  e.equipoId = :equipo";
+            String query = "SELECT e FROM EquipoHasJugador e WHERE  e.equipoId = :equipo "
+                    + "AND e.status = :status";
             Query q = em.createQuery(query, EquipoHasJugador.class);
             q.setParameter("equipo", equipo);
+            q.setParameter("status", ACTIVO);
             equipoHasJugador = (List<EquipoHasJugador>) q.getResultList();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoHasJugador: " + e.getLocalizedMessage());
