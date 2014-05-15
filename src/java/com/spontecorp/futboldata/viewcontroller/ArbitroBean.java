@@ -95,10 +95,11 @@ public class ArbitroBean implements Serializable {
         persona = new Persona();
         asociacion = new Asociacion();
         persona.setDireccionId(direccion);
+        arbitro.setPersonaId(persona);
         ciudades = null;
         redes = new ArrayList<RedSocial>();
         redesEliminar = new ArrayList<RedSocial>();
-        return "create?faces-redirect=true";
+        return "list?faces-redirect=true";
     }
 
     public void prepareEdit() {

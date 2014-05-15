@@ -77,7 +77,7 @@ public class Jugador implements Serializable {
     @ManyToOne
     private Agente agenteId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona personaId;
     @JoinColumn(name = "posicion_id", referencedColumnName = "id")
     @ManyToOne

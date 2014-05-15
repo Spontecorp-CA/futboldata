@@ -41,6 +41,9 @@ public class EquipoBean implements Serializable {
     
     private final EquipoFacade controllerEquipo;    
     private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
+    private final CategoriaFacade controllerCategoria;
+    private final ClubFacade controllerClub;
+    private final EquipoFacade controllerEquipo;
 
     public EquipoBean() {
         controllerEquipo = new EquipoFacade();
