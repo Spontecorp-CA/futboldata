@@ -4,12 +4,14 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;
@@ -31,9 +33,10 @@ public class EquipoBean implements Serializable {
 
     private Equipo equipo;
     private DataModel items = null;
-
+    private List<Equipo> filteredEquipos;
+    private SelectItem[] clubOptions;    
+ 
     private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
-
     private final CategoriaFacade controllerCategoria;
     private final ClubFacade controllerClub;
     private final EquipoFacade controllerEquipo;
@@ -42,7 +45,7 @@ public class EquipoBean implements Serializable {
         controllerEquipo = new EquipoFacade();
         controllerCategoria = new CategoriaFacade();
         controllerClub = new ClubFacade();
-
+        //clubOptions = createClubOptions();
     }
 
     public Equipo getEquipo() {
@@ -65,6 +68,13 @@ public class EquipoBean implements Serializable {
 
     }
 
+    public SelectItem[] getClubOptions() {
+        if(clubOptions == null){
+            clubOptions = createClubOptions();
+        }
+        return clubOptions;
+    }
+
     protected void initializeEmbeddableKey() {
 
     }
@@ -74,6 +84,14 @@ public class EquipoBean implements Serializable {
             items = new ListDataModel(controllerEquipo.findAll());
         }
         return items;
+    }
+
+    public List<Equipo> getFilteredEquipos() {
+        return filteredEquipos;
+    }
+
+    public void setFilteredEquipos(List<Equipo> filteredEquipos) {
+        this.filteredEquipos = filteredEquipos;
     }
 
     public void recreateModel() {
@@ -151,4 +169,16 @@ public class EquipoBean implements Serializable {
         }
     }
 
+    private SelectItem[] createClubOptions() {
+        List<Club> listClubes = controllerClub.findAll();
+        SelectItem[] options = new SelectItem[listClubes.size() + 1];
+        int i = 1;
+        for (Club club : listClubes) {
+            options[i] = new SelectItem(club.getNombre(), club.getNombre());
+            i++;
+        }
+        
+        return options;
+    }
+    
 }

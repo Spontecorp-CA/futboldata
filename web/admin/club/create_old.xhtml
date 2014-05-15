@@ -1,26 +1,47 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
-                    
-    <p:dialog id="ClubCreateDlg" widgetVar="ClubCreateDialog" modal="true"
-        resizable="false" appendTo="@(body)" header="Creación de Club">
-        <h:form id="ClubCreateForm">
-            <h:panelGroup id="display">
-                <p:panelGrid columns="2" rendered="#{clubBean.selected != null}">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="title">
+        Administración de Club
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="createForm">
+
+            <p:fieldset style="width: 85%" legend="Creación de Categoría">                
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton value="Guardar" action="#{clubBean.create}" 
+                                         update="createForm"/>
+                        <p:commandButton value="Ver Lista" action="#{clubBean.prepareList}"
+                                         immediate="true"/>                        
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{clubBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br />
+                <h:panelGrid columns="2">
                     <h:outputLabel value="* Nombre:" for="nombre"/>
                     <p:inputText id="nombre" value="#{clubBean.selected.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
-                    <h:outputLabel value="* Año de Fundación:" for="descripcion"/>
+                    <h:outputLabel value="* Añor de Fundacion:" for="descripcion"/>
                     <p:inputMask id="descripcion" value="#{clubBean.selected.yearFundacion}"
                                  mask="9999"
                                  required="true" 
-                                 requiredMessage="Debe Colocar el año de Fundación"
+                                 requiredMessage="Debe Colocar el año de Fundacion"
                                  style="width: 250px"/>
-                    <h:outputLabel value="* País:" for="pais"/>
+
+
+                    <h:outputLabel value="* Pais:" for="pais"/>
                     <p:selectOneMenu id="pais"                                    
                                      value="#{clubBean.pais}"
                                      style="width: 250px"
@@ -42,12 +63,12 @@
                         <f:selectItems value="#{clubBean.ciudades}"/>
                     </p:selectOneMenu>
 
-                    <h:outputLabel value="Dirección" for="direccion"/>
+                    <h:outputLabel value="Direccion" for="direccion"/>
                     <p:inputText id="direccion" value="#{clubBean.direccion.direccion}"
                                  required="true" requiredMessage="Debe colocar la Direccion"
                                  style="width: 250px"/>
 
-                    <h:outputLabel value="Página Web" for="paginaW"/>
+                    <h:outputLabel value="Pagina Web" for="paginaW"/>
                     <p:inputText id="paginaW" value="#{clubBean.direccion.paginaWeb}"
                                  style="width: 250px"/>
 
@@ -85,7 +106,7 @@
                         </p:row>
                     </p:panelGrid>
 
-                    <h:outputLabel value="* Email:" 
+                    <h:outputLabel value="* email:" 
                                    for="email"/>
                     <p:panelGrid id="correos" style="border-style: none">
                         <p:row>
@@ -126,14 +147,12 @@
                         <f:selectItem itemLabel="Activo" itemValue="1"/>
                         <f:selectItem itemLabel="Inactivo" itemValue="0"/>
                     </p:selectOneMenu>
-                </p:panelGrid>
-                <p:commandButton actionListener="#{clubBean.create}" value="Guardar" 
-                                 update="display,:ClubListForm:clubs,:growlAdmin" 
-                                 oncomplete="handleSubmit(args,'ClubCreateDialog');"
-                                 ajax="false"/>
-                <p:commandButton value="Cancelar" onclick="ClubCreateDialog.hide()"/>
-            </h:panelGroup>
+                </h:panelGrid>
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+            </p:fieldset>
         </h:form>
-    </p:dialog>
-</ui:composition>
+    </ui:define>
 
+</ui:composition>

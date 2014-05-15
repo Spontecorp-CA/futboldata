@@ -73,7 +73,7 @@ public class UsuarioBean implements Serializable {
 
     public String gotoAdminPage() {
         recreateModel();
-        return "listUsuarios?faces-redirect=true";
+        return "/admin/usuarios/list?faces-redirect=true";
     }
 
     public String returnAdminPage() {

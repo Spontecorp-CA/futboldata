@@ -173,7 +173,7 @@ public class AsociacionBean implements Serializable {
     }
 
     public List<Telefono> getTelefonos(Direccion direccion) {
-        telefonos = controllerDireccion.findListTelefonoxDireaccion(direccion);
+        telefonos = controllerDireccion.findListTelefonoxDireccion(direccion);
         return telefonos;
 
     }

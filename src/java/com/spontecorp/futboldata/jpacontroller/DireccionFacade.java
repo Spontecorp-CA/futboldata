@@ -33,7 +33,7 @@ public class DireccionFacade extends AbstractFacade<Direccion>{
         return Util.getEmf().createEntityManager();
     }
     
-    public List<Telefono> findListTelefonoxDireaccion(Direccion direccion) {
+    public List<Telefono> findListTelefonoxDireccion(Direccion direccion) {
         return controllerTelefono.findListTelefonoxDireaccion(direccion);
     }
 
