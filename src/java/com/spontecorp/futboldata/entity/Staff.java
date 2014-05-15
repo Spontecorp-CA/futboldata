@@ -6,6 +6,7 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -15,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,6 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,6 +41,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Staff.findByFechaDesde", query = "SELECT s FROM Staff s WHERE s.fechaDesde = :fechaDesde"),
     @NamedQuery(name = "Staff.findByFechaHasta", query = "SELECT s FROM Staff s WHERE s.fechaHasta = :fechaHasta")})
 public class Staff implements Serializable {
+    @JoinTable(name = "staff_has_titulo", joinColumns = {
+        @JoinColumn(name = "staff_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<Titulo> tituloCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -202,6 +211,15 @@ public class Staff implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Staff[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Titulo> getTituloCollection() {
+        return tituloCollection;
+    }
+
+    public void setTituloCollection(Collection<Titulo> tituloCollection) {
+        this.tituloCollection = tituloCollection;
     }
     
 }

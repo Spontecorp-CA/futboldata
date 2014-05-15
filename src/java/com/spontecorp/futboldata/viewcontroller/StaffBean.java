@@ -164,17 +164,14 @@ public class StaffBean implements Serializable {
             if (controllerStaff.findStaffxDomentoId(persona.getDocumentoIdentidad()) != null) {
                 Util.addErrorMessage("El Staff ya se encuentra Registrado por el Documenta de "
                         + "identificacion");
-
             } else {
-
                 persona.setRedSocialCollection(redes);
                 persona.setDireccionId(direccion);
                 staff.setPersonaId(persona);
-                logger.debug("Esta Creando  un Jugador");
+                logger.debug("Esta Creando  un Staff");
                 controllerStaff.create(staff);
                 recreateModel();
                 Util.addSuccessMessage("Se creo exitosamente el Staff");
-
             }
 
         } catch (Exception e) {
