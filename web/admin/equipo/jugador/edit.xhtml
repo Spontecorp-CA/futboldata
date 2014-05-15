@@ -104,6 +104,25 @@
                                          rows="3" cols="33"
                                          style="width: 250px">
                         </p:inputTextarea>
+
+                        <h:outputLabel value="Altura:" for="altura"/>
+                        <p:inputText id="altura" value="#{jugadorBean.jugador.altura}"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="Camiseta:" for="camiseta"/>
+                        <p:inputText id="camiseta" value="#{jugadorBean.jugador.camiseta}"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="Peso:" for="peso"/>
+                        <p:inputText id="peso" value="#{jugadorBean.jugador.peso}"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="Destreza:" for="zurdo"/>
+                        <p:selectOneMenu id="zurdo" value="#{jugadorBean.jugador.zurdo}"
+                                         converter= "javax.faces.Integer"
+                                         style="width: 250px"
+                                         required="true"
+                                         requiredMessage="Debe repetir el password">
+                            <f:selectItem itemLabel="Derecho" itemValue="1"/>
+                            <f:selectItem itemLabel="Zurdo" itemValue="0"/> 
+                        </p:selectOneMenu>
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
