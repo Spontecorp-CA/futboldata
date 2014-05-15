@@ -17,7 +17,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Named;
-import jdk.nashorn.internal.parser.TokenType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
