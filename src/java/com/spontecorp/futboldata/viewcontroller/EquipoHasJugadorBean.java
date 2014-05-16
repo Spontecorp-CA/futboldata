@@ -139,7 +139,7 @@ public class EquipoHasJugadorBean implements Serializable {
     public String prepareCreate() {
         equipoHasJugador = new EquipoHasJugador();
         recreateModel();
-        return "listjugador?faces-redirect=true";
+        return "/admin/equipo/equipohasjugador/listjugador?faces-redirect=true";
     }
 
     protected void setEmbeddableKeys() {

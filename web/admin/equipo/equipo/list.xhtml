@@ -34,6 +34,11 @@
                                              update=":EquipoEditForm" 
                                              oncomplete="PF('EquipoEditDialog').show()" 
                                              disabled="#{empty equipoBean.selected}"/>
+
+                            <p:commandButton id="addButton" icon="ui-icon-pencil" 
+                                             value="Agregar Jugadores" 
+                                             action="#{equipoHasJugadorBean.prepareCreate()}"
+                                             disabled="#{empty equipoBean.selected}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{equipoBean.returnAdminPage}"
@@ -54,7 +59,8 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
-                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton :EquipoListForm:editButton"/>
+                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton :EquipoListForm:editButton :EquipoListForm:addButton" 
+                                listener="#{equipoHasJugadorBean.setEquipo(equipoBean.selected)}"/>
                         <p:ajax event="rowUnselect" update=":EquipoListForm:createButton :EquipoListForm:editButton"/>
 
                         <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre"
