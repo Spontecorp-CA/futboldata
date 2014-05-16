@@ -152,7 +152,7 @@ public class EquipoBean implements Serializable {
                 //return prepareCreate();
             }
         } catch (Exception e) {
-            Util.addErrorMessage(e, "Error al editar la categoría");
+            Util.addErrorMessage(e, "Error al editar el Equipo");
             //return null;
         }
     }

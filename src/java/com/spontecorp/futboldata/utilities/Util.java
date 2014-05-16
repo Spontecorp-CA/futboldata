@@ -162,4 +162,10 @@ public class Util implements Serializable {
     public static boolean isValidationFailed() {
         return FacesContext.getCurrentInstance().isValidationFailed();
     }
+    
+    public static enum PersistAction {
+        CREATE,
+        DELETE,
+        UPDATE
+    }
 }
