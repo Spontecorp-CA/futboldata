@@ -52,6 +52,8 @@
                             update=":JugadorListForm:display :JugadorListForm:deleteButton :JugadorListForm:confirdialog" 
                             oncomplete="PF('jugadorDialog').show()"  />
                     <f:ajax execute="jugadores" event="rowSelect"  />
+                    <p:ajax event="rowUnselect"
+                            update=":JugadorListForm:deleteButton"/>
 
 
                     <f:facet name="header">
