@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
 
         <ui:define name="title">
@@ -23,16 +23,21 @@
                                              actionListener="#{equipoBean.prepareCreate}" 
                                              update=":EquipoCreateForm" 
                                              oncomplete="PF('EquipoCreateDialog').show()"/>
-<!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
-                                             value="#{bundle.View}" 
-                                             update=":EquipoViewForm" 
-                                             oncomplete="PF('EquipoViewDialog').show()" 
-                                             disabled="#{empty equipoController.selected}"/>-->
+                            <!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
+                                                                         value="#{bundle.View}" 
+                                                                         update=":EquipoViewForm" 
+                                                                         oncomplete="PF('EquipoViewDialog').show()" 
+                                                                         disabled="#{empty equipoController.selected}"/>-->
                             <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                              value="Editar Equipo"
                                              actionListener="#{equipoBean.prepareEdit}"
                                              update=":EquipoEditForm" 
                                              oncomplete="PF('EquipoEditDialog').show()" 
+                                             disabled="#{empty equipoBean.selected}"/>
+
+                            <p:commandButton id="addButton" icon="ui-icon-pencil" 
+                                             value="Agregar Jugadores" 
+                                             action="#{equipoHasJugadorBean.prepareCreate()}"
                                              disabled="#{empty equipoBean.selected}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
@@ -53,8 +58,9 @@
                                  paginator="true" rows="10"  
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
-                        
-                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton :EquipoListForm:editButton"/>
+
+                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton :EquipoListForm:editButton :EquipoListForm:addButton" 
+                                listener="#{equipoHasJugadorBean.setEquipo(equipoBean.selected)}"/>
                         <p:ajax event="rowUnselect" update=":EquipoListForm:createButton :EquipoListForm:editButton"/>
 
                         <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre"

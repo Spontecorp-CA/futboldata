@@ -94,7 +94,7 @@ public class EquipoBean implements Serializable {
     }
 
     public String gotoEquiposPage() {
-        return "list";
+        return "/admin/equipo/equipo/list";
     }
 
     public Equipo prepareCreate() {
