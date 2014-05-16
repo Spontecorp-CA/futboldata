@@ -43,6 +43,8 @@
                         </p:toolbarGroup>
                     </p:toolbar>
                     <br />
+                    <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+                    <br />
                     <p:dataTable id="clubs" var="club" value="#{clubBean.items}"
                                  rowKey="#{club.nombre}"
                                  selection="#{clubBean.club}" selectionMode="single"

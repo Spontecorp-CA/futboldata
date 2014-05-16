@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
@@ -14,8 +15,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -31,41 +30,31 @@ public class EquipoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Equipo equipo;
-    private DataModel items = null;
+    private Equipo selected;
+    private Club club;
+    private Categoria categoria;
+    private List<Equipo> items = null;
     private List<Equipo> filteredEquipos;
     private SelectItem[] clubOptions;    
  
-    private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
     private final CategoriaFacade controllerCategoria;
     private final ClubFacade controllerClub;
     private final EquipoFacade controllerEquipo;
+    
+    private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
 
     public EquipoBean() {
         controllerEquipo = new EquipoFacade();
         controllerCategoria = new CategoriaFacade();
         controllerClub = new ClubFacade();
-        //clubOptions = createClubOptions();
-    }
-
-    public Equipo getEquipo() {
-        return equipo;
-    }
-
-    public void setEquipo(Equipo equipo) {
-        this.equipo = equipo;
     }
 
     public Equipo getSelected() {
-        if (equipo == null) {
-            equipo = new Equipo();
-
-        }
-        return equipo;
+        return selected;
     }
 
-    protected void setEmbeddableKeys() {
-
+    public void setSelected(Equipo selected) {
+        this.selected = selected;
     }
 
     public SelectItem[] getClubOptions() {
@@ -75,13 +64,18 @@ public class EquipoBean implements Serializable {
         return clubOptions;
     }
 
-    protected void initializeEmbeddableKey() {
-
+    protected void setEmbeddableKeys() {
+        club = selected.getClubId();
+        categoria = selected.getCategoriaId();
     }
 
-    public DataModel getItems() {
-        if (items == null) {
-            items = new ListDataModel(controllerEquipo.findAll());
+    protected void initializeEmbeddableKey() {
+        
+    }
+
+    public List<Equipo> getItems(){
+        if(items == null){
+            items = controllerEquipo.findAll();
         }
         return items;
     }
@@ -96,26 +90,21 @@ public class EquipoBean implements Serializable {
 
     public void recreateModel() {
         items = null;
-        equipo = null;
+        selected = null;
     }
 
     public String gotoEquiposPage() {
         return "list";
     }
 
-    public String prepareCreate() {
-
-        equipo = new Equipo();
+    public Equipo prepareCreate() {
+        selected = new Equipo();
         initializeEmbeddableKey();
-
-        return "create";
+        return selected;
     }
 
-    public String prepareEdit() {
-        initializeEmbeddableKey();
-        equipo = (Equipo) getItems().getRowData();
-
-        return "edit";
+    public void prepareEdit() {
+        setEmbeddableKeys();
     }
 
     public String prepareList() {
@@ -134,38 +123,37 @@ public class EquipoBean implements Serializable {
         return Util.getSelectItems(controllerCategoria.findAll());
     }
 
-    public String create() {
+    public void create() {
         try {
-            if (controllerEquipo.findEquipo(equipo.getNombre()) != null) {
+            if ((selected.getId() != null) && (controllerEquipo.find(selected.getId()) != null)) {
                 Util.addErrorMessage("Equipo ya existente, coloque otro");
-                return null;
+                //return null;
             } else {
-
-                controllerEquipo.create(equipo);
-                Util.addSuccessMessage("Categoría creada con éxito");
+                controllerEquipo.create(selected);
+                Util.addSuccessMessage("Equipo creado con éxito");
                 recreateModel();
-                return prepareCreate();
+                //return prepareCreate();
             }
         } catch (Exception e) {
-            Util.addErrorMessage(e, "Error al crear la categoría");
-            return null;
+            logger.error("Error: " + e.getMessage(), e);
+            Util.addErrorMessage(e, "Error al crear el Equipo");
+            //return null;
         }
     }
 
-    public String edit() {
+    public void edit() {
         try {
-            if (controllerEquipo.findEquipo(equipo.getNombre()) == null) {
+            if (controllerEquipo.find(selected.getId()) == null) {    
                 Util.addErrorMessage("Equipo no existente, hay un error");
-                return null;
+                //return null;
             } else {
-
-                controllerEquipo.edit(equipo);
-                Util.addSuccessMessage("Categoría editada con éxito");
-                return prepareCreate();
+                controllerEquipo.edit(selected);
+                Util.addSuccessMessage("Equipo editado con éxito");
+                //return prepareCreate();
             }
         } catch (Exception e) {
             Util.addErrorMessage(e, "Error al editar la categoría");
-            return null;
+            //return null;
         }
     }
 
