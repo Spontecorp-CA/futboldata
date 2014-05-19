@@ -13,7 +13,6 @@
 
         <ui:define name="content">
             <h:form id="ClubListForm">
-
                 <p:fieldset style="width: 85%" legend="Lista de Clubes">
                     <p:toolbar>
                         <p:toolbarGroup align="left">
@@ -29,12 +28,19 @@
                                              update=":ClubViewForm" 
                                              oncomplete="PF('ClubViewDialog').show()"
                                              disabled="#{empty clubBean.club.nombre}"/>
-                            <p:commandButton id="editButton" 
+                            <p:commandButton id="addStaffButton" 
                                              icon="ui-icon-pencil" 
                                              value="Editar Club" 
-                                             update=":ClubEditForm"
+                                             update=":ClubAddStaffForm"
                                              actionListener="#{clubBean.prepareEdit}"
                                              oncomplete="PF('ClubEditDialog').show()" 
+                                             disabled="#{empty clubBean.club.nombre}"/>
+                            <p:commandButton id="editButton" 
+                                             icon="ui-icon-flag" 
+                                             value="Agregar Staff" 
+                                             update=":ClubEditForm"
+                                             actionListener="#{clubBean.prepareEdit}"
+                                             oncomplete="PF('ClubAddStaffDialog').show()" 
                                              disabled="#{empty clubBean.club.nombre}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
@@ -52,8 +58,8 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15">                
 
-                        <p:ajax event="rowSelect" update=":ClubListForm:createButton :ClubListForm:editButton :ClubListForm:viewButton"/>
-                        <p:ajax event="rowUnselect" update=":ClubListForm:createButton :ClubListForm:editButton :ClubListForm:viewButton"/>
+                        <p:ajax event="rowSelect" update=":ClubListForm:createButton :ClubListForm:editButton :ClubListForm:viewButton :ClubListForm:addStaffButton"/>
+                        <p:ajax event="rowUnselect" update=":ClubListForm:createButton :ClubListForm:editButton :ClubListForm:viewButton :ClubListForm:addStaffButton"/>
 
                         <p:column headerText="Nombre">
                             <h:outputText value="#{club.nombre}"/>
@@ -73,6 +79,7 @@
             <ui:include src="create.xhtml"/>
             <ui:include src="edit.xhtml"/>
             <ui:include src="view.xhtml"/>
+             <ui:include src="addStaff.xhtml"/>
         </ui:define>   
 
     </ui:composition>
