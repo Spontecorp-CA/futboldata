@@ -47,17 +47,21 @@
                     <p:submenu label="Equipos">
                         <p:menuitem value="Configura Equipo" icon="ui-icon-person"
                                     action="/admin/equipo/equipo/list?faces-redirect=true"/>                       
-                        <p:menuitem value="Configura Staff" icon="ui-icon-person"
-                                    action="/admin/equipo/staff/list?faces-redirect=true"/>
-                        <p:submenu label="Jugadores">
-                            <p:menuitem value="Configura Jugador" icon="ui-icon-person"
-                                        action="/admin/equipo/jugador/list?faces-redirect=true"/>
-<!--                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"
-                                        action="#{equipoHasJugadorBean.gotoEquipoHasJugadorPage()}"/>-->
-                        </p:submenu>
                     </p:submenu>
                 </p:submenu>
 
+                <p:submenu label="Jugadores">
+                    <p:menuitem value="Configura Jugador" icon="ui-icon-person"
+                                action="/admin/equipo/jugador/list?faces-redirect=true"/>
+                    <!--                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"
+                                                            action="#{equipoHasJugadorBean.gotoEquipoHasJugadorPage()}"/>-->
+                </p:submenu>
+                
+                <p:submenu label="Staff">                    
+                    <p:menuitem value="Configura Staff" icon="ui-icon-person"
+                                action="/admin/equipo/staff/list?faces-redirect=true"/>
+                </p:submenu>
+                
                 <p:submenu label="Sistema">
                     <p:submenu label="Usuarios"
                                rendered="#{loginBean.isAdmin}">

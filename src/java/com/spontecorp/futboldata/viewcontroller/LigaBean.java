@@ -11,7 +11,6 @@ import com.spontecorp.futboldata.utilities.Util;
 import com.spontecorp.futboldata.utilities.Util.PersistAction;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

@@ -11,7 +11,31 @@
         <h:form id="LigaCreateForm">
             <h:panelGroup id="display">
                 <h:panelGrid columns="2" rendered="#{ligaBean.selected != null}">
-                
+                    <p:outputLabel value="* Nombre: " for="nombre" />
+                    <p:inputText id="nombre" value="#{ligaBean.selected.nombre}" 
+                                 title="Nombre de la liga" required="true" 
+                                 requiredMessage="Debe colocar un nombre de liga"/>
+                    <p:outputLabel value="Descripción: " for="descripcion" />
+                    <p:inputTextarea rows="4" cols="30" id="descripcion" 
+                                     value="#{ligaBean.selected.descripcion}" 
+                                     title="Puede colocar una breve decripción" />
+                    <p:outputLabel value="Asociación: " for="asociacionId" />
+                    <p:selectOneMenu id="asociacionId" 
+                                     value="#{ligaBean.selected.asociacionId}" >
+<!--                        <f:selectItems value="#{asociacionBean.itemsAvailableSelectOne}"
+                                       var="asociacionIdItem"
+                                       itemValue="#{asociacionIdItem}"/>-->
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel value="#{bundle.CreateCompeticionLabel_status}" for="status" />
+                    <p:inputText id="status" value="#{competicionController.selected.status}" title="#{bundle.CreateCompeticionTitle_status}" />
+                    
+                    <p:outputLabel value="#{bundle.CreateCompeticionLabel_direccionId}" for="direccionId" />
+                    <p:selectOneMenu id="direccionId" value="#{competicionController.selected.direccionId}" >
+                        <f:selectItems value="#{direccionController.itemsAvailableSelectOne}"
+                                       var="direccionIdItem"
+                                       itemValue="#{direccionIdItem}"/>
+                    </p:selectOneMenu>
                 </h:panelGrid>
             </h:panelGroup>
         </h:form>
