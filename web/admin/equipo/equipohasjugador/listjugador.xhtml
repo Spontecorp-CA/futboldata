@@ -35,6 +35,11 @@
                                          update=":JugadorDeleteForm"
                                          disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}">
                         </p:commandButton>
+
+                        <p:commandButton id="equipoButton" icon="ui-icon-pencil" 
+                                         value="Listado Equipos" 
+                                         action="#{equipoBean.gotoEquiposPage}"
+                        />
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"

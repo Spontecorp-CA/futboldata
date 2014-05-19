@@ -263,6 +263,8 @@ public class ClubBean implements Serializable {
 //    }
     public Club prepareCreate() {
         club = new Club();
+        initializeEmbeddableKey();
+        setEmbeddableKeys();
         return club;
     }
 

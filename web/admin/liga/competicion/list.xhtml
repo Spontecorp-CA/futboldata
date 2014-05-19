@@ -1,51 +1,80 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
+        
+        <ui:define name="title">
+            Administración de Ligas
+        </ui:define>
+        
+        <ui:define name="content">
+            <h:form id="LigaListForm">
+                <p:fieldset style="width: 85%" legend="Lista de Ligas">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   
+                                             value="Crear Liga" 
+                                             actionListener="#{ligaBean.prepareCreate}" 
+                                             update=":LigaCreateForm" 
+                                             oncomplete="PF('LigaCreateDialog').show()"/>
+                            <!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
+                                                                         value="#{bundle.View}" 
+                                                                         update=":EquipoViewForm" 
+                                                                         oncomplete="PF('EquipoViewDialog').show()" 
+                                                                         disabled="#{empty equipoController.selected}"/>-->
+<!--                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                             value="Editar Liga"
+                                             actionListener="#{ligaBean.prepareEdit}"
+                                             update=":LigaEditForm" 
+                                             oncomplete="PF('LigaEditDialog').show()" 
+                                             disabled="#{empty ligaBean.selected}"/>-->
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Administración" action="#{ligaBean.returnAdminPage}"
+                                             immediate="true"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <br />
+                    <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+                    <br />
+                    <p:dataTable id="ligas" var="item" value="#{ligaBean.items}"
+                                 widgetVar="ligasTable"
+                                 selectionMode="single"
+                                 selection="#{ligaBean.selected}" 
+                                 rowKey = "#{item.id}"
+                                 emptyMessage="No se encontraron ligas para ese criterio" 
+                                 filteredValue="#{ligaBean.filteredLigas}"
+                                 paginator="true" rows="10"  
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15"> 
 
-    <ui:define name="title">
-        Administración de Copeticiones
-    </ui:define>
+                        <p:ajax event="rowSelect"   update=":LigaListForm:createButton"/>
+                        <p:ajax event="rowUnselect" update=":LigaListForm:createButton"/>
 
-    <ui:define name="content">
-        <h:form id="listForm">
-
-            <p:fieldset style="width: 85%" legend="Lista de Competiciones">
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="Nueva" action="create"/>                        
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="/admin/adminPage"
-                                         immediate="true"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <br />
-                
-                Aqui va la lista
-<!--                <p:dataTable id="asociaciones" var="item" 
-                             rowKey=""
-                             selection="" 
-                             selectionMode="single">                
-
-                    <p:column headerText="Nombre">
-                        <h:outputText value="nombre"/>
-                    </p:column>
-                    <p:column headerText="Dirección">
-                        <h:outputText value="dirección"/>
-                    </p:column>
-                    <p:column headerText="Status">
-                        <h:outputText value="status"/>
-                    </p:column>
-                    <p:column headerText="Acciones">
-                        <p:commandLink value="Editar"/>
-                    </p:column>
-                </p:dataTable>-->
-            </p:fieldset>
-        </h:form>
-    </ui:define>
-
-</ui:composition>
+                        <p:column id="ligaColummn" headerText="Liga">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="Asociación">
+                            <h:outputText value="#{item.asociacionId.nombre}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{item.direccionId}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <ui:include src="create.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>
