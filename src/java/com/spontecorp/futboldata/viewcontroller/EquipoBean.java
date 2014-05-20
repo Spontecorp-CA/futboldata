@@ -12,11 +12,13 @@ import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +37,12 @@ public class EquipoBean implements Serializable {
     private Categoria categoria;
     private List<Equipo> items = null;
     private List<Equipo> filteredEquipos;
-    private SelectItem[] clubOptions;    
- 
+    private SelectItem[] clubOptions;
+
     private final CategoriaFacade controllerCategoria;
     private final ClubFacade controllerClub;
     private final EquipoFacade controllerEquipo;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
 
     public EquipoBean() {
@@ -58,23 +60,24 @@ public class EquipoBean implements Serializable {
     }
 
     public SelectItem[] getClubOptions() {
-        if(clubOptions == null){
+        if (clubOptions == null) {
             clubOptions = createClubOptions();
         }
         return clubOptions;
     }
 
     protected void setEmbeddableKeys() {
+
         club = selected.getClubId();
         categoria = selected.getCategoriaId();
     }
 
     protected void initializeEmbeddableKey() {
-        
+
     }
 
-    public List<Equipo> getItems(){
-        if(items == null){
+    public List<Equipo> getItems() {
+        if (items == null) {
             items = controllerEquipo.findAll();
         }
         return items;
@@ -98,7 +101,9 @@ public class EquipoBean implements Serializable {
     }
 
     public Equipo prepareCreate() {
+
         selected = new Equipo();
+        selected.setLogo("vacio");
         initializeEmbeddableKey();
         return selected;
     }
@@ -143,7 +148,7 @@ public class EquipoBean implements Serializable {
 
     public void edit() {
         try {
-            if (controllerEquipo.find(selected.getId()) == null) {    
+            if (controllerEquipo.find(selected.getId()) == null) {
                 Util.addErrorMessage("Equipo no existente, hay un error");
                 //return null;
             } else {
@@ -165,8 +170,23 @@ public class EquipoBean implements Serializable {
             options[i] = new SelectItem(club.getNombre(), club.getNombre());
             i++;
         }
-        
+
         return options;
     }
-    
+
+    public void handleFileUpload(FileUploadEvent event) {
+
+        long lDateTime = new Date().getTime();
+        System.out.println("Date() - Time in milliseconds: " + lDateTime);
+        String nombreArchivo = "equipo" + lDateTime;
+        Util.subirArchivo(event, "equipo/", nombreArchivo);
+        selected.setLogo(nombreArchivo);
+
+    }
+
+    public String getHostImagen() {
+        String host = Util.getHostImagen() + "equipo/";
+        return host;
+    }
+
 }

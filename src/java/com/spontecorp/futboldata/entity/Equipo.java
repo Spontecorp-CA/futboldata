@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -40,6 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Equipo.findByStatus", query = "SELECT e FROM Equipo e WHERE e.status = :status"),
     @NamedQuery(name = "Equipo.findByAbreviacion", query = "SELECT e FROM Equipo e WHERE e.abreviacion = :abreviacion")})
 public class Equipo implements Serializable {
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "logo")
+    private String logo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
     private Collection<EquipoHasJugador> equipoHasJugadorCollection;
     private static final long serialVersionUID = 1L;
@@ -300,6 +305,14 @@ public class Equipo implements Serializable {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     

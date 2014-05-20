@@ -6,7 +6,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <p:dialog id="EquipoCreateDlg" widgetVar="EquipoCreateDialog" modal="true"
-        resizable="false" appendTo="@(body)" header="Creación de Equipo">
+              resizable="false" appendTo="@(body)" header="Creación de Equipo">
         <h:form id="EquipoCreateForm">
             <h:panelGroup id="display">
                 <h:panelGrid columns="2" rendered="#{equipoBean.selected != null}">
@@ -40,6 +40,20 @@
                                      requiredMessage="Debe seleccionar una Categoría">                       
                         <f:selectItems value="#{equipoBean.categoriaAvailable}"/>
                     </p:selectOneMenu>
+                    <h:outputText value="Logo del Equipo:"/>
+                    <p:fileUpload id="foto" 
+                                  value="#{equipoBean.selected.logo}"
+                                  mode="advanced" dragDropSupport="false" 
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                  style="width: 250px"
+                                  fileUploadListener="#{equipoBean.handleFileUpload}"
+                                  update="Logo" >
+
+                    </p:fileUpload>
+                    &nbsp; 
+                    <h:graphicImage height="120" width="120"
+                                    id="Logo" url="#{equipoBean.hostImagen}#{equipoBean.selected.logo}"/>   
+
                     <h:outputLabel value="* Status:" for="status" />
                     <p:selectOneMenu id="status" value="#{equipoBean.selected.status}"
                                      converter= "javax.faces.Integer"
