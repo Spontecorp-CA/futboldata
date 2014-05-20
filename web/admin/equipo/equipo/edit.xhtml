@@ -4,10 +4,10 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns="http://www.w3.org/1999/xhtml">
+      xmlns="http://www.w3.org/1999/xhtml">
     <ui:composition>
         <p:dialog id="EquipoEditDlg" widgetVar="EquipoEditDialog" modal="true" 
-            resizable="false" appendTo="@(body)" header="Editar Equipo">
+                  resizable="false" appendTo="@(body)" header="Editar Equipo">
             <h:form id="EquipoEditForm">
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{equipoBean.selected != null}">
@@ -41,6 +41,21 @@
                                          requiredMessage="Debe seleccionar una Categoria">                       
                             <f:selectItems value="#{equipoBean.categoriaAvailable}"/>
                         </p:selectOneMenu>
+
+                        <h:outputText value="Logo del Equipo:"/>
+                        <p:fileUpload id="foto" 
+                                      value="#{equipoBean.selected.logo}"
+                                      mode="advanced" dragDropSupport="false" 
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                      style="width: 250px"
+                                      fileUploadListener="#{equipoBean.handleFileUpload}"
+                                      update="Logo" >
+
+                        </p:fileUpload>
+                        &nbsp; 
+                        <h:graphicImage height="120" width="120"
+                                        id="Logo" url="#{equipoBean.hostImagen}#{equipoBean.selected.logo}"/>   
+
                         <h:outputLabel value="* Status:" for="status" />
                         <p:selectOneMenu id="status" value="#{equipoBean.selected.status}"
                                          converter= "javax.faces.Integer"

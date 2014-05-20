@@ -133,6 +133,7 @@ public class JugadorBean implements Serializable {
         jugador = new Jugador();
         direccion = new Direccion();
         persona = new Persona();
+        persona.setFoto("vacio");
         persona.setDireccionId(direccion);
         jugador.setPersonaId(persona);
         ciudades = null;
