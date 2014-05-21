@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <ui:composition>
+        <p:dialog id="LigaEditDlg" widgetVar="LigaEditDialog" modal="true" 
+            resizable="false" appendTo="@(body)" header="Editar Liga">
+            <h:form id="LigaEditForm">
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="2" rendered="#{ligaBean.selected != null}">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="* Nombre: " for="nombre" />
+                            <p:inputText id="nombre" value="#{ligaBean.selected.nombre}" 
+                                         title="Nombre de la liga" required="true" 
+                                         requiredMessage="Debe colocar un nombre de liga"
+                                         style="width: 240px"/>
+                            <p:outputLabel value="Descripción: " for="descripcion" />
+                            <p:inputTextarea rows="4" cols="30" id="descripcion" 
+                                             value="#{ligaBean.selected.descripcion}" 
+                                             title="Puede colocar una breve decripción" 
+                                             style="width: 240px"/>
+                            <p:outputLabel value="Asociación: " for="asociacionId" />
+                            <p:selectOneMenu id="asociacionId" 
+                                             value="#{ligaBean.selected.asociacionId}" 
+                                             style="width: 240px">
+                                <f:selectItem itemLabel="" itemValue=""/>
+                                <f:selectItems value="#{asociacionBean.itemsAvailableSelectOne}"
+                                               var="asociacionIdItem"
+                                               itemValue="#{asociacionIdItem}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="Status" for="status" />
+                            <p:selectOneMenu id="status" value="#{ligaBean.selected.status}"
+                                             converter= "javax.faces.Integer"
+                                             style="width: 240px"
+                                             required="true"
+                                             requiredMessage="Debe seleccionar el status">
+                                <f:selectItem itemLabel="Activo" itemValue="1"/>
+                                <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="* Pais:" for="pais"/>
+                            <p:selectOneMenu id="pais"                                    
+                                             value="#{ligaBean.pais}"
+                                             style="width: 250px"
+                                             panelStyle="width:250px"
+                                             required="true"
+                                             requiredMessage="Debe seleccionar un pais">                       
+                                <f:selectItems value="#{ligaBean.paisAvailable}"/>
+                                <p:ajax listener="#{ligaBean.ciudadAvailable}" 
+                                        update="ciudad" />
+                            </p:selectOneMenu>
+                            <h:outputLabel value="* Ciudad:" for="ciudad"/>
+
+                            <p:selectOneMenu id="ciudad" 
+                                             value="#{ligaBean.selected.direccionId.ciudadId}"
+                                             style="width: 250px"
+                                             panelStyle="width:250px"
+                                             required="true"
+                                             requiredMessage="Debe seleccionar un pais">                       
+                                <f:selectItems value="#{ligaBean.ciudades}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="* Dirección :" for="direccion"/>
+                            <p:inputText id="direccion" 
+                                         value="#{ligaBean.selected.direccionId.direccion}"
+                                         required="true" 
+                                         requiredMessage="Debe colocar una direccion"
+                                         style="width: 250px">
+                            </p:inputText>
+                            <h:outputLabel value="Pagina Web:"/>
+                            <p:inputText id="paginaweb"
+                                         value="#{ligaBean.selected.direccionId.paginaWeb}"
+                                         style="width: 250px"/>
+
+                            <h:outputLabel value="* Teléfonos:" for="phones"/>
+                            <p:panelGrid id="phones" style="border-style: none">
+                                <p:row>
+                                    <p:column>
+                                        <p:inputMask id="telefono" 
+                                                     value="#{ligaBean.telefono.telefono}"
+                                                     style="width: 250px"
+                                                     mask="(9999) 999.9999"/>                                
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
+                                            <f:ajax listener="#{ligaBean.cargarTelefono}" 
+                                                    execute="telefono" render="telefonos"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:dataList  id="telefonos" 
+                                                     var="telefonoVar" 
+                                                     value="#{ligaBean.telefonos}"
+                                                     rowIndexVar="row">
+                                            <p:column headerText="Número Telefónico">
+                                                <p:inputMask  value="#{telefonoVar.telefono}"
+                                                              required="true"
+                                                              mask="(9999) 999.9999"
+                                                              style="width: 250px"/>
+                                                &nbsp;
+                                                <p:commandButton icon="ui-icon-closethick" 
+                                                                 title="Eliminar teléfono" >
+                                                    <p:ajax resetValues="true" 
+                                                            listener="#{ligaBean.eliminarTelefono(telefonoVar)}"
+                                                            update="telefonos"/>
+                                                </p:commandButton>
+                                            </p:column>
+
+                                        </p:dataList>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+
+                            <h:outputLabel value="* email:" 
+                                           for="email"/>
+                            <p:panelGrid id="correos" style="border-style: none">
+                                <p:row>
+                                    <p:column>
+                                        <p:inputText id="email" 
+                                                     value="#{ligaBean.email.email}"
+                                                     validatorMessage="Email inválido"
+                                                     style="width: 250px">
+                                            <f:validateRegex
+                                                pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
+                                        </p:inputText>   
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton icon="ui-icon-plusthick" title="Agregar email" >
+                                            <f:ajax render="emails" 
+                                                    execute="email" 
+                                                    listener="#{ligaBean.cargarEmail}"></f:ajax>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:dataList value="#{ligaBean.emails}" 
+                                                    id="emails" 
+                                                    var="emailVar">
+                                            <p:inputText value="#{emailVar.email}" 
+                                                         required="true"
+                                                         validatorMessage="Email invalido"
+                                                         style="width: 250px">
+                                                <f:validateRegex
+                                                    pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?"  />
+
+                                            </p:inputText>
+                                            &nbsp;
+                                            <p:commandButton icon="ui-icon-closethick" title="Agregar teléfono" >
+                                                <p:ajax resetValues="true" 
+                                                        listener="#{ligaBean.eliminarEmail(emailVar)}"
+                                                        update="emails"/>
+                                            </p:commandButton>
+                                        </p:dataList>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <p:commandButton actionListener="#{ligaBean.edit}" 
+                                     value="OK" update="display,:LigaListForm:ligas,:growlAdmin" 
+                                     oncomplete="handleSubmit(args, 'LigaEditDialog');"/>
+                    <!--                                     ajax="false"/>-->
+                    <p:commandButton value="Cancelar" onclick="LigaEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>

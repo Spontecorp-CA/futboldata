@@ -6,39 +6,143 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-    <p:dialog id="LIgaCreateDlg" widgetVar="LigaCreateDialog" modal="true"
-        resizable="false" appendTo="@(body)" header="Creación de Liga">
+    <p:dialog id="LigaCreateDlg" widgetVar="LigaCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Liga">
         <h:form id="LigaCreateForm">
             <h:panelGroup id="display">
                 <h:panelGrid columns="2" rendered="#{ligaBean.selected != null}">
-                    <p:outputLabel value="* Nombre: " for="nombre" />
-                    <p:inputText id="nombre" value="#{ligaBean.selected.nombre}" 
-                                 title="Nombre de la liga" required="true" 
-                                 requiredMessage="Debe colocar un nombre de liga"/>
-                    <p:outputLabel value="Descripción: " for="descripcion" />
-                    <p:inputTextarea rows="4" cols="30" id="descripcion" 
-                                     value="#{ligaBean.selected.descripcion}" 
-                                     title="Puede colocar una breve decripción" />
-                    <p:outputLabel value="Asociación: " for="asociacionId" />
-                    <p:selectOneMenu id="asociacionId" 
-                                     value="#{ligaBean.selected.asociacionId}" >
-<!--                        <f:selectItems value="#{asociacionBean.itemsAvailableSelectOne}"
-                                       var="asociacionIdItem"
-                                       itemValue="#{asociacionIdItem}"/>-->
-                    </p:selectOneMenu>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="* Nombre: " for="nombre" />
+                        <p:inputText id="nombre" value="#{ligaBean.selected.nombre}" 
+                                     title="Nombre de la liga" required="true" 
+                                     requiredMessage="Debe colocar un nombre de liga"
+                                     style="width: 240px"/>
+                        <p:outputLabel value="Descripción: " for="descripcion" />
+                        <p:inputTextarea rows="4" cols="30" id="descripcion" 
+                                         value="#{ligaBean.selected.descripcion}" 
+                                         title="Puede colocar una breve decripción" 
+                                         style="width: 240px"/>
+                        <p:outputLabel value="Asociación: " for="asociacionId" />
+                        <p:selectOneMenu id="asociacionId" 
+                                         value="#{ligaBean.selected.asociacionId}" 
+                                         style="width: 240px">
+                            <f:selectItem itemLabel="" itemValue=""/>
+                            <f:selectItems value="#{asociacionBean.itemsAvailableSelectOne}"
+                                           var="asociacionIdItem"
+                                           itemValue="#{asociacionIdItem}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Status" for="status" />
+                        <p:selectOneMenu id="status" value="#{ligaBean.selected.status}"
+                                         converter= "javax.faces.Integer"
+                                         style="width: 240px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar el status">
+                            <f:selectItem itemLabel="Activo" itemValue="1"/>
+                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
                     
-                    <p:outputLabel value="#{bundle.CreateCompeticionLabel_status}" for="status" />
-                    <p:inputText id="status" value="#{competicionController.selected.status}" title="#{bundle.CreateCompeticionTitle_status}" />
-                    
-                    <p:outputLabel value="#{bundle.CreateCompeticionLabel_direccionId}" for="direccionId" />
-                    <p:selectOneMenu id="direccionId" value="#{competicionController.selected.direccionId}" >
-                        <f:selectItems value="#{direccionController.itemsAvailableSelectOne}"
-                                       var="direccionIdItem"
-                                       itemValue="#{direccionIdItem}"/>
-                    </p:selectOneMenu>
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="* Pais:" for="pais"/>
+                        <p:selectOneMenu id="pais"                                    
+                                         value="#{ligaBean.pais}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un pais">                       
+                            <f:selectItems value="#{ligaBean.paisAvailable}"/>
+                            <p:ajax listener="#{ligaBean.ciudadAvailable}" 
+                                    update="ciudad" />
+                        </p:selectOneMenu>
+                        <h:outputLabel value="* Ciudad:" for="ciudad"/>
+
+                        <p:selectOneMenu id="ciudad" 
+                                         value="#{ligaBean.selected.direccionId.ciudadId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un pais">                       
+                            <f:selectItems value="#{ligaBean.ciudades}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="* Dirección :" for="direccion"/>
+                        <p:inputText id="direccion" 
+                                     value="#{ligaBean.selected.direccionId.direccion}"
+                                     required="true" 
+                                     requiredMessage="Debe colocar una direccion"
+                                     style="width: 250px">
+                        </p:inputText>
+                        <h:outputLabel value="Pagina Web:"/>
+                        <p:inputText id="paginaweb"
+                                     value="#{ligaBean.selected.direccionId.paginaWeb}"
+                                     style="width: 250px"/>
+                        
+                        <h:outputLabel value="* Teléfonos:" for="phones"/>
+                        <p:panelGrid id="phones" style="border-style: none">
+                            <p:row>
+                                <p:column>
+                                    <p:inputMask id="telefono" 
+                                                 value="#{ligaBean.telefono.telefono}"
+                                                 style="width: 250px"
+                                                 mask="(9999) 999.9999"/>                                
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
+                                        <f:ajax listener="#{ligaBean.cargarTelefono}" 
+                                                execute="telefono" render="telefonos"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:dataList id="telefonos" 
+                                                var="telefono" 
+                                                value="#{ligaBean.telefonos}">
+                                        #{telefono.telefono}
+                                    </p:dataList>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <h:outputLabel value="* email:" 
+                                       for="email"/>
+                        <p:panelGrid id="correos" style="border-style: none">
+                            <p:row>
+                                <p:column>
+                                    <p:inputText id="email" 
+                                                 value="#{ligaBean.email.email}"
+                                                 validatorMessage="Email inválido"
+                                                 style="width: 250px">
+                                        <f:validateRegex
+                                            pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
+                                    </p:inputText>   
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar email" >
+                                        <f:ajax render="emails" 
+                                                execute="email" 
+                                                listener="#{ligaBean.cargarEmail}"></f:ajax>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:dataList value="#{ligaBean.emails}"
+                                                id="emails" var="email">
+                                        #{email.email}
+                                    </p:dataList>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </h:panelGrid>
                 </h:panelGrid>
+                <p:commandButton actionListener="#{ligaBean.create}" value="Guardar" 
+                                 update="display,:LigaListForm:ligas,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'LigaCreateDialog');"/>
+                <p:commandButton value="Cancelar" onclick="LigaCreateDialog.hide()"/>
             </h:panelGroup>
         </h:form>
     </p:dialog>
-        
+
 </ui:composition>
