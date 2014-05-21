@@ -204,6 +204,10 @@ public class AsociacionBean implements Serializable {
     public void setItemsAsociacion(DataModel items) {
         this.itemsAsociacion = items;
     }
+    
+    public List<Asociacion> getItemsAvailableSelectOne() {
+        return controllerAsociacion.findAll();
+    }
 
     public String create() {
         try {

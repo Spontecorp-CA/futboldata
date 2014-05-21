@@ -216,7 +216,7 @@ public class JugadorBean implements Serializable {
     public void create() {
         try {
             if (controllerJugador.findJugadorxDomentoId(persona.getDocumentoIdentidad()) != null) {
-                Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documenta de "
+                Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documento de "
                         + "identificacion");
 
             } else {
