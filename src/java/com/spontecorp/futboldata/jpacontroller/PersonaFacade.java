@@ -57,7 +57,7 @@ public class PersonaFacade extends AbstractFacade<Persona> {
             q.setParameter("documentoIdentidad", documentoIdentidad);
             persona = (Persona) q.getSingleResult();
         } catch (Exception e) {
-            logger.debug("Error encontrando Persona: " + e.getLocalizedMessage(), e);
+            logger.debug("Error encontrando Persona: " + e.getLocalizedMessage(),e.getMessage());
         } finally {
             em.close();
         }

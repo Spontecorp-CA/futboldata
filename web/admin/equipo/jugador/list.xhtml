@@ -4,7 +4,8 @@
                 template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="title">
         Administración de Jugadores
@@ -37,44 +38,65 @@
                 <p:dataTable id="jugadores" var="jugador"  value="#{jugadorBean.items}"
                              rowKey="#{jugador.id}"
                              selection="#{jugadorBean.jugador}" 
-                             selectionMode="single">   
-                    <p:ajax event="rowSelect" update=":JugadorListForm:createButton :JugadorListForm:editButton "  />
-                    <p:ajax event="rowUnselect" update=":JugadorListForm:createButton :JugadorListForm:editButton" />
+                             selectionMode="single"
+                             paginator="true" rows="10"
+                             filteredValue="#{jugadorBean.filteredJugador}" >   
+                    <p:ajax event="rowSelect"
+                            update=":JugadorListForm:createButton :JugadorListForm:editButton :JugadorListForm:dialog" 
+                            oncomplete="PF('jugadorDialog').show()"/>
+                    <p:ajax event="rowUnselect" 
+                            update=":JugadorListForm:createButton :JugadorListForm:editButton" />
 
-                            <p:column headerText="Nombre">
-                            <h:outputText value="#{jugador.personaId.nombre}"/>
-                        </p:column>
+                    <p:column headerText="Nombre" sortBy="personaId.nombre"
+                              filterBy="personaId.nombre">
+                        <h:outputText value="#{jugador.personaId.nombre}"/>
+                    </p:column>
 
-                        <p:column headerText="Apellido">
-                            <h:outputText value="#{jugador.personaId.apellido}"/>
-                        </p:column>
-                        <p:column headerText="Ciudad">
-                            <h:outputText value="#{jugador.personaId.direccionId.ciudadId.ciudad}"/>
-                        </p:column>
-                        <p:column headerText="Dirección">
-                            <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
-                        </p:column>
+                    <p:column headerText="Apellido"  sortBy="personaId.apellido"
+                              filterBy="personaId.apellido">
+                        <h:outputText value="#{jugador.personaId.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Ciudad">
+                        <h:outputText value="#{jugador.personaId.direccionId.ciudadId.ciudad}"/>
+                    </p:column>
+                    <p:column headerText="Dirección">
+                        <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
+                    </p:column>
 
-                        <p:column headerText="Red Social">
-                            <p:dataList value="#{jugadorBean.getRedSocials(jugador.personaId)}" var="redsocial">
-                                <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
-                            </p:dataList>
-        
-                        </p:column>
+                    <p:column headerText="Red Social">
+                        <p:dataList value="#{jugadorBean.getRedSocials(jugador.personaId)}" var="redsocial">
+                            <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
+                        </p:dataList>
 
-                        <p:column headerText="Telefono">
-                            <h:outputText value="#{jugador.personaId.telefono}"/>
-                        </p:column>
-                        <p:column headerText="Celular">
-                            <h:outputText value="#{jugador.personaId.celular}"/>
-                        </p:column>
+                    </p:column>
 
-                        <p:column headerText="Status">
-                            <h:outputText   value="#{jugador.status== 0?'INACTIVO':'ACTIVO'}"/>
-                        </p:column>
+                    <p:column headerText="Telefono">
+                        <h:outputText value="#{jugador.personaId.telefono}"/>
+                    </p:column>
+                    <p:column headerText="Celular">
+                        <h:outputText value="#{jugador.personaId.celular}"/>
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <h:outputText   value="#{jugador.status== 0?'INACTIVO':'ACTIVO'}"/>
+                    </p:column>
 
                 </p:dataTable>
             </p:fieldset>
+            <p:dialog id="dialog" header="Detelles Jugador" widgetVar="jugadorDialog" resizable="false"
+                      showEffect="fade" hideEffect="explode">
+
+                <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                    <f:facet name="header">
+                        <p:graphicImage value="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>
+                        <br/>
+                        <h:outputText value="Nombre:#{jugadorBean.jugador.personaId.nombre}
+                                      #{jugadorBean.jugador.personaId.apellido}"/>
+                    </f:facet>
+
+                </h:panelGrid>
+            </p:dialog>
         </h:form>
         <ui:include src="create.xhtml"/>
         <ui:include src="edit.xhtml"/>
