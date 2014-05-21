@@ -4,9 +4,11 @@
  */
 package com.spontecorp.futboldata.jpacontroller;
 
+import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.utilities.Util;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -46,12 +48,28 @@ public class StaffFacade extends AbstractFacade<Staff> {
         }
         return staff;
     }
-        public Staff findStaffxDomentoId(String domentoId){
-        Persona persona =controllerPersona.findPersonaxDocumentoId(domentoId);
-        if (persona == null){
-          return null;
-      }
-        return  findStaffByPersona(persona);
+
+    public Staff findStaffxDomentoId(String domentoId) {
+        Persona persona = controllerPersona.findPersonaxDocumentoId(domentoId);
+        if (persona == null) {
+            return null;
+        }
+        return findStaffByPersona(persona);
     }
-        
+
+    public List<Staff> findStaffListByClub(Club club) {
+        List<Staff> staffList = null;
+        EntityManager em = getEntityManager();
+        try {
+            String query = "SELECT * FROM Staff j WHERE j.club = :club";
+            Query q = em.createQuery(query);
+            q.setParameter("club", club);
+            staffList = q.getResultList();
+        } catch (NoResultException e) {
+            logger.debug("Error al buscar lista de staff por club findStaffListByClub ", e.getMessage());
+        } finally {
+            em.close();
+        }
+        return staffList;
+    }
 }

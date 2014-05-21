@@ -9,12 +9,14 @@ import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
+import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
 import com.spontecorp.futboldata.jpacontroller.EmailFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
+import com.spontecorp.futboldata.jpacontroller.StaffFacade;
 import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
@@ -39,7 +41,7 @@ import org.slf4j.LoggerFactory;
 public class ClubBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    private static final Integer STAFFCLUB = 1;
     private Club club;
     private DataModel items = null;
     private Pais pais;
@@ -53,6 +55,8 @@ public class ClubBean implements Serializable {
     private List<Email> emailEliminar = null;
     private List<Telefono> telefonos = null;
     private List<Telefono> telefonoEliminar = null;
+    private List<Staff> staffList;
+
     private static final Logger logger = LoggerFactory.getLogger(ClubBean.class);
 
     private final CiudadFacade controllerCiudad;
@@ -60,6 +64,8 @@ public class ClubBean implements Serializable {
     private final ClubFacade controllerClub;
     private final DireccionFacade controllerDireccion;
     private final TelefonoFacade controllerTelefono;
+    private final StaffFacade controllerStaff;
+
     private final EmailFacade controllerEmail;
 
     public ClubBean() {
@@ -69,8 +75,9 @@ public class ClubBean implements Serializable {
         controllerDireccion = new DireccionFacade();
         controllerTelefono = new TelefonoFacade();
         controllerEmail = new EmailFacade();
+        controllerStaff = new StaffFacade();
     }
-    
+
     public List<Email> getEmails() {
         return emails;
     }
@@ -88,7 +95,7 @@ public class ClubBean implements Serializable {
     }
 
     public Club getClub() {
-        if(club == null){
+        if (club == null) {
             club = new Club();
             initializeEmbeddableKey();
             setEmbeddableKeys();
@@ -99,6 +106,7 @@ public class ClubBean implements Serializable {
     public void setClub(Club club) {
         this.club = club;
     }
+    
 
     public Pais getPais() {
         return pais;
@@ -165,7 +173,7 @@ public class ClubBean implements Serializable {
             email = new Email();
             direccion.setCiudadId(ciudad);
             club.setDireccionId(direccion);
-            
+
             ciudades = null;
             telefonos = null;
         }
@@ -298,7 +306,7 @@ public class ClubBean implements Serializable {
                 for (Telefono phone : telefonos) {
                     phone.setDireccionId(direccion);
                 }
-                
+
                 for (Email mail : emails) {
                     mail.setDireccionId(direccion);
                 }
@@ -342,11 +350,11 @@ public class ClubBean implements Serializable {
                 for (Email emailEli : emailEliminar) {
                     controllerEmail.remove(emailEli);
                 }
-                
+
                 for (Telefono telefonoEli : telefonoEliminar) {
                     controllerTelefono.remove(telefonoEli);
                 }
-                
+
                 controllerClub.edit(club);
                 Util.addSuccessMessage("Club editado con éxito");
                 //return prepareCreate();
@@ -355,6 +363,23 @@ public class ClubBean implements Serializable {
             Util.addErrorMessage(e, "Error al editar la categoría");
             //return null;
         }
+    }
+
+    public String goToStaffList(Integer tipoStaff, Object o) {
+
+        if (tipoStaff.equals(STAFFCLUB)) {
+            staffList = controllerStaff.findStaffListByClub((Club) o);
+        }
+    
+        return "listStaff?faces-redirect=true";
+    }
+
+    public List<Staff> getStaffList() {
+        return staffList;
+    }
+
+    public void setStaffList(List<Staff> staffList) {
+        this.staffList = staffList;
     }
 
 }

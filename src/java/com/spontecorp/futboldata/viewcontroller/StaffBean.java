@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;

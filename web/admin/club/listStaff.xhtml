@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Jugadores
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="JugadorListForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Jugadores" >
+
+
+                <h:outputText value="Nombre del club : #{clubBean.club.nombre} " /> <br/>
+               
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+
+                        + 
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="jugadores" var="equipoHasJugador"  value="#{equipoHasJugadorBean.items}"
+                             rowKey="#{equipoHasJugador.id}"
+                             selection="#{equipoHasJugadorBean.equipoHasJugador}" 
+                             selectionMode="single"
+                             paginator="true" rows="10"
+                             filteredValue="#{equipoHasJugadorBean.filteredEquipoHasJugador}" >   
+                    <p:ajax event="rowSelect" 
+                            update=":JugadorListForm:display :JugadorListForm:deleteButton :JugadorListForm:confirdialog" 
+                            oncomplete="PF('jugadorDialog').show()"  />
+                    <f:ajax execute="jugadores" event="rowSelect"  />
+                    <p:ajax event="rowUnselect"
+                            update=":JugadorListForm:deleteButton"/>
+
+
+                    <f:facet name="header">
+                        Lista de Jugadores en el Equipo
+                    </f:facet>
+                    <p:column headerText="Jugador" sortBy="jugadorId.personaId.nombre"
+                              filterBy="jugadorId.personaId.nombre">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Apellido" 
+                              sortBy="jugadorId.personaId.apellido"
+                              filterBy="jugadorId.personaId.apellido">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Camiseta" sortBy="jugadorId.camiseta"
+                              filterBy="jugadorId.camiseta">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.camiseta}"/>
+                    </p:column>
+                    <p:column headerText="Posicion" sortBy="jugadorId.posicionId.nombre" 
+                              filterBy="jugadorId.posicionId.nombre">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.posicionId.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha Entrada" sortBy="fechaEntrada"
+                              filterBy="fechaEntrada">
+                        <h:outputText  value="#{equipoHasJugador.fechaEntrada}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+
+                    </p:column>
+
+                    <p:column headerText="Fecha Salida" sortBy="fechaSalida" 
+                              filterBy="fechaSalida">
+                        <h:outputText value="#{equipoHasJugador.fechaSalida}"/>
+                    </p:column>
+
+
+                    <p:column headerText="Status">
+                        <h:outputText value="#{equipoHasJugador.status == 1?'Activo':'Inactivo'}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:fieldset>
+            <p:dialog id="dialog" header="Detelles Jugador" widgetVar="jugadorDialog" resizable="false"
+                      showEffect="fade" hideEffect="explode">
+
+                <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                    <f:facet name="header">
+                        <p:graphicImage value="#{equipoHasJugadorBean.hostImagen}#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.foto}"/>
+                    </f:facet>
+
+                </h:panelGrid>
+            </p:dialog>
+            <p:confirmDialog id="confirdialog" global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton  id="siButton" value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>     
+            </p:confirmDialog>
+        </h:form>
+        <ui:include src="deletejugador.xhtml"/>
+        <ui:include src="agregarjugador.xhtml"/>
+    </ui:define>
+
+</ui:composition>
