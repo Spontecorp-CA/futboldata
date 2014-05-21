@@ -22,17 +22,17 @@
                                              actionListener="#{ligaBean.prepareCreate}" 
                                              update=":LigaCreateForm" 
                                              oncomplete="PF('LigaCreateDialog').show()"/>
-                            <!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
-                                                                         value="#{bundle.View}" 
-                                                                         update=":EquipoViewForm" 
-                                                                         oncomplete="PF('EquipoViewDialog').show()" 
-                                                                         disabled="#{empty equipoController.selected}"/>-->
-<!--                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                            <p:commandButton id="viewButton" icon="ui-icon-search" 
+                                             value="Ver Liga" 
+                                             update=":LigaViewForm" 
+                                             oncomplete="PF('LigaViewDialog').show()" 
+                                             disabled="#{empty ligaBean.selected}"/>
+                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                              value="Editar Liga"
                                              actionListener="#{ligaBean.prepareEdit}"
                                              update=":LigaEditForm" 
                                              oncomplete="PF('LigaEditDialog').show()" 
-                                             disabled="#{empty ligaBean.selected}"/>-->
+                                             disabled="#{empty ligaBean.selected}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{ligaBean.returnAdminPage}"
@@ -53,28 +53,33 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
-                        <p:ajax event="rowSelect"   update=":LigaListForm:createButton"/>
-                        <p:ajax event="rowUnselect" update=":LigaListForm:createButton"/>
+                        <p:ajax event="rowSelect"   update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton"/>
+                        <p:ajax event="rowUnselect" update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton"/>
 
                         <p:column id="ligaColummn" headerText="Liga">
                             <h:outputText value="#{item.nombre}"/>
                         </p:column>
                         <p:column headerText="Status">
-                            <h:outputText value="#{item.status}"/>
+                            <h:outputText value="#{item.status == 1?'Activa': 'Inactiva'}"/>
                         </p:column>
                         <p:column headerText="Descripción">
                             <h:outputText value="#{item.descripcion}"/>
                         </p:column>
-                        <p:column headerText="Asociación">
+                        <p:column headerText="Asociaciones">
                             <h:outputText value="#{item.asociacionId.nombre}"/>
                         </p:column>
-                        <p:column>
-                            <h:outputText value="#{item.direccionId}"/>
+                        <p:column headerText="Dirección">
+                            <h:outputText value="#{item.direccionId.direccion}"/>
+                        </p:column>
+                        <p:column headerText="Ciudad">
+                            <h:outputText value="#{item.direccionId.ciudadId.ciudad}"/>
                         </p:column>
                     </p:dataTable>
                 </p:fieldset>
             </h:form>
             <ui:include src="create.xhtml"/>
+            <ui:include src="view.xhtml"/>
+            <ui:include src="edit.xhtml"/>
         </ui:define>
     </ui:composition>
 </html>

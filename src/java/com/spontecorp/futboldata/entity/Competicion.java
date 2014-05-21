@@ -64,7 +64,7 @@ public class Competicion implements Serializable {
     @ManyToOne
     private Asociacion asociacionId;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Direccion direccionId;
     @OneToMany(mappedBy = "competicionId")
     private Collection<Contrato> contratoCollection;

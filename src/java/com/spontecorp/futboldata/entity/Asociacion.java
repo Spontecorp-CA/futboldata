@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -36,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Asociacion.findByNombre", query = "SELECT a FROM Asociacion a WHERE a.nombre = :nombre"),
     @NamedQuery(name = "Asociacion.findByStatus", query = "SELECT a FROM Asociacion a WHERE a.status = :status")})
 public class Asociacion implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,6 +68,10 @@ public class Asociacion implements Serializable {
     private Collection<Staff> staffCollection;
     @OneToMany(mappedBy = "asociacionId")
     private Collection<RedSocial> redSocialCollection;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "logo")
+    private String logo;
 
     public Asociacion() {
     }
@@ -105,7 +111,14 @@ public class Asociacion implements Serializable {
     public void setDireccionId(Direccion direccionId) {
         this.direccionId = direccionId;
     }
+    
+    public String getLogo() {
+        return logo;
+    }
 
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
     @XmlTransient
     public Collection<Competicion> getCompeticionCollection() {
         return competicionCollection;
@@ -200,7 +213,7 @@ public class Asociacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Asociacion[ id=" + id + " ]";
+        return nombre;
     }
-    
+
 }

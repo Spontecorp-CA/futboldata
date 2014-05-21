@@ -49,19 +49,19 @@
                                          style="width: 250px"
                                          panelStyle="width:250px"
                                          required="true"
-                                         requiredMessage="Debe seleccionar un perfil">                       
+                                         requiredMessage="Debe seleccionar un pais">                       
                             <f:selectItems value="#{asociacionBean.paisAvailable}"/>
                             <p:ajax listener="#{asociacionBean.ciudadAvailable}" 
                                     update="ciudad" />
                         </p:selectOneMenu>
+                        
                         <h:outputLabel value="* Ciudad:" for="ciudad"/>
-
                         <p:selectOneMenu id="ciudad" 
                                          value="#{asociacionBean.direccion.ciudadId}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
                                          required="true"
-                                         requiredMessage="Debe seleccionar un perfil">                       
+                                         requiredMessage="Debe seleccionar un ciudad">                       
                             <f:selectItems value="#{asociacionBean.ciudades}"/>
                         </p:selectOneMenu>
 

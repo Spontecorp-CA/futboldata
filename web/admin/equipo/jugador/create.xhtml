@@ -30,7 +30,7 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{jugadorBean.jugador.personaId.documentoIdentidad}"
-                                     required="true" requiredMessage="Debe colocar el documento"
+                                     requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{jugadorBean.jugador.personaId.sexo}">
@@ -62,7 +62,8 @@
 
                         </p:fileUpload>
                         &nbsp; 
-                        <h:graphicImage id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>    
+                        <h:graphicImage height="100" width="100"
+                             id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>    
                         <h:outputLabel value="* status:" for="status"/>
                         <p:selectOneMenu id="status" value="#{jugadorBean.jugador.status}"
                                          converter= "javax.faces.Integer"
@@ -80,7 +81,7 @@
                                          style="width: 250px"
                                          panelStyle="width:250px"
                                          required="true"
-                                         requiredMessage="Debe seleccionar un perfil">                       
+                                         requiredMessage="Debe seleccionar un pais">                       
                             <f:selectItems value="#{jugadorBean.paisesAvalaible}"/>
                             <p:ajax listener="#{jugadorBean.ciudadesAvalaible}" 
                                     update="ciudad" />
@@ -97,8 +98,7 @@
                         <h:outputLabel value="Dirección:" for="direccion"/>
                         <p:inputTextarea id="direccion"
                                          value="#{jugadorBean.jugador.personaId.direccionId.direccion}"
-                                         required="true" requiredMessage="Debe colocar un email"
-                                         validatorMessage="Email inválido"
+                                         requiredMessage="Debe colocar una direccion"
                                          rows="3" cols="33"
                                          style="width: 250px">
                         </p:inputTextarea>
@@ -116,7 +116,6 @@
                         <p:selectOneMenu id="zurdo" value="#{jugadorBean.jugador.zurdo}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
-                                         required="true"
                                          requiredMessage="Debe repetir el password">
                             <f:selectItem itemLabel="Derecho" itemValue="1"/>
                             <f:selectItem itemLabel="Zurdo" itemValue="0"/> 
@@ -126,13 +125,13 @@
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputMask id="telefono" 
                                      value="#{jugadorBean.jugador.personaId.telefono}"
-                                     required="true" requiredMessage="Debe colocar un teléfono"
+                                     requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputMask id="celular" 
                                      value="#{jugadorBean.jugador.personaId.celular}"
-                                     required="true" requiredMessage="Debe colocar un teléfono"
+                                     requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="email:" for="email"/>
@@ -190,9 +189,8 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{jugadorBean.create}" value="Guardar" 
-                                 update="display,:JugadorListForm:jugadores,:growlAdmin" 
-                                 oncomplete="handleSubmit(args,'JugadorCreateDialog');"
-                                 ajax="false"/>
+                                 update="JugadorCreateForm,:JugadorListForm:jugadores,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'JugadorCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="JugadorCreateDialog.hide()"/>
             </p:fieldset>
         </h:form>

@@ -59,9 +59,10 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
-                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton :EquipoListForm:editButton :EquipoListForm:addButton" 
+                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton :EquipoListForm:editButton :EquipoListForm:addButton,
+                                :EquipoListForm:dialog" oncomplete="PF('equipoDialog').show()"
                                 listener="#{equipoHasJugadorBean.setEquipo(equipoBean.selected)}"/>
-                        <p:ajax event="rowUnselect" update=":EquipoListForm:createButton :EquipoListForm:editButton"/>
+                        <p:ajax event="rowUnselect" update=":EquipoListForm:createButton :EquipoListForm:editButton :EquipoListForm:addButton"/>
 
                         <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre"
                                   filterMatchMode="exact">
@@ -86,6 +87,20 @@
                         </p:column>
                     </p:dataTable>
                 </p:fieldset>
+                <p:dialog id="dialog" header="Detelles Jugador" widgetVar="equipoDialog" resizable="false"
+                          showEffect="fade" hideEffect="explode">
+
+                    <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                        <f:facet name="header">
+                            <p:graphicImage height="120" width="120"
+                                value="#{equipoBean.hostImagen}#{equipoBean.selected.logo}"/>
+                            <br/>
+                            <h:outputText value="Nombre:#{equipoBean.selected.nombre}"/>
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
             </h:form>
             <ui:include src="create.xhtml"/>
             <ui:include src="edit.xhtml"/>

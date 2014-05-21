@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Fase.findById", query = "SELECT f FROM Fase f WHERE f.id = :id"),
     @NamedQuery(name = "Fase.findByNombre", query = "SELECT f FROM Fase f WHERE f.nombre = :nombre")})
 public class Fase implements Serializable {
+    @Column(name = "status")
+    private Integer status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -124,6 +126,14 @@ public class Fase implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Fase[ id=" + id + " ]";
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     
 }

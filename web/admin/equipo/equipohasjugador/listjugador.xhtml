@@ -111,6 +111,9 @@
 
                     <f:facet name="header">
                         <p:graphicImage value="#{equipoHasJugadorBean.hostImagen}#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.foto}"/>
+                        <br/>
+                        <h:outputText value="Nombre:#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}
+                                     #{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.apellido}"/>
                     </f:facet>
 
                 </h:panelGrid>

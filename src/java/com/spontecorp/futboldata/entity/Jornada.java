@@ -35,6 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Jornada.findByNombre", query = "SELECT j FROM Jornada j WHERE j.nombre = :nombre"),
     @NamedQuery(name = "Jornada.findByActual", query = "SELECT j FROM Jornada j WHERE j.actual = :actual")})
 public class Jornada implements Serializable {
+    @Column(name = "status")
+    private Integer status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -133,6 +135,14 @@ public class Jornada implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Jornada[ id=" + id + " ]";
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     
 }
