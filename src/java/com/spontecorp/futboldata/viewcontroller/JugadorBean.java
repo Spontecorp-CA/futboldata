@@ -53,25 +53,22 @@ public class JugadorBean implements Serializable {
     private TipoRedSocial tipoRedSocial;
     private List<RedSocial> redes;
     private List<RedSocial> redesEliminar;
+    private List<Jugador> filteredJugador;
 
     private final JugadorFacade controllerJugador;
-    private final AsociacionFacade controllerAsociacion;
+
     private final PaisFacade controllerPais;
     private final CiudadFacade controllerCiudad;
     private final RedSocialFacade controllerRedSocial;
     private final TipoRedSocialFacade tipoRedSocialController;
-    private final DireccionFacade controllerDireccion;
-    private static final String rutaRelativa = "resources\\images\\";
 
     private static final Logger logger = LoggerFactory.getLogger(Jugador.class);
 
     public JugadorBean() {
         controllerJugador = new JugadorFacade();
-        controllerAsociacion = new AsociacionFacade();
         controllerPais = new PaisFacade();
         controllerCiudad = new CiudadFacade();
         controllerRedSocial = new RedSocialFacade();
-        controllerDireccion = new DireccionFacade();
         tipoRedSocialController = new TipoRedSocialFacade();
     }
 
@@ -82,11 +79,19 @@ public class JugadorBean implements Serializable {
             persona = new Persona();
             persona.setDireccionId(direccion);
             jugador.setPersonaId(persona);
-            
+
             ciudades = null;
             redes = new ArrayList<RedSocial>();
         }
         return jugador;
+    }
+
+    public List<Jugador> getFilteredJugador() {
+        return filteredJugador;
+    }
+
+    public void setFilteredJugador(List<Jugador> filteredJugador) {
+        this.filteredJugador = filteredJugador;
     }
 
     public Email getEmail() {
@@ -128,35 +133,38 @@ public class JugadorBean implements Serializable {
         return items;
     }
 
-    public String prepareCreate() {
-        redSocial = new RedSocial();
-        jugador = new Jugador();
-        direccion = new Direccion();
-        persona = new Persona();
-        persona.setFoto("vacio");
-        persona.setDireccionId(direccion);
-        jugador.setPersonaId(persona);
-        ciudades = null;
-        redes = new ArrayList<RedSocial>();
-        return "list?faces-redirect=true";
+    public void prepareCreate() {
+////        redSocial = new RedSocial();
+//
+////        direccion = new Direccion();
+////        persona = new Persona();
+//        persona.setFoto("vacio");
+//        persona.setDireccionId(direccion);
+//        jugador.setPersonaId(persona);
+//        ciudades = null;
+//        redes = new ArrayList<RedSocial>();
+         jugador = new Jugador();
+        initializeEmbeddableKey();
+//        return "list?faces-redirect=true";
     }
 
     protected void setEmbeddableKeys() {
         persona.setDireccionId(direccion);
         jugador.setPersonaId(persona);
+
     }
 
     protected void initializeEmbeddableKey() {
         redSocial = new RedSocial();
         direccion = new Direccion();
         persona = new Persona();
+        persona.setFoto("vacio");
         redes = new ArrayList<RedSocial>();
         redesEliminar = new ArrayList<RedSocial>();
         direccion = new Direccion();
-    }
-
-    public SelectItem[] getAsociacionesAvalaible() {
-        return Util.getSelectItems(controllerAsociacion.findAll());
+        ciudades = null;
+        pais = null;
+        setEmbeddableKeys();
     }
 
     public SelectItem[] getPaisesAvalaible() {
@@ -199,15 +207,13 @@ public class JugadorBean implements Serializable {
         redes = getRedSocials(jugador.getPersonaId());
         pais = jugador.getPersonaId().getDireccionId().getCiudadId().getPaisId();
         ciudadesAvalaible();
-
-//        return "edit";
     }
 
     public void ciudadesAvailable(Pais pais) {
         ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
     }
 
-    public String create() {
+    public void create() {
         try {
             if (controllerJugador.findJugadorxDomentoId(persona.getDocumentoIdentidad()) != null) {
                 Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documento de "
@@ -228,14 +234,12 @@ public class JugadorBean implements Serializable {
         } catch (Exception e) {
             logger.debug("Error al crear Jugador :", e.getMessage());
         }
-        return prepareCreate();
     }
 
-    public String edit() {
-        
+    public void edit() {
+
         for (RedSocial red : redes) {
             red.setPersonaId(jugador.getPersonaId());
-//            controllerRedSocial.edit(red);
         }
         jugador.getPersonaId().setRedSocialCollection(redes);
         logger.debug("Esta editando un Jugador");
@@ -245,14 +249,12 @@ public class JugadorBean implements Serializable {
         }
         recreateModel();
         Util.addSuccessMessage("Se edito exitosamente el Jugador");
-        return prepareCreate();
     }
 
     public Jugador getJugador() {
         if (jugador == null) {
             jugador = new Jugador();
             initializeEmbeddableKey();
-            setEmbeddableKeys();
         }
         return jugador;
     }
@@ -261,24 +263,24 @@ public class JugadorBean implements Serializable {
         this.jugador = jugador;
     }
 
-    public Direccion getDireccion() {
-        return direccion;
-    }
+//    public Direccion getDireccion() {
+//        return direccion;
+//    }
+//
+//    public void setDireccion(Direccion direccion) {
+//        this.direccion = direccion;
+//    }
 
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    public Persona getPersona() {
-        if (persona == null) {
-            persona = new Persona();
-        }
-        return persona;
-    }
-
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
+//    public Persona getPersona() {
+//        if (persona == null) {
+//            persona = new Persona();
+//        }
+//        return persona;
+//    }
+//
+//    public void setPersona(Persona persona) {
+//        this.persona = persona;
+//    }
 
     public RedSocial getRedSocial() {
         if (redSocial == null) {
@@ -327,7 +329,7 @@ public class JugadorBean implements Serializable {
     }
 
     public String getHostImagen() {
-      String host = Util.getHostImagen()+"jugador/";
-    return host;
+        String host = Util.getHostImagen() + "jugador/";
+        return host;
     }
 }

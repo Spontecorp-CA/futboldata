@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Llave.findById", query = "SELECT l FROM Llave l WHERE l.id = :id"),
     @NamedQuery(name = "Llave.findByNombre", query = "SELECT l FROM Llave l WHERE l.nombre = :nombre")})
 public class Llave implements Serializable {
+    @Column(name = "status")
+    private Integer status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -112,6 +114,14 @@ public class Llave implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Llave[ id=" + id + " ]";
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     
 }
