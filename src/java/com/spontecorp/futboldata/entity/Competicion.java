@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Competicion.findByNombre", query = "SELECT c FROM Competicion c WHERE c.nombre = :nombre"),
     @NamedQuery(name = "Competicion.findByStatus", query = "SELECT c FROM Competicion c WHERE c.status = :status")})
 public class Competicion implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competicionId")
+    private Collection<EquipoInLiga> equipoInLigaCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -212,6 +214,15 @@ public class Competicion implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Competicion[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<EquipoInLiga> getEquipoInLigaCollection() {
+        return equipoInLigaCollection;
+    }
+
+    public void setEquipoInLigaCollection(Collection<EquipoInLiga> equipoInLigaCollection) {
+        this.equipoInLigaCollection = equipoInLigaCollection;
     }
     
 }

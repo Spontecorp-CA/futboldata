@@ -14,13 +14,16 @@
     <ui:define name="content">
         <h:form id="JugadorListForm">
 
-            <p:fieldset style="width: 85%" legend="Lista de Jugadores" >
+            <p:fieldset style="width: 85%" legend="Lista de Jugadores de '#{equipoHasJugadorBean.equipo.nombre}'" >
 
-
-                <h:outputText value="Nombre del Equipo : #{equipoHasJugadorBean.equipo.nombre} " /> <br/>
-                <h:outputText value="Nombre del Club : #{equipoHasJugadorBean.equipo.clubId.nombre} " /><br/>
-                <h:outputText value="Nombre de la  Categoria : #{equipoHasJugadorBean.equipo.categoriaId.nombre} " />
-
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Nombre del Club: " for="nombreClub" style="font-weight: bold"/>
+                    <h:outputText id="nombreClub" value="#{equipoHasJugadorBean.equipo.clubId.nombre}"/>
+                    <h:outputLabel value="Nombre del Equipo: " for="nombreEquipo" style="font-weight: bold"/>
+                    <h:outputText id="nombreEquipo" value="#{equipoHasJugadorBean.equipo.nombre}" />                     
+                    <h:outputLabel value="Categoría: " for="nombreCategoria" style="font-weight: bold"/>
+                    <h:outputText id="nombreCategoria" value="#{equipoHasJugadorBean.equipo.categoriaId.nombre}" />
+                </h:panelGrid>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="createButton" icon="ui-icon-pencil" 

@@ -41,6 +41,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Equipo.findByStatus", query = "SELECT e FROM Equipo e WHERE e.status = :status"),
     @NamedQuery(name = "Equipo.findByAbreviacion", query = "SELECT e FROM Equipo e WHERE e.abreviacion = :abreviacion")})
 public class Equipo implements Serializable {
+    @Size(max = 45)
+    @Column(name = "nombre_alterno")
+    private String nombreAlterno;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<EquipoInLiga> equipoInLigaCollection;
     @Lob
     @Size(max = 65535)
     @Column(name = "logo")
@@ -313,6 +318,23 @@ public class Equipo implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public String getNombreAlterno() {
+        return nombreAlterno;
+    }
+
+    public void setNombreAlterno(String nombreAlterno) {
+        this.nombreAlterno = nombreAlterno;
+    }
+
+    @XmlTransient
+    public Collection<EquipoInLiga> getEquipoInLigaCollection() {
+        return equipoInLigaCollection;
+    }
+
+    public void setEquipoInLigaCollection(Collection<EquipoInLiga> equipoInLigaCollection) {
+        this.equipoInLigaCollection = equipoInLigaCollection;
     }
 
     
