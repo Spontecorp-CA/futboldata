@@ -65,7 +65,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{temporadaBean.create}" value="Guardar" 
-                                 update="TemporadaCreateForm,:TemporadaListForm:temporadas,:growlAdmin" 
+                                 update="TemporadaCreateForm,:calendario:TemporadaListForm:temporadas,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'TemporadaCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="TemporadaCreateDialog.hide()"/>
             </p:fieldset>

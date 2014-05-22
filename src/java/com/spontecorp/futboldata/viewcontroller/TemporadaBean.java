@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Temporada;
 import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
@@ -28,10 +29,12 @@ import org.slf4j.LoggerFactory;
 public class TemporadaBean implements Serializable {
 
     private Temporada temporada;
+    private Competicion liga;
     private DataModel items = null;
     private List<Temporada> filteredTemporada;
 
     private final TemporadaFacade controllerTemporada;
+    
 
     private static final Logger logger = LoggerFactory.getLogger(Temporada.class);
     private CompeticionFacade controllerCompeticion;
@@ -39,8 +42,19 @@ public class TemporadaBean implements Serializable {
     public TemporadaBean() {
         controllerTemporada = new TemporadaFacade();
         controllerCompeticion = new CompeticionFacade();
+        liga= new Competicion();
+        liga.setNombre("No tiene nada !!");
     }
 
+    public Competicion getLiga() {
+        return liga;
+    }
+
+    public void setLiga(Competicion liga) {
+        this.liga = liga;
+    }
+
+    
     public List<Temporada> getFilteredTemporada() {
         return filteredTemporada;
     }

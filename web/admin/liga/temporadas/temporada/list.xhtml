@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -11,7 +10,7 @@
         Administración de Temporadaes
     </ui:define>
 
-    <ui:define name="content">
+<!--    <ui:define name="content">-->
         <h:form id="TemporadaListForm">
 
             <p:fieldset style="width: 85%" legend="Lista de Temporadas" >
@@ -19,13 +18,11 @@
                     <p:toolbarGroup align="left">
                         <p:commandButton id="createButton" icon="ui-icon-plus"  
                                          value="Crear Temporada" 
-                                         actionListener="#{temporadaBean.prepareCreate}" 
-                                         update=":TemporadaCreateForm" 
+                                         actionListener="#{temporadaBean.prepareCreate}"
                                          oncomplete="PF('TemporadaCreateDialog').show()"/>
                         <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                          value="Editar Temporada" 
-                                         actionListener="#{temporadaBean.prepareEdit}"
-                                         update=":TemporadaEditForm" 
+                                         actionListener="#{temporadaBean.prepareEdit}"                                      
                                          oncomplete="PF('TemporadaEditDialog').show()" 
                                          disabled="#{empty temporadaBean.temporada.nombre}"/>
                     </p:toolbarGroup>
@@ -42,9 +39,11 @@
                              paginator="true" rows="10"
                              filteredValue="#{temporadaBean.filteredTemporada}" >   
                     <p:ajax event="rowSelect"
-                            update=":TemporadaListForm:createButton :TemporadaListForm:editButton "  />
+                            update=":calendario:TemporadaListForm:createButton
+                            ,:calendario:TemporadaListForm:editButton "  />
                     <p:ajax event="rowUnselect" 
-                            update=":TemporadaListForm:createButton :TemporadaListForm:editButton" />
+                            update=":calendario:TemporadaListForm:createButton
+                            ,:calendario:TemporadaListForm:editButton" />
 
                     <p:column headerText="Liga" sortBy="competicionId.nombre"
                               filterBy="competicionId.nombre">
@@ -79,6 +78,5 @@
         </h:form>
         <ui:include src="create.xhtml"/>
         <ui:include src="edit.xhtml"/>
-    </ui:define>
 
 </ui:composition>

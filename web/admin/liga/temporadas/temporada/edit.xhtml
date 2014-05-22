@@ -67,7 +67,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{temporadaBean.edit}" value="Guardar" 
-                                 update="TemporadaEditForm,:TemporadaListForm:temporadas,:growlAdmin" 
+                                 update="TemporadaEditForm,:calendario:TemporadaListForm:temporadas,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'TemporadaEditDialog');"
                                  />
                 <p:commandButton value="Cancelar" onclick="TemporadaEditDialog.hide()"/>
