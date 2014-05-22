@@ -48,6 +48,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Partido.findByGolesEquipoLocal", query = "SELECT p FROM Partido p WHERE p.golesEquipoLocal = :golesEquipoLocal"),
     @NamedQuery(name = "Partido.findByGolesEquipoVisitante", query = "SELECT p FROM Partido p WHERE p.golesEquipoVisitante = :golesEquipoVisitante")})
 public class Partido implements Serializable {
+    @Column(name = "goles_local_prorroga")
+    private Integer golesLocalProrroga;
+    @Column(name = "goles_visitante_prorroga")
+    private Integer golesVisitanteProrroga;
+    @Column(name = "goles_local_penalties")
+    private Integer golesLocalPenalties;
+    @Column(name = "goles_visitante_penalties")
+    private Integer golesVisitantePenalties;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -320,6 +328,38 @@ public class Partido implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Partido[ id=" + id + " ]";
+    }
+
+    public Integer getGolesLocalProrroga() {
+        return golesLocalProrroga;
+    }
+
+    public void setGolesLocalProrroga(Integer golesLocalProrroga) {
+        this.golesLocalProrroga = golesLocalProrroga;
+    }
+
+    public Integer getGolesVisitanteProrroga() {
+        return golesVisitanteProrroga;
+    }
+
+    public void setGolesVisitanteProrroga(Integer golesVisitanteProrroga) {
+        this.golesVisitanteProrroga = golesVisitanteProrroga;
+    }
+
+    public Integer getGolesLocalPenalties() {
+        return golesLocalPenalties;
+    }
+
+    public void setGolesLocalPenalties(Integer golesLocalPenalties) {
+        this.golesLocalPenalties = golesLocalPenalties;
+    }
+
+    public Integer getGolesVisitantePenalties() {
+        return golesVisitantePenalties;
+    }
+
+    public void setGolesVisitantePenalties(Integer golesVisitantePenalties) {
+        this.golesVisitantePenalties = golesVisitantePenalties;
     }
     
 }

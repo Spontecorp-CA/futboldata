@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+          
+    <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
+        <ui:define name="title">
+            Administración de Canchas
+        </ui:define>
+        
+        <ui:define name="content">
+            <h:form id="CanchaListForm">
+                <p:fieldset style="width: 85%" legend="Lista de Canchas">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   
+                                             value="Crear Cancha" 
+                                             actionListener="#{canchaBean.prepareCreate}" 
+                                             update=":CanchaCreateForm" 
+                                             oncomplete="PF('CanchaCreateDialog').show()"/>
+<!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
+                                             value="Ver Cancha" 
+                                             update=":CanchaViewForm" 
+                                             oncomplete="PF('CanchaViewDialog').show()" 
+                                             disabled="#{empty canchaBean.selected}"/>
+                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                             value="Editar Cancha"
+                                             actionListener="#{canchaBean.prepareEdit}"
+                                             update=":CanchaEditForm" 
+                                             oncomplete="PF('CanchaEditDialog').show()" 
+                                             disabled="#{empty canchaBean.selected}"/>-->
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Administración" action="#{canchaBean.returnAdminPage}"
+                                             immediate="true"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    
+                    <br />
+                    <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+                    <br />
+                    <p:dataTable id="canchas" var="item" value="#{canchaBean.items}"
+                                 widgetVar="canchasTable"
+                                 selectionMode="single"
+                                 selection="#{canchaBean.selected}" 
+                                 rowKey = "#{item.id}"
+                                 emptyMessage="No se encontraron canchas para ese criterio" 
+                                 filteredValue="#{canchaBean.filteredCanchas}"
+                                 paginator="true" rows="10"  
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15"> 
+
+                        <p:ajax event="rowSelect"   update=":CanchaListForm:createButton"/>
+                        <p:ajax event="rowUnselect" update=":CanchaListForm:createButton"/>
+
+                        <p:column id="canchaColummn" headerText="Cancha">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>                        
+                        <p:column headerText="Dirección">
+                            <h:outputText value="#{item.direccionId.direccion}"/>
+                        </p:column>
+                        <p:column headerText="Ciudad">
+                            <h:outputText value="#{item.direccionId.ciudadId.ciudad}"/>
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{item.status == 1?'Activa': 'Inactiva'}"/>
+                        </p:column>                        
+                    </p:dataTable>
+                    
+                </p:fieldset>
+            </h:form>
+            <ui:include src="create.xhtml"/>
+            <!--                    <ui:include src="view.xhtml"/>
+                                <ui:include src="edit.xhtml"/>-->
+        </ui:define>
+    </ui:composition>
+</html>

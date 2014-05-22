@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <p:dialog id="CanchaCreateDlg" widgetVar="CanchaCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Cancha">
+        <h:form id="CanchaCreateForm">
+            <h:panelGroup id="display" class="top-aligned-columns">
+                <h:panelGrid columns="2" rendered="#{canchaBean.selected != null}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="* Nombre: " for="nombre" />
+                        <p:inputText id="nombre" value="#{canchaBean.selected.nombre}" 
+                                     title="Nombre de la cancha" required="true" 
+                                     requiredMessage="Debe colocar un nombre de cancha"
+                                     style="width: 250px"/>
+                        
+                        <h:outputLabel value="* Pais:" for="pais"/>
+                        <p:selectOneMenu id="pais"                                    
+                                         value="#{canchaBean.pais}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un pais">                       
+                            <f:selectItems value="#{canchaBean.paisAvailable}"/>
+                            <p:ajax listener="#{canchaBean.ciudadAvailable}" 
+                                    update="ciudad" />
+                        </p:selectOneMenu>
+                        
+                        <h:outputLabel value="* Ciudad:" for="ciudad"/>
+                        <p:selectOneMenu id="ciudad" 
+                                         value="#{canchaBean.selected.direccionId.ciudadId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un pais">                       
+                            <f:selectItems value="#{canchaBean.ciudades}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="Dirección :" for="direccion"/>
+                        <p:inputText id="direccion" 
+                                     value="#{canchaBean.selected.direccionId.direccion}"
+                                     required="true" 
+                                     requiredMessage="Debe colocar una direccion"
+                                     style="width: 250px">
+                        </p:inputText>                        
+
+                        <p:outputLabel value="Status" for="status" />
+                        <p:selectOneMenu id="status" value="#{canchaBean.selected.status}"
+                                         converter= "javax.faces.Integer"
+                                         style="width: 250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar el status">
+                            <f:selectItem itemLabel="Activo" itemValue="1"/>
+                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Capacidad: " for="capacidad" />
+                        <p:inputText id="capacidad" value="#{canchaBean.selected.capacidad}"
+                                     title="Capacidad de la cancha"
+                                     style="width: 250px">
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+                        <p:outputLabel value="Superficie: " for="superficie" />
+                        <p:inputText id="superficie" value="#{canchaBean.selected.superficie}" 
+                                     title="Superficie de la cancha"
+                                     style="width: 250px"/>
+                        <p:outputLabel value="Medidas: " for="medidas" />
+                        <p:inputText id="medidas" value="#{canchaBean.selected.superficie}" 
+                                     title="Medidas de la cancha"
+                                     style="width: 250px"/>
+                        
+                    </h:panelGrid>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    
+                </h:panelGrid>
+                <p:commandButton actionListener="#{canchaBean.create}" value="Guardar" 
+                                 update="display,:CanchaListForm:canchas,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'CanchaCreateDialog');"/>
+                <p:commandButton value="Cancelar" onclick="CanchaCreateDialog.hide()"/>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+</ui:composition>
