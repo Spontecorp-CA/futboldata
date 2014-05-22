@@ -33,6 +33,10 @@
                                              update=":LigaEditForm" 
                                              oncomplete="PF('LigaEditDialog').show()" 
                                              disabled="#{empty ligaBean.selected}"/>
+                            <p:commandButton id="configButton" icon="ui-icon-calendar" 
+                                             value="Calendarios"
+                                             action="/admin/liga/temporadas/config?faces-redirect=true"                                             
+                                             disabled="#{empty ligaBean.selected}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{ligaBean.returnAdminPage}"
@@ -53,8 +57,8 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
-                        <p:ajax event="rowSelect"   update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton"/>
-                        <p:ajax event="rowUnselect" update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton"/>
+                        <p:ajax event="rowSelect"   update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"/>
+                        <p:ajax event="rowUnselect" update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"/>
 
                         <p:column id="ligaColummn" headerText="Liga">
                             <h:outputText value="#{item.nombre}"/>
