@@ -32,7 +32,8 @@
                     <p:menuitem value="Configura Categoría" icon="ui-icon-clipboard"
                                 action="/admin/liga/categoria/list?faces-redirect=true"/>
                     <p:submenu label="Temporadas">
-                        <p:menuitem value="Configura Temporada" icon="ui-icon-calculator"/>
+                        <p:menuitem value="Configura Temporada" icon="ui-icon-calculator"
+                                    action="#{temporadaBean.gotoTemporadaPage}"/>
                         <p:menuitem value="Configura Fase" icon="ui-icon-calculator"/>
                         <p:menuitem value="Configura Llave" icon="ui-icon-calculator"/>
                         <p:menuitem value="Configura Grupo" icon="ui-icon-calculator"/>
@@ -56,12 +57,12 @@
                     <!--                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"
                                                             action="#{equipoHasJugadorBean.gotoEquipoHasJugadorPage()}"/>-->
                 </p:submenu>
-                
+
                 <p:submenu label="Staff">                    
                     <p:menuitem value="Configura Staff" icon="ui-icon-person"
                                 action="/admin/equipo/staff/list?faces-redirect=true"/>
                 </p:submenu>
-                
+
                 <p:submenu label="Sistema">
                     <p:submenu label="Usuarios"
                                rendered="#{loginBean.isAdmin}">
