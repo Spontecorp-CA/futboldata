@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
+
+            <ui:define name="title">
+                Configurador de Calendario
+            </ui:define>
+
+            <ui:define name="content">
+                
+                    <p:tabView id="calendario" dynamic="true" effect="fade" effectDuration="fast">                       
+                        <p:tab title="Temporada">
+                            <ui:include src="./fase/list.xhtml"/>
+                        </p:tab>
+                        <p:tab title="Fases">
+
+                        </p:tab>
+                        <p:tab title="Grupos">
+
+                        </p:tab>
+                        <p:tab title="Llaves" disabled="true">
+
+                        </p:tab>
+                    </p:tabView>
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>
