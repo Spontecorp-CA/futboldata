@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -107,7 +108,7 @@ public class Pais implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.Pais[ id=" + id + " ]";
     }
     
 }

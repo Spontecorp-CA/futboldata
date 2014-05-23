@@ -41,8 +41,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Jugador.findByPeso", query = "SELECT j FROM Jugador j WHERE j.peso = :peso"),
     @NamedQuery(name = "Jugador.findByStatus", query = "SELECT j FROM Jugador j WHERE j.status = :status")})
 public class Jugador implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
-    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,22 +68,23 @@ public class Jugador implements Serializable {
         @JoinColumn(name = "premio_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Premio> premioCollection;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
     private Collection<Convocado> convocadoCollection;
     @JoinColumn(name = "agente_id", referencedColumnName = "id")
     @ManyToOne
     private Agente agenteId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     private Persona personaId;
     @JoinColumn(name = "posicion_id", referencedColumnName = "id")
     @ManyToOne
     private Posicion posicionId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugador")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
     private Collection<Transferencia> transferenciaCollection;
     @OneToMany(mappedBy = "jugadorId")
     private Collection<Contrato> contratoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jugadorId")
+    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
     @OneToMany(mappedBy = "jugador1Id")
     private Collection<PartidoEvento> partidoEventoCollection;
     @OneToMany(mappedBy = "jugador2Id")
@@ -165,15 +164,6 @@ public class Jugador implements Serializable {
     }
 
     @XmlTransient
-    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
-        return equipoHasJugadorCollection;
-    }
-
-    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
-        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
-    }
-
-    @XmlTransient
     public Collection<Convocado> getConvocadoCollection() {
         return convocadoCollection;
     }
@@ -225,6 +215,15 @@ public class Jugador implements Serializable {
     }
 
     @XmlTransient
+    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
+        return equipoHasJugadorCollection;
+    }
+
+    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
+        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
+    }
+
+    @XmlTransient
     public Collection<PartidoEvento> getPartidoEventoCollection() {
         return partidoEventoCollection;
     }
@@ -266,7 +265,5 @@ public class Jugador implements Serializable {
     public String toString() {
         return "com.spontecorp.futboldata.entity.Jugador[ id=" + id + " ]";
     }
-
-
     
 }

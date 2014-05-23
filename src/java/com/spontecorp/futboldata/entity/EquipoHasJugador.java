@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -35,7 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EquipoHasJugador.findByFechaSalida", query = "SELECT e FROM EquipoHasJugador e WHERE e.fechaSalida = :fechaSalida"),
     @NamedQuery(name = "EquipoHasJugador.findByStatus", query = "SELECT e FROM EquipoHasJugador e WHERE e.status = :status")})
 public class EquipoHasJugador implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -111,4 +111,30 @@ public class EquipoHasJugador implements Serializable {
     public void setEquipoId(Equipo equipoId) {
         this.equipoId = equipoId;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof EquipoHasJugador)) {
+            return false;
+        }
+        EquipoHasJugador other = (EquipoHasJugador) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.spontecorp.futboldata.entity.EquipoHasJugador[ id=" + id + " ]";
+    }
+    
 }

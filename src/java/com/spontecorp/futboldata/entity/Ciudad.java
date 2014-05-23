@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -119,7 +120,7 @@ public class Ciudad implements Serializable {
 
     @Override
     public String toString() {
-        return ciudad;
+        return "com.spontecorp.futboldata.entity.Ciudad[ id=" + id + " ]";
     }
     
 }

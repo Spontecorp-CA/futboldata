@@ -21,11 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
-<<<<<<< OURS
  * @author sponte03
-=======
- * @author jgcastillo
->>>>>>> THEIRS
  */
 @Entity
 @Table(name = "afiliacion")

@@ -2,12 +2,12 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,7 +42,7 @@ public class Cargo implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargoId")
+    @OneToMany(mappedBy = "cargoId")
     private Collection<Staff> staffCollection;
 
     public Cargo() {
@@ -99,7 +99,7 @@ public class Cargo implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.Cargo[ id=" + id + " ]";
     }
     
 }

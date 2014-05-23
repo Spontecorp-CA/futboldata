@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -69,17 +70,17 @@ public class Cancha implements Serializable {
     private Integer coordenadaLong;
     @Column(name = "coordenada_lat")
     private Integer coordenadaLat;
-    @OneToMany(mappedBy = "canchaId")
-    private Collection<Partido> partidoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancha")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "canchaId")
     private Collection<ClubCancha> clubCanchaCollection;
     @OneToMany(mappedBy = "canchaId")
     private Collection<Imagen> imagenCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cancha")
-    private Collection<EquipoCancha> equipoCanchaCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
     @ManyToOne
     private Direccion direccionId;
+    @OneToMany(mappedBy = "canchaId")
+    private Collection<Partido> partidoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "canchaId")
+    private Collection<EquipoCancha> equipoCanchaCollection;
 
     public Cancha() {
     }
@@ -161,15 +162,6 @@ public class Cancha implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Partido> getPartidoCollection() {
-        return partidoCollection;
-    }
-
-    public void setPartidoCollection(Collection<Partido> partidoCollection) {
-        this.partidoCollection = partidoCollection;
-    }
-
-    @XmlTransient
     public Collection<ClubCancha> getClubCanchaCollection() {
         return clubCanchaCollection;
     }
@@ -187,6 +179,23 @@ public class Cancha implements Serializable {
         this.imagenCollection = imagenCollection;
     }
 
+    public Direccion getDireccionId() {
+        return direccionId;
+    }
+
+    public void setDireccionId(Direccion direccionId) {
+        this.direccionId = direccionId;
+    }
+
+    @XmlTransient
+    public Collection<Partido> getPartidoCollection() {
+        return partidoCollection;
+    }
+
+    public void setPartidoCollection(Collection<Partido> partidoCollection) {
+        this.partidoCollection = partidoCollection;
+    }
+
     @XmlTransient
     public Collection<EquipoCancha> getEquipoCanchaCollection() {
         return equipoCanchaCollection;
@@ -194,14 +203,6 @@ public class Cancha implements Serializable {
 
     public void setEquipoCanchaCollection(Collection<EquipoCancha> equipoCanchaCollection) {
         this.equipoCanchaCollection = equipoCanchaCollection;
-    }
-
-    public Direccion getDireccionId() {
-        return direccionId;
-    }
-
-    public void setDireccionId(Direccion direccionId) {
-        this.direccionId = direccionId;
     }
 
     @Override

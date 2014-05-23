@@ -2,11 +2,11 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -46,7 +46,7 @@ public class Email implements Serializable {
     @Column(name = "email")
     private String email;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL,optional = false)
+    @ManyToOne(optional = false)
     private Direccion direccionId;
 
     public Email() {

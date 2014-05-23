@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -62,16 +63,16 @@ public class Direccion implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
     private Collection<Telefono> telefonoCollection;
     @OneToMany(mappedBy = "direccionId")
-    private Collection<Competicion> competicionCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
-    private Collection<Email> emailCollection;
-    @OneToMany(mappedBy = "direccionId")
     private Collection<Persona> personaCollection;
     @JoinColumn(name = "ciudad_id", referencedColumnName = "id")
     @ManyToOne
     private Ciudad ciudadId;
     @OneToMany(mappedBy = "direccionId")
     private Collection<Cancha> canchaCollection;
+    @OneToMany(mappedBy = "direccionId")
+    private Collection<Competicion> competicionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "direccionId")
+    private Collection<Email> emailCollection;
 
     public Direccion() {
     }
@@ -148,24 +149,6 @@ public class Direccion implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Competicion> getCompeticionCollection() {
-        return competicionCollection;
-    }
-
-    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
-        this.competicionCollection = competicionCollection;
-    }
-
-    @XmlTransient
-    public Collection<Email> getEmailCollection() {
-        return emailCollection;
-    }
-
-    public void setEmailCollection(Collection<Email> emailCollection) {
-        this.emailCollection = emailCollection;
-    }
-
-    @XmlTransient
     public Collection<Persona> getPersonaCollection() {
         return personaCollection;
     }
@@ -189,6 +172,24 @@ public class Direccion implements Serializable {
 
     public void setCanchaCollection(Collection<Cancha> canchaCollection) {
         this.canchaCollection = canchaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Competicion> getCompeticionCollection() {
+        return competicionCollection;
+    }
+
+    public void setCompeticionCollection(Collection<Competicion> competicionCollection) {
+        this.competicionCollection = competicionCollection;
+    }
+
+    @XmlTransient
+    public Collection<Email> getEmailCollection() {
+        return emailCollection;
+    }
+
+    public void setEmailCollection(Collection<Email> emailCollection) {
+        this.emailCollection = emailCollection;
     }
 
     @Override
