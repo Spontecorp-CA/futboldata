@@ -21,6 +21,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,6 +42,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Staff.findByFechaDesde", query = "SELECT s FROM Staff s WHERE s.fechaDesde = :fechaDesde"),
     @NamedQuery(name = "Staff.findByFechaHasta", query = "SELECT s FROM Staff s WHERE s.fechaHasta = :fechaHasta")})
 public class Staff implements Serializable {
+    @ManyToMany(mappedBy = "staffCollection")
+    private Collection<Premio> premioCollection;
+    @OneToMany(mappedBy = "staffId")
+    private Collection<PartidoEvento> partidoEventoCollection;
     @JoinTable(name = "staff_has_titulo", joinColumns = {
         @JoinColumn(name = "staff_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
@@ -220,6 +225,24 @@ public class Staff implements Serializable {
 
     public void setTituloCollection(Collection<Titulo> tituloCollection) {
         this.tituloCollection = tituloCollection;
+    }
+
+    @XmlTransient
+    public Collection<Premio> getPremioCollection() {
+        return premioCollection;
+    }
+
+    public void setPremioCollection(Collection<Premio> premioCollection) {
+        this.premioCollection = premioCollection;
+    }
+
+    @XmlTransient
+    public Collection<PartidoEvento> getPartidoEventoCollection() {
+        return partidoEventoCollection;
+    }
+
+    public void setPartidoEventoCollection(Collection<PartidoEvento> partidoEventoCollection) {
+        this.partidoEventoCollection = partidoEventoCollection;
     }
     
 }
