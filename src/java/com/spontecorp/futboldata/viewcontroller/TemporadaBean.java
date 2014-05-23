@@ -4,19 +4,23 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Temporada;
+import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,22 +34,54 @@ public class TemporadaBean implements Serializable {
 
     private Temporada temporada;
     private Competicion liga;
-    private DataModel items = null;
+    private List<Temporada> temporadas = null;
     private List<Temporada> filteredTemporada;
-
-    private final TemporadaFacade controllerTemporada;
+    private List<Categoria> categoriaSource;
+    private List<Categoria> categoriaTarget;
+    private DualListModel<Categoria> categorias;
     
-
     private static final Logger logger = LoggerFactory.getLogger(Temporada.class);
-    private CompeticionFacade controllerCompeticion;
+    private final CompeticionFacade controllerCompeticion;
+    private final CategoriaFacade controllerCategoria;
+    private final TemporadaFacade controllerTemporada;
 
     public TemporadaBean() {
         controllerTemporada = new TemporadaFacade();
         controllerCompeticion = new CompeticionFacade();
+        controllerCategoria = new CategoriaFacade();
         liga= new Competicion();
-        liga.setNombre("No tiene nada !!");
+        categoriaSource = controllerCategoria.findAll();
+        categoriaTarget = new ArrayList<Categoria>();
+        categorias = new DualListModel<Categoria>(categoriaSource, categoriaTarget);
+
     }
 
+    public List<Temporada> getTemporadas() {
+        if (temporadas ==null){
+            temporadas = controllerTemporada.findTemporadaxLiga(liga);
+            for (Temporada temporada1 : temporadas) {
+                logger.debug("hola"+temporada1.getNombre());
+            }
+        }
+            
+        return temporadas;
+    }
+
+    public void setTemporadas(List<Temporada> temporadas) {
+        this.temporadas = temporadas;
+    }
+
+    
+    public DualListModel<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(DualListModel<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    
+    
     public Competicion getLiga() {
         return liga;
     }
@@ -70,12 +106,6 @@ public class TemporadaBean implements Serializable {
         return temporada;
     }
 
-    public DataModel getItems() {
-        if (items == null) {
-            items = new ListDataModel(controllerTemporada.findAll());
-        }
-        return items;
-    }
 
     public void prepareCreate() {
         temporada = new Temporada();
@@ -83,7 +113,7 @@ public class TemporadaBean implements Serializable {
     }
 
     protected void setEmbeddableKeys() {
-
+        temporada.setCompeticionId(liga);
     }
 
     protected void initializeEmbeddableKey() {
@@ -92,7 +122,7 @@ public class TemporadaBean implements Serializable {
 
     public void recreateModel() {
         temporada = null;
-        items = null;
+        temporadas = null;
     }
 
     public void prepareEdit() {
@@ -149,6 +179,11 @@ public class TemporadaBean implements Serializable {
 
     public SelectItem[] getCompenticionAvalaible() {
         return Util.getSelectItems(controllerCompeticion.findAll());
+    }
+    
+    public String gotoConfig (){
+        temporadas = null;            
+        return "/admin/liga/temporadas/config?faces-redirect=true";
     }
 
 }

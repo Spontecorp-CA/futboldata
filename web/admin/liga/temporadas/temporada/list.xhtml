@@ -32,7 +32,7 @@
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:dataTable id="temporadas" var="temporada"  value="#{temporadaBean.items}"
+                <p:dataTable id="temporadas" var="temporada"  value="#{temporadaBean.temporadas}"
                              rowKey="#{temporada.id}"
                              selection="#{temporadaBean.temporada}" 
                              selectionMode="single"
@@ -45,10 +45,10 @@
                             update=":calendario:TemporadaListForm:createButton
                             ,:calendario:TemporadaListForm:editButton" />
 
-                    <p:column headerText="Liga" sortBy="competicionId.nombre"
+<!--                    <p:column headerText="Liga" sortBy="competicionId.nombre"
                               filterBy="competicionId.nombre">
                         <h:outputText value="#{temporada.competicionId.nombre}"/>
-                    </p:column>
+                    </p:column>-->
 
 
                     <p:column headerText="Nombre" sortBy="nombre"

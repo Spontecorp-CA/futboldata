@@ -13,25 +13,33 @@
                 Configurador de Calendario
             </ui:define>
 
-                <ui:define name="content" >
-                    <h3>
-                                           <h:outputLabel value="Liga (Competicion):#{temporadaBean.liga.nombre}"/> 
-                    </h3>
+            <ui:define name="content" >
+                <h:form>
+                    <p:toolbar >
+                        <p:toolbarGroup>
+                            <h3>
+                                <h:outputLabel value="Liga (Competicion):#{temporadaBean.liga.nombre}"/> 
+                            </h3>     
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Ver Ligas" action="#{ligaBean.gotoLiga}" />
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </h:form>
+                <p:tabView id="calendario" dynamic="true" effect="fade" effectDuration="fast" >                       
+                    <p:tab title="Temporada">
+                        <ui:include src="./temporada/list.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Fases">
 
-                    <p:tabView id="calendario" dynamic="true" effect="fade" effectDuration="fast" >                       
-                        <p:tab title="Temporada">
-                            <ui:include src="./temporada/list.xhtml"/>
-                        </p:tab>
-                        <p:tab title="Fases">
+                    </p:tab>
+                    <p:tab title="Grupos">
 
-                        </p:tab>
-                        <p:tab title="Grupos">
+                    </p:tab>
+                    <p:tab title="Llaves" disabled="true">
 
-                        </p:tab>
-                        <p:tab title="Llaves" disabled="true">
-
-                        </p:tab>
-                    </p:tabView>
+                    </p:tab>
+                </p:tabView>
             </ui:define>
         </ui:composition>
 

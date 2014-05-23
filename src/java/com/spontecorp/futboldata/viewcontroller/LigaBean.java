@@ -314,6 +314,12 @@ public class LigaBean implements Serializable {
     public List<Competicion> getItemsAvailableSelectOne() {
         return ligaController.findAll();
     }
+    
+    
+    public String gotoLiga(){
+      selected = null;
+      return "/admin/liga/competicion/list?faces-redirect=true";
+    };
 
     @FacesConverter(forClass = Competicion.class)
     public static class CompeticionControllerConverter implements Converter {
@@ -354,6 +360,6 @@ public class LigaBean implements Serializable {
                 return null;
             }
         }
-
+        
     }
 }
