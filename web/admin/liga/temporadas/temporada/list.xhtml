@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Temporadaes
+    </ui:define>
+
+<!--    <ui:define name="content">-->
+        <h:form id="TemporadaListForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Temporadas" >
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                         value="Crear Temporada" 
+                                         actionListener="#{temporadaBean.prepareCreate}"
+                                         oncomplete="PF('TemporadaCreateDialog').show()"/>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Temporada" 
+                                         actionListener="#{temporadaBean.prepareEdit}"                                      
+                                         oncomplete="PF('TemporadaEditDialog').show()" 
+                                         disabled="#{empty temporadaBean.temporada.nombre}"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="temporadas" var="temporada"  value="#{temporadaBean.items}"
+                             rowKey="#{temporada.id}"
+                             selection="#{temporadaBean.temporada}" 
+                             selectionMode="single"
+                             paginator="true" rows="10"
+                             filteredValue="#{temporadaBean.filteredTemporada}" >   
+                    <p:ajax event="rowSelect"
+                            update=":calendario:TemporadaListForm:createButton
+                            ,:calendario:TemporadaListForm:editButton "  />
+                    <p:ajax event="rowUnselect" 
+                            update=":calendario:TemporadaListForm:createButton
+                            ,:calendario:TemporadaListForm:editButton" />
+
+                    <p:column headerText="Liga" sortBy="competicionId.nombre"
+                              filterBy="competicionId.nombre">
+                        <h:outputText value="#{temporada.competicionId.nombre}"/>
+                    </p:column>
+
+
+                    <p:column headerText="Nombre" sortBy="nombre"
+                              filterBy="nombre">
+                        <h:outputText value="#{temporada.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Fecha Inicio" sortBy="fechaInicio">
+                        <h:outputText value="#{temporada.fechaInicio}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />    
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha Final" sortBy="fechaFin">
+                        <h:outputText value="#{temporada.fechaFin}">
+                                 <f:convertDateTime pattern="dd/MM/yyyy" />    
+                            </h:outputText> 
+                
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <h:outputText   value="#{temporada.status== 0?'INACTIVO':'ACTIVO'}"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:fieldset>
+
+        </h:form>
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>
+
+</ui:composition>

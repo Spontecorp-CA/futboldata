@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Temporadas
+    </ui:define>
+
+    <p:dialog id="TemporadaEditDlg" widgetVar="TemporadaEditDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Temporadas">
+        <h:form id="TemporadaEditForm">
+
+            <p:fieldset style="width: 85%" legend="Crear Temporada">                
+
+                         <h:panelGrid columns="2" title="Datos Personales"
+                                 styleClass="top-aligned-columns">
+
+                        <h:outputLabel value="Liga:" for="liga"/>
+
+                        <p:selectOneMenu id="liga"
+                                         value="#{temporadaBean.temporada.competicionId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px">
+                            <f:selectItems value="#{temporadaBean.compenticionAvalaible}"/>
+                        </p:selectOneMenu> 
+
+                        <h:outputLabel value="* Nombre:" for="nombre"/>
+                        <p:inputText id="nombre" value="#{temporadaBean.temporada.nombre}"
+                                     required="true" requiredMessage="Debe colocar un nombre"
+                                     style="width: 250px"/>
+
+                        <h:outputLabel value="Fecha Inicio:" for="fechaInicio"/>
+                        <p:calendar id="fechaInicio" 
+                                    value="#{temporadaBean.temporada.fechaInicio}"
+                                    navigator="true" 
+                                    pattern="dd/mm/yyyy" 
+                                    locale="es"/>
+                        <h:outputLabel value="Fecha Final:" for="fechaFinal"/>
+                        <p:calendar id="fechaFinal" 
+                                    value="#{temporadaBean.temporada.fechaFin}"
+                                    navigator="true" 
+                                    pattern="dd/mm/yyyy" 
+                                    locale="es"/>
+
+
+
+
+                        <h:outputLabel value="* status:" for="status"/>
+                        <p:selectOneMenu id="status" value="#{temporadaBean.temporada.status}"
+                                         converter= "javax.faces.Integer"
+                                         style="width: 250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un valor">
+                            <f:selectItem itemLabel="Activo" itemValue="1"/>
+                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+     
+
+
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <p:commandButton actionListener="#{temporadaBean.edit}" value="Guardar" 
+                                 update="TemporadaEditForm,:calendario:TemporadaListForm:temporadas,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'TemporadaEditDialog');"
+                                 />
+                <p:commandButton value="Cancelar" onclick="TemporadaEditDialog.hide()"/>
+            </p:fieldset>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>

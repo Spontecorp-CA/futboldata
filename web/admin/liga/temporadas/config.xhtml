@@ -13,11 +13,14 @@
                 Configurador de Calendario
             </ui:define>
 
-            <ui:define name="content">
-                
-                    <p:tabView id="calendario" dynamic="true" effect="fade" effectDuration="fast">                       
+                <ui:define name="content" >
+                    <h3>
+                                           <h:outputLabel value="Liga (Competicion):#{temporadaBean.liga.nombre}"/> 
+                    </h3>
+
+                    <p:tabView id="calendario" dynamic="true" effect="fade" effectDuration="fast" >                       
                         <p:tab title="Temporada">
-                            <ui:include src="./fase/list.xhtml"/>
+                            <ui:include src="./temporada/list.xhtml"/>
                         </p:tab>
                         <p:tab title="Fases">
 

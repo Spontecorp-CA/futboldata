@@ -213,7 +213,7 @@ public class Competicion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Competicion[ id=" + id + " ]";
+        return nombre;
     }
 
     @XmlTransient
