@@ -16,51 +16,51 @@
 
             <p:fieldset style="width: 85%" legend="Crear Temporada">                
 
-                         <h:panelGrid columns="2" title="Datos Personales"
-                                 styleClass="top-aligned-columns">
+                <h:panelGrid columns="2" title="Datos Personales"
+                             styleClass="top-aligned-columns">
 
-                        <h:outputLabel value="Liga:" for="liga"/>
+                    <h:outputLabel value="Liga:" for="liga"/>
 
-                        <p:selectOneMenu id="liga"
-                                         value="#{temporadaBean.temporada.competicionId}"
-                                         style="width: 250px"
-                                         panelStyle="width:250px">
-                            <f:selectItems value="#{temporadaBean.compenticionAvalaible}"/>
-                        </p:selectOneMenu> 
+                    <h:outputLabel value="#{temporadaBean.selected.competicionId.nombre}" />
 
-                        <h:outputLabel value="* Nombre:" for="nombre"/>
-                        <p:inputText id="nombre" value="#{temporadaBean.temporada.nombre}"
-                                     required="true" requiredMessage="Debe colocar un nombre"
-                                     style="width: 250px"/>
+                    <h:outputLabel value="* Nombre:" for="nombre"/>
+                    <p:inputText id="nombre" value="#{temporadaBean.selected.nombre}"
+                                 required="true" requiredMessage="Debe colocar un nombre"
+                                 style="width: 250px"/>
 
-                        <h:outputLabel value="Fecha Inicio:" for="fechaInicio"/>
-                        <p:calendar id="fechaInicio" 
-                                    value="#{temporadaBean.temporada.fechaInicio}"
-                                    navigator="true" 
-                                    pattern="dd/mm/yyyy" 
-                                    locale="es"/>
-                        <h:outputLabel value="Fecha Final:" for="fechaFinal"/>
-                        <p:calendar id="fechaFinal" 
-                                    value="#{temporadaBean.temporada.fechaFin}"
-                                    navigator="true" 
-                                    pattern="dd/mm/yyyy" 
-                                    locale="es"/>
+                    <h:outputLabel value="Fecha Inicio:" for="fechaInicio"/>
+                    <p:calendar id="fechaInicio" 
+                                value="#{temporadaBean.selected.fechaInicio}"
+                                navigator="true" 
+                                pattern="dd/mm/yyyy" 
+                                locale="es"/>
+                    <h:outputLabel value="Fecha Final:" for="fechaFinal"/>
+                    <p:calendar id="fechaFinal" 
+                                value="#{temporadaBean.selected.fechaFin}"
+                                navigator="true" 
+                                pattern="dd/mm/yyyy" 
+                                locale="es"/>
+                    
+                    <h:outputLabel value="Categorias en la Liga:"/>
+                    <p:pickList id="pickListEdit" 
+                                value="#{temporadaBean.categorias}" 
+                                var="categorias"
+                                itemLabel="#{categorias}" 
+                                itemValue="#{categorias}" 
+                                converter="categoriaConverter" />
+
+                    <h:outputLabel value="* status:" for="status"/>
+                    <p:selectOneMenu id="status" value="#{temporadaBean.selected.status}"
+                                     converter= "javax.faces.Integer"
+                                     style="width: 250px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar un valor">
+                        <f:selectItem itemLabel="Activo" itemValue="1"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
 
 
-
-
-                        <h:outputLabel value="* status:" for="status"/>
-                        <p:selectOneMenu id="status" value="#{temporadaBean.temporada.status}"
-                                         converter= "javax.faces.Integer"
-                                         style="width: 250px"
-                                         required="true"
-                                         requiredMessage="Debe seleccionar un valor">
-                            <f:selectItem itemLabel="Activo" itemValue="1"/>
-                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
-                        </p:selectOneMenu>
-                    </h:panelGrid>
-
-     
 
 
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">

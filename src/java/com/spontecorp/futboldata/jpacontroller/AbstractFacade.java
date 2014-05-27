@@ -30,6 +30,7 @@ public abstract class AbstractFacade<T> {
             em.persist(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
+            System.out.println(e);
         }finally{
             if(em != null){
                 em.close();

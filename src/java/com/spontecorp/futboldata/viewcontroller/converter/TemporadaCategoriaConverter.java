@@ -1,7 +1,7 @@
 package com.spontecorp.futboldata.viewcontroller.converter;
 
-import com.spontecorp.futboldata.entity.Categoria;
-import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
+import com.spontecorp.futboldata.entity.TemporadaCategoria;
+import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -11,14 +11,14 @@ import javax.faces.convert.FacesConverter;
  *
  * @author jgcastillo
  */
-@FacesConverter(forClass = Categoria.class,value = "categoriaConverter")
-public class CategoriaConverter implements Converter{
+@FacesConverter(forClass = TemporadaCategoria.class,value = "temporadaCategoriaConverter")
+public class TemporadaCategoriaConverter implements Converter{
 
-    private CategoriaFacade controller = null;
+    private TemporadaCategoriaFacade controller = null;
     
-    private CategoriaFacade getController(){
+    private TemporadaCategoriaFacade getController(){
         if(controller == null){
-            controller = new CategoriaFacade();
+            controller = new TemporadaCategoriaFacade();
         }
         return controller;
     }
@@ -28,7 +28,7 @@ public class CategoriaConverter implements Converter{
         if (value == null || value.length() == 0) {
             return null;
         }        
-        return getController().findCategoria(value);
+        return getController().findTemporadaCategoria(value);
     }
 
     @Override
@@ -36,10 +36,10 @@ public class CategoriaConverter implements Converter{
         if (value == null) {
             return null;
         }
-        if(value instanceof Categoria){
+        if(value instanceof TemporadaCategoria){
             return value.toString();
         } else {
-            throw new IllegalArgumentException("El objecto " + value + " es de tipo " + value.getClass().getName() + "; se espera: " + Categoria.class.getName());
+            throw new IllegalArgumentException("El objecto " + value + " es de tipo " + value.getClass().getName() + "; se espera: " + TemporadaCategoria.class.getName());
         }
         
     }

@@ -7,6 +7,7 @@ package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -120,7 +121,7 @@ public class TemporadaCategoria implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TemporadaCategoria[ id=" + id + " ]";
+        return categoriaId.getNombre();
     }
     
 }
