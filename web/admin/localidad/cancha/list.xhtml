@@ -5,12 +5,12 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-          
+
     <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
         <ui:define name="title">
             Administración de Canchas
         </ui:define>
-        
+
         <ui:define name="content">
             <h:form id="CanchaListForm">
                 <p:fieldset style="width: 85%" legend="Lista de Canchas">
@@ -21,7 +21,7 @@
                                              actionListener="#{canchaBean.prepareCreate}" 
                                              update=":CanchaCreateForm" 
                                              oncomplete="PF('CanchaCreateDialog').show()"/>
-<!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
+                            <p:commandButton id="viewButton" icon="ui-icon-search" 
                                              value="Ver Cancha" 
                                              update=":CanchaViewForm" 
                                              oncomplete="PF('CanchaViewDialog').show()" 
@@ -31,14 +31,14 @@
                                              actionListener="#{canchaBean.prepareEdit}"
                                              update=":CanchaEditForm" 
                                              oncomplete="PF('CanchaEditDialog').show()" 
-                                             disabled="#{empty canchaBean.selected}"/>-->
+                                             disabled="#{empty canchaBean.selected}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{canchaBean.returnAdminPage}"
                                              immediate="true"/>
                         </p:toolbarGroup>
                     </p:toolbar>
-                    
+
                     <br />
                     <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
                     <br />
@@ -53,8 +53,8 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
-                        <p:ajax event="rowSelect"   update=":CanchaListForm:createButton"/>
-                        <p:ajax event="rowUnselect" update=":CanchaListForm:createButton"/>
+                        <p:ajax event="rowSelect"   update=":CanchaListForm:createButton :CanchaListForm:viewButton :CanchaListForm:editButton"/>
+                        <p:ajax event="rowUnselect" update=":CanchaListForm:createButton :CanchaListForm:viewButton :CanchaListForm:editButton"/>
 
                         <p:column id="canchaColummn" headerText="Cancha">
                             <h:outputText value="#{item.nombre}"/>
@@ -68,13 +68,12 @@
                         <p:column headerText="Status">
                             <h:outputText value="#{item.status == 1?'Activa': 'Inactiva'}"/>
                         </p:column>                        
-                    </p:dataTable>
-                    
+                    </p:dataTable>                    
                 </p:fieldset>
             </h:form>
             <ui:include src="create.xhtml"/>
-            <!--                    <ui:include src="view.xhtml"/>
-                                <ui:include src="edit.xhtml"/>-->
+            <ui:include src="view.xhtml"/>
+            <ui:include src="edit.xhtml"/>
         </ui:define>
     </ui:composition>
 </html>

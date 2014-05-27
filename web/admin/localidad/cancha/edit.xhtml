@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
 
-    <p:dialog id="CanchaCreateDlg" widgetVar="CanchaCreateDialog" modal="true"
-              resizable="false" appendTo="@(body)" header="Creación de Cancha">
-        <h:form id="CanchaCreateForm">
+    <p:dialog id="CanchaEditDlg" widgetVar="CanchaEditDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Edición de Cancha">
+        <h:form id="CanchaEditForm">
             <h:panelGroup id="display" class="top-aligned-columns">
                 <h:panelGrid columns="2" rendered="#{canchaBean.selected != null}">
                     <h:panelGrid columns="2">
@@ -107,11 +107,12 @@
                     </h:panelGrid>
 
                 </h:panelGrid>
-                <p:commandButton actionListener="#{canchaBean.create}" value="Guardar" 
+                <p:commandButton actionListener="#{canchaBean.edit}" value="Guardar" 
                                  update="display,:CanchaListForm:canchas,:growlAdmin" 
-                                 oncomplete="handleSubmit(args,'CanchaCreateDialog');"/>
-                <p:commandButton value="Cancelar" onclick="CanchaCreateDialog.hide()"/>
+                                 oncomplete="handleSubmit(args,'CanchaEditDialog');"/>
+                <p:commandButton value="Cancelar" onclick="CanchaEditDialog.hide()"/>
             </h:panelGroup>
         </h:form>
     </p:dialog>
 </ui:composition>
+

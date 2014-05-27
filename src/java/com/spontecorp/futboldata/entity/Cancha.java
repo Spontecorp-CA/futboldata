@@ -67,15 +67,15 @@ public class Cancha implements Serializable {
     @Column(name = "status")
     private Integer status;
     @Column(name = "coordenada_long")
-    private Integer coordenadaLong;
+    private String coordenadaLong;
     @Column(name = "coordenada_lat")
-    private Integer coordenadaLat;
+    private String coordenadaLat;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "canchaId")
     private Collection<ClubCancha> clubCanchaCollection;
     @OneToMany(mappedBy = "canchaId")
     private Collection<Imagen> imagenCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.ALL)
     private Direccion direccionId;
     @OneToMany(mappedBy = "canchaId")
     private Collection<Partido> partidoCollection;
@@ -145,19 +145,19 @@ public class Cancha implements Serializable {
         this.status = status;
     }
 
-    public Integer getCoordenadaLong() {
+    public String getCoordenadaLong() {
         return coordenadaLong;
     }
 
-    public void setCoordenadaLong(Integer coordenadaLong) {
+    public void setCoordenadaLong(String coordenadaLong) {
         this.coordenadaLong = coordenadaLong;
     }
 
-    public Integer getCoordenadaLat() {
+    public String getCoordenadaLat() {
         return coordenadaLat;
     }
 
-    public void setCoordenadaLat(Integer coordenadaLat) {
+    public void setCoordenadaLat(String coordenadaLat) {
         this.coordenadaLat = coordenadaLat;
     }
 

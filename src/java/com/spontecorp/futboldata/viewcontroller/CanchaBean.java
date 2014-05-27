@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Cancha;
@@ -39,10 +38,10 @@ import org.slf4j.LoggerFactory;
  */
 @Named("canchaBean")
 @SessionScoped
-public class CanchaBean implements Serializable{
-    
+public class CanchaBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     private List<Cancha> items = null;
     private List<Cancha> filteredCanchas = null;
     private Cancha selected;
@@ -56,6 +55,7 @@ public class CanchaBean implements Serializable{
     private List<Email> emailEliminados;
     private List<Telefono> telefonoEliminados;
     private SelectItem[] ciudades;
+    private boolean coordenadasAvailable;
 
     private final CanchaFacade canchaFacade;
     private final DireccionFacade direccionFacade;
@@ -63,9 +63,9 @@ public class CanchaBean implements Serializable{
     private final TelefonoFacade telefonoFacade;
     private final CiudadFacade ciudadFacade;
     private final PaisFacade paisFacade;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(CanchaBean.class);
-    
+
     public CanchaBean() {
         this.canchaFacade = new CanchaFacade();
         this.direccionFacade = new DireccionFacade();
@@ -78,7 +78,7 @@ public class CanchaBean implements Serializable{
     public Cancha getSelected() {
         return selected;
     }
-    
+
     public void setSelected(Cancha selected) {
         this.selected = selected;
     }
@@ -150,6 +150,19 @@ public class CanchaBean implements Serializable{
     private List<Email> getEmails(Direccion direccion) {
         emails = direccionFacade.findListEmailxDireaccion(direccion);
         return emails;
+    }
+
+    public boolean isCoordenadasAvailable() {
+        
+        coordenadasAvailable = false;
+        if (selected != null) {
+            if ((selected.getCoordenadaLat() != null && selected.getCoordenadaLong() != null)
+                    && (!selected.getCoordenadaLat().isEmpty() && !selected.getCoordenadaLong().isEmpty())) {
+                coordenadasAvailable = true;
+            }
+        }
+        logger.debug("Esta en el método isCoordenadasAvalilable, esta devolviendo: " + coordenadasAvailable);
+        return coordenadasAvailable;
     }
 
     public void cargarTelefono() {
@@ -313,12 +326,12 @@ public class CanchaBean implements Serializable{
         Util.subirArchivo(event, "cancha/", nombreArchivo);
         selected.setFoto(nombreArchivo);
     }
-    
+
     public String getHostImagen() {
         String host = Util.getHostImagen() + "cancha/";
         return host;
     }
-    
+
     public Cancha getCancha(java.lang.Integer id) {
         return canchaFacade.find(id);
     }

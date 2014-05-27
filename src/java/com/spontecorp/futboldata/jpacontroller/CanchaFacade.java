@@ -8,6 +8,7 @@ package com.spontecorp.futboldata.jpacontroller;
 import com.spontecorp.futboldata.entity.Cancha;
 import com.spontecorp.futboldata.utilities.Util;
 import static com.spontecorp.futboldata.utilities.Util.logger;
+import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -16,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author jgcastillo
  */
-public class CanchaFacade extends AbstractFacade<Cancha>{
+public class CanchaFacade extends AbstractFacade<Cancha> implements Serializable {
 
     public CanchaFacade() {
         super(Cancha.class);

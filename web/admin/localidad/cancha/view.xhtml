@@ -1,18 +1,81 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../../WEB-INF/templates/adminTemplate.xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-    <ui:define name="title">
-        Administración de Arbitros
-    </ui:define>
 
-    <ui:define name="content">
-        content
-    </ui:define>
+    <ui:composition>
+        <p:dialog id="CanchaViewDlg" widgetVar="CanchaViewDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" header="Detalle de Cancha"
+                  position="top">
+            <h:form id="CanchaViewForm">
+                <h:panelGroup id="display" class="top-aligned-columns">
+                    <h:panelGrid columns="2" rendered="#{canchaBean.selected != null}">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Nombre: " for="nombre" />
+                            <h:outputText id="nombre" value="#{canchaBean.selected.nombre}" 
+                                          title="Nombre de la cancha" 
+                                          style="width: 250px"/>
 
-    <ui:define name="top">
-        top
-    </ui:define>
+                            <h:outputLabel value="Pais:" for="pais"/>
+                            <h:outputText id="pais"                                    
+                                          value="#{canchaBean.selected.direccionId.ciudadId.paisId}"
+                                          style="width: 250px"/>
 
-</ui:composition>
+                            <h:outputLabel value="Ciudad:" for="ciudad"/>
+                            <h:outputText id="ciudad" 
+                                          value="#{canchaBean.selected.direccionId.ciudadId}"
+                                          style="width: 250px"/>
+
+                            <h:outputLabel value="Dirección :" for="direccion"/>
+                            <h:outputText id="direccion" 
+                                          value="#{canchaBean.selected.direccionId.direccion}"
+                                          style="width: 250px"/>
+
+                            <h:outputLabel value="Status" for="status" />
+                            <h:outputText id="status" 
+                                          value="#{canchaBean.selected.status == 1?'Activa':'Inactiva'}"
+                                          style="width: 250px"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1">
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Capacidad: " for="capacidad" />
+                                <h:outputText id="capacidad" 
+                                              value="#{canchaBean.selected.capacidad}"
+                                              title="Capacidad de la cancha"
+                                              style="width: 140px"/>
+
+                                <h:outputLabel value="Superficie: " for="superficie" />
+                                <h:outputText id="superficie" value="#{canchaBean.selected.superficie}" 
+                                              title="Superficie de la cancha"
+                                              style="width: 140px"/>
+                                
+                                <h:outputLabel value="Coordenadas: " for="coordenadas" />
+                                <h:panelGrid id="coordenadas" columns="2">
+                                    <h:outputLabel value="Latitud: " for="latitud" />
+                                    <h:outputText id="latitud" value="#{canchaBean.selected.coordenadaLat}"                                             
+                                                 title="Latitud"
+                                                 style="width: 75px"/>
+                                    <h:outputLabel value="Longitud: " for="longitud" />
+                                    <h:outputText id="longitud" value="#{canchaBean.selected.coordenadaLong}" 
+                                                 title="Longitud"
+                                                 style="width: 75px"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <h:graphicImage height="100" width="230"
+                                            id="canchaImage" 
+                                            url="#{canchaBean.hostImagen}#{canchaBean.selected.foto}"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                    <p:gmap center="#{canchaBean.selected.coordenadaLat},#{canchaBean.selected.coordenadaLong}" 
+                            zoom="15" type="map" style="width:600px;height:400px"
+                            rendered="#{canchaBean.coordenadasAvailable}"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+
+</html>
