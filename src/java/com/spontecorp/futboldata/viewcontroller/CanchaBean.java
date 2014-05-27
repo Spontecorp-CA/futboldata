@@ -161,7 +161,6 @@ public class CanchaBean implements Serializable {
                 coordenadasAvailable = true;
             }
         }
-        logger.debug("Esta en el método isCoordenadasAvalilable, esta devolviendo: " + coordenadasAvailable);
         return coordenadasAvailable;
     }
 
