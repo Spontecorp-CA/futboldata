@@ -19,10 +19,12 @@
                         <p:commandButton id="createButton" icon="ui-icon-plus"  
                                          value="Crear Temporada" 
                                          actionListener="#{temporadaBean.prepareCreate}"
+                                         update=":calendario:TemporadaCreateForm"
                                          oncomplete="PF('TemporadaCreateDialog').show()"/>
                         <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                          value="Editar Temporada" 
-                                         actionListener="#{temporadaBean.prepareEdit}"                                      
+                                         actionListener="#{temporadaBean.prepareEdit}"   
+                                         update=":calendario:TemporadaEditForm"                                        
                                          oncomplete="PF('TemporadaEditDialog').show()" 
                                          disabled="#{empty temporadaBean.temporada.nombre}"/>
                     </p:toolbarGroup>
@@ -40,10 +42,11 @@
                              filteredValue="#{temporadaBean.filteredTemporada}" >   
                     <p:ajax event="rowSelect"
                             update=":calendario:TemporadaListForm:createButton
-                            ,:calendario:TemporadaListForm:editButton "  />
+                            ,:calendario:TemporadaListForm:editButton,:calendario,
+                            :calendario:TemporadaEditForm"  />
                     <p:ajax event="rowUnselect" 
                             update=":calendario:TemporadaListForm:createButton
-                            ,:calendario:TemporadaListForm:editButton" />
+                            ,:calendario:TemporadaListForm:editButton,:calendario" />
 
 <!--                    <p:column headerText="Liga" sortBy="competicionId.nombre"
                               filterBy="competicionId.nombre">

@@ -45,7 +45,8 @@
                                 value="#{temporadaBean.categorias}" 
                                 var="categorias"
                                 itemLabel="#{categorias}" 
-                                itemValue="#{categorias}" />
+                                itemValue="#{categorias}" 
+                                converter="categoriaConverter" />
             
 
                     <h:outputLabel value="* status:" for="status"/>
