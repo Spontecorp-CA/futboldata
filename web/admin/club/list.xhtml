@@ -28,19 +28,17 @@
                                              update=":ClubViewForm" 
                                              oncomplete="PF('ClubViewDialog').show()"
                                              disabled="#{empty clubBean.club.nombre}"/>
-                            <p:commandButton id="addStaffButton" 
+                            <p:commandButton id="editButton" 
                                              icon="ui-icon-pencil" 
                                              value="Editar Club" 
-                                             update=":ClubAddStaffForm"
+                                             update=":ClubEditForm"
                                              actionListener="#{clubBean.prepareEdit}"
                                              oncomplete="PF('ClubEditDialog').show()" 
                                              disabled="#{empty clubBean.club.nombre}"/>
-                            <p:commandButton id="editButton" 
+                            <p:commandButton id="addStaffButton" 
                                              icon="ui-icon-flag" 
-                                             value="Agregar Staff" 
-                                             update=":ClubEditForm"
-                                             actionListener="#{clubBean.prepareEdit}"
-                                             oncomplete="PF('ClubAddStaffDialog').show()" 
+                                             value="Ver Staff" 
+                                             action="#{staffInClub.gotoStaffPage(clubBean.selected)}"
                                              disabled="#{empty clubBean.club.nombre}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
@@ -78,8 +76,7 @@
             </h:form>
             <ui:include src="create.xhtml"/>
             <ui:include src="edit.xhtml"/>
-            <ui:include src="view.xhtml"/>
-             <ui:include src="addStaff.xhtml"/>
+            <ui:include src="view.xhtml"/>       
         </ui:define>   
 
     </ui:composition>

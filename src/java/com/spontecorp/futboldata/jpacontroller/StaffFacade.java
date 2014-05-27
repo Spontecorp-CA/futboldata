@@ -61,12 +61,14 @@ public class StaffFacade extends AbstractFacade<Staff> {
         List<Staff> staffList = null;
         EntityManager em = getEntityManager();
         try {
-            String query = "SELECT * FROM Staff j WHERE j.club = :club";
+            String query = "SELECT j FROM Staff j WHERE j.clubId = :club";
             Query q = em.createQuery(query);
             q.setParameter("club", club);
             staffList = q.getResultList();
         } catch (NoResultException e) {
             logger.debug("Error al buscar lista de staff por club findStaffListByClub ", e.getMessage());
+        } catch (Exception e) {
+            logger.debug("Ha ocurrido un error: " + e);
         } finally {
             em.close();
         }

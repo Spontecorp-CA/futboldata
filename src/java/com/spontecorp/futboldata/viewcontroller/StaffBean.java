@@ -20,6 +20,7 @@ import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.StaffFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
+import static com.spontecorp.futboldata.utilities.Util.INACTIVO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -99,6 +100,12 @@ public class StaffBean implements Serializable {
         redes = new ArrayList<RedSocial>();
         redesEliminar = new ArrayList<RedSocial>();
         direccion = new Direccion();
+    }
+
+    public void delete() {
+        staff.setStatus(INACTIVO);
+        controllerStaff.edit(staff);
+        staff = null;
     }
 
     public SelectItem[] getAsociacionesAvalaible() {
@@ -251,14 +258,14 @@ public class StaffBean implements Serializable {
 
         long lDateTime = new Date().getTime();
         System.out.println("Date() - Time in milliseconds: " + lDateTime);
-        String nombreArchivo = "jugador" + lDateTime;
-        Util.subirArchivo(event, "jugador/", nombreArchivo);
+        String nombreArchivo = "staff" + lDateTime;
+        Util.subirArchivo(event, "staff/", nombreArchivo);
         staff.getPersonaId().setFoto(nombreArchivo);
 
     }
 
     public String getHostImagen() {
-        String host = Util.getHostImagen() + "jugador/";
+        String host = Util.getHostImagen() + "staff/";
         return host;
     }
 

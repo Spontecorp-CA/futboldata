@@ -8,6 +8,7 @@ import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
+import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.entity.Telefono;
@@ -41,7 +42,6 @@ import org.slf4j.LoggerFactory;
 public class ClubBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final Integer STAFFCLUB = 1;
     private Club club;
     private DataModel items = null;
     private Pais pais;
@@ -55,7 +55,6 @@ public class ClubBean implements Serializable {
     private List<Email> emailEliminar = null;
     private List<Telefono> telefonos = null;
     private List<Telefono> telefonoEliminar = null;
-    private List<Staff> staffList;
 
     private static final Logger logger = LoggerFactory.getLogger(ClubBean.class);
 
@@ -106,7 +105,6 @@ public class ClubBean implements Serializable {
     public void setClub(Club club) {
         this.club = club;
     }
-    
 
     public Pais getPais() {
         return pais;
@@ -257,9 +255,7 @@ public class ClubBean implements Serializable {
         club = null;
     }
 
-    public String gotoClubsPage() {
-        return "list";
-    }
+
 
 //    public String prepareCreate() {
 //
@@ -365,21 +361,7 @@ public class ClubBean implements Serializable {
         }
     }
 
-    public String goToStaffList(Integer tipoStaff, Object o) {
 
-        if (tipoStaff.equals(STAFFCLUB)) {
-            staffList = controllerStaff.findStaffListByClub((Club) o);
-        }
-    
-        return "listStaff?faces-redirect=true";
-    }
-
-    public List<Staff> getStaffList() {
-        return staffList;
-    }
-
-    public void setStaffList(List<Staff> staffList) {
-        this.staffList = staffList;
-    }
+ 
 
 }

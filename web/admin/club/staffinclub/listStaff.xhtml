@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Staff
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="StaffListForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Staff" >
+
+
+                <h4><h:outputText value="Nombre del Club : #{clubBean.selected.nombre} " /> <br/></h4>       
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="createButton" icon="ui-icon-pencil" 
+                                         value="Agregar staff" 
+                                         actionListener="#{staffInClub.prepareEdit}"
+                                         update=":StaffEditForm" 
+                                         oncomplete="PF('StaffEditDialog').show()" 
+                                         disabled="#{empty clubBean.club.nombre}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-pencil" 
+                                         value="Desvincular Staff" 
+                                         oncomplete="PF('StaffDeleteDialog').show()"
+                                         update=":StaffDeleteForm"
+                                         disabled="#{empty staffInClub.staff.personaId.nombre}" />
+
+                        <p:commandButton id="clubButton" icon="ui-icon-pencil" 
+                                         value="Listado Equipos" 
+                                         action="#{staffInClub.gotoClubPage}"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="staffs" var="staffIn"  value="#{staffInClub.staffList}"
+                             rowKey="#{staffIn.id}"
+                             selection="#{staffInClub.staff}" 
+                             selectionMode="single"
+                             paginator="true" rows="10"
+                             filteredValue="#{staffInClub.filterededStaffList}" >   
+                    <p:ajax event="rowSelect" 
+                            update=":StaffListForm:display :StaffListForm:deleteButton :StaffListForm:confirdialog" 
+                            oncomplete="PF('staffDialog').show()"  />
+                    <f:ajax execute="staffs" event="rowSelect"  />
+                    <p:ajax event="rowUnselect"
+                            update=":StaffListForm:deleteButton"/>
+
+
+                    <f:facet name="header">
+                        Lista de Staff en el Club
+                    </f:facet>
+                    <p:column headerText="Nombre" sortBy="staff.personaId.nombre"
+                              filterBy="staff.personaId.nombre">
+                        <h:outputText value="#{staffIn.personaId.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Apellido" 
+                              sortBy="personaId.apellido"
+                              filterBy="personaId.apellido">
+                        <h:outputText value="#{staffIn.personaId.apellido}"/>
+                    </p:column>               
+                    <p:column headerText="Cargo">                           
+                        <h:outputText value="#{staffIn.cargoId.nombre}"/>
+                    </p:column>         
+                </p:dataTable>
+            </p:fieldset>
+            <p:dialog id="dialog" header="Detelles Staff" widgetVar="staffDialog" resizable="false"
+                      showEffect="fade" hideEffect="explode">
+
+                <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                    <!--                    <f:facet name="header">
+                                            <p:graphicImage value="#{equipoHasJugadorBean.hostImagen}#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.foto}"/>
+                                            <br/>
+                                            <h:outputText value="Nombre:#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}
+                    #{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.apellido}"/>
+  </f:facet>-->
+
+                </h:panelGrid>
+            </p:dialog>
+            <p:confirmDialog id="confirdialog" global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton  id="siButton" value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>     
+            </p:confirmDialog>
+        </h:form>
+        <ui:include src="deleteStaff.xhtml"/>
+        <ui:include src="addStaff.xhtml"/>
+    </ui:define>
+
+</ui:composition>
