@@ -30,8 +30,8 @@
                     <p:tab title="Temporada">
                         <ui:include src="./temporada/list.xhtml"/>
                     </p:tab>
-                    <p:tab  id="fases" title="Fases" disabled="#{empty  temporadaBean.selected.nombre}">
-
+                    <p:tab  id="fases" title="Fases" disabled="#{empty  temporadaBean.selected.nombre}" >
+                        <ui:include src="./fase/list.xhtml"/>
                     </p:tab>
                     <p:tab title="Grupos" disabled="true">
 

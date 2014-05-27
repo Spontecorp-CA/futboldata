@@ -1,18 +1,73 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <body>
+    <ui:define name="title">
+        Administración de Fases
+    </ui:define>
 
-        <h:form id="FaceListForm">
-            
-                <p>Esta es una prueba</p>
-            
-        </h:form>
+    <!--    <ui:define name="content">-->
+    <h:form id="FaseListForm">
 
+        <p:fieldset style="width: 85%" legend="Lista de Fases" >
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                     value="Crear Fase" 
+                                     actionListener="#{faseBean.prepareCreate}"
+                                     update=":calendario:FaseCreateForm"
+                                     oncomplete="PF('FaseCreateDialog').show()"/>
+                    <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                     value="Editar Fase" 
+                                     actionListener="#{faseBean.prepareEdit}"   
+                                     update=":calendario:FaseEditForm"                                        
+                                     oncomplete="PF('FaseEditDialog').show()" 
+                                     disabled="#{empty faseBean.fase.nombre}"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                     immediate="true"/>
+                </p:toolbarGroup>
+            </p:toolbar>
 
-    </body>
-</html>
+            <p:dataTable id="fases" var="fase"  value="#{faseBean.fases}"
+                         rowKey="#{fase.id}"
+                         selection="#{faseBean.fase}" 
+                         selectionMode="single"
+                         paginator="true" rows="10"
+                         filteredValue="#{faseBean.filteredFase}" >   
+                <p:ajax event="rowSelect"
+                        update=":calendario:FaseListForm:createButton
+                        ,:calendario:FaseListForm:editButton,:calendario,
+                        :calendario:FaseEditForm"  />
+                <p:ajax event="rowUnselect" 
+                        update=":calendario:FaseListForm:createButton
+                        ,:calendario:FaseListForm:editButton,:calendario" />
+
+                <p:column headerText="Fase" >
+                    <h:outputText value="#{fase.nombre}"/>
+                </p:column>
+                <p:column headerText="Temporada" >
+                    <h:outputText value="#{fase.temporadaId.nombre}"/>
+                </p:column>
+
+                <p:column headerText="Tipo de Fase">
+                    <h:outputText   value="#{fase.tipoFase== 0?'Grupo':'Llave'}"/>
+                </p:column>
+
+                <p:column headerText="Status">
+                    <h:outputText   value="#{fase.status== 0?'INACTIVO':'ACTIVO'}"/>
+                </p:column>
+
+            </p:dataTable>
+        </p:fieldset>
+
+    </h:form>
+    <ui:include src="create.xhtml"/>
+    <ui:include src="edit.xhtml"/>
+
+</ui:composition>

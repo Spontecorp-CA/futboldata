@@ -7,6 +7,8 @@ package com.spontecorp.futboldata.jpacontroller;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -15,7 +17,7 @@ import javax.persistence.EntityManager;
  */
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
-    
+    private static final Logger logger = LoggerFactory.getLogger(AbstractFacade.class);
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -30,7 +32,7 @@ public abstract class AbstractFacade<T> {
             em.persist(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println(e);
+            logger.debug("Erro en Abstract Facade : "+ e.getMessage());
         }finally{
             if(em != null){
                 em.close();
@@ -46,6 +48,7 @@ public abstract class AbstractFacade<T> {
             em.merge(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
+            logger.debug("Erro en Abstract Facade : "+ e.getMessage());
         } finally {
             if(em != null){
                 em.close();
@@ -61,6 +64,7 @@ public abstract class AbstractFacade<T> {
             em.remove(em.merge(entity));
             em.getTransaction().commit();
         } catch (Exception e) {
+            logger.debug("Erro en Abstract Facade : "+ e.getMessage());
         } finally {
             if (em != null) {
                 em.close();

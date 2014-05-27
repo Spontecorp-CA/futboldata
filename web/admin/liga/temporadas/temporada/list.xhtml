@@ -43,15 +43,11 @@
                     <p:ajax event="rowSelect"
                             update=":calendario:TemporadaListForm:createButton
                             ,:calendario:TemporadaListForm:editButton,:calendario,
-                            :calendario:TemporadaEditForm"  />
+                            :calendario:TemporadaEditForm"  
+                            oncomplete="#{faseBean.setTemporada(temporadaBean.temporada)}" />
                     <p:ajax event="rowUnselect" 
                             update=":calendario:TemporadaListForm:createButton
                             ,:calendario:TemporadaListForm:editButton,:calendario" />
-
-<!--                    <p:column headerText="Liga" sortBy="competicionId.nombre"
-                              filterBy="competicionId.nombre">
-                        <h:outputText value="#{temporada.competicionId.nombre}"/>
-                    </p:column>-->
 
 
                     <p:column headerText="Nombre" sortBy="nombre"
