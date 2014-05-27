@@ -11,7 +11,7 @@
                     <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
                                 action="#{ciudadBean.gotoCiudadPage}"/>
                     <p:menuitem value="Configura Cancha" icon="ui-icon-clipboard"
-                                action="/admin/liga/cancha/list?faces-redirect=true"/>
+                                action="/admin/localidad/cancha/list?faces-redirect=true"/>
                 </p:submenu>
                 <p:submenu label="Asociaciones">
                     <p:menuitem value="Configura Asociación" icon="ui-icon-document"
@@ -31,14 +31,6 @@
                                 action="/admin/liga/competicion/list?faces-redirect=true"/>
                     <p:menuitem value="Configura Categoría" icon="ui-icon-clipboard"
                                 action="/admin/liga/categoria/list?faces-redirect=true"/>
-                    <p:submenu label="Temporadas">
-                        <p:menuitem value="Configura Temporada" icon="ui-icon-calculator"/>
-                        <p:menuitem value="Configura Fase" icon="ui-icon-calculator"/>
-                        <p:menuitem value="Configura Llave" icon="ui-icon-calculator"/>
-                        <p:menuitem value="Configura Grupo" icon="ui-icon-calculator"/>
-                        <p:menuitem value="Configura Jornada" icon="ui-icon-calculator"/>
-                        <p:menuitem value="Configura Partido" icon="ui-icon-calculator"/>
-                    </p:submenu>
                 </p:submenu>
 
                 <p:submenu label="Clubes">
@@ -56,12 +48,12 @@
                     <!--                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"
                                                             action="#{equipoHasJugadorBean.gotoEquipoHasJugadorPage()}"/>-->
                 </p:submenu>
-                
+
                 <p:submenu label="Staff">                    
                     <p:menuitem value="Configura Staff" icon="ui-icon-person"
                                 action="/admin/equipo/staff/list?faces-redirect=true"/>
                 </p:submenu>
-                
+
                 <p:submenu label="Sistema">
                     <p:submenu label="Usuarios"
                                rendered="#{loginBean.isAdmin}">

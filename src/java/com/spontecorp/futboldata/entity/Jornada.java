@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -33,10 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Jornada.findAll", query = "SELECT j FROM Jornada j"),
     @NamedQuery(name = "Jornada.findById", query = "SELECT j FROM Jornada j WHERE j.id = :id"),
     @NamedQuery(name = "Jornada.findByNombre", query = "SELECT j FROM Jornada j WHERE j.nombre = :nombre"),
-    @NamedQuery(name = "Jornada.findByActual", query = "SELECT j FROM Jornada j WHERE j.actual = :actual")})
+    @NamedQuery(name = "Jornada.findByStatus", query = "SELECT j FROM Jornada j WHERE j.status = :status")})
 public class Jornada implements Serializable {
-    @Column(name = "status")
-    private Integer status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +44,8 @@ public class Jornada implements Serializable {
     private Integer id;
     @Column(name = "nombre")
     private Integer nombre;
-    @Column(name = "actual")
-    private Integer actual;
+    @Column(name = "status")
+    private Integer status;
     @JoinColumn(name = "grupo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Grupo grupoId;
@@ -78,12 +77,12 @@ public class Jornada implements Serializable {
         this.nombre = nombre;
     }
 
-    public Integer getActual() {
-        return actual;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setActual(Integer actual) {
-        this.actual = actual;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Grupo getGrupoId() {
@@ -135,14 +134,6 @@ public class Jornada implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Jornada[ id=" + id + " ]";
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
     
 }

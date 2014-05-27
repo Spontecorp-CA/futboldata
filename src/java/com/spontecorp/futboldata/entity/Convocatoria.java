@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -39,6 +40,8 @@ public class Convocatoria implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoriaId")
+    private Collection<Convocado> convocadoCollection;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Equipo equipoId;
@@ -48,8 +51,6 @@ public class Convocatoria implements Serializable {
     @JoinColumn(name = "formacion_id", referencedColumnName = "id")
     @ManyToOne
     private Formacion formacionId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "convocatoriaId")
-    private Collection<Convocado> convocadoCollection;
 
     public Convocatoria() {
     }
@@ -64,6 +65,15 @@ public class Convocatoria implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @XmlTransient
+    public Collection<Convocado> getConvocadoCollection() {
+        return convocadoCollection;
+    }
+
+    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
+        this.convocadoCollection = convocadoCollection;
     }
 
     public Equipo getEquipoId() {
@@ -88,15 +98,6 @@ public class Convocatoria implements Serializable {
 
     public void setFormacionId(Formacion formacionId) {
         this.formacionId = formacionId;
-    }
-
-    @XmlTransient
-    public Collection<Convocado> getConvocadoCollection() {
-        return convocadoCollection;
-    }
-
-    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
-        this.convocadoCollection = convocadoCollection;
     }
 
     @Override

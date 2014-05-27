@@ -38,15 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Equipo.findAll", query = "SELECT e FROM Equipo e"),
     @NamedQuery(name = "Equipo.findById", query = "SELECT e FROM Equipo e WHERE e.id = :id"),
     @NamedQuery(name = "Equipo.findByNombre", query = "SELECT e FROM Equipo e WHERE e.nombre = :nombre"),
+    @NamedQuery(name = "Equipo.findByNombreAlterno", query = "SELECT e FROM Equipo e WHERE e.nombreAlterno = :nombreAlterno"),
     @NamedQuery(name = "Equipo.findByStatus", query = "SELECT e FROM Equipo e WHERE e.status = :status"),
     @NamedQuery(name = "Equipo.findByAbreviacion", query = "SELECT e FROM Equipo e WHERE e.abreviacion = :abreviacion")})
 public class Equipo implements Serializable {
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "logo")
-    private String logo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
-    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,11 +51,18 @@ public class Equipo implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @Size(max = 45)
+    @Column(name = "nombre_alterno")
+    private String nombreAlterno;
     @Column(name = "status")
     private Integer status;
     @Size(max = 10)
     @Column(name = "abreviacion")
     private String abreviacion;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "logo")
+    private String logo;
     @JoinTable(name = "equipo_premio", joinColumns = {
         @JoinColumn(name = "equipo_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "premio_id", referencedColumnName = "id")})
@@ -71,31 +73,34 @@ public class Equipo implements Serializable {
         @JoinColumn(name = "titulo_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Titulo> tituloCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
-    private Collection<Convocatoria> convocatoriaCollection;
-   
-    @OneToMany(mappedBy = "equipoLocalId")
-    private Collection<Partido> partidoCollection;
-    @OneToMany(mappedBy = "equipoVisitanteId")
-    private Collection<Partido> partidoCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoProvedorId")
     private Collection<Transferencia> transferenciaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoReceptorId")
     private Collection<Transferencia> transferenciaCollection1;
     @OneToMany(mappedBy = "equipoId")
     private Collection<Contrato> contratoCollection;
     @OneToMany(mappedBy = "equipoId")
     private Collection<Imagen> imagenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<EquipoInLiga> equipoInLigaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<Convocatoria> convocatoriaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
+    private Collection<EquipoHasJugador> equipoHasJugadorCollection;
+    @OneToMany(mappedBy = "equipoLocalId")
+    private Collection<Partido> partidoCollection;
+    @OneToMany(mappedBy = "equipoVisitanteId")
+    private Collection<Partido> partidoCollection1;
     @OneToMany(mappedBy = "equipoId")
     private Collection<Staff> staffCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipo")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
     private Collection<EquipoCancha> equipoCanchaCollection;
-    @JoinColumn(name = "club_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Club clubId;
     @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Categoria categoriaId;
+    @JoinColumn(name = "club_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Club clubId;
     @OneToMany(mappedBy = "equipoId")
     private Collection<RedSocial> redSocialCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "equipoId")
@@ -124,6 +129,14 @@ public class Equipo implements Serializable {
         this.nombre = nombre;
     }
 
+    public String getNombreAlterno() {
+        return nombreAlterno;
+    }
+
+    public void setNombreAlterno(String nombreAlterno) {
+        this.nombreAlterno = nombreAlterno;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -138,6 +151,14 @@ public class Equipo implements Serializable {
 
     public void setAbreviacion(String abreviacion) {
         this.abreviacion = abreviacion;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     @XmlTransient
@@ -156,42 +177,6 @@ public class Equipo implements Serializable {
 
     public void setTituloCollection(Collection<Titulo> tituloCollection) {
         this.tituloCollection = tituloCollection;
-    }
-
-    @XmlTransient
-    public Collection<Convocatoria> getConvocatoriaCollection() {
-        return convocatoriaCollection;
-    }
-
-    public void setConvocatoriaCollection(Collection<Convocatoria> convocatoriaCollection) {
-        this.convocatoriaCollection = convocatoriaCollection;
-    }
-
-    @XmlTransient
-    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
-        return equipoHasJugadorCollection;
-    }
-
-    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
-        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
-    }
-
-    @XmlTransient
-    public Collection<Partido> getPartidoCollection() {
-        return partidoCollection;
-    }
-
-    public void setPartidoCollection(Collection<Partido> partidoCollection) {
-        this.partidoCollection = partidoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Partido> getPartidoCollection1() {
-        return partidoCollection1;
-    }
-
-    public void setPartidoCollection1(Collection<Partido> partidoCollection1) {
-        this.partidoCollection1 = partidoCollection1;
     }
 
     @XmlTransient
@@ -231,6 +216,51 @@ public class Equipo implements Serializable {
     }
 
     @XmlTransient
+    public Collection<EquipoInLiga> getEquipoInLigaCollection() {
+        return equipoInLigaCollection;
+    }
+
+    public void setEquipoInLigaCollection(Collection<EquipoInLiga> equipoInLigaCollection) {
+        this.equipoInLigaCollection = equipoInLigaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Convocatoria> getConvocatoriaCollection() {
+        return convocatoriaCollection;
+    }
+
+    public void setConvocatoriaCollection(Collection<Convocatoria> convocatoriaCollection) {
+        this.convocatoriaCollection = convocatoriaCollection;
+    }
+
+    @XmlTransient
+    public Collection<EquipoHasJugador> getEquipoHasJugadorCollection() {
+        return equipoHasJugadorCollection;
+    }
+
+    public void setEquipoHasJugadorCollection(Collection<EquipoHasJugador> equipoHasJugadorCollection) {
+        this.equipoHasJugadorCollection = equipoHasJugadorCollection;
+    }
+
+    @XmlTransient
+    public Collection<Partido> getPartidoCollection() {
+        return partidoCollection;
+    }
+
+    public void setPartidoCollection(Collection<Partido> partidoCollection) {
+        this.partidoCollection = partidoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Partido> getPartidoCollection1() {
+        return partidoCollection1;
+    }
+
+    public void setPartidoCollection1(Collection<Partido> partidoCollection1) {
+        this.partidoCollection1 = partidoCollection1;
+    }
+
+    @XmlTransient
     public Collection<Staff> getStaffCollection() {
         return staffCollection;
     }
@@ -248,20 +278,20 @@ public class Equipo implements Serializable {
         this.equipoCanchaCollection = equipoCanchaCollection;
     }
 
-    public Club getClubId() {
-        return clubId;
-    }
-
-    public void setClubId(Club clubId) {
-        this.clubId = clubId;
-    }
-
     public Categoria getCategoriaId() {
         return categoriaId;
     }
 
     public void setCategoriaId(Categoria categoriaId) {
         this.categoriaId = categoriaId;
+    }
+
+    public Club getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(Club clubId) {
+        this.clubId = clubId;
     }
 
     @XmlTransient
@@ -304,16 +334,7 @@ public class Equipo implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
+        return "com.spontecorp.futboldata.entity.Equipo[ id=" + id + " ]";
     }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
     
 }

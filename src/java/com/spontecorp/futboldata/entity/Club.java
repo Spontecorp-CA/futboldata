@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -41,10 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Club.findByYearFundacion", query = "SELECT c FROM Club c WHERE c.yearFundacion = :yearFundacion"),
     @NamedQuery(name = "Club.findByStatus", query = "SELECT c FROM Club c WHERE c.status = :status")})
 public class Club implements Serializable {
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "logo")
-    private String logo;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,22 +62,26 @@ public class Club implements Serializable {
     private String historia;
     @Column(name = "status")
     private Integer status;
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "logo")
+    private String logo;
     @JoinTable(name = "club_premio", joinColumns = {
         @JoinColumn(name = "club_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "premio_id", referencedColumnName = "id")})
     @ManyToMany
     private Collection<Premio> premioCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL)    
+    @ManyToOne
     private Direccion direccionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clubId")
-    private Collection<Audio> audioCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "club")
     private Collection<ClubCancha> clubCanchaCollection;
     @OneToMany(mappedBy = "clubId")
     private Collection<Contrato> contratoCollection;
     @OneToMany(mappedBy = "clubId")
     private Collection<Imagen> imagenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clubId")
+    private Collection<Audio> audioCollection;
     @OneToMany(mappedBy = "clubId")
     private Collection<Staff> staffCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clubId")
@@ -140,6 +141,14 @@ public class Club implements Serializable {
         this.status = status;
     }
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
     @XmlTransient
     public Collection<Premio> getPremioCollection() {
         return premioCollection;
@@ -155,15 +164,6 @@ public class Club implements Serializable {
 
     public void setDireccionId(Direccion direccionId) {
         this.direccionId = direccionId;
-    }
-
-    @XmlTransient
-    public Collection<Audio> getAudioCollection() {
-        return audioCollection;
-    }
-
-    public void setAudioCollection(Collection<Audio> audioCollection) {
-        this.audioCollection = audioCollection;
     }
 
     @XmlTransient
@@ -191,6 +191,15 @@ public class Club implements Serializable {
 
     public void setImagenCollection(Collection<Imagen> imagenCollection) {
         this.imagenCollection = imagenCollection;
+    }
+
+    @XmlTransient
+    public Collection<Audio> getAudioCollection() {
+        return audioCollection;
+    }
+
+    public void setAudioCollection(Collection<Audio> audioCollection) {
+        this.audioCollection = audioCollection;
     }
 
     @XmlTransient
@@ -242,15 +251,7 @@ public class Club implements Serializable {
 
     @Override
     public String toString() {
-        return nombre;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
+        return "com.spontecorp.futboldata.entity.Club[ id=" + id + " ]";
     }
     
 }

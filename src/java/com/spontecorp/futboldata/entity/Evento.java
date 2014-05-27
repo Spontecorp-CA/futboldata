@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -50,7 +51,7 @@ public class Evento implements Serializable {
     @Size(max = 65535)
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "evento")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private Collection<PartidoEvento> partidoEventoCollection;
 
     public Evento() {

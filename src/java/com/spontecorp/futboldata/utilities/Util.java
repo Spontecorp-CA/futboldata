@@ -38,7 +38,8 @@ public class Util implements Serializable {
     public static final String rutaRelativa = "resources\\images\\";
     public static final Logger logger = LoggerFactory.getLogger(Util.class);
 
-    public static final String STORAGE_ROOT = "C:/Program Files/Apache Software Foundation/Apache Tomcat 7.0.41/webapps/imagenes/";
+    //public static final String STORAGE_ROOT = "C:/Program Files/Apache Software Foundation/Apache Tomcat 7.0.41/webapps/imagenes/";
+    public static final String STORAGE_ROOT = "C:/Servidores/apache-tomcat-7.0.41/webapps/imagenes/";
     private static String HostImagen = "http://" + FacesContext.getCurrentInstance().getExternalContext()
             .getRequestServerName() + ":" + FacesContext.getCurrentInstance().getExternalContext()
             .getRequestServerPort() + "/imagenes/";
@@ -123,27 +124,20 @@ public class Util implements Serializable {
 
         try {
             ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
-
             File path = new File(STORAGE_ROOT + ruta);
             if (!path.exists()) {
                 path.mkdirs();
             }
 
             File targetFolder = new File(path, nombreArchivo);
-
-            logger.debug("Donde guardo la imagen " + targetFolder);
+            logger.debug("Lugar donde guardo la imagen: " + targetFolder);
             InputStream inputStream = event.getFile().getInputstream();
-
             OutputStream out = new FileOutputStream(targetFolder);
 
             int read = 0;
-
             byte[] bytes = new byte[1024];
-
             while ((read = inputStream.read(bytes)) != -1) {
-
                 out.write(bytes, 0, read);
-
             }
 
             inputStream.close();
@@ -152,9 +146,7 @@ public class Util implements Serializable {
             out.close();
 
         } catch (IOException e) {
-
             logger.debug("Error al cargar la imagen :", e);
-
         }
 
     }
@@ -162,8 +154,9 @@ public class Util implements Serializable {
     public static boolean isValidationFailed() {
         return FacesContext.getCurrentInstance().isValidationFailed();
     }
-    
+
     public static enum PersistAction {
+
         CREATE,
         DELETE,
         UPDATE

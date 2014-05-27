@@ -2,11 +2,16 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -23,19 +28,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PartidoArbitro.findAll", query = "SELECT p FROM PartidoArbitro p"),
-    @NamedQuery(name = "PartidoArbitro.findById", query = "SELECT p FROM PartidoArbitro p WHERE p.partidoArbitroPK.id = :id"),
-    @NamedQuery(name = "PartidoArbitro.findByPartidoId", query = "SELECT p FROM PartidoArbitro p WHERE p.partidoArbitroPK.partidoId = :partidoId"),
-    @NamedQuery(name = "PartidoArbitro.findByArbitroId", query = "SELECT p FROM PartidoArbitro p WHERE p.partidoArbitroPK.arbitroId = :arbitroId")})
+    @NamedQuery(name = "PartidoArbitro.findById", query = "SELECT p FROM PartidoArbitro p WHERE p.id = :id")})
 public class PartidoArbitro implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected PartidoArbitroPK partidoArbitroPK;
-    @JoinColumn(name = "partido_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @JoinColumn(name = "arbitro_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Partido partido;
-    @JoinColumn(name = "arbitro_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Arbitro arbitroId;
+    @JoinColumn(name = "partido_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Arbitro arbitro;
+    private Partido partidoId;
     @JoinColumn(name = "tipo_arbitro_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TipoArbitro tipoArbitroId;
@@ -43,36 +49,32 @@ public class PartidoArbitro implements Serializable {
     public PartidoArbitro() {
     }
 
-    public PartidoArbitro(PartidoArbitroPK partidoArbitroPK) {
-        this.partidoArbitroPK = partidoArbitroPK;
+    public PartidoArbitro(Integer id) {
+        this.id = id;
     }
 
-    public PartidoArbitro(int id, int partidoId, int arbitroId) {
-        this.partidoArbitroPK = new PartidoArbitroPK(id, partidoId, arbitroId);
+    public Integer getId() {
+        return id;
     }
 
-    public PartidoArbitroPK getPartidoArbitroPK() {
-        return partidoArbitroPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setPartidoArbitroPK(PartidoArbitroPK partidoArbitroPK) {
-        this.partidoArbitroPK = partidoArbitroPK;
+    public Arbitro getArbitroId() {
+        return arbitroId;
     }
 
-    public Partido getPartido() {
-        return partido;
+    public void setArbitroId(Arbitro arbitroId) {
+        this.arbitroId = arbitroId;
     }
 
-    public void setPartido(Partido partido) {
-        this.partido = partido;
+    public Partido getPartidoId() {
+        return partidoId;
     }
 
-    public Arbitro getArbitro() {
-        return arbitro;
-    }
-
-    public void setArbitro(Arbitro arbitro) {
-        this.arbitro = arbitro;
+    public void setPartidoId(Partido partidoId) {
+        this.partidoId = partidoId;
     }
 
     public TipoArbitro getTipoArbitroId() {
@@ -86,7 +88,7 @@ public class PartidoArbitro implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (partidoArbitroPK != null ? partidoArbitroPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -97,7 +99,7 @@ public class PartidoArbitro implements Serializable {
             return false;
         }
         PartidoArbitro other = (PartidoArbitro) object;
-        if ((this.partidoArbitroPK == null && other.partidoArbitroPK != null) || (this.partidoArbitroPK != null && !this.partidoArbitroPK.equals(other.partidoArbitroPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -105,7 +107,7 @@ public class PartidoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.PartidoArbitro[ partidoArbitroPK=" + partidoArbitroPK + " ]";
+        return "com.spontecorp.futboldata.entity.PartidoArbitro[ id=" + id + " ]";
     }
     
 }

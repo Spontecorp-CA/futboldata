@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -33,10 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Grupo.findAll", query = "SELECT g FROM Grupo g"),
     @NamedQuery(name = "Grupo.findById", query = "SELECT g FROM Grupo g WHERE g.id = :id"),
-    @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre")})
+    @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre"),
+    @NamedQuery(name = "Grupo.findByStatus", query = "SELECT g FROM Grupo g WHERE g.status = :status")})
 public class Grupo implements Serializable {
-    @Column(name = "status")
-    private Integer status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +46,8 @@ public class Grupo implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "status")
+    private Integer status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
     private Collection<Jornada> jornadaCollection;
     @JoinColumn(name = "fase_id", referencedColumnName = "id")
@@ -73,6 +75,14 @@ public class Grupo implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @XmlTransient
@@ -115,14 +125,6 @@ public class Grupo implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Grupo[ id=" + id + " ]";
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
     
 }

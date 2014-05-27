@@ -2,12 +2,16 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,22 +28,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "PartidoEvento.findAll", query = "SELECT p FROM PartidoEvento p"),
-    @NamedQuery(name = "PartidoEvento.findById", query = "SELECT p FROM PartidoEvento p WHERE p.partidoEventoPK.id = :id"),
-    @NamedQuery(name = "PartidoEvento.findByPartidoId", query = "SELECT p FROM PartidoEvento p WHERE p.partidoEventoPK.partidoId = :partidoId"),
-    @NamedQuery(name = "PartidoEvento.findByEventoId", query = "SELECT p FROM PartidoEvento p WHERE p.partidoEventoPK.eventoId = :eventoId"),
+    @NamedQuery(name = "PartidoEvento.findById", query = "SELECT p FROM PartidoEvento p WHERE p.id = :id"),
     @NamedQuery(name = "PartidoEvento.findByMinuto", query = "SELECT p FROM PartidoEvento p WHERE p.minuto = :minuto")})
 public class PartidoEvento implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected PartidoEventoPK partidoEventoPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "minuto")
     private Integer minuto;
-    @JoinColumn(name = "partido_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Partido partido;
-    @JoinColumn(name = "evento_id", referencedColumnName = "id", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Evento evento;
     @JoinColumn(name = "jugador1_id", referencedColumnName = "id")
     @ManyToOne
     private Jugador jugador1Id;
@@ -49,24 +48,26 @@ public class PartidoEvento implements Serializable {
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     @ManyToOne
     private Staff staffId;
+    @JoinColumn(name = "evento_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Evento eventoId;
+    @JoinColumn(name = "partido_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Partido partidoId;
 
     public PartidoEvento() {
     }
 
-    public PartidoEvento(PartidoEventoPK partidoEventoPK) {
-        this.partidoEventoPK = partidoEventoPK;
+    public PartidoEvento(Integer id) {
+        this.id = id;
     }
 
-    public PartidoEvento(int id, int partidoId, int eventoId) {
-        this.partidoEventoPK = new PartidoEventoPK(id, partidoId, eventoId);
+    public Integer getId() {
+        return id;
     }
 
-    public PartidoEventoPK getPartidoEventoPK() {
-        return partidoEventoPK;
-    }
-
-    public void setPartidoEventoPK(PartidoEventoPK partidoEventoPK) {
-        this.partidoEventoPK = partidoEventoPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getMinuto() {
@@ -75,22 +76,6 @@ public class PartidoEvento implements Serializable {
 
     public void setMinuto(Integer minuto) {
         this.minuto = minuto;
-    }
-
-    public Partido getPartido() {
-        return partido;
-    }
-
-    public void setPartido(Partido partido) {
-        this.partido = partido;
-    }
-
-    public Evento getEvento() {
-        return evento;
-    }
-
-    public void setEvento(Evento evento) {
-        this.evento = evento;
     }
 
     public Jugador getJugador1Id() {
@@ -117,10 +102,26 @@ public class PartidoEvento implements Serializable {
         this.staffId = staffId;
     }
 
+    public Evento getEventoId() {
+        return eventoId;
+    }
+
+    public void setEventoId(Evento eventoId) {
+        this.eventoId = eventoId;
+    }
+
+    public Partido getPartidoId() {
+        return partidoId;
+    }
+
+    public void setPartidoId(Partido partidoId) {
+        this.partidoId = partidoId;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (partidoEventoPK != null ? partidoEventoPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -131,7 +132,7 @@ public class PartidoEvento implements Serializable {
             return false;
         }
         PartidoEvento other = (PartidoEvento) object;
-        if ((this.partidoEventoPK == null && other.partidoEventoPK != null) || (this.partidoEventoPK != null && !this.partidoEventoPK.equals(other.partidoEventoPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -139,7 +140,7 @@ public class PartidoEvento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.PartidoEvento[ partidoEventoPK=" + partidoEventoPK + " ]";
+        return "com.spontecorp.futboldata.entity.PartidoEvento[ id=" + id + " ]";
     }
     
 }

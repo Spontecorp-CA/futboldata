@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -49,17 +50,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Agente> agenteCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Staff> staffCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Jugador> jugadorCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
-    private Collection<Arbitro> arbitroCollection;
-    @OneToMany(mappedBy = "personaId")
-    private Collection<Imagen> imagenCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,12 +93,20 @@ public class Persona implements Serializable {
     @Size(max = 65535)
     @Column(name = "foto")
     private String foto;
-
-    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Direccion direccionId;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Jugador> jugadorCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Arbitro> arbitroCollection;
+    @JoinColumn(name = "direccion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Direccion direccionId;
+    @OneToMany(mappedBy = "personaId")
+    private Collection<Imagen> imagenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Agente> agenteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
+    private Collection<Staff> staffCollection;
+    @OneToMany(mappedBy = "personaId")
     private Collection<RedSocial> redSocialCollection;
 
     public Persona() {
@@ -232,15 +230,6 @@ public class Persona implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Agente> getAgenteCollection() {
-        return agenteCollection;
-    }
-
-    public void setAgenteCollection(Collection<Agente> agenteCollection) {
-        this.agenteCollection = agenteCollection;
-    }
-
-    @XmlTransient
     public Collection<Arbitro> getArbitroCollection() {
         return arbitroCollection;
     }
@@ -264,6 +253,15 @@ public class Persona implements Serializable {
 
     public void setImagenCollection(Collection<Imagen> imagenCollection) {
         this.imagenCollection = imagenCollection;
+    }
+
+    @XmlTransient
+    public Collection<Agente> getAgenteCollection() {
+        return agenteCollection;
+    }
+
+    public void setAgenteCollection(Collection<Agente> agenteCollection) {
+        this.agenteCollection = agenteCollection;
     }
 
     @XmlTransient
@@ -308,5 +306,5 @@ public class Persona implements Serializable {
     public String toString() {
         return "com.spontecorp.futboldata.entity.Persona[ id=" + id + " ]";
     }
-
+    
 }

@@ -1,7 +1,6 @@
 package com.spontecorp.futboldata.viewcontroller.converter;
 
 import com.spontecorp.futboldata.entity.Categoria;
-import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -12,7 +11,7 @@ import javax.faces.convert.FacesConverter;
  *
  * @author jgcastillo
  */
-@FacesConverter(forClass = Categoria.class)
+@FacesConverter(forClass = Categoria.class,value = "categoriaConverter")
 public class CategoriaConverter implements Converter{
 
     private CategoriaFacade controller = null;

@@ -9,7 +9,7 @@
     <p:dialog id="LigaCreateDlg" widgetVar="LigaCreateDialog" modal="true"
               resizable="false" appendTo="@(body)" header="Creación de Liga">
         <h:form id="LigaCreateForm">
-            <h:panelGroup id="display">
+            <h:panelGroup id="display" class="top-aligned-columns">
                 <h:panelGrid columns="2" rendered="#{ligaBean.selected != null}">
                     <h:panelGrid columns="2">
                         <p:outputLabel value="* Nombre: " for="nombre" />

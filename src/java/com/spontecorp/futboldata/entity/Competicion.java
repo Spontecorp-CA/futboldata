@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -58,18 +59,20 @@ public class Competicion implements Serializable {
     private String descripcion;
     @ManyToMany(mappedBy = "competicionCollection")
     private Collection<Arbitro> arbitroCollection;
+    @OneToMany(mappedBy = "competicionId")
+    private Collection<Contrato> contratoCollection;
+    @OneToMany(mappedBy = "competicionId")
+    private Collection<Imagen> imagenCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competicionId")
+    private Collection<EquipoInLiga> equipoInLigaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "competicionId")
     private Collection<Temporada> temporadaCollection;
     @JoinColumn(name = "asociacion_id", referencedColumnName = "id")
     @ManyToOne
     private Asociacion asociacionId;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Direccion direccionId;
-    @OneToMany(mappedBy = "competicionId")
-    private Collection<Contrato> contratoCollection;
-    @OneToMany(mappedBy = "competicionId")
-    private Collection<Imagen> imagenCollection;
     @OneToMany(mappedBy = "competicionId")
     private Collection<Staff> staffCollection;
     @OneToMany(mappedBy = "competicionId")
@@ -129,6 +132,33 @@ public class Competicion implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Contrato> getContratoCollection() {
+        return contratoCollection;
+    }
+
+    public void setContratoCollection(Collection<Contrato> contratoCollection) {
+        this.contratoCollection = contratoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Imagen> getImagenCollection() {
+        return imagenCollection;
+    }
+
+    public void setImagenCollection(Collection<Imagen> imagenCollection) {
+        this.imagenCollection = imagenCollection;
+    }
+
+    @XmlTransient
+    public Collection<EquipoInLiga> getEquipoInLigaCollection() {
+        return equipoInLigaCollection;
+    }
+
+    public void setEquipoInLigaCollection(Collection<EquipoInLiga> equipoInLigaCollection) {
+        this.equipoInLigaCollection = equipoInLigaCollection;
+    }
+
+    @XmlTransient
     public Collection<Temporada> getTemporadaCollection() {
         return temporadaCollection;
     }
@@ -151,24 +181,6 @@ public class Competicion implements Serializable {
 
     public void setDireccionId(Direccion direccionId) {
         this.direccionId = direccionId;
-    }
-
-    @XmlTransient
-    public Collection<Contrato> getContratoCollection() {
-        return contratoCollection;
-    }
-
-    public void setContratoCollection(Collection<Contrato> contratoCollection) {
-        this.contratoCollection = contratoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Imagen> getImagenCollection() {
-        return imagenCollection;
-    }
-
-    public void setImagenCollection(Collection<Imagen> imagenCollection) {
-        this.imagenCollection = imagenCollection;
     }
 
     @XmlTransient
@@ -211,7 +223,7 @@ public class Competicion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Competicion[ id=" + id + " ]";
+        return nombre;
     }
     
 }

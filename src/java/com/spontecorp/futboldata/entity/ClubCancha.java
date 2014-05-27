@@ -2,12 +2,16 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,40 +28,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ClubCancha.findAll", query = "SELECT c FROM ClubCancha c"),
-    @NamedQuery(name = "ClubCancha.findById", query = "SELECT c FROM ClubCancha c WHERE c.clubCanchaPK.id = :id"),
-    @NamedQuery(name = "ClubCancha.findByClubId", query = "SELECT c FROM ClubCancha c WHERE c.clubCanchaPK.clubId = :clubId"),
-    @NamedQuery(name = "ClubCancha.findByCanchaId", query = "SELECT c FROM ClubCancha c WHERE c.clubCanchaPK.canchaId = :canchaId"),
+    @NamedQuery(name = "ClubCancha.findById", query = "SELECT c FROM ClubCancha c WHERE c.id = :id"),
     @NamedQuery(name = "ClubCancha.findByStatus", query = "SELECT c FROM ClubCancha c WHERE c.status = :status")})
 public class ClubCancha implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ClubCanchaPK clubCanchaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "status")
     private Integer status;
-    @JoinColumn(name = "club_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Club club;
-    @JoinColumn(name = "cancha_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Cancha canchaId;
+    @JoinColumn(name = "club_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Cancha cancha;
+    private Club clubId;
 
     public ClubCancha() {
     }
 
-    public ClubCancha(ClubCanchaPK clubCanchaPK) {
-        this.clubCanchaPK = clubCanchaPK;
+    public ClubCancha(Integer id) {
+        this.id = id;
     }
 
-    public ClubCancha(int id, int clubId, int canchaId) {
-        this.clubCanchaPK = new ClubCanchaPK(id, clubId, canchaId);
+    public Integer getId() {
+        return id;
     }
 
-    public ClubCanchaPK getClubCanchaPK() {
-        return clubCanchaPK;
-    }
-
-    public void setClubCanchaPK(ClubCanchaPK clubCanchaPK) {
-        this.clubCanchaPK = clubCanchaPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getStatus() {
@@ -68,26 +69,26 @@ public class ClubCancha implements Serializable {
         this.status = status;
     }
 
-    public Club getClub() {
-        return club;
+    public Cancha getCanchaId() {
+        return canchaId;
     }
 
-    public void setClub(Club club) {
-        this.club = club;
+    public void setCanchaId(Cancha canchaId) {
+        this.canchaId = canchaId;
     }
 
-    public Cancha getCancha() {
-        return cancha;
+    public Club getClubId() {
+        return clubId;
     }
 
-    public void setCancha(Cancha cancha) {
-        this.cancha = cancha;
+    public void setClubId(Club clubId) {
+        this.clubId = clubId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (clubCanchaPK != null ? clubCanchaPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +99,7 @@ public class ClubCancha implements Serializable {
             return false;
         }
         ClubCancha other = (ClubCancha) object;
-        if ((this.clubCanchaPK == null && other.clubCanchaPK != null) || (this.clubCanchaPK != null && !this.clubCanchaPK.equals(other.clubCanchaPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -106,7 +107,7 @@ public class ClubCancha implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.ClubCancha[ clubCanchaPK=" + clubCanchaPK + " ]";
+        return "com.spontecorp.futboldata.entity.ClubCancha[ id=" + id + " ]";
     }
     
 }

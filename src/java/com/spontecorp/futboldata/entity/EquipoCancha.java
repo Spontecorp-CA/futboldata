@@ -2,12 +2,16 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -24,40 +28,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "EquipoCancha.findAll", query = "SELECT e FROM EquipoCancha e"),
-    @NamedQuery(name = "EquipoCancha.findById", query = "SELECT e FROM EquipoCancha e WHERE e.equipoCanchaPK.id = :id"),
-    @NamedQuery(name = "EquipoCancha.findByEquipoId", query = "SELECT e FROM EquipoCancha e WHERE e.equipoCanchaPK.equipoId = :equipoId"),
-    @NamedQuery(name = "EquipoCancha.findByCanchaId", query = "SELECT e FROM EquipoCancha e WHERE e.equipoCanchaPK.canchaId = :canchaId"),
+    @NamedQuery(name = "EquipoCancha.findById", query = "SELECT e FROM EquipoCancha e WHERE e.id = :id"),
     @NamedQuery(name = "EquipoCancha.findByStatus", query = "SELECT e FROM EquipoCancha e WHERE e.status = :status")})
 public class EquipoCancha implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected EquipoCanchaPK equipoCanchaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "status")
     private Integer status;
-    @JoinColumn(name = "equipo_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Equipo equipo;
-    @JoinColumn(name = "cancha_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Cancha canchaId;
+    @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Cancha cancha;
+    private Equipo equipoId;
 
     public EquipoCancha() {
     }
 
-    public EquipoCancha(EquipoCanchaPK equipoCanchaPK) {
-        this.equipoCanchaPK = equipoCanchaPK;
+    public EquipoCancha(Integer id) {
+        this.id = id;
     }
 
-    public EquipoCancha(int id, int equipoId, int canchaId) {
-        this.equipoCanchaPK = new EquipoCanchaPK(id, equipoId, canchaId);
+    public Integer getId() {
+        return id;
     }
 
-    public EquipoCanchaPK getEquipoCanchaPK() {
-        return equipoCanchaPK;
-    }
-
-    public void setEquipoCanchaPK(EquipoCanchaPK equipoCanchaPK) {
-        this.equipoCanchaPK = equipoCanchaPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getStatus() {
@@ -68,26 +69,26 @@ public class EquipoCancha implements Serializable {
         this.status = status;
     }
 
-    public Equipo getEquipo() {
-        return equipo;
+    public Cancha getCanchaId() {
+        return canchaId;
     }
 
-    public void setEquipo(Equipo equipo) {
-        this.equipo = equipo;
+    public void setCanchaId(Cancha canchaId) {
+        this.canchaId = canchaId;
     }
 
-    public Cancha getCancha() {
-        return cancha;
+    public Equipo getEquipoId() {
+        return equipoId;
     }
 
-    public void setCancha(Cancha cancha) {
-        this.cancha = cancha;
+    public void setEquipoId(Equipo equipoId) {
+        this.equipoId = equipoId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (equipoCanchaPK != null ? equipoCanchaPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -98,7 +99,7 @@ public class EquipoCancha implements Serializable {
             return false;
         }
         EquipoCancha other = (EquipoCancha) object;
-        if ((this.equipoCanchaPK == null && other.equipoCanchaPK != null) || (this.equipoCanchaPK != null && !this.equipoCanchaPK.equals(other.equipoCanchaPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -106,7 +107,7 @@ public class EquipoCancha implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.EquipoCancha[ equipoCanchaPK=" + equipoCanchaPK + " ]";
+        return "com.spontecorp.futboldata.entity.EquipoCancha[ id=" + id + " ]";
     }
     
 }

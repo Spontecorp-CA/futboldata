@@ -2,13 +2,17 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -27,17 +31,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Transferencia.findAll", query = "SELECT t FROM Transferencia t"),
-    @NamedQuery(name = "Transferencia.findById", query = "SELECT t FROM Transferencia t WHERE t.transferenciaPK.id = :id"),
-    @NamedQuery(name = "Transferencia.findByJugadorId", query = "SELECT t FROM Transferencia t WHERE t.transferenciaPK.jugadorId = :jugadorId"),
-    @NamedQuery(name = "Transferencia.findByEquipoProvedorId", query = "SELECT t FROM Transferencia t WHERE t.transferenciaPK.equipoProvedorId = :equipoProvedorId"),
-    @NamedQuery(name = "Transferencia.findByEquipoReceptorId", query = "SELECT t FROM Transferencia t WHERE t.transferenciaPK.equipoReceptorId = :equipoReceptorId"),
+    @NamedQuery(name = "Transferencia.findById", query = "SELECT t FROM Transferencia t WHERE t.id = :id"),
     @NamedQuery(name = "Transferencia.findByFechaIngreso", query = "SELECT t FROM Transferencia t WHERE t.fechaIngreso = :fechaIngreso"),
     @NamedQuery(name = "Transferencia.findByFechaEgreso", query = "SELECT t FROM Transferencia t WHERE t.fechaEgreso = :fechaEgreso"),
     @NamedQuery(name = "Transferencia.findByAltaBaja", query = "SELECT t FROM Transferencia t WHERE t.altaBaja = :altaBaja")})
 public class Transferencia implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected TransferenciaPK transferenciaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "fecha_ingreso")
     @Temporal(TemporalType.DATE)
     private Date fechaIngreso;
@@ -46,33 +50,29 @@ public class Transferencia implements Serializable {
     private Date fechaEgreso;
     @Column(name = "alta_baja")
     private Integer altaBaja;
-    @JoinColumn(name = "jugador_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "equipo_provedor_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Jugador jugador;
-    @JoinColumn(name = "equipo_provedor_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Equipo equipoProvedorId;
+    @JoinColumn(name = "jugador_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Equipo equipo;
-    @JoinColumn(name = "equipo_receptor_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Jugador jugadorId;
+    @JoinColumn(name = "equipo_receptor_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Equipo equipo1;
+    private Equipo equipoReceptorId;
 
     public Transferencia() {
     }
 
-    public Transferencia(TransferenciaPK transferenciaPK) {
-        this.transferenciaPK = transferenciaPK;
+    public Transferencia(Integer id) {
+        this.id = id;
     }
 
-    public Transferencia(int id, int jugadorId, int equipoProvedorId, int equipoReceptorId) {
-        this.transferenciaPK = new TransferenciaPK(id, jugadorId, equipoProvedorId, equipoReceptorId);
+    public Integer getId() {
+        return id;
     }
 
-    public TransferenciaPK getTransferenciaPK() {
-        return transferenciaPK;
-    }
-
-    public void setTransferenciaPK(TransferenciaPK transferenciaPK) {
-        this.transferenciaPK = transferenciaPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getFechaIngreso() {
@@ -99,34 +99,34 @@ public class Transferencia implements Serializable {
         this.altaBaja = altaBaja;
     }
 
-    public Jugador getJugador() {
-        return jugador;
+    public Equipo getEquipoProvedorId() {
+        return equipoProvedorId;
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
+    public void setEquipoProvedorId(Equipo equipoProvedorId) {
+        this.equipoProvedorId = equipoProvedorId;
     }
 
-    public Equipo getEquipo() {
-        return equipo;
+    public Jugador getJugadorId() {
+        return jugadorId;
     }
 
-    public void setEquipo(Equipo equipo) {
-        this.equipo = equipo;
+    public void setJugadorId(Jugador jugadorId) {
+        this.jugadorId = jugadorId;
     }
 
-    public Equipo getEquipo1() {
-        return equipo1;
+    public Equipo getEquipoReceptorId() {
+        return equipoReceptorId;
     }
 
-    public void setEquipo1(Equipo equipo1) {
-        this.equipo1 = equipo1;
+    public void setEquipoReceptorId(Equipo equipoReceptorId) {
+        this.equipoReceptorId = equipoReceptorId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (transferenciaPK != null ? transferenciaPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -137,7 +137,7 @@ public class Transferencia implements Serializable {
             return false;
         }
         Transferencia other = (Transferencia) object;
-        if ((this.transferenciaPK == null && other.transferenciaPK != null) || (this.transferenciaPK != null && !this.transferenciaPK.equals(other.transferenciaPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -145,7 +145,7 @@ public class Transferencia implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Transferencia[ transferenciaPK=" + transferenciaPK + " ]";
+        return "com.spontecorp.futboldata.entity.Transferencia[ id=" + id + " ]";
     }
     
 }

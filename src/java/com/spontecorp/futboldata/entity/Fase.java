@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,10 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Fase.findAll", query = "SELECT f FROM Fase f"),
     @NamedQuery(name = "Fase.findById", query = "SELECT f FROM Fase f WHERE f.id = :id"),
-    @NamedQuery(name = "Fase.findByNombre", query = "SELECT f FROM Fase f WHERE f.nombre = :nombre")})
+    @NamedQuery(name = "Fase.findByNombre", query = "SELECT f FROM Fase f WHERE f.nombre = :nombre"),
+    @NamedQuery(name = "Fase.findByStatus", query = "SELECT f FROM Fase f WHERE f.status = :status")})
 public class Fase implements Serializable {
-    @Column(name = "status")
-    private Integer status;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +48,12 @@ public class Fase implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "status")
+    private Integer status;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "tipo_fase")
+    private int tipoFase;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "faseId")
     private Collection<Grupo> grupoCollection;
     @JoinColumn(name = "temporada_id", referencedColumnName = "id")
@@ -75,6 +83,14 @@ public class Fase implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @XmlTransient
@@ -128,12 +144,12 @@ public class Fase implements Serializable {
         return "com.spontecorp.futboldata.entity.Fase[ id=" + id + " ]";
     }
 
-    public Integer getStatus() {
-        return status;
+    public int getTipoFase() {
+        return tipoFase;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setTipoFase(int tipoFase) {
+        this.tipoFase = tipoFase;
     }
     
 }

@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -46,7 +47,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Partido.findByTxRadio", query = "SELECT p FROM Partido p WHERE p.txRadio = :txRadio"),
     @NamedQuery(name = "Partido.findByAsistencia", query = "SELECT p FROM Partido p WHERE p.asistencia = :asistencia"),
     @NamedQuery(name = "Partido.findByGolesEquipoLocal", query = "SELECT p FROM Partido p WHERE p.golesEquipoLocal = :golesEquipoLocal"),
-    @NamedQuery(name = "Partido.findByGolesEquipoVisitante", query = "SELECT p FROM Partido p WHERE p.golesEquipoVisitante = :golesEquipoVisitante")})
+    @NamedQuery(name = "Partido.findByGolesEquipoVisitante", query = "SELECT p FROM Partido p WHERE p.golesEquipoVisitante = :golesEquipoVisitante"),
+    @NamedQuery(name = "Partido.findByGolesLocalProrroga", query = "SELECT p FROM Partido p WHERE p.golesLocalProrroga = :golesLocalProrroga"),
+    @NamedQuery(name = "Partido.findByGolesVisitanteProrroga", query = "SELECT p FROM Partido p WHERE p.golesVisitanteProrroga = :golesVisitanteProrroga"),
+    @NamedQuery(name = "Partido.findByGolesLocalPenalties", query = "SELECT p FROM Partido p WHERE p.golesLocalPenalties = :golesLocalPenalties"),
+    @NamedQuery(name = "Partido.findByGolesVisitantePenalties", query = "SELECT p FROM Partido p WHERE p.golesVisitantePenalties = :golesVisitantePenalties")})
 public class Partido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -83,31 +88,39 @@ public class Partido implements Serializable {
     private Integer golesEquipoLocal;
     @Column(name = "goles_equipo_visitante")
     private Integer golesEquipoVisitante;
+    @Column(name = "goles_local_prorroga")
+    private Integer golesLocalProrroga;
+    @Column(name = "goles_visitante_prorroga")
+    private Integer golesVisitanteProrroga;
+    @Column(name = "goles_local_penalties")
+    private Integer golesLocalPenalties;
+    @Column(name = "goles_visitante_penalties")
+    private Integer golesVisitantePenalties;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partidoId")
     private Collection<Convocatoria> convocatoriaCollection;
+    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
+    @ManyToOne
+    private Cancha canchaId;
     @JoinColumn(name = "equipo_local_id", referencedColumnName = "id")
     @ManyToOne
     private Equipo equipoLocalId;
     @JoinColumn(name = "equipo_visitante_id", referencedColumnName = "id")
     @ManyToOne
     private Equipo equipoVisitanteId;
-    @JoinColumn(name = "cancha_id", referencedColumnName = "id")
-    @ManyToOne
-    private Cancha canchaId;
-    @JoinColumn(name = "status_partido_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private StatusPartido statusPartidoId;
-    @JoinColumn(name = "llave_id", referencedColumnName = "id")
-    @ManyToOne
-    private Llave llaveId;
     @JoinColumn(name = "jornada_id", referencedColumnName = "id")
     @ManyToOne
     private Jornada jornadaId;
+    @JoinColumn(name = "llave_id", referencedColumnName = "id")
+    @ManyToOne
+    private Llave llaveId;
+    @JoinColumn(name = "status_partido_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private StatusPartido statusPartidoId;
     @OneToMany(mappedBy = "partidoId")
     private Collection<Staff> staffCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partidoId")
     private Collection<PartidoEvento> partidoEventoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partido")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partidoId")
     private Collection<PartidoArbitro> partidoArbitroCollection;
 
     public Partido() {
@@ -213,6 +226,38 @@ public class Partido implements Serializable {
         this.golesEquipoVisitante = golesEquipoVisitante;
     }
 
+    public Integer getGolesLocalProrroga() {
+        return golesLocalProrroga;
+    }
+
+    public void setGolesLocalProrroga(Integer golesLocalProrroga) {
+        this.golesLocalProrroga = golesLocalProrroga;
+    }
+
+    public Integer getGolesVisitanteProrroga() {
+        return golesVisitanteProrroga;
+    }
+
+    public void setGolesVisitanteProrroga(Integer golesVisitanteProrroga) {
+        this.golesVisitanteProrroga = golesVisitanteProrroga;
+    }
+
+    public Integer getGolesLocalPenalties() {
+        return golesLocalPenalties;
+    }
+
+    public void setGolesLocalPenalties(Integer golesLocalPenalties) {
+        this.golesLocalPenalties = golesLocalPenalties;
+    }
+
+    public Integer getGolesVisitantePenalties() {
+        return golesVisitantePenalties;
+    }
+
+    public void setGolesVisitantePenalties(Integer golesVisitantePenalties) {
+        this.golesVisitantePenalties = golesVisitantePenalties;
+    }
+
     @XmlTransient
     public Collection<Convocatoria> getConvocatoriaCollection() {
         return convocatoriaCollection;
@@ -220,6 +265,14 @@ public class Partido implements Serializable {
 
     public void setConvocatoriaCollection(Collection<Convocatoria> convocatoriaCollection) {
         this.convocatoriaCollection = convocatoriaCollection;
+    }
+
+    public Cancha getCanchaId() {
+        return canchaId;
+    }
+
+    public void setCanchaId(Cancha canchaId) {
+        this.canchaId = canchaId;
     }
 
     public Equipo getEquipoLocalId() {
@@ -238,20 +291,12 @@ public class Partido implements Serializable {
         this.equipoVisitanteId = equipoVisitanteId;
     }
 
-    public Cancha getCanchaId() {
-        return canchaId;
+    public Jornada getJornadaId() {
+        return jornadaId;
     }
 
-    public void setCanchaId(Cancha canchaId) {
-        this.canchaId = canchaId;
-    }
-
-    public StatusPartido getStatusPartidoId() {
-        return statusPartidoId;
-    }
-
-    public void setStatusPartidoId(StatusPartido statusPartidoId) {
-        this.statusPartidoId = statusPartidoId;
+    public void setJornadaId(Jornada jornadaId) {
+        this.jornadaId = jornadaId;
     }
 
     public Llave getLlaveId() {
@@ -262,12 +307,12 @@ public class Partido implements Serializable {
         this.llaveId = llaveId;
     }
 
-    public Jornada getJornadaId() {
-        return jornadaId;
+    public StatusPartido getStatusPartidoId() {
+        return statusPartidoId;
     }
 
-    public void setJornadaId(Jornada jornadaId) {
-        this.jornadaId = jornadaId;
+    public void setStatusPartidoId(StatusPartido statusPartidoId) {
+        this.statusPartidoId = statusPartidoId;
     }
 
     @XmlTransient

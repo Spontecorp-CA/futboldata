@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -63,7 +64,7 @@ public class Temporada implements Serializable {
     private Competicion competicionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "temporadaId")
     private Collection<Fase> faseCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "temporada")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "temporadaId")
     private Collection<TemporadaCategoria> temporadaCategoriaCollection;
 
     public Temporada() {
