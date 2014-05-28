@@ -53,7 +53,7 @@ public class Util implements Serializable {
     }
 
     public static String getHostImagen() {
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletRequest request = getRequest();
         return request.getRequestURL().toString().replace(request.getRequestURI().substring(0), "") + "/imagenes/";
     }
 
