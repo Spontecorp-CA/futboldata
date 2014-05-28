@@ -43,7 +43,6 @@ public class Util implements Serializable {
     
     // dirección de imagenes para máquinas de sponte08 y producción
     public static final String STORAGE_ROOT = "C:/Servidores/apache-tomcat-7.0.41/webapps/imagenes/";
-
     private static String hostImagen;
 
     public static HttpSession getSession() {
