@@ -44,7 +44,7 @@
                             update=":calendario:TemporadaListForm:createButton
                             ,:calendario:TemporadaListForm:editButton,:calendario,
                             :calendario:TemporadaEditForm"  
-                            oncomplete="#{faseBean.setTemporada(temporadaBean.temporada)}" />
+                            oncomplete="#{faseBean.setTemporada(temporadaBean.temporada)}#{temporadaBean.setIndex(0)}" />
                     <p:ajax event="rowUnselect" 
                             update=":calendario:TemporadaListForm:createButton
                             ,:calendario:TemporadaListForm:editButton,:calendario" />

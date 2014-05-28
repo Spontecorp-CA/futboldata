@@ -26,17 +26,23 @@
                         </p:toolbarGroup>
                     </p:toolbar>
                 </h:form>
-                <p:tabView id="calendario" dynamic="true" effect="fade" effectDuration="fast" >                       
+                <p:tabView id="calendario" 
+                           dynamic="true" 
+                           effect="fade" 
+                           effectDuration="fast" 
+                           activeIndex="#{temporadaBean.index}">                       
                     <p:tab title="Temporada">
                         <ui:include src="./temporada/list.xhtml"/>
                     </p:tab>
                     <p:tab  id="fases" title="Fases" disabled="#{empty  temporadaBean.selected.nombre}" >
                         <ui:include src="./fase/list.xhtml"/>
                     </p:tab>
-                    <p:tab title="Grupos" disabled="true">
+                    <p:tab title="Grupos" 
+                           disabled="#{(empty  faseBean.selected.nombre)or (faseBean.selected.tipoFase != 0 )}">
 
                     </p:tab>
-                    <p:tab title="Llaves" disabled="true">
+                    <p:tab title="Llaves" 
+                           disabled="#{empty  faseBean.selected.nombre or (faseBean.selected.tipoFase != 1 )}">
 
                     </p:tab>
                 </p:tabView>
