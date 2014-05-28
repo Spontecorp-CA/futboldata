@@ -42,11 +42,11 @@
                          filteredValue="#{faseBean.filteredFase}" >   
                 <p:ajax event="rowSelect"
                         update=":calendario:FaseListForm:createButton
-                        ,:calendario:FaseListForm:editButton,:calendario,
+                        ,:calendario:FaseListForm:editButton,
                         :calendario:FaseEditForm"  />
                 <p:ajax event="rowUnselect" 
                         update=":calendario:FaseListForm:createButton
-                        ,:calendario:FaseListForm:editButton,:calendario" />
+                        ,:calendario:FaseListForm:editButton" />
 
                 <p:column headerText="Fase" >
                     <h:outputText value="#{fase.nombre}"/>
