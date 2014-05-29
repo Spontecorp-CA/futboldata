@@ -43,35 +43,35 @@
                     <p:ajax event="rowUnselect" update=":StaffListForm:createButton :StaffListForm:editButton" />
 
                             <p:column headerText="Nombre">
-                            <h:outputText value="#{staff.personaId.nombre}"/>
+                            <h:outputText value="#{staff.nombre}"/>
                         </p:column>
 
                         <p:column headerText="Apellido">
-                            <h:outputText value="#{staff.personaId.apellido}"/>
+                            <h:outputText value="#{staff.apellido}"/>
                         </p:column>
                         <p:column headerText="Ciudad">
-                            <h:outputText value="#{staff.personaId.direccionId.ciudadId.ciudad}"/>
+                            <h:outputText value="#{staff.direccionId.ciudadId.ciudad}"/>
                         </p:column>
                         <p:column headerText="Dirección">
-                            <h:outputText value="#{staff.personaId.direccionId.direccion}"/>
+                            <h:outputText value="#{staff.direccionId.direccion}"/>
                         </p:column>
 
                         <p:column headerText="Red Social">
-                            <p:dataList value="#{staffBean.getRedSocials(staff.personaId)}" var="redsocial">
+                            <p:dataList value="#{staffBean.getRedSocials(staff)}" var="redsocial">
                                 <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
                             </p:dataList>
         
                         </p:column>
 
                         <p:column headerText="Telefono">
-                            <h:outputText value="#{staff.personaId.telefono}"/>
+                            <h:outputText value="#{staff.telefono}"/>
                         </p:column>
                         <p:column headerText="Celular">
-                            <h:outputText value="#{staff.personaId.celular}"/>
+                            <h:outputText value="#{staff.celular}"/>
                         </p:column>
 
                         <p:column headerText="Status">
-                            <h:outputText   value="#{staff.status== 0?'INACTIVO':'ACTIVO'}"/>
+                            <h:outputText   value="#{status== 0?'INACTIVO':'ACTIVO'}"/>
                         </p:column>
 
                 </p:dataTable>
