@@ -74,4 +74,28 @@ public class StaffFacade extends AbstractFacade<Staff> {
         }
         return staffList;
     }
+
+    public List<Staff> findDistinctStaffList() {
+        List<Staff> staffList = null;
+        EntityManager em = getEntityManager();
+        try {
+            String query = "SELECT DISTINCT j FROM Staff j";
+            Query q = em.createQuery(query);
+            staffList = q.getResultList();
+            if (!staffList.isEmpty()) {
+                for (int i = 0; i < staffList.size(); i++) {
+                    for (int h = 1; h < staffList.size() ; h++) {
+
+                    }
+                }
+            }
+        } catch (NoResultException e) {
+            logger.debug("Error al buscar lista de staff por club findStaffListByClub ", e.getMessage());
+        } catch (Exception e) {
+            logger.debug("Ha ocurrido un error: " + e);
+        } finally {
+            em.close();
+        }
+        return staffList;
+    }
 }
