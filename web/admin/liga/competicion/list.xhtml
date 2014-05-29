@@ -9,33 +9,32 @@
     <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
 
         <ui:define name="title">
-            Administración de Ligas
+            Administración de Competiciones
         </ui:define>
 
         <ui:define name="content">
             <h:form id="LigaListForm">
-                <p:fieldset style="width: 85%" legend="Lista de Ligas">
+                <p:fieldset style="width: 85%" legend="Lista de Competiciones">
                     <p:toolbar>
                         <p:toolbarGroup align="left">
                             <p:commandButton id="createButton" icon="ui-icon-plus"   
-                                             value="Crear Liga" 
+                                             value="Crear Competición" 
                                              actionListener="#{ligaBean.prepareCreate}" 
                                              update=":LigaCreateForm" 
                                              oncomplete="PF('LigaCreateDialog').show()"/>
                             <p:commandButton id="viewButton" icon="ui-icon-search" 
-                                             value="Ver Liga" 
+                                             value="Ver Competición" 
                                              update=":LigaViewForm" 
                                              oncomplete="PF('LigaViewDialog').show()" 
                                              disabled="#{empty ligaBean.selected}"/>
                             <p:commandButton id="editButton" icon="ui-icon-pencil" 
-                                             value="Editar Liga"
+                                             value="Editar Competición"
                                              actionListener="#{ligaBean.prepareEdit}"
                                              update=":LigaEditForm" 
                                              oncomplete="PF('LigaEditDialog').show()" 
                                              disabled="#{empty ligaBean.selected}"/>
                             <p:commandButton id="configButton" icon="ui-icon-calendar" 
                                              value="Calendarios"
-
                                              action="#{temporadaBean.gotoConfig()}"
                                              actionListener="#{temporadaBean.setLiga(ligaBean.selected)}"
                                              disabled="#{empty ligaBean.selected}"/>
@@ -53,15 +52,14 @@
                                  selectionMode="single"
                                  selection="#{ligaBean.selected}" 
                                  rowKey = "#{item.id}"
-
-                                 emptyMessage="No se encontraron ligas para ese criterio" 
+                                 emptyMessage="No se encontraron competiciones para ese criterio" 
                                  filteredValue="#{ligaBean.filteredLigas}"
                                  paginator="true" rows="10"  
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
                         <p:ajax event="rowSelect"   update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"
-                                onstart="#{temporadaBean.setLiga(ligaBean.selected)}"/>
+                                onstart="#{temporadaBean.setLiga(ligaBean.selected)}#{temporadaBean.setIndex(0)}"/>
                         <p:ajax event="rowUnselect" update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"/>
 
                         <p:column id="ligaColummn" headerText="Liga">

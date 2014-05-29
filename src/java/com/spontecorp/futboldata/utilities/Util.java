@@ -37,12 +37,13 @@ public class Util implements Serializable {
     public static final int CONSULTOR = 4;
     public static final String rutaRelativa = "resources\\images\\";
     public static final Logger logger = LoggerFactory.getLogger(Util.class);
-
+    
+    // dirección de imagenes para máquinas de sponte03 y sponte07
     //public static final String STORAGE_ROOT = "C:/Program Files/Apache Software Foundation/Apache Tomcat 7.0.41/webapps/imagenes/";
+    
+    // dirección de imagenes para máquinas de sponte08 y producción
     public static final String STORAGE_ROOT = "C:/Servidores/apache-tomcat-7.0.41/webapps/imagenes/";
-    private static String HostImagen = "http://" + FacesContext.getCurrentInstance().getExternalContext()
-            .getRequestServerName() + ":" + FacesContext.getCurrentInstance().getExternalContext()
-            .getRequestServerPort() + "/imagenes/";
+    private static String hostImagen;
 
     public static HttpSession getSession() {
         return (HttpSession) FacesContext.
@@ -52,7 +53,8 @@ public class Util implements Serializable {
     }
 
     public static String getHostImagen() {
-        return HostImagen;
+        HttpServletRequest request = getRequest();
+        return request.getRequestURL().toString().replace(request.getRequestURI().substring(0), "") + "/imagenes/";
     }
 
     public static HttpServletRequest getRequest() {

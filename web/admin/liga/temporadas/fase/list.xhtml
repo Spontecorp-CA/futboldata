@@ -41,12 +41,11 @@
                          paginator="true" rows="10"
                          filteredValue="#{faseBean.filteredFase}" >   
                 <p:ajax event="rowSelect"
-                        update=":calendario:FaseListForm:createButton
-                        ,:calendario:FaseListForm:editButton,:calendario,
-                        :calendario:FaseEditForm"  />
+                        update=":calendario"
+                        oncomplete="#{temporadaBean.setIndex(1)}
+                                    #{grupoBean.setFase(faseBean.fase)}"/>
                 <p:ajax event="rowUnselect" 
-                        update=":calendario:FaseListForm:createButton
-                        ,:calendario:FaseListForm:editButton,:calendario" />
+                        update=":calendario" />
 
                 <p:column headerText="Fase" >
                     <h:outputText value="#{fase.nombre}"/>

@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 @Named("temporadaBean")
 @SessionScoped
 public class TemporadaBean implements Serializable {
-
+    private int index ;
     private TemporadaCategoria temporadaCategoria;
     private Temporada temporada;
     private Competicion liga;
@@ -52,6 +52,7 @@ public class TemporadaBean implements Serializable {
     private final TemporadaCategoriaFacade controllerTemporadaCategoria;
 
     public TemporadaBean() {
+        index = 0;
         controllerTemporada = new TemporadaFacade();
         controllerCompeticion = new CompeticionFacade();
         controllerCategoria = new CategoriaFacade();
@@ -62,6 +63,14 @@ public class TemporadaBean implements Serializable {
 
         categorias = null;
 
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public List<Temporada> getTemporadas() {
