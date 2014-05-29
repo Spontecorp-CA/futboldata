@@ -132,7 +132,7 @@ public class Titulo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Titulo[ id=" + id + " ]";
+        return nombre;
     }
     
 }

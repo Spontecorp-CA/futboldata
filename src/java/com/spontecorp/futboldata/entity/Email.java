@@ -107,7 +107,7 @@ public class Email implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Email[ id=" + id + " ]";
+        return email;
     }
     
 }

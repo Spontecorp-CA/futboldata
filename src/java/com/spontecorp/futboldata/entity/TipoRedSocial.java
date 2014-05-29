@@ -111,7 +111,7 @@ public class TipoRedSocial implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TipoRedSocial[ id=" + id + " ]";
+        return nombre;
     }
     
 }

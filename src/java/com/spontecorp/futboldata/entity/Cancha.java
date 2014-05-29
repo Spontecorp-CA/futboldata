@@ -227,7 +227,7 @@ public class Cancha implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Cancha[ id=" + id + " ]";
+        return nombre;
     }
     
 }

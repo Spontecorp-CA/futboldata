@@ -121,7 +121,7 @@ public class Patrocinante implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Patrocinante[ id=" + id + " ]";
+        return nombre;
     }
     
 }

@@ -124,7 +124,7 @@ public class Grupo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Grupo[ id=" + id + " ]";
+        return nombre;
     }
     
 }

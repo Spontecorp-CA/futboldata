@@ -211,7 +211,7 @@ public class Imagen implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Imagen[ id=" + id + " ]";
+        return titulo;
     }
     
 }
