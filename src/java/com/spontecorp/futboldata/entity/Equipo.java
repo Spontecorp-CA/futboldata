@@ -334,7 +334,7 @@ public class Equipo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Equipo[ id=" + id + " ]";
+        return nombre;
     }
     
 }

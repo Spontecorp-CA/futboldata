@@ -162,7 +162,7 @@ public class Temporada implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Temporada[ id=" + id + " ]";
+        return nombre;
     }
     
 }

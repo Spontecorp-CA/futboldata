@@ -304,7 +304,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Persona[ id=" + id + " ]";
+        return nombre + " " + apellido;
     }
     
 }

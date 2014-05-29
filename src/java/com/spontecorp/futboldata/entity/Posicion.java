@@ -111,7 +111,7 @@ public class Posicion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Posicion[ id=" + id + " ]";
+        return nombre;
     }
     
 }

@@ -123,7 +123,7 @@ public class Llave implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Llave[ id=" + id + " ]";
+        return nombre;
     }
     
 }

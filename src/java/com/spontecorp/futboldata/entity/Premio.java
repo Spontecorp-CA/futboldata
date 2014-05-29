@@ -163,7 +163,7 @@ public class Premio implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Premio[ id=" + id + " ]";
+        return nombre;
     }
     
 }

@@ -119,7 +119,7 @@ public class Formacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Formacion[ id=" + id + " ]";
+        return nombre;
     }
     
 }

@@ -119,6 +119,14 @@ public class Fase implements Serializable {
         this.llaveCollection = llaveCollection;
     }
 
+    public int getTipoFase() {
+        return tipoFase;
+    }
+
+    public void setTipoFase(int tipoFase) {
+        this.tipoFase = tipoFase;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -141,15 +149,7 @@ public class Fase implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Fase[ id=" + id + " ]";
+        return nombre;
     }
 
-    public int getTipoFase() {
-        return tipoFase;
-    }
-
-    public void setTipoFase(int tipoFase) {
-        this.tipoFase = tipoFase;
-    }
-    
 }

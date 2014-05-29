@@ -100,7 +100,7 @@ public class TipoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.TipoArbitro[ id=" + id + " ]";
+        return nombre;
     }
     
 }

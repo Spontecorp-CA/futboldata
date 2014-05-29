@@ -241,7 +241,7 @@ public class Staff implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Staff[ id=" + id + " ]";
+        return personaId.getNombre() + " " + personaId.getApellido();
     }
     
 }
