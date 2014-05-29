@@ -73,7 +73,6 @@ public class TemporadaBean implements Serializable {
         this.index = index;
     }
 
-    
     public List<Temporada> getTemporadas() {
         if (temporadas == null) {
             temporadas = new ArrayList<Temporada>(controllerTemporada.findTemporadaxLiga(liga));

@@ -25,8 +25,54 @@
                             <p:commandButton value="Ver Ligas" action="#{ligaBean.gotoLiga}" />
                         </p:toolbarGroup>
                     </p:toolbar>
+                    <p:menubar id="menu">
+                        <p:submenu label="Temporadas">
+                            <p:menuitem value="Listar" 
+                                        actionListener="#{configBean.activateTemporadaList}" 
+                                        update=":temporadaPanel"/>
+                            <p:menuitem value="Crear"/>
+                            <p:menuitem value="Editar"/>
+                            <p:menuitem value="Ver"/>
+                        </p:submenu>
+                        <p:submenu label="Fases">
+                            <p:menuitem value="Crear"/>
+                            <p:menuitem value="Editar"/>
+                            <p:menuitem value="Ver"/>
+                        </p:submenu>
+                        <p:submenu label="Grupos">
+                            <p:menuitem value="Crear"/>
+                            <p:menuitem value="Editar"/>
+                            <p:menuitem value="Ver"/>
+                            <p:submenu label="Jornadas">
+                                <p:menuitem value="Crear"/>
+                                <p:menuitem value="Editar"/>
+                                <p:menuitem value="Ver"/>
+                            </p:submenu>
+                            <p:submenu label="Partidos">
+                                <p:menuitem value="Crear"/>
+                                <p:menuitem value="Editar"/>
+                                <p:menuitem value="Ver"/>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:submenu label="Llaves">
+                            <p:menuitem value="Crear"/>
+                            <p:menuitem value="Editar"/>
+                            <p:menuitem value="Ver"/>
+                            <p:submenu label="Partidos">
+                                <p:menuitem value="Crear"/>
+                                <p:menuitem value="Editar"/>
+                                <p:menuitem value="Ver"/>
+                            </p:submenu>
+                        </p:submenu>
+                    </p:menubar>
                 </h:form>
-                <p:tabView id="calendario" 
+                
+                <h:panelGroup id="temporadaPanel" rendered="#{configBean.temporadaActiva}">
+                    <ui:include src="./temporada/list.xhtml"/>
+                </h:panelGroup>
+                
+                
+<!--                <p:tabView id="calendario" 
                            dynamic="true" 
                            effect="fade" 
                            effectDuration="fast" 
@@ -38,14 +84,14 @@
                         <ui:include src="./fase/list.xhtml"/>
                     </p:tab>
                     <p:tab title="Grupos" 
-                           disabled="#{(empty  faseBean.selected.nombre)or (faseBean.selected.tipoFase != 0 )}">
-
+                           disabled="#{empty  faseBean.selected.nombre or (faseBean.selected.tipoFase != 0 )}">
+                        <ui:include src="./grupo/list.xhtml"/>
                     </p:tab>
                     <p:tab title="Llaves" 
                            disabled="#{empty  faseBean.selected.nombre or (faseBean.selected.tipoFase != 1 )}">
 
                     </p:tab>
-                </p:tabView>
+                </p:tabView>-->
             </ui:define>
         </ui:composition>
 

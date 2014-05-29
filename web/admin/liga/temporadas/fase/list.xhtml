@@ -42,7 +42,8 @@
                          filteredValue="#{faseBean.filteredFase}" >   
                 <p:ajax event="rowSelect"
                         update=":calendario"
-                        oncomplete="#{temporadaBean.setIndex(1)}"/>
+                        oncomplete="#{temporadaBean.setIndex(1)}
+                                    #{grupoBean.setFase(faseBean.fase)}"/>
                 <p:ajax event="rowUnselect" 
                         update=":calendario" />
 
