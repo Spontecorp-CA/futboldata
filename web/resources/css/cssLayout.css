@@ -78,5 +78,11 @@
     margin-right: auto;
 }
 
+.logo_position{
+    display: block;
+    position: absolute;
+    bottom: 10px;
+}
+
 
 
