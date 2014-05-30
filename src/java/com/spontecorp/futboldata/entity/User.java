@@ -196,7 +196,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.User[ id=" + id + " ]";
+        return usuario;
     }
     
 }

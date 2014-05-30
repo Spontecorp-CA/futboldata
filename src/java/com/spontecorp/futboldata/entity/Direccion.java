@@ -214,7 +214,7 @@ public class Direccion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Direccion[ id=" + id + " ]";
+        return direccion;
     }
     
 }

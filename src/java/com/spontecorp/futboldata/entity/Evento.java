@@ -121,7 +121,7 @@ public class Evento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Evento[ id=" + id + " ]";
+        return nombre;
     }
     
 }

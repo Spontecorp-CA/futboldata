@@ -75,11 +75,11 @@ public class StaffFacade extends AbstractFacade<Staff> {
         return staffList;
     }
 
-    public List<Staff> findDistinctStaffList() {
-        List<Staff> staffList = null;
+    public List<Persona> findDistinctStaffList() {
+        List<Persona> staffList = null;
         EntityManager em = getEntityManager();
         try {
-            String query = "SELECT DISTINCT j FROM Staff j";
+            String query = "select distinct p from Persona p, Staff s where s.personaId = p";
             Query q = em.createQuery(query);
             staffList = q.getResultList();
             if (!staffList.isEmpty()) {

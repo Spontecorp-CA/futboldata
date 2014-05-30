@@ -133,7 +133,7 @@ public class Jornada implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Jornada[ id=" + id + " ]";
+        return String.valueOf(nombre);
     }
     
 }

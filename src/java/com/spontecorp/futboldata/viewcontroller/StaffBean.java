@@ -61,7 +61,8 @@ public class StaffBean implements Serializable {
     private Email email;
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
-    private List<Staff> items ;
+    private List<Persona> items ;
+    
     private List<RedSocial> redes;
     private List<RedSocial> redesEliminar;
     private static final Logger logger = LoggerFactory.getLogger(StaffBean.class);
@@ -278,7 +279,7 @@ public class StaffBean implements Serializable {
         this.pais = pais;
     }
 
-    public List<Staff> getItems() {
+    public List<Persona> getItems() {
         if (items == null) {
             items = controllerStaff.findDistinctStaffList();
         }

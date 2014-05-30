@@ -99,7 +99,7 @@ public class Cargo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Cargo[ id=" + id + " ]";
+        return nombre;
     }
     
 }

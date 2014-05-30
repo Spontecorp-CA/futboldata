@@ -251,7 +251,7 @@ public class Club implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Club[ id=" + id + " ]";
+        return nombre;
     }
     
 }

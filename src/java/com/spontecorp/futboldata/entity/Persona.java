@@ -98,7 +98,7 @@ public class Persona implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Arbitro> arbitroCollection;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL )
     private Direccion direccionId;
     @OneToMany(mappedBy = "personaId")
     private Collection<Imagen> imagenCollection;
@@ -106,7 +106,7 @@ public class Persona implements Serializable {
     private Collection<Agente> agenteCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<Staff> staffCollection;
-    @OneToMany(mappedBy = "personaId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personaId")
     private Collection<RedSocial> redSocialCollection;
 
     public Persona() {
@@ -304,7 +304,7 @@ public class Persona implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Persona[ id=" + id + " ]";
+        return nombre + " " + apellido;
     }
     
 }

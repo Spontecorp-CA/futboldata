@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -84,7 +85,7 @@ public class Staff implements Serializable {
     @ManyToOne
     private Partido partidoId;
     @JoinColumn(name = "persona_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private Persona personaId;
     @OneToMany(mappedBy = "staffId")
     private Collection<PartidoEvento> partidoEventoCollection;
@@ -241,7 +242,7 @@ public class Staff implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Staff[ id=" + id + " ]";
+        return personaId.getNombre() + " " + personaId.getApellido();
     }
     
 }
