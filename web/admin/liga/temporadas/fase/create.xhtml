@@ -21,21 +21,21 @@
                              styleClass="top-aligned-columns">
 
                     <h:outputLabel value="Temporada:" for="temporada"/>
-                    <h:outputText id="temporada" value="#{faseBean.temporada.nombre}" />
+                    <h:outputText id="temporada" value="#{configBean.temporada.nombre}" />
 
                     <h:outputLabel value="* Fase:" for="nombre"/>
-                    <p:inputText id="nombre" value="#{faseBean.fase.nombre}"
+                    <p:inputText id="nombre" value="#{configBean.fase.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
 
                     <h:outputLabel value="Tipo de Fase: " for="tipo"/>
-                    <p:selectOneRadio id="tipo" value="#{faseBean.fase.tipoFase}">
+                    <p:selectOneRadio id="tipo" value="#{configBean.fase.tipoFase}">
                         <f:selectItem itemLabel="Grupo" itemValue="0"/>
                         <f:selectItem itemLabel="Llave" itemValue="1"/>
                     </p:selectOneRadio>
 
                     <h:outputLabel value="* status:" for="status"/>
-                    <p:selectOneMenu id="status" value="#{faseBean.fase.status}"
+                    <p:selectOneMenu id="status" value="#{configBean.fase.status}"
                                      converter= "javax.faces.Integer"
                                      style="width: 250px"
                                      required="true"
@@ -48,8 +48,8 @@
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <p:commandButton actionListener="#{faseBean.create}" value="Guardar" 
-                                 update="FaseCreateForm,:calendario:FaseListForm:fases,:growlAdmin" 
+                <p:commandButton actionListener="#{configBean.createFase}" value="Guardar" 
+                                 update="FaseCreateForm,:ListForm:fases,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'FaseCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="FaseCreateDialog.hide()"/>
             </p:fieldset>

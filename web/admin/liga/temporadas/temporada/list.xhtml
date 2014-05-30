@@ -11,42 +11,44 @@
     </ui:define>
 
 <!--    <ui:define name="content">-->
-        <h:form id="TemporadaListForm">
+<!--        <h:form id="ListForm">-->
 
             <p:fieldset style="width: 85%" legend="Lista de Temporadas" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton id="createButton" icon="ui-icon-plus"  
+                        <p:commandButton id="createButtonTemporada" icon="ui-icon-plus"  
                                          value="Crear Temporada" 
-                                         actionListener="#{temporadaBean.prepareCreate}"
-                                         update=":TemporadaCreateForm"
+                                         actionListener="#{configBean.prepareCreateTemporada}"
+                                         update=":ListForm:TemporadaCreateForm"
                                          oncomplete="PF('TemporadaCreateDialog').show()"/>
-                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                        <p:commandButton id="editButtonTemporada" icon="ui-icon-pencil" 
                                          value="Editar Temporada" 
-                                         actionListener="#{temporadaBean.prepareEdit}"   
-                                         update=":TemporadaEditForm"                                        
+                                         actionListener="#{configBean.prepareEditTemporada}"   
+                                         update=":ListForm:TemporadaEditForm"                                        
                                          oncomplete="PF('TemporadaEditDialog').show()" 
-                                         disabled="#{empty temporadaBean.temporada.nombre}"/>
+                                         disabled="#{empty configBean.temporada.nombre}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                        <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:dataTable id="temporadas" var="temporada"  value="#{temporadaBean.temporadas}"
+                <p:dataTable id="temporadas" var="temporada"  value="#{configBean.temporadas}"
                              rowKey="#{temporada.id}"
-                             selection="#{temporadaBean.temporada}" 
+                             selection="#{configBean.temporada}" 
                              selectionMode="single"
                              paginator="true" rows="10"
-                             filteredValue="#{temporadaBean.filteredTemporada}" >   
+                             filteredValue="#{configBean.filteredTemporada}" >   
                     <p:ajax event="rowSelect"
-                            update=":TemporadaListForm:createButton
-                            ,:TemporadaListForm:editButton,,
-                            :TemporadaEditForm"   />
+                            update=":ListForm:createButtonTemporada
+                            ,:ListForm:editButtonTemporada
+                            ,:menuPrincipal
+                            :ListForm:TemporadaEditForm"   />
                     <p:ajax event="rowUnselect" 
-                            update=":TemporadaListForm:createButton
-                            ,:TemporadaListForm:editButton," />
+                            update=":ListForm:createButtonTemporada
+                            ,:ListForm:editButtonTemporada, 
+                            :menuPrincipal" />
 
 
                     <p:column headerText="Nombre" sortBy="nombre"
@@ -73,7 +75,7 @@
                 </p:dataTable>
             </p:fieldset>
 
-        </h:form>
+<!--        </h:form>-->
         <ui:include src="create.xhtml"/>
         <ui:include src="edit.xhtml"/>
 

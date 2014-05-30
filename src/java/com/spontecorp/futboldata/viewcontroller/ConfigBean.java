@@ -47,6 +47,9 @@ public class ConfigBean implements Serializable {
     private Partido partido;
 
     private boolean temporadaActiva;
+    private boolean faseActiva;
+    private boolean grupoActiva;
+    private boolean jornadaActiva;
 
     private List<Temporada> temporadaList;
     private List<Fase> faseList;
@@ -54,6 +57,8 @@ public class ConfigBean implements Serializable {
     private List<Grupo> grupoList;
     private List<Jornada> jornadaList;
     private List<Partido> partidoList;
+    private List<Fase> fases = null;
+    private List<Fase> filteredFase;
 
     private final TemporadaFacade temporadaFacade;
     private final FaseFacade faseFacade;
@@ -63,8 +68,8 @@ public class ConfigBean implements Serializable {
     private final PartidoFacade partidoFacade;
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigBean.class);
-    private ArrayList<Categoria> categoriaSource;
-    private ArrayList<Categoria> categoriaTarget;
+    private List<Categoria> categoriaSource;
+    private List<Categoria> categoriaTarget;
     private Competicion liga;
     private DualListModel<Categoria> categorias;
     private List<Temporada> filteredTemporada;
@@ -72,7 +77,6 @@ public class ConfigBean implements Serializable {
     private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private TemporadaCategoria temporadaCategoria;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
-
 
     public ConfigBean() {
         this.temporadaFacade = new TemporadaFacade();
@@ -85,10 +89,12 @@ public class ConfigBean implements Serializable {
         liga = new Competicion();
         categoriaSource = new ArrayList<Categoria>();
         categoriaTarget = new ArrayList<Categoria>();
-
         categorias = null;
-
         inicializeMenu();
+    }
+
+    public String returnAdminPage() {
+        return "/admin/adminPage";
     }
 
     public boolean isTemporadaActiva() {
@@ -100,14 +106,57 @@ public class ConfigBean implements Serializable {
     }
 
     public void activateTemporadaList() {
-        setTemporadaActiva(true);
+        temporada = null;
+        temporadaActiva =true;
+        faseActiva = false;
+
     }
 
-    private void inicializeMenu() {
+    public void activateFaseList() {
+        fases = null;
+        faseActiva = true;
         setTemporadaActiva(false);
     }
 
-    /*Codigo de la vista de la temporada*/
+    private void inicializeMenu() {
+        setTemporadaActiva(true);
+        setFaseActiva(false);
+        setGrupoActiva(false);
+        setJornadaActiva(false);
+    }
+
+    public boolean isFaseActiva() {
+        return faseActiva;
+    }
+
+    public void setFaseActiva(boolean faseActiva) {
+        this.faseActiva = faseActiva;
+    }
+
+    public boolean isGrupoActiva() {
+        return grupoActiva;
+    }
+
+    public void setGrupoActiva(boolean grupoActiva) {
+        this.grupoActiva = grupoActiva;
+    }
+
+    public boolean isJornadaActiva() {
+        return jornadaActiva;
+    }
+
+    public void setJornadaActiva(boolean jornadaActiva) {
+        this.jornadaActiva = jornadaActiva;
+    }
+
+    /**
+     * ******************************Codigo de la vista de
+     * temporada****************
+     */
+    /**
+     * *******************************Codigo de la vista de
+     * temporada***************
+     */
     public List<Temporada> getTemporadas() {
         if (temporadaList == null) {
             temporadaList = new ArrayList<Temporada>(temporadaFacade.findTemporadaxLiga(liga));
@@ -119,7 +168,7 @@ public class ConfigBean implements Serializable {
         this.temporadaList = temporadas;
     }
 
-    public DualListModel<Categoria> getCategorias() {
+    public DualListModel<Categoria> getCategoriasTemporada() {
         if (categorias == null) {
             categorias = new DualListModel<Categoria>(categoriaSource, categoriaTarget);
         }
@@ -127,7 +176,7 @@ public class ConfigBean implements Serializable {
         return categorias;
     }
 
-    public void setCategorias(DualListModel<Categoria> categorias) {
+    public void setCategoriasTemporada(DualListModel<Categoria> categorias) {
         this.categorias = categorias;
     }
 
@@ -147,34 +196,22 @@ public class ConfigBean implements Serializable {
         this.filteredTemporada = filteredTemporada;
     }
 
-    public Temporada getSelected() {
-        if (temporada == null) {
-            temporada = new Temporada();
-        }
-        return temporada;
-    }
-
-    public void setSelected(Temporada temporada) {
-        this.temporada = temporada;
-
-    }
-
-    public void prepareCreate() {
+    public void prepareCreateTemporada() {
         temporada = new Temporada();
-        categoriaSource = (ArrayList<Categoria>) categoriaFacade.findAll();
+        categoriaSource = categoriaFacade.findAll();
 
         categorias = null;
 
-        initializeEmbeddableKey();
+        initializeEmbeddableKeyTemporada();
     }
 
-    protected void setEmbeddableKeys() {
+    protected void setEmbeddableKeysTemporada() {
         temporada.setCompeticionId(liga);
     }
 
-    protected void initializeEmbeddableKey() {
+    protected void initializeEmbeddableKeyTemporada() {
         listTemporadaCategoria = new ArrayList<TemporadaCategoria>();
-        setEmbeddableKeys();
+        setEmbeddableKeysTemporada();
     }
 
     public void recreateModelTemporada() {
@@ -189,15 +226,13 @@ public class ConfigBean implements Serializable {
     }
 
     public void prepareEditTemporada() {
-        categoriaSource = (ArrayList<Categoria>) categoriaFacade.findAll();
-        categoriaTarget = (ArrayList<Categoria>) temporadaCategoriaFacade.getCategorias(temporada);
+        categoriaSource = categoriaFacade.findAll();
+        categoriaTarget = temporadaCategoriaFacade.getCategorias(temporada);
         categoriaSource.removeAll(categoriaTarget);
         categorias = null;
         listTemporadaCategoria = new ArrayList<TemporadaCategoria>();
 
     }
-
-
 
     public void createTemporada() {
         try {
@@ -229,7 +264,7 @@ public class ConfigBean implements Serializable {
         }
     }
 
-    public void edit() {
+    public void editTemporada() {
         logger.debug("Esta editando un Temporada");
         List<Categoria> getTarget = categorias.getTarget();
         List<Categoria> getSource = categorias.getSource();
@@ -258,7 +293,7 @@ public class ConfigBean implements Serializable {
     public Temporada getTemporada() {
         if (temporada == null) {
             temporada = new Temporada();
-            initializeEmbeddableKey();
+            initializeEmbeddableKeyTemporada();
         }
         return temporada;
     }
@@ -271,13 +306,103 @@ public class ConfigBean implements Serializable {
         return "/admin/liga/temporada/list?faces-redirect=true";
     }
 
-
-
     public String gotoConfig() {
         recreateModelTemporada();
 
         return "/admin/liga/temporadas/config?faces-redirect=true";
     }
 
-}
+    /**
+     * ******************************Codigo de la vista
+     * Fases************************
+     */
+    /**
+     * ******************************Codigo de la vista Fases
+     *
+     ************************
+     * @return
+     */
+    public List<Fase> getFases() {
+        if (fases == null) {
+            fases = new ArrayList<Fase>(faseFacade.findFasexTemporada(temporada));
+        }
 
+        return fases;
+    }
+
+    public void setFases(List<Fase> fases) {
+        this.fases = fases;
+    }
+
+    public List<Fase> getFilteredFase() {
+        return filteredFase;
+    }
+
+    public void setFilteredFase(List<Fase> filteredFase) {
+        this.filteredFase = filteredFase;
+    }
+
+    public void prepareCreateFase() {
+        fase = new Fase();
+        initializeEmbeddableKeyFase();
+    }
+
+    protected void setEmbeddableKeysFase() {
+
+    }
+
+    protected void initializeEmbeddableKeyFase() {
+
+        setEmbeddableKeysFase();
+    }
+
+    public void recreateModelFase() {
+        fase = null;
+        fases = null;
+
+    }
+
+    public void prepareEditFase() {
+
+    }
+
+    public void createFase() {
+        try {
+            if (faseFacade.findFase(fase.getNombre()) != null) {
+                Util.addErrorMessage("El fase ya se encuentra Registrado ");
+
+            }
+            fase.setTemporadaId(temporada);
+            faseFacade.create(fase);
+            Util.addSuccessMessage("Se creo exitosamente el Fase");
+            recreateModelFase();
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Fase :", e);
+        }
+    }
+
+    public void editFase() {
+        logger.debug("Esta editando un Fase");
+        faseFacade.edit(fase);
+        recreateModelFase();
+        Util.addSuccessMessage("Se edito exitosamente el Fase");
+    }
+
+    public Fase getFase() {
+        if (fase == null) {
+            fase = new Fase();
+            initializeEmbeddableKeyFase();
+        }
+        return fase;
+    }
+
+    public void setFase(Fase fase) {
+        this.fase = fase;
+    }
+
+    public String gotoFasePage() {
+        return "/admin/liga/fase/list?faces-redirect=true";
+    }
+
+}

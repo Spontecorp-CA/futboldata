@@ -67,11 +67,6 @@ public class FaseBean implements Serializable {
         this.fases = fases;
     }
 
-
-
-
-
-
     public List<Fase> getFilteredFase() {
         return filteredFase;
     }
