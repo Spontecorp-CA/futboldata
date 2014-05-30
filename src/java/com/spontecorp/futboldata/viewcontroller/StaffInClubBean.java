@@ -28,7 +28,7 @@ public class StaffInClubBean implements Serializable {
     private Persona persona;
     private List<Cargo> cargoList;
     private List<Staff> staffList;
-    private List<Staff> staffListAll;
+    private List<Persona> staffListAll;
     private List<Staff> filterededStaffList;
 
     private final StaffFacade controllerStaff;
@@ -54,13 +54,13 @@ public class StaffInClubBean implements Serializable {
     }
 
     public void create() {
-        persona = staff.getPersonaId();
+       
         staff = new Staff();
         staff.setPersonaId(persona);
         staff.setStatus(ACTIVO);
         staff.setCargoId(cargo);
         staff.setClubId(club);
-        controllerStaff.create(staff);
+        controllerStaff.edit(staff);
     }
 
     public Staff getStaff() {
@@ -68,6 +68,14 @@ public class StaffInClubBean implements Serializable {
             staff = new Staff();
         }
         return staff;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
     }
 
     public void setStaff(Staff staff) {
@@ -103,12 +111,12 @@ public class StaffInClubBean implements Serializable {
         return staffList;
     }
 
-    public List<Staff> getStaffListAll() {
-        staffListAll = controllerStaff.findAll();
+    public List<Persona> getStaffListAll() {
+        staffListAll = controllerStaff.findDistinctStaffList();
         return staffListAll;
     }
 
-    public void setStaffListAll(List<Staff> staffListAll) {
+    public void setStaffListAll(List<Persona> staffListAll) {
         this.staffListAll = staffListAll;
     }
 
