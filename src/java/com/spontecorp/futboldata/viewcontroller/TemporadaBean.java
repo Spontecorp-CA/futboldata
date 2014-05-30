@@ -14,7 +14,6 @@ import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.utilities.Util;
-import com.sun.corba.se.impl.activation.ServerMain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
