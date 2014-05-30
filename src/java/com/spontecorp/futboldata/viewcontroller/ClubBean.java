@@ -329,7 +329,7 @@ public class ClubBean implements Serializable {
                         controllerTelefono.edit(telefonoEditar);
                     } else {
                         telefonoEditar.setDireccionId(club.getDireccionId());
-                        controllerTelefono.create(telefonoEditar);
+                        controllerTelefono.edit(telefonoEditar);
                     }
                 }
 
@@ -338,7 +338,7 @@ public class ClubBean implements Serializable {
                         controllerEmail.edit(emailEditar);
                     } else {
                         emailEditar.setDireccionId(club.getDireccionId());
-                        controllerEmail.create(emailEditar);
+                        controllerEmail.edit(emailEditar);
 
                     }
                 }
