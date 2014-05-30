@@ -35,8 +35,8 @@
                                              disabled="#{empty ligaBean.selected}"/>
                             <p:commandButton id="configButton" icon="ui-icon-calendar" 
                                              value="Calendarios"
-                                             action="#{temporadaBean.gotoConfig()}"
-                                             actionListener="#{temporadaBean.setLiga(ligaBean.selected)}"
+                                             action="#{configBean.gotoConfig()}"
+                                             actionListener="#{configBean.setLiga(ligaBean.selected)}"
                                              disabled="#{empty ligaBean.selected}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
@@ -59,7 +59,7 @@
                                  rowsPerPageTemplate="5,10,15"> 
 
                         <p:ajax event="rowSelect"   update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"
-                                onstart="#{temporadaBean.setLiga(ligaBean.selected)}#{temporadaBean.setIndex(0)}"/>
+                                onstart="#{configBean.setLiga(ligaBean.selected)}"/>
                         <p:ajax event="rowUnselect" update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"/>
 
                         <p:column id="ligaColummn" headerText="Liga">

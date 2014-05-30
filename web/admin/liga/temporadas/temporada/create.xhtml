@@ -22,19 +22,19 @@
 
 
                     <h:outputLabel value="* Nombre:" for="nombre"/>
-                    <p:inputText id="nombre" value="#{temporadaBean.temporada.nombre}"
+                    <p:inputText id="nombre" value="#{configBean.temporada.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
 
                     <h:outputLabel value="Fecha Inicio:" for="fechaInicio"/>
                     <p:calendar id="fechaInicio" 
-                                value="#{temporadaBean.temporada.fechaInicio}"
+                                value="#{configBean.temporada.fechaInicio}"
                                 navigator="true" 
                                 pattern="dd/mm/yyyy" 
                                 locale="es"/>
                     <h:outputLabel value="Fecha Final:" for="fechaFinal"/>
                     <p:calendar id="fechaFinal" 
-                                value="#{temporadaBean.temporada.fechaFin}"
+                                value="#{configBean.temporada.fechaFin}"
                                 navigator="true" 
                                 pattern="dd/mm/yyyy" 
                                 locale="es"/>
@@ -42,7 +42,7 @@
                     
          
                     <p:pickList id="pickList" 
-                                value="#{temporadaBean.categorias}" 
+                                value="#{configBean.categoriasTemporada}" 
                                 var="categorias"
                                 itemLabel="#{categorias}" 
                                 itemValue="#{categorias}" 
@@ -50,7 +50,7 @@
             
 
                     <h:outputLabel value="* status:" for="status"/>
-                    <p:selectOneMenu id="status" value="#{temporadaBean.temporada.status}"
+                    <p:selectOneMenu id="status" value="#{configBean.temporada.status}"
                                      converter= "javax.faces.Integer"
                                      style="width: 250px"
                                      required="true"
@@ -63,8 +63,8 @@
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <p:commandButton actionListener="#{temporadaBean.create}" value="Guardar" 
-                                 update="TemporadaCreateForm,:TemporadaListForm:temporadas,:growlAdmin" 
+                <p:commandButton actionListener="#{configBean.createTemporada}" value="Guardar" 
+                                 update="TemporadaCreateForm,:ListForm:temporadas,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'TemporadaCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="TemporadaCreateDialog.hide()"/>
             </p:fieldset>

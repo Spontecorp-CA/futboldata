@@ -11,22 +11,22 @@
     </ui:define>
 
     <!--    <ui:define name="content">-->
-    <h:form id="FaseListForm">
+<!--    <h:form id="FaseListForm">-->
 
         <p:fieldset style="width: 85%" legend="Lista de Fases" >
             <p:toolbar>
                 <p:toolbarGroup align="left">
-                    <p:commandButton id="createButton" icon="ui-icon-plus"  
+                    <p:commandButton id="createButtonFase" icon="ui-icon-plus"  
                                      value="Crear Fase" 
-                                     actionListener="#{faseBean.prepareCreate}"
-                                     update=":calendario:FaseCreateForm"
+                                     actionListener="#{configBean.prepareCreateFase()}"
+                                     update="ListForm:FaseCreateForm"
                                      oncomplete="PF('FaseCreateDialog').show()"/>
-                    <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                    <p:commandButton id="editButtonFase" icon="ui-icon-pencil" 
                                      value="Editar Fase" 
-                                     actionListener="#{faseBean.prepareEdit}"   
-                                     update=":calendario:FaseEditForm"                                        
+                                     actionListener="#{configBean.prepareEditFase()}"   
+                                     update="ListForm:FaseEditForm"                                        
                                      oncomplete="PF('FaseEditDialog').show()" 
-                                     disabled="#{empty faseBean.fase.nombre}"/>
+                                     disabled="#{empty configBean.fase.nombre}"/>
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">
                     <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
@@ -34,18 +34,19 @@
                 </p:toolbarGroup>
             </p:toolbar>
 
-            <p:dataTable id="fases" var="fase"  value="#{faseBean.fases}"
+            <p:dataTable id="fases" var="fase"  value="#{configBean.fases}"
                          rowKey="#{fase.id}"
-                         selection="#{faseBean.fase}" 
+                         selection="#{configBean.fase}" 
                          selectionMode="single"
                          paginator="true" rows="10"
-                         filteredValue="#{faseBean.filteredFase}" >   
+                         filteredValue="#{configBean.filteredFase}" >   
                 <p:ajax event="rowSelect"
-                        update=":calendario"
-                        oncomplete="#{temporadaBean.setIndex(1)}
-                                    #{grupoBean.setFase(faseBean.fase)}"/>
+                        update=":menuPrincipal, :ListForm:createButtonFase,:ListForm:editButtonFase,
+                        :ListForm:FaseEditForm ,:ListForm:FaseCreateForm "/>
+
                 <p:ajax event="rowUnselect" 
-                        update=":calendario" />
+                        update=":menuPrincipal,:ListForm:createButtonFase,:ListForm:editButtonFase ,
+                        :ListForm:FaseEditForm ,:ListForm:FaseCreateForm "/>
 
                 <p:column headerText="Fase" >
                     <h:outputText value="#{fase.nombre}"/>
@@ -65,7 +66,7 @@
             </p:dataTable>
         </p:fieldset>
 
-    </h:form>
+<!--    </h:form>-->
     <ui:include src="create.xhtml"/>
     <ui:include src="edit.xhtml"/>
 
