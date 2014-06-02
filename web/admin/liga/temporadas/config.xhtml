@@ -28,7 +28,7 @@
 
                     <p:menuitem value="Temporadas" 
                                 actionListener="#{configBean.activateTemporadaList}" 
-                                update=":ListForm"
+                                update=":ListForm ,:menuPrincipal"
                                 disabled="#{configBean.temporada.nombre}"
                                 immediate="true"/>
 
@@ -38,42 +38,30 @@
                                 update=":ListForm" 
                                 immediate="true"/>
 
+                    <p:menuitem value="Grupos" 
+                                disabled="#{configBean.faseTipo != 0}"
+                                actionListener="#{configBean.activateGrupoList}"
+                                update=":ListForm"/>
 
-                    <p:submenu label="Grupos" >
-                        <p:menuitem value="Listar" disabled="#{empty configBean.fase.nombre}"/>
+                    <p:menuitem value="Jornadas" disabled="#{empty configBean.grupo.nombre}"/>
 
-                        <p:submenu label="Jornadas">
-                            <p:menuitem value="Crear"/>
-                            <p:menuitem value="Editar"/>
-                            <p:menuitem value="Ver"/>
-                        </p:submenu>
-                        <p:submenu label="Partidos">
-                            <p:menuitem value="Crear"/>
-                            <p:menuitem value="Editar"/>
-                            <p:menuitem value="Ver"/>
-                        </p:submenu>
-                    </p:submenu>
-                    <p:submenu label="Llaves">
-                        <p:menuitem value="Listar" disabled="true"/>
-
-                        <p:submenu label="Partidos">
-                            <p:menuitem value="Crear"/>
-                            <p:menuitem value="Editar"/>
-                            <p:menuitem value="Ver"/>
-                        </p:submenu>
-                    </p:submenu>
+                    <p:menuitem value="Llaves" disabled="#{configBean.faseTipo != 1}"/>
                 </p:menubar>
             </h:form>
 
-
             <h:form id="ListForm" >
-            <h:panelGroup id="temporadaPanel" rendered="#{configBean.temporadaActiva}">
-                <ui:include src="./temporada/list.xhtml" />               
-            </h:panelGroup>
+                <h:panelGroup id="temporadaPanel" rendered="#{configBean.temporadaActiva}">
+                    <ui:include src="./temporada/list.xhtml" />               
+                </h:panelGroup>
 
-            <h:panelGroup id="fasePanel" rendered="#{configBean.faseActiva}">
-                <ui:include src="./fase/list.xhtml" />
-            </h:panelGroup>
+                <h:panelGroup id="fasePanel" rendered="#{configBean.faseActiva}">
+                    <ui:include src="./fase/list.xhtml" />
+                </h:panelGroup>
+                <h:panelGroup id="grupoPanel" rendered="#{configBean.grupoActiva}">
+                    <ui:include src="./grupo/list.xhtml" />
+                </h:panelGroup>
+
+
             </h:form>
 
 

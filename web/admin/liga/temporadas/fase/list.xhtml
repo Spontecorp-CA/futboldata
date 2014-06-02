@@ -42,11 +42,12 @@
                          filteredValue="#{configBean.filteredFase}" >   
                 <p:ajax event="rowSelect"
                         update=":menuPrincipal, :ListForm:createButtonFase,:ListForm:editButtonFase,
-                        :ListForm:FaseEditForm ,:ListForm:FaseCreateForm "/>
+                        :ListForm:FaseEditForm "
+                        listener="#{configBean.setFaseTipo(configBean.fase.tipoFase)}"/>
 
                 <p:ajax event="rowUnselect" 
                         update=":menuPrincipal,:ListForm:createButtonFase,:ListForm:editButtonFase ,
-                        :ListForm:FaseEditForm ,:ListForm:FaseCreateForm "/>
+                        :ListForm:FaseEditForm "/>
 
                 <p:column headerText="Fase" >
                     <h:outputText value="#{fase.nombre}"/>
@@ -59,7 +60,7 @@
                     <h:outputText   value="#{fase.tipoFase== 0?'Grupo':'Llave'}"/>
                 </p:column>
 
-                <p:column headerText="Status">
+                <p:column headerText="Status" >
                     <h:outputText   value="#{fase.status== 0?'INACTIVO':'ACTIVO'}"/>
                 </p:column>
 

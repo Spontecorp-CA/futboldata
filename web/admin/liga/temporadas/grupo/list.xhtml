@@ -6,7 +6,7 @@
                 xmlns:p="http://primefaces.org/ui">
 
 
-    <h:form id="GrupoListForm">
+
         <p:fieldset style="width: 85%" legend="Lista de Grupos" >
             <p:toolbar>
                 <p:toolbarGroup align="left">
@@ -23,26 +23,24 @@
                                      disabled="#{empty grupoBean.selected.nombre}"/>-->
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">
-                    <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                    <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
                                      immediate="true"/>
                 </p:toolbarGroup>
             </p:toolbar>
             <br />
             <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
             <br />
-            <p:dataTable id="grupos" var="item" value="#{grupoBean.items}"
+            <p:dataTable id="grupos" var="item" value="#{configBean.grupos}"
                          widgetVar="gruposTable"
                          rowKey="#{item.id}"
-                         selection="#{grupoBean.selected}" 
+                         selection="#{configBean.grupo}" 
                          selectionMode="single"
                          filteredValue="#{grupoBean.filteredGrupos}" 
                          emptyMessage="No se encontraron competiciones para ese criterio" 
                          paginator="true" rows="10"  
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                          rowsPerPageTemplate="5,10,15">   
-                <p:ajax event="rowSelect"   
-
-                        oncomplete="#{temporadaBean.setIndex(2)}"/>
+                <p:ajax event="rowSelect" />
                 <p:ajax event="rowUnselect" />
 
                 <p:column headerText="Grupo" >
@@ -59,7 +57,7 @@
 
             </p:dataTable>
         </p:fieldset>
-    </h:form>
+
 
 </ui:composition>
 

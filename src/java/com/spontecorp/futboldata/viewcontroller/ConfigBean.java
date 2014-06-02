@@ -45,7 +45,9 @@ public class ConfigBean implements Serializable {
     private Grupo grupo;
     private Jornada jornada;
     private Partido partido;
-
+    private int faseTipo;
+    private Competicion liga;
+    
     private boolean temporadaActiva;
     private boolean faseActiva;
     private boolean grupoActiva;
@@ -59,24 +61,25 @@ public class ConfigBean implements Serializable {
     private List<Partido> partidoList;
     private List<Fase> fases = null;
     private List<Fase> filteredFase;
-
+    private List<Grupo> grupos;
+    private List<Grupo> filteredGrupos;
+    private List<Temporada> filteredTemporada;
+    private List<Categoria> categoriaSource;
+    private List<Categoria> categoriaTarget;
+    private ArrayList<TemporadaCategoria> listTemporadaCategoria;
+    private DualListModel<Categoria> categorias;
+    
     private final TemporadaFacade temporadaFacade;
     private final FaseFacade faseFacade;
     private final LlaveFacade llaveFacade;
     private GrupoFacade grupoFacade;
     private final JornadaFacade jornadaFacade;
     private final PartidoFacade partidoFacade;
-
     private static final Logger logger = LoggerFactory.getLogger(ConfigBean.class);
-    private List<Categoria> categoriaSource;
-    private List<Categoria> categoriaTarget;
-    private Competicion liga;
-    private DualListModel<Categoria> categorias;
-    private List<Temporada> filteredTemporada;
     private final CategoriaFacade categoriaFacade;
-    private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private TemporadaCategoria temporadaCategoria;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
+
 
     public ConfigBean() {
         this.temporadaFacade = new TemporadaFacade();
@@ -86,15 +89,51 @@ public class ConfigBean implements Serializable {
         this.partidoFacade = new PartidoFacade();
         this.categoriaFacade = new CategoriaFacade();
         this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
+        this.grupoFacade = new GrupoFacade();
+                
         liga = new Competicion();
         categoriaSource = new ArrayList<Categoria>();
         categoriaTarget = new ArrayList<Categoria>();
         categorias = null;
         inicializeMenu();
+        faseTipo = -1;
     }
 
     public String returnAdminPage() {
         return "/admin/adminPage";
+    }
+
+    public int getFaseTipo() {
+        System.out.println("Fase Tipo : " + faseTipo);
+        return faseTipo;
+    }
+
+    public void setFaseTipo(int faseTipo) {
+        this.faseTipo = faseTipo;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public Llave getLlave() {
+        return llave;
+    }
+
+    public void setLlave(Llave llave) {
+        this.llave = llave;
+    }
+
+    public Jornada getJornada() {
+        return jornada;
+    }
+
+    public void setJornada(Jornada jornada) {
+        this.jornada = jornada;
     }
 
     public boolean isTemporadaActiva() {
@@ -106,16 +145,28 @@ public class ConfigBean implements Serializable {
     }
 
     public void activateTemporadaList() {
-        temporada = null;
-        temporadaActiva =true;
+        activateFaseList();
+        temporadaActiva = true;
         faseActiva = false;
-
+        temporada = null;
     }
 
     public void activateFaseList() {
+        faseTipo = -1;
         fases = null;
+        grupo = null;
+        llave = null;
+        grupoActiva = false;
         faseActiva = true;
-        setTemporadaActiva(false);
+        temporadaActiva = false;
+    }
+    
+    
+    public void activateGrupoList() {
+
+        faseActiva = false;
+        temporadaActiva = false;
+        grupoActiva = true;
     }
 
     private void inicializeMenu() {
@@ -403,6 +454,43 @@ public class ConfigBean implements Serializable {
 
     public String gotoFasePage() {
         return "/admin/liga/fase/list?faces-redirect=true";
+    }
+    
+    
+    /****************************************************************************/
+    /**********************Grupo Bean **************************************/
+    
+
+    public List<Grupo> getGrupos() {
+        if(grupos == null){
+           grupos = getGruposXFase();       
+        }
+        return grupos;
+    }
+
+    private List<Grupo> getGruposXFase(){
+        return grupoFacade.findGruposXFase(fase);
+    }
+    
+    private void recreateFase(){
+        this.fase = null;
+    }
+    
+    public List<Grupo> getFilteredGrupos() {
+        return filteredGrupos;
+    }
+
+    public void setFilteredGrupos(List<Grupo> filteredGrupos) {
+        this.filteredGrupos = filteredGrupos;
+    }
+
+    public Grupo prepareCreate(){
+        grupo = new Grupo();      
+        return grupo;
+    }
+    
+    public void prepareEdit(){
+    
     }
 
 }
