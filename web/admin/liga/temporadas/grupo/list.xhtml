@@ -7,57 +7,56 @@
 
 
 
-        <p:fieldset style="width: 85%" legend="Lista de Grupos" >
-            <p:toolbar>
-                <p:toolbarGroup align="left">
-<!--                    <p:commandButton id="createButton" icon="ui-icon-plus"  
-                                     value="Crear Grupo" 
-                                     actionListener="#{grupoBean.prepareCreate}"
-                                     update=":calendario:GrupoCreateForm"
-                                     oncomplete="PF('GrupoCreateDialog').show()"/>
-                    <p:commandButton id="editButton" icon="ui-icon-pencil" 
-                                     value="Editar Grupo" 
-                                     actionListener="#{grupoBean.prepareEdit}"   
-                                     update=":calendario:GrupoEditForm"                                        
-                                     oncomplete="PF('GrupoEditDialog').show()" 
-                                     disabled="#{empty grupoBean.selected.nombre}"/>-->
-                </p:toolbarGroup>
-                <p:toolbarGroup align="right">
-                    <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
-                                     immediate="true"/>
-                </p:toolbarGroup>
-            </p:toolbar>
-            <br />
-            <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
-            <br />
-            <p:dataTable id="grupos" var="item" value="#{configBean.grupos}"
-                         widgetVar="gruposTable"
-                         rowKey="#{item.id}"
-                         selection="#{configBean.grupo}" 
-                         selectionMode="single"
-                         filteredValue="#{grupoBean.filteredGrupos}" 
-                         emptyMessage="No se encontraron competiciones para ese criterio" 
-                         paginator="true" rows="10"  
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-                         rowsPerPageTemplate="5,10,15">   
-                <p:ajax event="rowSelect" />
-                <p:ajax event="rowUnselect" />
+    <p:fieldset style="width: 85%" legend="Lista de Grupos" >
+        <p:toolbar>
+            <p:toolbarGroup align="left">
+                <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                 value="Crear Grupo" 
+                                 actionListener="#{configBean.prepareCreateGrupo}"
+                                 update=":GrupoCreateForm"
+                                 oncomplete="PF('GrupoCreateDialog').show()"/>
+                <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                 value="Editar Grupo" 
+                                 actionListener="#{configBean.prepareEditGrupo}"   
+                                 update=":GrupoEditForm"                                        
+                                 oncomplete="PF('GrupoEditDialog').show()" 
+                                 disabled="#{empty configBean.grupo.nombre}"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
+                                 immediate="true"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <br />
+        <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+        <br />
+        <p:dataTable id="grupos" var="item" value="#{configBean.grupos}"
+                     widgetVar="gruposTable"
+                     rowKey="#{item.id}"
+                     selection="#{configBean.grupo}" 
+                     selectionMode="single"
+                     filteredValue="#{grupoBean.filteredGrupos}" 
+                     emptyMessage="No se encontraron competiciones para ese criterio" 
+                     paginator="true" rows="10"  
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                     rowsPerPageTemplate="5,10,15">   
+            <p:ajax event="rowSelect" />
+            <p:ajax event="rowUnselect" />
 
-                <p:column headerText="Grupo" >
-                    <h:outputText value="#{item.nombre}"/>
-                </p:column>
+            <p:column headerText="Grupo" >
+                <h:outputText value="#{item.nombre}"/>
+            </p:column>
 
-                <p:column headerText="Fase" >
-                    <h:outputText value="#{item.faseId.nombre}"/>
-                </p:column>
+            <p:column headerText="Fase" >
+                <h:outputText value="#{item.faseId.nombre}"/>
+            </p:column>
 
-                <p:column headerText="Status">
-                    <h:outputText   value="#{item.status== 0?'INACTIVO':'ACTIVO'}"/>
-                </p:column>
+            <p:column headerText="Status">
+                <h:outputText   value="#{item.status== 0?'INACTIVO':'ACTIVO'}"/>
+            </p:column>
 
-            </p:dataTable>
-        </p:fieldset>
-
+        </p:dataTable>
+    </p:fieldset>
 
 </ui:composition>
 

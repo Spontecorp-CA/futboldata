@@ -11,7 +11,7 @@
     </ui:define>
 
 <!--    <ui:define name="content">-->
-<!--        <h:form id="ListForm">-->
+<!--<h:form id="TemporadaListForm" rendered="#{configBean.temporadaActiva}">-->
 
             <p:fieldset style="width: 85%" legend="Lista de Temporadas" >
                 <p:toolbar>
@@ -19,12 +19,12 @@
                         <p:commandButton id="createButtonTemporada" icon="ui-icon-plus"  
                                          value="Crear Temporada" 
                                          actionListener="#{configBean.prepareCreateTemporada}"
-                                         update=":ListForm:TemporadaCreateForm"
+                                         update=":TemporadaCreateForm"
                                          oncomplete="PF('TemporadaCreateDialog').show()"/>
                         <p:commandButton id="editButtonTemporada" icon="ui-icon-pencil" 
                                          value="Editar Temporada" 
                                          actionListener="#{configBean.prepareEditTemporada}"   
-                                         update=":ListForm:TemporadaEditForm"                                        
+                                         update=":TemporadaEditForm"                                        
                                          oncomplete="PF('TemporadaEditDialog').show()" 
                                          disabled="#{empty configBean.temporada.nombre}"/>
                     </p:toolbarGroup>
@@ -41,13 +41,13 @@
                              paginator="true" rows="10"
                              filteredValue="#{configBean.filteredTemporada}" >   
                     <p:ajax event="rowSelect"
-                            update=":ListForm:createButtonTemporada
-                            ,:ListForm:editButtonTemporada
-                            ,:menuPrincipal
-                            :ListForm:TemporadaEditForm"   />
+                            update=":TemporadaListForm:createButtonTemporada
+                            ,:TemporadaListForm:editButtonTemporada
+                            ,:menuPrincipal,
+                            :TemporadaEditForm"   />
                     <p:ajax event="rowUnselect" 
-                            update=":ListForm:createButtonTemporada
-                            ,:ListForm:editButtonTemporada, 
+                            update=":TemporadaListForm:createButtonTemporada
+                            ,:TemporadaListForm:editButtonTemporada, 
                             :menuPrincipal" />
 
 
@@ -75,8 +75,8 @@
                 </p:dataTable>
             </p:fieldset>
 
-<!--        </h:form>-->
-        <ui:include src="create.xhtml"/>
-        <ui:include src="edit.xhtml"/>
+        <!--</h:form>-->
+<!--        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>-->
 
 </ui:composition>

@@ -104,7 +104,6 @@ public class ConfigBean implements Serializable {
     }
 
     public int getFaseTipo() {
-        System.out.println("Fase Tipo : " + faseTipo);
         return faseTipo;
     }
 
@@ -472,8 +471,8 @@ public class ConfigBean implements Serializable {
         return grupoFacade.findGruposXFase(fase);
     }
     
-    private void recreateFase(){
-        this.fase = null;
+    private void recreateModelGrupo(){
+        grupos = null;
     }
     
     public List<Grupo> getFilteredGrupos() {
@@ -484,13 +483,38 @@ public class ConfigBean implements Serializable {
         this.filteredGrupos = filteredGrupos;
     }
 
-    public Grupo prepareCreate(){
+    public void prepareCreateGrupo(){
         grupo = new Grupo();      
-        return grupo;
+
     }
     
-    public void prepareEdit(){
+    public void prepareEditGrupo(){
     
+    }
+    
+    
+    public void editGrupo() {
+        logger.debug("Esta editando un Grupo");
+        grupoFacade.edit(grupo);
+        recreateModelGrupo();
+        Util.addSuccessMessage("Se edito exitosamente el Grupo");
     }
 
+    
+        public void createGrupo() {
+            logger.debug("hola hola hola ");
+        try {
+            if (grupoFacade.findGrupoXFase(fase,grupo.getNombre()) != null) {
+                Util.addErrorMessage("El grupo ya se encuentra Registrado ");
+
+            }
+            grupo.setFaseId(fase);
+            grupoFacade.create(grupo);
+            Util.addSuccessMessage("Se creo exitosamente el Fase");
+            recreateModelGrupo();
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Fase :", e);
+        }
+    }
 }
