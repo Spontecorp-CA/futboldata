@@ -49,7 +49,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{configBean.createFase}" value="Guardar" 
-                                 update="FaseCreateForm,:ListForm:fases,:growlAdmin" 
+                                 update="FaseCreateForm,:FaseListForm:fases,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'FaseCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="FaseCreateDialog.hide()"/>
             </p:fieldset>

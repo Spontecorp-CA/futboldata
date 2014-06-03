@@ -28,53 +28,68 @@
 
                     <p:menuitem value="Temporadas" 
                                 actionListener="#{configBean.activateTemporadaList}" 
-                                update=":ListForm"
+                                update=":JornadaListForm,:TemporadaListForm, 
+                                :FaseListForm ,:menuPrincipal :GrupoListForm"
                                 disabled="#{configBean.temporada.nombre}"
                                 immediate="true"/>
 
                     <p:menuitem value="Fases"
                                 actionListener="#{configBean.activateFaseList}"
                                 disabled="#{empty configBean.temporada.nombre}"
-                                update=":ListForm" 
+                                update=":JornadaListForm,:FaseListForm,
+                                :TemporadaListForm :GrupoListForm :menuPrincipal" 
                                 immediate="true"/>
 
+                    <p:menuitem value="Grupos" 
+                                disabled="#{configBean.faseTipo != 0}"
+                                actionListener="#{configBean.activateGrupoList}"
+                                update=":JornadaListForm,:GrupoListForm :FaseListForm, 
+                                :TemporadaListForm :menuPrincipal" />
 
-                    <p:submenu label="Grupos" >
-                        <p:menuitem value="Listar" disabled="#{empty configBean.fase.nombre}"/>
+                    <p:menuitem value="Jornadas" 
+                                disabled="#{empty configBean.grupo.nombre}"
+                                actionListener="#{configBean.activateJornadaList}"
+                                update=":JornadaListForm,:GrupoListForm ,
+                                :FaseListForm, :TemporadaListForm ,:menuPrincipal "/>
 
-                        <p:submenu label="Jornadas">
-                            <p:menuitem value="Crear"/>
-                            <p:menuitem value="Editar"/>
-                            <p:menuitem value="Ver"/>
-                        </p:submenu>
-                        <p:submenu label="Partidos">
-                            <p:menuitem value="Crear"/>
-                            <p:menuitem value="Editar"/>
-                            <p:menuitem value="Ver"/>
-                        </p:submenu>
-                    </p:submenu>
-                    <p:submenu label="Llaves">
-                        <p:menuitem value="Listar" disabled="true"/>
-
-                        <p:submenu label="Partidos">
-                            <p:menuitem value="Crear"/>
-                            <p:menuitem value="Editar"/>
-                            <p:menuitem value="Ver"/>
-                        </p:submenu>
-                    </p:submenu>
+                    <p:menuitem value="Llaves" disabled="#{configBean.faseTipo != 1}"/>
                 </p:menubar>
             </h:form>
 
-
-            <h:form id="ListForm" >
-            <h:panelGroup id="temporadaPanel" rendered="#{configBean.temporadaActiva}">
-                <ui:include src="./temporada/list.xhtml" />               
-            </h:panelGroup>
-
-            <h:panelGroup id="fasePanel" rendered="#{configBean.faseActiva}">
-                <ui:include src="./fase/list.xhtml" />
-            </h:panelGroup>
+            <h:form id="TemporadaListForm" >  
+                <h:panelGroup id="temporadaPanel" rendered="#{configBean.temporadaActiva}">
+                    <ui:include src="./temporada/list.xhtml" />   
+                </h:panelGroup>
             </h:form>
+            <ui:include src="./temporada/create.xhtml"/>
+            <ui:include src="./temporada/edit.xhtml"/>
+
+            <h:form id="FaseListForm" >  
+                <h:panelGroup id="fasePanel" rendered="#{configBean.faseActiva}">
+                    <ui:include src="./fase/list.xhtml" />   
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="./fase/create.xhtml"/>
+            <ui:include src="./fase/edit.xhtml"/>
+            <h:form id="GrupoListForm" >  
+                <h:panelGroup id="grupoPanel" rendered="#{configBean.grupoActiva}">
+                    <ui:include src="./grupo/list.xhtml" />   
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="./grupo/create.xhtml"/>
+            <ui:include src="./grupo/edit.xhtml"/>
+
+            <h:form id="JornadaListForm" >  
+                <h:panelGroup id="jornadaPanel" rendered="#{configBean.jornadaActiva}">
+                    <ui:include src="./jornada/list.xhtml" />   
+                </h:panelGroup>
+            </h:form>
+
+
+            <ui:include src="./jornada/create.xhtml"/>
+            <ui:include src="./jornada/edit.xhtml"/>
+
+
 
 
             <!--                <p:tabView id="calendario" 

@@ -45,6 +45,8 @@ public class ConfigBean implements Serializable {
     private Grupo grupo;
     private Jornada jornada;
     private Partido partido;
+    private int faseTipo;
+    private Competicion liga;
 
     private boolean temporadaActiva;
     private boolean faseActiva;
@@ -59,6 +61,14 @@ public class ConfigBean implements Serializable {
     private List<Partido> partidoList;
     private List<Fase> fases = null;
     private List<Fase> filteredFase;
+    private List<Grupo> grupos;
+    private List<Grupo> filteredGrupos;
+    private List<Temporada> filteredTemporada;
+    private List<Categoria> categoriaSource;
+    private List<Categoria> categoriaTarget;
+    private List<Jornada> jornadas;
+    private ArrayList<TemporadaCategoria> listTemporadaCategoria;
+    private DualListModel<Categoria> categorias;
 
     private final TemporadaFacade temporadaFacade;
     private final FaseFacade faseFacade;
@@ -66,17 +76,11 @@ public class ConfigBean implements Serializable {
     private GrupoFacade grupoFacade;
     private final JornadaFacade jornadaFacade;
     private final PartidoFacade partidoFacade;
-
     private static final Logger logger = LoggerFactory.getLogger(ConfigBean.class);
-    private List<Categoria> categoriaSource;
-    private List<Categoria> categoriaTarget;
-    private Competicion liga;
-    private DualListModel<Categoria> categorias;
-    private List<Temporada> filteredTemporada;
     private final CategoriaFacade categoriaFacade;
-    private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private TemporadaCategoria temporadaCategoria;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
+    private List<Jornada> filteredJornada;
 
     public ConfigBean() {
         this.temporadaFacade = new TemporadaFacade();
@@ -86,15 +90,50 @@ public class ConfigBean implements Serializable {
         this.partidoFacade = new PartidoFacade();
         this.categoriaFacade = new CategoriaFacade();
         this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
+        this.grupoFacade = new GrupoFacade();
+
         liga = new Competicion();
         categoriaSource = new ArrayList<Categoria>();
         categoriaTarget = new ArrayList<Categoria>();
         categorias = null;
         inicializeMenu();
+        faseTipo = -1;
     }
 
     public String returnAdminPage() {
         return "/admin/adminPage";
+    }
+
+    public int getFaseTipo() {
+        return faseTipo;
+    }
+
+    public void setFaseTipo(int faseTipo) {
+        this.faseTipo = faseTipo;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public Llave getLlave() {
+        return llave;
+    }
+
+    public void setLlave(Llave llave) {
+        this.llave = llave;
+    }
+
+    public Jornada getJornada() {
+        return jornada;
+    }
+
+    public void setJornada(Jornada jornada) {
+        this.jornada = jornada;
     }
 
     public boolean isTemporadaActiva() {
@@ -106,16 +145,34 @@ public class ConfigBean implements Serializable {
     }
 
     public void activateTemporadaList() {
-        temporada = null;
-        temporadaActiva =true;
+        activateFaseList();
+        temporadaActiva = true;
         faseActiva = false;
-
+        temporada = null;
     }
 
     public void activateFaseList() {
+        activateGrupoList();
+        faseTipo = -1;
         fases = null;
+        llave = null;
+        grupoActiva = false;
         faseActiva = true;
-        setTemporadaActiva(false);
+        temporadaActiva = false;
+
+    }
+
+    public void activateGrupoList() {
+        grupo = null;
+        faseActiva = false;
+        grupoActiva = true;
+        jornadas = null;
+        jornadaActiva =false;
+    }
+
+    public void activateJornadaList() {
+        grupoActiva = false;
+        jornadaActiva = true;
     }
 
     private void inicializeMenu() {
@@ -307,6 +364,7 @@ public class ConfigBean implements Serializable {
     }
 
     public String gotoConfig() {
+        activateTemporadaList();
         recreateModelTemporada();
 
         return "/admin/liga/temporadas/config?faces-redirect=true";
@@ -405,4 +463,126 @@ public class ConfigBean implements Serializable {
         return "/admin/liga/fase/list?faces-redirect=true";
     }
 
+    /**
+     * *************************************************************************
+     */
+    /**
+     * ********************Grupo Bean *************************************
+     */
+    public List<Grupo> getGrupos() {
+        if (grupos == null) {
+            grupos = getGruposXFase();
+        }
+        return grupos;
+    }
+
+    private List<Grupo> getGruposXFase() {
+        return grupoFacade.findGruposXFase(fase);
+    }
+
+    private void recreateModelGrupo() {
+        grupos = null;
+    }
+
+    public List<Grupo> getFilteredGrupos() {
+        return filteredGrupos;
+    }
+
+    public void setFilteredGrupos(List<Grupo> filteredGrupos) {
+        this.filteredGrupos = filteredGrupos;
+    }
+
+    public void prepareCreateGrupo() {
+        grupo = new Grupo();
+
+    }
+
+    public void prepareEditGrupo() {
+
+    }
+
+    public void editGrupo() {
+        logger.debug("Esta editando un Grupo");
+        grupoFacade.edit(grupo);
+        recreateModelGrupo();
+        Util.addSuccessMessage("Se edito exitosamente el Grupo");
+    }
+
+    public void createGrupo() {
+        logger.debug("hola hola hola ");
+        try {
+            if (grupoFacade.findGrupoXFase(fase, grupo.getNombre()) != null) {
+                Util.addErrorMessage("El grupo ya se encuentra Registrado ");
+
+            }
+            grupo.setFaseId(fase);
+            grupoFacade.create(grupo);
+            Util.addSuccessMessage("Se creo exitosamente el Fase");
+            recreateModelGrupo();
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Fase :", e);
+        }
+    }
+
+    /**
+     * **************************Codigo de Jornada*****************************
+     */
+    /**
+     * *************************************************************************
+     */
+    public List<Jornada> getJornadas() {
+        if (jornadas == null) {
+            jornadas = getJornadaxGrupo();
+        }
+        return jornadas;
+    }
+
+    private List<Jornada> getJornadaxGrupo() {
+        return jornadaFacade.findJornadasxGrupo(grupo);
+    }
+
+    private void recreateModelJornada() {
+        jornadas = null;
+    }
+
+    public List<Jornada> getFilteredJornada() {
+        return filteredJornada;
+    }
+
+    public void setFilteredJornadas(List<Jornada> filteredJornada) {
+        this.filteredJornada = filteredJornada;
+    }
+
+    public void prepareCreateJornada() {
+        jornada = new Jornada();
+
+    }
+
+    public void prepareEditJornada() {
+
+    }
+
+    public void editJornada() {
+        logger.debug("Esta editando un Grupo");
+        jornadaFacade.edit(jornada);
+        recreateModelGrupo();
+        Util.addSuccessMessage("Se edito exitosamente la Jornada");
+    }
+
+    public void createJornada() {
+        try {
+            if (jornadaFacade.findJornadaxGrupo(grupo, jornada.getNombre()) != null) {
+                Util.addErrorMessage("La jornada  ya se encuentra Registrado ");
+
+            }
+            jornada.setGrupoId(grupo);
+            jornadaFacade.create(jornada);
+            Util.addSuccessMessage("Se creo exitosamente la Jornada");
+            recreateModelJornada();
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Jornada :", e);
+        }
+    }
 }

@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Fase.findByNombre", query = "SELECT f FROM Fase f WHERE f.nombre = :nombre"),
     @NamedQuery(name = "Fase.findByStatus", query = "SELECT f FROM Fase f WHERE f.status = :status")})
 public class Fase implements Serializable {
+    @Column(name = "tipo_fase")
+    private Integer tipoFase;
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,10 +52,6 @@ public class Fase implements Serializable {
     private String nombre;
     @Column(name = "status")
     private Integer status;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "tipo_fase")
-    private int tipoFase;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "faseId")
     private Collection<Grupo> grupoCollection;
     @JoinColumn(name = "temporada_id", referencedColumnName = "id")
@@ -119,11 +117,11 @@ public class Fase implements Serializable {
         this.llaveCollection = llaveCollection;
     }
 
-    public int getTipoFase() {
+    public Integer getTipoFase() {
         return tipoFase;
     }
 
-    public void setTipoFase(int tipoFase) {
+    public void setTipoFase(Integer tipoFase) {
         this.tipoFase = tipoFase;
     }
     
@@ -151,5 +149,7 @@ public class Fase implements Serializable {
     public String toString() {
         return nombre;
     }
+
+
 
 }

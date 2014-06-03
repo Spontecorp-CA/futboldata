@@ -11,7 +11,7 @@
     </ui:define>
 
     <!--    <ui:define name="content">-->
-<!--    <h:form id="FaseListForm">-->
+<!--    <h:form id="FaseListForm" rendered="#{configBean.faseActiva}">-->
 
         <p:fieldset style="width: 85%" legend="Lista de Fases" >
             <p:toolbar>
@@ -19,12 +19,12 @@
                     <p:commandButton id="createButtonFase" icon="ui-icon-plus"  
                                      value="Crear Fase" 
                                      actionListener="#{configBean.prepareCreateFase()}"
-                                     update="ListForm:FaseCreateForm"
+                                     update=":FaseCreateForm"
                                      oncomplete="PF('FaseCreateDialog').show()"/>
                     <p:commandButton id="editButtonFase" icon="ui-icon-pencil" 
                                      value="Editar Fase" 
                                      actionListener="#{configBean.prepareEditFase()}"   
-                                     update="ListForm:FaseEditForm"                                        
+                                     update=":FaseEditForm"                                        
                                      oncomplete="PF('FaseEditDialog').show()" 
                                      disabled="#{empty configBean.fase.nombre}"/>
                 </p:toolbarGroup>
@@ -41,12 +41,11 @@
                          paginator="true" rows="10"
                          filteredValue="#{configBean.filteredFase}" >   
                 <p:ajax event="rowSelect"
-                        update=":menuPrincipal, :ListForm:createButtonFase,:ListForm:editButtonFase,
-                        :ListForm:FaseEditForm ,:ListForm:FaseCreateForm "/>
+                        update=":menuPrincipal, :FaseListForm:createButtonFase,:FaseListForm:editButtonFase,"
+                        listener="#{configBean.setFaseTipo(configBean.fase.tipoFase)}"/>
 
                 <p:ajax event="rowUnselect" 
-                        update=":menuPrincipal,:ListForm:createButtonFase,:ListForm:editButtonFase ,
-                        :ListForm:FaseEditForm ,:ListForm:FaseCreateForm "/>
+                        update=":menuPrincipal,:FaseListForm:createButtonFase,:FaseListForm:editButtonFase "/>
 
                 <p:column headerText="Fase" >
                     <h:outputText value="#{fase.nombre}"/>
@@ -59,14 +58,14 @@
                     <h:outputText   value="#{fase.tipoFase== 0?'Grupo':'Llave'}"/>
                 </p:column>
 
-                <p:column headerText="Status">
+                <p:column headerText="Status" >
                     <h:outputText   value="#{fase.status== 0?'INACTIVO':'ACTIVO'}"/>
                 </p:column>
 
             </p:dataTable>
         </p:fieldset>
 
-<!--    </h:form>-->
+    <!--</h:form>-->
     <ui:include src="create.xhtml"/>
     <ui:include src="edit.xhtml"/>
 

@@ -45,4 +45,21 @@ public class GrupoFacade extends AbstractFacade<Grupo>{
         
         return grupos;
     }
+    
+        public Grupo findGrupoXFase(Fase fase,String nombre){
+        EntityManager em = getEntityManager();
+        Grupo grup = null;
+        try {
+            String query = "SELECT g FROM Grupo g WHERE g.faseId = :fase "
+                    + "AND g.nombre = :grupo";
+            Query q = em.createQuery(query,Grupo.class);
+            q.setParameter("fase", fase);
+            q.setParameter("grupo", nombre);
+            grup = (Grupo) q.getSingleResult();
+        } catch (Exception e) {
+            logger.error("Error recuperando los grupos de una fase", e);
+        }
+        
+        return grup;
+    }
 }

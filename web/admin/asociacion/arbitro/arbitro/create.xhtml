@@ -29,7 +29,7 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{arbitroBean.selected.personaId.documentoIdentidad}"
-                                     required="true" requiredMessage="Debe colocar el documento"
+                                      requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{arbitroBean.selected.personaId.sexo}">
@@ -66,7 +66,7 @@
                         <p:selectOneMenu id="status" value="#{arbitroBean.selected.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
-                                         required="true"
+                                         
                                          requiredMessage="Debe repetir el password">
                             <f:selectItem itemLabel="Activo" itemValue="1"/>
                             <f:selectItem itemLabel="Inactivo" itemValue="0"/>
@@ -78,7 +78,7 @@
                                          value="#{arbitroBean.pais}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
-                                         required="true"
+                                         
                                          requiredMessage="Debe seleccionar un perfil">                       
                             <f:selectItems value="#{arbitroBean.paisesAvalaible}"/>
                             <p:ajax listener="#{arbitroBean.ciudadesAvalaible}" 
@@ -89,14 +89,14 @@
                                          value="#{arbitroBean.selected.personaId.direccionId.ciudadId}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
-                                         required="true"
+                                         
                                          requiredMessage="Debe seleccionar un perfil">                       
                             <f:selectItems value="#{arbitroBean.ciudades}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Dirección:" for="direccion"/>
                         <p:inputTextarea id="direccion"
                                          value="#{arbitroBean.selected.personaId.direccionId.direccion}"
-                                         required="true" requiredMessage="Debe colocar un email"
+                                          requiredMessage="Debe colocar un email"
                                          validatorMessage="Email inválido"
                                          rows="3" cols="33"
                                          style="width: 250px">
@@ -106,14 +106,14 @@
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputMask id="telefono" 
                                      value="#{arbitroBean.selected.personaId.telefono}"
-                                     required="true" 
+                                    
                                      requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>  
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputText id="celular" 
                                      value="#{arbitroBean.selected.personaId.celular}"
-                                     required="true" requiredMessage="Debe colocar un teléfono"
+                                      requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
 
 
@@ -123,7 +123,7 @@
                                      style="width: 250px"
                                      validatorMessage="Email inválido">
                             <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                pattern="(.+@.+\.[a-zA-Z]+)?" />
                         </p:inputText>
                         <h:outputLabel value="Redes Sociales" for="redSocial"/>
 

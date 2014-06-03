@@ -20,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -36,14 +37,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Jornada.findByNombre", query = "SELECT j FROM Jornada j WHERE j.nombre = :nombre"),
     @NamedQuery(name = "Jornada.findByStatus", query = "SELECT j FROM Jornada j WHERE j.status = :status")})
 public class Jornada implements Serializable {
+    @Size(max = 45)
+    @Column(name = "nombre")
+    private String nombre;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "nombre")
-    private Integer nombre;
     @Column(name = "status")
     private Integer status;
     @JoinColumn(name = "grupo_id", referencedColumnName = "id")
@@ -69,13 +71,6 @@ public class Jornada implements Serializable {
         this.id = id;
     }
 
-    public Integer getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(Integer nombre) {
-        this.nombre = nombre;
-    }
 
     public Integer getStatus() {
         return status;
@@ -134,6 +129,14 @@ public class Jornada implements Serializable {
     @Override
     public String toString() {
         return String.valueOf(nombre);
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
 }

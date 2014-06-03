@@ -7,20 +7,20 @@
 
 
 
-    <p:fieldset style="width: 85%" legend="Lista de Grupos" >
+    <p:fieldset style="width: 85%" legend="Lista de Jornadas" >
         <p:toolbar>
             <p:toolbarGroup align="left">
                 <p:commandButton id="createButton" icon="ui-icon-plus"  
-                                 value="Crear Grupo" 
-                                 actionListener="#{configBean.prepareCreateGrupo}"
-                                 update=":GrupoCreateForm"
-                                 oncomplete="PF('GrupoCreateDialog').show()"/>
+                                 value="Crear Jornada" 
+                                 actionListener="#{configBean.prepareCreateJornada}"
+                                 update=":JornadaCreateForm"
+                                 oncomplete="PF('JornadaCreateDialog').show()"/>
                 <p:commandButton id="editButton" icon="ui-icon-pencil" 
-                                 value="Editar Grupo" 
-                                 actionListener="#{configBean.prepareEditGrupo}"   
-                                 update=":GrupoEditForm"                                        
-                                 oncomplete="PF('GrupoEditDialog').show()" 
-                                 disabled="#{empty configBean.grupo.nombre}"/>
+                                 value="Editar Jornada" 
+                                 actionListener="#{configBean.prepareEditJornada}"   
+                                 update=":JornadaEditForm"                                        
+                                 oncomplete="PF('JornadaEditDialog').show()" 
+                                 disabled="#{empty configBean.jornada.nombre}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
@@ -30,12 +30,12 @@
         <br />
         <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
         <br />
-        <p:dataTable id="grupos" var="item" value="#{configBean.grupos}"
-                     widgetVar="gruposTable"
+        <p:dataTable id="jornadas" var="item" value="#{configBean.jornadas}"
+                     widgetVar="jornadasTable"
                      rowKey="#{item.id}"
-                     selection="#{configBean.grupo}" 
+                     selection="#{configBean.jornada}" 
                      selectionMode="single"
-                     filteredValue="#{grupoBean.filteredGrupos}" 
+                     filteredValue="#{jornadaBean.filteredJornadas}" 
                      emptyMessage="No se encontraron competiciones para ese criterio" 
                      paginator="true" rows="10"  
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
@@ -45,7 +45,7 @@
             <p:ajax event="rowUnselect" 
                     update=":menuPrincipal "/>
 
-            <p:column headerText="Grupo" >
+            <p:column headerText="Jornada" >
                 <h:outputText value="#{item.nombre}"/>
             </p:column>
 
