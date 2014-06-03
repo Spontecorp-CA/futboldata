@@ -27,6 +27,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -206,9 +207,14 @@ public class LigaBean implements Serializable {
 
     private boolean existeNombreLiga(String nombre) {
         boolean result = true;
-        if (ligaController.findCompeticion(nombre) == null) {
+        try {
+            if (ligaController.findCompeticion(nombre) == null) {
+                result = false;
+            }    
+        } catch (NoResultException e) {
             result = false;
         }
+        
         return result;
     }
 

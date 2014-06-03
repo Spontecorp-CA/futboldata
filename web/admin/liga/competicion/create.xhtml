@@ -66,11 +66,9 @@
                             <f:selectItems value="#{ligaBean.ciudades}"/>
                         </p:selectOneMenu>
 
-                        <h:outputLabel value="* Dirección :" for="direccion"/>
+                        <h:outputLabel value="Dirección :" for="direccion"/>
                         <p:inputText id="direccion" 
                                      value="#{ligaBean.selected.direccionId.direccion}"
-                                     required="true" 
-                                     requiredMessage="Debe colocar una direccion"
                                      style="width: 250px">
                         </p:inputText>
                         <h:outputLabel value="Pagina Web:"/>
@@ -78,7 +76,7 @@
                                      value="#{ligaBean.selected.direccionId.paginaWeb}"
                                      style="width: 250px"/>
                         
-                        <h:outputLabel value="* Teléfonos:" for="phones"/>
+                        <h:outputLabel value="Teléfonos:" for="phones"/>
                         <p:panelGrid id="phones" style="border-style: none">
                             <p:row>
                                 <p:column>
@@ -105,7 +103,7 @@
                             </p:row>
                         </p:panelGrid>
 
-                        <h:outputLabel value="* email:" 
+                        <h:outputLabel value="email:" 
                                        for="email"/>
                         <p:panelGrid id="correos" style="border-style: none">
                             <p:row>

@@ -30,7 +30,7 @@ public class CompeticionFacade extends AbstractFacade<Competicion>{
         return Util.getEmf().createEntityManager();
     }
     
-    public Competicion findCompeticion(String nombre) {
+    public Competicion findCompeticion(String nombre) throws NoResultException{
         EntityManager em = getEntityManager();
         Competicion competicion = null;
         try {
@@ -39,6 +39,7 @@ public class CompeticionFacade extends AbstractFacade<Competicion>{
             competicion = (Competicion) query.getSingleResult();
         } catch (NoResultException e) {
            logger.debug("Problema al buscar competicion",e.getMessage());
+           throw new NoResultException();
         } finally {
             em.close();
         }

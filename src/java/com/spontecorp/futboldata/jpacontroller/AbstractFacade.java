@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
     private static final Logger logger = LoggerFactory.getLogger(AbstractFacade.class);
+    
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
     }

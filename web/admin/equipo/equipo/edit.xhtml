@@ -38,7 +38,8 @@
                                          style="width: 250px"
                                          panelStyle="width:250px"
                                          required="true"
-                                         requiredMessage="Debe seleccionar una Categoria">                       
+                                         requiredMessage="Debe seleccionar una Categoria"
+                                         converter="categoriaConverter">                       
                             <f:selectItems value="#{equipoBean.categoriaAvailable}"/>
                         </p:selectOneMenu>
 

@@ -6,6 +6,8 @@ body {
     margin: 10px;
 }
 
+
+
 h1 {
     font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     border-bottom: 1px solid #AFAFAF; 
@@ -65,8 +67,8 @@ ul,li {
     margin-left: auto;
     margin-right: auto;
     background-image: url(#{resource['images:background_admin.png']});
-    background-repeat: no-repeat;
-    height: 100%;
+background-repeat: no-repeat;
+height: 100%;
 }
 
 
