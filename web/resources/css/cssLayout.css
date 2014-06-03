@@ -29,7 +29,7 @@
     background-color: #c2dfef;
     padding: 5px;
     margin: 10px 0px 0px 0px;
-    
+
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -56,6 +56,12 @@
     padding: 5px;
 }
 
+.main_center_content{
+    background-image: url(#{resource['images:fondo_main.png']});   
+    background-repeat: repeat-x;
+    background-color: #ffffff;
+}
+
 .panelGridCenter{
     margin: 0 auto;
 }
@@ -73,6 +79,7 @@
 }
 
 .centerImage{
+    background-color: #e6e6e6;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -82,6 +89,13 @@
     display: block;
     position: absolute;
     bottom: 10px;
+}
+
+.logo_main{
+    display: block;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 

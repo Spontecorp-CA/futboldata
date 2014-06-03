@@ -67,7 +67,6 @@ public class EquipoBean implements Serializable {
     }
 
     protected void setEmbeddableKeys() {
-
         club = selected.getClubId();
         categoria = selected.getCategoriaId();
     }
@@ -124,8 +123,12 @@ public class EquipoBean implements Serializable {
         return Util.getSelectItems(controllerClub.findAll());
     }
 
-    public SelectItem[] getCategoriaAvailable() {
-        return Util.getSelectItems(controllerCategoria.findAll());
+//    public SelectItem[] getCategoriaAvailable() {
+//        return Util.getSelectItems(controllerCategoria.findAll());
+//    }
+    
+    public List<Categoria> getCategoriaAvailable(){
+        return controllerCategoria.findAll();
     }
 
     public void create() {

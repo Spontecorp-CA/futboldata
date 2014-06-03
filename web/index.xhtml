@@ -10,7 +10,10 @@
 
     <ui:define name="content">
         <h:form id="loginForm">  
-            <p:panel header="Ingreso a la Aplicación" style="width: 360px;" styleClass="panelGridCenter">
+            <h:panelGroup>
+                <h:graphicImage id="logo" name="logo_FutbolData_main.png"
+                                library="images" styleClass="logo_main" />
+            <p:panel header="Ingreso" style="width: 360px;" styleClass="panelGridCenter">
                 <p:growl id="growl" showSummary="true" life="4000"/>
                 <h:panelGrid id="loginPanel" columns="2">
                     <h:outputText value="Usuario" />
@@ -26,6 +29,7 @@
                                      update="loginForm" ajax="true"/>
                 </h:panelGrid>
             </p:panel>
+            </h:panelGroup>
         </h:form>  
     </ui:define>
     
