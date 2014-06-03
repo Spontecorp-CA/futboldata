@@ -357,6 +357,7 @@ public class ConfigBean implements Serializable {
     }
 
     public String gotoConfig() {
+        activateTemporadaList();
         recreateModelTemporada();
 
         return "/admin/liga/temporadas/config?faces-redirect=true";

@@ -50,7 +50,7 @@ public class GrupoFacade extends AbstractFacade<Grupo>{
         EntityManager em = getEntityManager();
         Grupo grup = null;
         try {
-            String query = "SELECT g FROM Grupo g WHERE g.faseId = :fase"
+            String query = "SELECT g FROM Grupo g WHERE g.faseId = :fase "
                     + "AND g.nombre = :grupo";
             Query q = em.createQuery(query,Grupo.class);
             q.setParameter("fase", fase);
