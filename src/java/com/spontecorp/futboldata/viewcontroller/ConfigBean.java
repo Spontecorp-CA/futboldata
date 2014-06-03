@@ -47,7 +47,7 @@ public class ConfigBean implements Serializable {
     private Partido partido;
     private int faseTipo;
     private Competicion liga;
-    
+
     private boolean temporadaActiva;
     private boolean faseActiva;
     private boolean grupoActiva;
@@ -66,9 +66,10 @@ public class ConfigBean implements Serializable {
     private List<Temporada> filteredTemporada;
     private List<Categoria> categoriaSource;
     private List<Categoria> categoriaTarget;
+    private List<Jornada> jornadas;
     private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private DualListModel<Categoria> categorias;
-    
+
     private final TemporadaFacade temporadaFacade;
     private final FaseFacade faseFacade;
     private final LlaveFacade llaveFacade;
@@ -79,7 +80,7 @@ public class ConfigBean implements Serializable {
     private final CategoriaFacade categoriaFacade;
     private TemporadaCategoria temporadaCategoria;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
-
+    private List<Jornada> filteredJornada;
 
     public ConfigBean() {
         this.temporadaFacade = new TemporadaFacade();
@@ -90,7 +91,7 @@ public class ConfigBean implements Serializable {
         this.categoriaFacade = new CategoriaFacade();
         this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
         this.grupoFacade = new GrupoFacade();
-                
+
         liga = new Competicion();
         categoriaSource = new ArrayList<Categoria>();
         categoriaTarget = new ArrayList<Categoria>();
@@ -159,8 +160,7 @@ public class ConfigBean implements Serializable {
         faseActiva = true;
         temporadaActiva = false;
     }
-    
-    
+
     public void activateGrupoList() {
 
         faseActiva = false;
@@ -455,27 +455,28 @@ public class ConfigBean implements Serializable {
     public String gotoFasePage() {
         return "/admin/liga/fase/list?faces-redirect=true";
     }
-    
-    
-    /****************************************************************************/
-    /**********************Grupo Bean **************************************/
-    
 
+    /**
+     * *************************************************************************
+     */
+    /**
+     * ********************Grupo Bean *************************************
+     */
     public List<Grupo> getGrupos() {
-        if(grupos == null){
-           grupos = getGruposXFase();       
+        if (grupos == null) {
+            grupos = getGruposXFase();
         }
         return grupos;
     }
 
-    private List<Grupo> getGruposXFase(){
+    private List<Grupo> getGruposXFase() {
         return grupoFacade.findGruposXFase(fase);
     }
-    
-    private void recreateModelGrupo(){
+
+    private void recreateModelGrupo() {
         grupos = null;
     }
-    
+
     public List<Grupo> getFilteredGrupos() {
         return filteredGrupos;
     }
@@ -484,16 +485,15 @@ public class ConfigBean implements Serializable {
         this.filteredGrupos = filteredGrupos;
     }
 
-    public void prepareCreateGrupo(){
-        grupo = new Grupo();      
+    public void prepareCreateGrupo() {
+        grupo = new Grupo();
 
     }
-    
-    public void prepareEditGrupo(){
-    
+
+    public void prepareEditGrupo() {
+
     }
-    
-    
+
     public void editGrupo() {
         logger.debug("Esta editando un Grupo");
         grupoFacade.edit(grupo);
@@ -501,11 +501,10 @@ public class ConfigBean implements Serializable {
         Util.addSuccessMessage("Se edito exitosamente el Grupo");
     }
 
-    
-        public void createGrupo() {
-            logger.debug("hola hola hola ");
+    public void createGrupo() {
+        logger.debug("hola hola hola ");
         try {
-            if (grupoFacade.findGrupoXFase(fase,grupo.getNombre()) != null) {
+            if (grupoFacade.findGrupoXFase(fase, grupo.getNombre()) != null) {
                 Util.addErrorMessage("El grupo ya se encuentra Registrado ");
 
             }
@@ -516,6 +515,67 @@ public class ConfigBean implements Serializable {
 
         } catch (Exception e) {
             logger.debug("Error al crear Fase :", e);
+        }
+    }
+
+    /**
+     * **************************Codigo de Jornada*****************************
+     */
+    /**
+     * *************************************************************************
+     */
+    public List<Jornada> getJornadas() {
+        if (jornadas == null) {
+            jornadas = getJornadaxGrupo();
+        }
+        return jornadas;
+    }
+
+    private List<Jornada> getJornadaxGrupo() {
+        return jornadaFacade.findJornadasxGrupo(grupo);
+    }
+
+    private void recreateModelJornada() {
+        jornadas = null;
+    }
+
+    public List<Jornada> getFilteredJornada() {
+        return filteredJornada;
+    }
+
+    public void setFilteredJornadas(List<Jornada> filteredJornada) {
+        this.filteredJornada = filteredJornada;
+    }
+
+    public void prepareCreateJornada() {
+        jornada = new Jornada();
+
+    }
+
+    public void prepareEditJornada() {
+
+    }
+
+    public void editJornada() {
+        logger.debug("Esta editando un Grupo");
+        jornadaFacade.edit(jornada);
+        recreateModelGrupo();
+        Util.addSuccessMessage("Se edito exitosamente la Jornada");
+    }
+
+    public void createJornada() {
+        try {
+            if (jornadaFacade.findJornadaxGrupo(grupo, jornada.getNombre()) != null) {
+                Util.addErrorMessage("La jornada  ya se encuentra Registrado ");
+
+            }
+            jornada.setGrupoId(grupo);
+            jornadaFacade.create(jornada);
+            Util.addSuccessMessage("Se creo exitosamente la Jornada");
+            recreateModelJornada();
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Jornada :", e);
         }
     }
 }

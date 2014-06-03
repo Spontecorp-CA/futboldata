@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Jornadas
+    </ui:define>
+
+    <p:dialog id="JornadaEditDlg" widgetVar="JornadaEditDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Edición de Jornadas">
+        <h:form id="JornadaEditForm">
+
+            <p:fieldset style="width: 85%" legend="Editar Jornada">                
+
+                <h:panelGrid columns="2" title="Datos Personales"
+                             styleClass="top-aligned-columns">
+
+                    <h:outputLabel value="Fase:" for="fase"/>
+                    <h:outputText id="fase" value="#{configBean.fase.nombre}" />
+
+                    <h:outputLabel value="* Nombre:" for="nombre"/>
+                    <p:inputText id="nombre" value="#{configBean.jornada.nombre}"
+                                 required="true" requiredMessage="Debe colocar un nombre"
+                                 style="width: 250px"/>
+
+                    <h:outputLabel value="* status:" for="status"/>
+                    <p:selectOneMenu id="status" value="#{configBean.jornada.status}"
+                                     converter= "javax.faces.Integer"
+                                     style="width: 250px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar un valor">
+                        <f:selectItem itemLabel="Activo" itemValue="1"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <p:commandButton actionListener="#{configBean.editJornada}" value="Guardar" 
+                                 update="JornadaEditForm, :JornadaListForm:jornadas,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'JornadaEditDialog');"
+                                 />
+                <p:commandButton value="Cancelar" onclick="JornadaEditDialog.hide()"/>
+            </p:fieldset>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <p:fieldset style="width: 85%" legend="Lista de Jornadas" >
+        <p:toolbar>
+            <p:toolbarGroup align="left">
+                <p:commandButton id="createButton" icon="ui-icon-plus"  
+                                 value="Crear Jornada" 
+                                 actionListener="#{configBean.prepareCreateJornada}"
+                                 update=":JornadaCreateForm"
+                                 oncomplete="PF('JornadaCreateDialog').show()"/>
+                <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                 value="Editar Jornada" 
+                                 actionListener="#{configBean.prepareEditJornada}"   
+                                 update=":JornadaEditForm"                                        
+                                 oncomplete="PF('JornadaEditDialog').show()" 
+                                 disabled="#{empty configBean.jornada.nombre}"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
+                                 immediate="true"/>
+            </p:toolbarGroup>
+        </p:toolbar>
+        <br />
+        <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+        <br />
+        <p:dataTable id="jornadas" var="item" value="#{configBean.jornadas}"
+                     widgetVar="jornadasTable"
+                     rowKey="#{item.id}"
+                     selection="#{configBean.jornada}" 
+                     selectionMode="single"
+                     filteredValue="#{jornadaBean.filteredJornadas}" 
+                     emptyMessage="No se encontraron competiciones para ese criterio" 
+                     paginator="true" rows="10"  
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                     rowsPerPageTemplate="5,10,15">   
+            <p:ajax event="rowSelect"
+                    update=":menuPrincipal"/>
+            <p:ajax event="rowUnselect" 
+                    update=":menuPrincipal "/>
+
+            <p:column headerText="Jornada" >
+                <h:outputText value="#{item.nombre}"/>
+            </p:column>
+
+            <p:column headerText="Fase" >
+                <h:outputText value="#{item.faseId.nombre}"/>
+            </p:column>
+
+            <p:column headerText="Status">
+                <h:outputText   value="#{item.status== 0?'INACTIVO':'ACTIVO'}"/>
+            </p:column>
+
+        </p:dataTable>
+    </p:fieldset>
+
+</ui:composition>
+
