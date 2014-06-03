@@ -152,20 +152,27 @@ public class ConfigBean implements Serializable {
     }
 
     public void activateFaseList() {
+        activateGrupoList();
         faseTipo = -1;
         fases = null;
-        grupo = null;
         llave = null;
         grupoActiva = false;
         faseActiva = true;
         temporadaActiva = false;
+
     }
 
     public void activateGrupoList() {
-
+        grupo = null;
         faseActiva = false;
-        temporadaActiva = false;
         grupoActiva = true;
+        jornadas = null;
+        jornadaActiva =false;
+    }
+
+    public void activateJornadaList() {
+        grupoActiva = false;
+        jornadaActiva = true;
     }
 
     private void inicializeMenu() {
