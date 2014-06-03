@@ -20,17 +20,17 @@
                 <h:panelGrid columns="2" title="Datos Personales"
                              styleClass="top-aligned-columns">
 
-                    <h:outputLabel value="Temporada:" for="temporada"/>
-                    <h:outputText id="temporada" value="#{configBean.temporada.nombre}" />
+                    <h:outputLabel value="Grupo:" for="grupo"/>
+                    <h:outputText id="grupo" value="#{configBean.grupo.nombre}" />
 
-                    <h:outputLabel value="* Jornada:" for="nombre"/>
+                    <h:outputLabel value="*Jornada:" for="nombre"/>
                     <p:inputText id="nombre" value="#{configBean.jornada.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
 
   
 
-                    <h:outputLabel value="* status:" for="status"/>
+                    <h:outputLabel value="*status:" for="status"/>
                     <p:selectOneMenu id="status" value="#{configBean.jornada.status}"
                                      converter= "javax.faces.Integer"
                                      style="width: 250px"

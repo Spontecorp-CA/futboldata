@@ -36,7 +36,7 @@
                      selection="#{configBean.jornada}" 
                      selectionMode="single"
                      filteredValue="#{jornadaBean.filteredJornadas}" 
-                     emptyMessage="No se encontraron competiciones para ese criterio" 
+                     emptyMessage="No se encontraron jornadas para ese criterio" 
                      paginator="true" rows="10"  
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                      rowsPerPageTemplate="5,10,15">   
@@ -49,8 +49,8 @@
                 <h:outputText value="#{item.nombre}"/>
             </p:column>
 
-            <p:column headerText="Fase" >
-                <h:outputText value="#{item.faseId.nombre}"/>
+            <p:column headerText="Grupo" >
+                <h:outputText value="#{item.grupoId.nombre}"/>
             </p:column>
 
             <p:column headerText="Status">
