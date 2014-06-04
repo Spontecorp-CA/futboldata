@@ -119,27 +119,28 @@
                             <h:outputLabel value="Destreza :" for="zurdo"/>
                             <p:selectOneMenu id="zurdo" value="#{jugadorBean.jugador.zurdo}"
                                              converter= "javax.faces.Integer"
-                                             style="width: 100px"
-                                             requiredMessage="Debe repetir el password">
+                                             style="width: 100px">
                                 <f:selectItem itemLabel="Derecho" itemValue="1"/>
                                 <f:selectItem itemLabel="Zurdo" itemValue="0"/> 
                                 <f:selectItem itemLabel="Ambidiestro" itemValue="2"/>
                             </p:selectOneMenu>
                             <p:spacer/>
                         </h:panelGrid>
-                        
+                        <h:outputLabel value="Posición: " for="posicion"/>
+                        <p:selectOneMenu id="posicion" value="#{jugadorBean.jugador.posicionId}"
+                                         style="width: 250">
+                            <f:selectItems value="#{jugadorBean.posiciones}"/>
+                        </p:selectOneMenu>
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputMask id="telefono" 
                                      value="#{jugadorBean.jugador.personaId.telefono}"
-                                     requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputMask id="celular" 
                                      value="#{jugadorBean.jugador.personaId.celular}"
-                                     requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="email:" for="email"/>
@@ -148,7 +149,7 @@
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
                             <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
                         </p:inputText>
 
                         <!--                    </h:panelGrid>
