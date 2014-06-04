@@ -29,30 +29,39 @@
                     <p:menuitem value="Temporadas" 
                                 actionListener="#{configBean.activateTemporadaList}" 
                                 update=":JornadaListForm,:TemporadaListForm, 
-                                :FaseListForm ,:menuPrincipal :GrupoListForm"
-                                disabled="#{configBean.temporada.nombre}"
+                                :FaseListForm ,:menuPrincipal :GrupoListForm
+                                :LlaveListForm"
+                                disabled="#{empty configBean.liga.nombre}"
                                 immediate="true"/>
 
                     <p:menuitem value="Fases"
                                 actionListener="#{configBean.activateFaseList}"
                                 disabled="#{empty configBean.temporada.nombre}"
                                 update=":JornadaListForm,:FaseListForm,
-                                :TemporadaListForm :GrupoListForm :menuPrincipal" 
+                                :TemporadaListForm :GrupoListForm :menuPrincipal
+                                :LlaveListForm"
                                 immediate="true"/>
 
                     <p:menuitem value="Grupos" 
                                 disabled="#{configBean.faseTipo != 0}"
                                 actionListener="#{configBean.activateGrupoList}"
                                 update=":JornadaListForm,:GrupoListForm :FaseListForm, 
-                                :TemporadaListForm :menuPrincipal" />
+                                :TemporadaListForm :menuPrincipal
+                                :LlaveListForm"/>
 
                     <p:menuitem value="Jornadas" 
                                 disabled="#{empty configBean.grupo.nombre}"
                                 actionListener="#{configBean.activateJornadaList}"
                                 update=":JornadaListForm,:GrupoListForm ,
-                                :FaseListForm, :TemporadaListForm ,:menuPrincipal "/>
+                                :FaseListForm, :TemporadaListForm ,:menuPrincipal
+                                :LlaveListForm"/>
 
-                    <p:menuitem value="Llaves" disabled="#{configBean.faseTipo != 1}"/>
+                    <p:menuitem value="Llaves" 
+                                disabled="#{configBean.faseTipo != 1}"
+                                actionListener="#{configBean.activateLLaveList()}"
+                                update=":JornadaListForm,:GrupoListForm , 
+                                :FaseListForm, :TemporadaListForm ,:menuPrincipal 
+                                :LlaveListForm "/>
                 </p:menubar>
             </h:form>
 
@@ -84,10 +93,17 @@
                     <ui:include src="./jornada/list.xhtml" />   
                 </h:panelGroup>
             </h:form>
-
-
             <ui:include src="./jornada/create.xhtml"/>
             <ui:include src="./jornada/edit.xhtml"/>
+
+
+            <h:form id="LlaveListForm" >  
+                <h:panelGroup id="llavePanel" rendered="#{configBean.llaveActiva}">
+                    <ui:include src="./llave/list.xhtml" />   
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="./llave/create.xhtml"/>
+            <ui:include src="./llave/edit.xhtml"/>
 
 
 

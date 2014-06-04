@@ -52,7 +52,8 @@ public class ConfigBean implements Serializable {
     private boolean faseActiva;
     private boolean grupoActiva;
     private boolean jornadaActiva;
-
+    private boolean llaveActiva;
+    
     private List<Temporada> temporadaList;
     private List<Fase> faseList;
     private List<Llave> llaveLlist;
@@ -67,6 +68,8 @@ public class ConfigBean implements Serializable {
     private List<Categoria> categoriaSource;
     private List<Categoria> categoriaTarget;
     private List<Jornada> jornadas;
+    private List<Llave> llaves;
+    private List<Llave> filteredLlaves;
     private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private DualListModel<Categoria> categorias;
 
@@ -81,6 +84,7 @@ public class ConfigBean implements Serializable {
     private TemporadaCategoria temporadaCategoria;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
     private List<Jornada> filteredJornada;
+
 
     public ConfigBean() {
         this.temporadaFacade = new TemporadaFacade();
@@ -159,6 +163,7 @@ public class ConfigBean implements Serializable {
         grupoActiva = false;
         faseActiva = true;
         temporadaActiva = false;
+        llaveActiva = false;
 
     }
 
@@ -167,7 +172,7 @@ public class ConfigBean implements Serializable {
         faseActiva = false;
         grupoActiva = true;
         jornadas = null;
-        jornadaActiva =false;
+        jornadaActiva = false;
     }
 
     public void activateJornadaList() {
@@ -175,8 +180,15 @@ public class ConfigBean implements Serializable {
         jornadaActiva = true;
     }
 
+    public void activateLLaveList() {
+        llave = null;
+        faseActiva = false;
+        llaveActiva = true;
+        llaves = null;
+    }
+
     private void inicializeMenu() {
-        setTemporadaActiva(true);
+        setTemporadaActiva(false);
         setFaseActiva(false);
         setGrupoActiva(false);
         setJornadaActiva(false);
@@ -186,6 +198,14 @@ public class ConfigBean implements Serializable {
         return faseActiva;
     }
 
+    public boolean isLlaveActiva() {
+        return llaveActiva;
+    }
+
+    public void setLlaveActiva(boolean llaveActiva) {
+        this.llaveActiva = llaveActiva;
+    }
+        
     public void setFaseActiva(boolean faseActiva) {
         this.faseActiva = faseActiva;
     }
@@ -464,10 +484,10 @@ public class ConfigBean implements Serializable {
     }
 
     /**
-     * *************************************************************************
+     * ********************Grupo Bean************************************
      */
     /**
-     * ********************Grupo Bean *************************************
+     * ********************Grupo Bean ***********************************
      */
     public List<Grupo> getGrupos() {
         if (grupos == null) {
@@ -529,7 +549,7 @@ public class ConfigBean implements Serializable {
      * **************************Codigo de Jornada*****************************
      */
     /**
-     * *************************************************************************
+     * **************************Codigo de Jornada*****************************
      */
     public List<Jornada> getJornadas() {
         if (jornadas == null) {
@@ -564,9 +584,9 @@ public class ConfigBean implements Serializable {
     }
 
     public void editJornada() {
-        logger.debug("Esta editando un Grupo");
+        logger.debug("Esta editando la Jornada");
         jornadaFacade.edit(jornada);
-        recreateModelGrupo();
+        recreateModelJornada();
         Util.addSuccessMessage("Se edito exitosamente la Jornada");
     }
 
@@ -585,4 +605,66 @@ public class ConfigBean implements Serializable {
             logger.debug("Error al crear Jornada :", e);
         }
     }
+
+    /**
+     * ***********************Controlador Llave ***************************
+     */
+    /**
+     * ***********************Controlador Llave ***************************
+     */
+    public List<Llave> getLlaves() {
+        if (llaves == null) {
+            llaves = getLlavesXFase();
+        }
+        return llaves;
+    }
+
+    private List<Llave> getLlavesXFase() {
+        return llaveFacade.findLlavesXFase(fase);
+    }
+
+    private void recreateModelLlave() {
+        llaves = null;
+    }
+
+    public List<Llave> getFilteredLlaves() {
+        return filteredLlaves;
+    }
+
+    public void setFilteredLlaves(List<Llave> filteredLlaves) {
+        this.filteredLlaves = filteredLlaves;
+    }
+
+    public void prepareCreateLlave() {
+        llave = new Llave();
+
+    }
+
+    public void prepareEditLlave() {
+
+    }
+
+    public void editLlave() {
+        logger.debug("Esta editando la Llave");
+        llaveFacade.edit(llave);
+        recreateModelGrupo();
+        Util.addSuccessMessage("Se edito exitosamente la Llave");
+    }
+
+    public void createLlave() {
+        try {
+            if (llaveFacade.findLlaveXFase(fase, llave.getNombre()) != null) {
+                Util.addErrorMessage("La llave ya se encuentra Registrado ");
+
+            }
+            llave.setFaseId(fase);
+            llaveFacade.create(llave);
+            Util.addSuccessMessage("Se creo exitosamente la Llave");
+            recreateModelLlave();
+
+        } catch (Exception e) {
+            logger.debug("Error al crear LLave :", e);
+        }
+    }
+
 }

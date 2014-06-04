@@ -20,14 +20,11 @@ import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.slf4j.LoggerFactory;
 
@@ -186,7 +183,7 @@ public class AsociacionBean implements Serializable {
 
     public String gotoAsociacionPage() {
         recreateModel();
-        return "/admin/asociacion/asociacion/list.xhtml";
+        return "/admin/asociacion/asociacion/list.xhtml?faces-redirect=true";
     }
 
     private void recreateModel() {
@@ -335,11 +332,10 @@ public class AsociacionBean implements Serializable {
         telefono = new Telefono();
         telefonoEliminar = new ArrayList<Telefono>();
         emailEliminar = new ArrayList<Email>();
-        asociacion = (Asociacion) getItemsAsociacion().getRowData();
         ciudadAvailable(asociacion.getDireccionId().getCiudadId().getPaisId());
         telefonos = getTelefonos(asociacion.getDireccionId());
         emails = getEmails(asociacion.getDireccionId());
-        return "/admin/asociacion/asociacion/edit.xhtml";
+        return "/admin/asociacion/asociacion/edit.xhtml?faces-redirect=true";
     }
 
 //    public void persist(Object object) {
