@@ -7,20 +7,20 @@
 
 
 
-    <p:fieldset style="width: 85%" legend="Lista de Jornadas" >
+    <p:fieldset style="width: 85%" legend="Lista de Llaves" >
         <p:toolbar>
             <p:toolbarGroup align="left">
-                <p:commandButton id="createButton" icon="ui-icon-plus"  
-                                 value="Crear Jornada" 
-                                 actionListener="#{configBean.prepareCreateJornada}"
-                                 update=":JornadaCreateForm"
-                                 oncomplete="PF('JornadaCreateDialog').show()"/>
-                <p:commandButton id="editButton" icon="ui-icon-pencil" 
-                                 value="Editar Jornada" 
-                                 actionListener="#{configBean.prepareEditJornada}"   
-                                 update=":JornadaEditForm"                                        
-                                 oncomplete="PF('JornadaEditDialog').show()" 
-                                 disabled="#{empty configBean.jornada.nombre}"/>
+                <p:commandButton id="createButtonLlave" icon="ui-icon-plus"  
+                                 value="Crear Llave" 
+                                 actionListener="#{configBean.prepareCreateLlave}"
+                                 update=":LlaveCreateForm"
+                                 oncomplete="PF('LlaveCreateDialog').show()"/>
+                <p:commandButton id="editButtonLlave" icon="ui-icon-pencil" 
+                                 value="Editar Llave" 
+                                 actionListener="#{configBean.prepareEditLlave}"   
+                                 update=":LlaveEditForm"                                        
+                                 oncomplete="PF('LlaveEditDialog').show()" 
+                                 disabled="#{empty configBean.llave.nombre}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
@@ -30,27 +30,27 @@
         <br />
         <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
         <br />
-        <p:dataTable id="jornadas" var="item" value="#{configBean.jornadas}"
-                     widgetVar="jornadasTable"
+        <p:dataTable id="llaves" var="item" value="#{configBean.llaves}"
+                     widgetVar="llavesTable"
                      rowKey="#{item.id}"
-                     selection="#{configBean.jornada}" 
+                     selection="#{configBean.llave}" 
                      selectionMode="single"
-                     filteredValue="#{jornadaBean.filteredJornadas}" 
-                     emptyMessage="No se encontraron jornadas para ese criterio" 
+                     filteredValue="#{llaveBean.filteredLlaves}" 
+                     emptyMessage="No se encontraron llaves para ese criterio" 
                      paginator="true" rows="10"  
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                      rowsPerPageTemplate="5,10,15">   
             <p:ajax event="rowSelect"
-                    update=":menuPrincipal ,:JornadaListForm:editButton" />
+                    update=":menuPrincipal :LlaveListForm:editButtonLlave"/>
             <p:ajax event="rowUnselect" 
-                    update=":menuPrincipal ,:JornadaListForm:editButton "/>
+                    update=":menuPrincipal :LlaveListForm:editButtonLlave "/>
 
-            <p:column headerText="Jornada" >
+            <p:column headerText="Llave" >
                 <h:outputText value="#{item.nombre}"/>
             </p:column>
 
-            <p:column headerText="Grupo" >
-                <h:outputText value="#{item.grupoId.nombre}"/>
+            <p:column headerText="Fase" >
+                <h:outputText value="#{item.faseId.nombre}"/>
             </p:column>
 
             <p:column headerText="Status">

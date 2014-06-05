@@ -57,8 +57,12 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15">                
 
-                        <p:ajax event="rowSelect" update=":ClubListForm:createButton :ClubListForm:editButton :ClubListForm:viewButton :ClubListForm:addStaffButton"/>
-                        <p:ajax event="rowUnselect" update=":ClubListForm:createButton :ClubListForm:editButton :ClubListForm:viewButton :ClubListForm:addStaffButton"/>
+                        <p:ajax event="rowSelect" 
+                                update=":ClubListForm:createButton 
+                                :ClubListForm:editButton :ClubListForm:viewButton :ClubListForm:addStaffButton"/>
+                        <p:ajax event="rowUnselect" 
+                                update=":ClubListForm:createButton 
+                                :ClubListForm:editButton :ClubListForm:viewButton :ClubListForm:addStaffButton"/>
 
                         <p:column headerText="Nombre">
                             <h:outputText value="#{club.nombre}"/>

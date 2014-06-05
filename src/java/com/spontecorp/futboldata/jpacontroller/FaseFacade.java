@@ -59,7 +59,7 @@ public class FaseFacade extends AbstractFacade<Fase> implements Serializable{
             return fases;
 
         } catch (Exception e) {
-            logger.debug("Problemas al buscar la fasexLiga: ", e);
+            logger.debug("Problemas al buscar la fasexTemporada: ", e);
         } finally {
             em.close();
         }

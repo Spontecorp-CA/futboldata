@@ -8,6 +8,7 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -53,7 +54,7 @@ public class Asociacion implements Serializable {
     @Column(name = "logo")
     private String logo;
     @JoinColumn(name = "direccion_id", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Direccion direccionId;
     @OneToMany(mappedBy = "asociacionId")
     private Collection<Arbitro> arbitroCollection;

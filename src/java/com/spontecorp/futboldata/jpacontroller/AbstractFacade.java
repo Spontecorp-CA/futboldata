@@ -65,7 +65,7 @@ public abstract class AbstractFacade<T> {
             em.remove(em.merge(entity));
             em.getTransaction().commit();
         } catch (Exception e) {
-            logger.debug("Erro en Abstract Facade : "+ e.getMessage());
+            logger.debug("Error en Abstract Facade : "+ e.getMessage());
         } finally {
             if (em != null) {
                 em.close();

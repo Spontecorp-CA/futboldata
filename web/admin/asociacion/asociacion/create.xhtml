@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -11,158 +10,140 @@
         Administración de Asociaciones
     </ui:define>
 
-    <ui:define name="content">
+    <p:dialog id="CreateDlg" widgetVar="CreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Asociacion"
+              position="top">
         <h:form id="createForm">
+            <h:panelGroup id="display" >
+                <p:fieldset style="width: 85%" legend="Nueva Asociación">                
+                    <h:panelGrid columns="2" styleClass="top-aligned-columns">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="* Nombre de la Asociacion:" for="nombre"/>
+                            <p:inputText id="nombre" 
+                                         value="#{asociacionBean.asociacion.nombre}" 
+                                         required="true" 
+                                         requiredMessage="Debe colocar un nombre"
+                                         style="width: 250px"/>
+                            <h:outputLabel value="* Pais:" for="pais"/>
+                            <p:selectOneMenu id="pais"                                    
+                                             value="#{asociacionBean.pais}"
+                                             style="width: 250px"
+                                             panelStyle="width:250px"
+                                             requiredMessage="Debe seleccionar un pais">                       
+                                <f:selectItems value="#{asociacionBean.paisesAvalaible}"/>
+                                <p:ajax listener="#{asociacionBean.ciudadesAvalaible}" 
+                                        update="ciudad" />
+                            </p:selectOneMenu>
 
-            <p:fieldset style="width: 85%" legend="Nueva Asociación">                
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="Guardar"
-                                         action="#{asociacionBean.create}"
-                                         update="createForm"/>
-                        <p:commandButton value="Listar" 
-                                         action="#{asociacionBean.prepareList}"
-                                         immediate="true"/>
-                        <p:commandButton value="Cancelar" 
-                                         action="#{asociacionBean.cancelOption}"
-                                         immediate="true"/>                                               
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" 
-                                         action="#{asociacionBean.returnAdminPage}"
-                                         immediate="true"
-                                         style="margin-right: 10px"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
+                            <h:outputLabel value="* Ciudad:" for="ciudad"/>
+                            <p:selectOneMenu id="ciudad" 
+                                             value="#{asociacionBean.direccion.ciudadId}"
+                                             style="width: 250px"
+                                             panelStyle="width:250px"
+                                             requiredMessage="Debe seleccionar un ciudad">                       
+                                <f:selectItems value="#{asociacionBean.ciudades}"/>
+                            </p:selectOneMenu>
 
-                <h:panelGrid columns="2" styleClass="top-aligned-columns">
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="* Nombre de la Asociacion:" for="nombre"/>
-                        <p:inputText id="nombre" 
-                                     value="#{asociacionBean.asociacion.nombre}" 
-                                     required="true" 
-                                     requiredMessage="Debe colocar un nombre"
-                                     style="width: 250px"/>
-                        <h:outputLabel value="* Pais:" for="pais"/>
-                        <p:selectOneMenu id="pais"                                    
-                                         value="#{asociacionBean.pais}"
-                                         style="width: 250px"
-                                         panelStyle="width:250px"
-                                         required="true"
-                                         requiredMessage="Debe seleccionar un pais">                       
-                            <f:selectItems value="#{asociacionBean.paisAvailable}"/>
-                            <p:ajax listener="#{asociacionBean.ciudadAvailable}" 
-                                    update="ciudad" />
-                        </p:selectOneMenu>
-                        
-                        <h:outputLabel value="* Ciudad:" for="ciudad"/>
-                        <p:selectOneMenu id="ciudad" 
-                                         value="#{asociacionBean.direccion.ciudadId}"
-                                         style="width: 250px"
-                                         panelStyle="width:250px"
-                                         required="true"
-                                         requiredMessage="Debe seleccionar un ciudad">                       
-                            <f:selectItems value="#{asociacionBean.ciudades}"/>
-                        </p:selectOneMenu>
+                            <h:outputLabel value="* Dirección :" for="direccion"/>
+                            <p:inputText id="direccion" 
+                                         value="#{asociacionBean.direccion.direccion}"
+                                         requiredMessage="Debe colocar un email"
+                                         validatorMessage="Email inválido"
+                                         style="width: 250px">
+                            </p:inputText>
 
-                        <h:outputLabel value="* Dirección :" for="direccion"/>
-                        <p:inputText id="direccion" 
-                                     value="#{asociacionBean.direccion.direccion}"
-                                     required="true" 
-                                     requiredMessage="Debe colocar un email"
-                                     validatorMessage="Email inválido"
-                                     style="width: 250px">
-                        </p:inputText>
+                            <h:outputLabel value="Pagina Web:"/>
+                            <p:inputText id="paginaweb"
+                                         value="#{asociacionBean.direccion.paginaWeb}"
+                                         style="width: 250px"/>
 
-                        <h:outputLabel value="Pagina Web:"/>
-                        <p:inputText id="paginaweb"
-                                     value="#{asociacionBean.direccion.paginaWeb}"
-                                     style="width: 250px"/>
+                            <h:outputLabel value="* status:" 
+                                           for="status"/>
+                            <p:selectOneMenu id="status" 
+                                             value="#{asociacionBean.asociacion.status}"
+                                             converter= "javax.faces.Integer"
+                                             style="width: 250px"
+                                             required="true"
+                                             requiredMessage="Seleccione una de la opciones">
+                                <f:selectItem itemLabel="Activo" itemValue="1"/>
+                                <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
 
-                        <h:outputLabel value="* status:" 
-                                       for="status"/>
-                        <p:selectOneMenu id="status" 
-                                         value="#{asociacionBean.asociacion.status}"
-                                         converter= "javax.faces.Integer"
-                                         style="width: 250px"
-                                         required="true"
-                                         requiredMessage="Seleccione una de la opciones">
-                            <f:selectItem itemLabel="Activo" itemValue="1"/>
-                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
-                        </p:selectOneMenu>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="* Teléfonos:" for="phones"/>
+                            <p:panelGrid id="phones" style="border-style: none">
+                                <p:row>
+                                    <p:column>
+                                        <p:inputMask id="telefono" 
+                                                     value="#{asociacionBean.telefono.telefono}"
+                                                     requiredMessage="Debe colocar un teléfono"
+                                                     style="width: 250px"
+                                                     mask="(9999) 999.9999"/>                                
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
+                                            <f:ajax listener="#{asociacionBean.cargarTelefono}" 
+                                                    execute="telefono" render="telefonos"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:dataList id="telefonos" 
+                                                    var="telefono" 
+                                                    value="#{asociacionBean.telefonos}">
+                                            #{telefono.telefono}
+                                        </p:dataList>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+
+                            <h:outputLabel value="* email:" 
+                                           for="email"/>
+                            <p:panelGrid id="correos" style="border-style: none">
+                                <p:row>
+                                    <p:column>
+                                        <p:inputText id="email" 
+                                                     value="#{asociacionBean.email.email}"
+                                                     validatorMessage="Email inválido"
+                                                     style="width: 250px">
+                                            <f:validateRegex
+                                                pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
+                                        </p:inputText>   
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton icon="ui-icon-plusthick" title="Agregar email" >
+                                            <f:ajax render="emails" 
+                                                    execute="email" 
+                                                    listener="#{asociacionBean.cargarEmail}"></f:ajax>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:dataList value="#{asociacionBean.emails}"
+                                                    id="emails" var="email">
+                                            #{email.email}
+                                        </p:dataList>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </h:panelGrid>
                     </h:panelGrid>
-                    
-                    <h:panelGrid columns="2">
-                        <h:outputLabel value="* Teléfonos:" for="phones"/>
-                        <p:panelGrid id="phones" style="border-style: none">
-                            <p:row>
-                                <p:column>
-                                    <p:inputMask id="telefono" 
-                                                 value="#{asociacionBean.telefono.telefono}"
-                                                 required="true" 
-                                                 requiredMessage="Debe colocar un teléfono"
-                                                 style="width: 250px"
-                                                 mask="(9999) 999.9999"/>                                
-                                </p:column>
-                                <p:column>
-                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar teléfono" >                             
-                                        <f:ajax listener="#{asociacionBean.cargarTelefono}" 
-                                                execute="telefono" render="telefonos"/>
-                                    </p:commandButton>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column colspan="2">
-                                    <p:dataList id="telefonos" 
-                                                var="telefono" 
-                                                value="#{asociacionBean.telefonos}">
-                                        #{telefono.telefono}
-                                    </p:dataList>
-                                </p:column>
-                            </p:row>
-                        </p:panelGrid>
-
-                        <h:outputLabel value="* email:" 
-                                       for="email"/>
-                        <p:panelGrid id="correos" style="border-style: none">
-                            <p:row>
-                                <p:column>
-                                    <p:inputText id="email" 
-                                                 value="#{asociacionBean.email.email}"
-                                                 validatorMessage="Email inválido"
-                                                 style="width: 250px">
-                                        <f:validateRegex
-                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                                    </p:inputText>   
-                                </p:column>
-                                <p:column>
-                                    <p:commandButton icon="ui-icon-plusthick" title="Agregar email" >
-                                        <f:ajax render="emails" 
-                                                execute="email" 
-                                                listener="#{asociacionBean.cargarEmail}"></f:ajax>
-                                    </p:commandButton>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column colspan="2">
-                                    <p:dataList value="#{asociacionBean.emails}"
-                                                id="emails" var="email">
-                                        #{email.email}
-                                    </p:dataList>
-                                </p:column>
-                            </p:row>
-                        </p:panelGrid>
-                    </h:panelGrid>
-                </h:panelGrid>
 
 
-                <h:panelGroup id="messagePanel" 
-                              layout="block" 
-                              style="border-style: solid; border-color: red">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-            </p:fieldset>
+                    <h:panelGroup id="messagePanel" 
+                                  layout="block" 
+                                  style="border-style: solid; border-color: red">
+                        <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                    </h:panelGroup>
+                    <p:commandButton actionListener="#{asociacionBean.create}" value="Guardar" 
+                                     update="display,:listForm:asociaciones,:growlAdmin" 
+                                     oncomplete="handleSubmit(args,'CreateDialog');"/>
+                    <p:commandButton value="Cancelar" onclick="CreateDialog.hide()"/>
+                 </p:fieldset>
+            </h:panelGroup>
         </h:form>
-    </ui:define>
-
+    </p:dialog> 
 </ui:composition>

@@ -104,7 +104,7 @@ public class CategoriaBean implements Serializable{
     
     public String edit(){
         try {
-            if (controllerCategoria.findCategoria(categoria.getNombre()) == null) {
+            if (controllerCategoria.find(categoria.getId()) == null) {
                 Util.addErrorMessage("Categoria no existente, hay un error");
                 return null;
             } else {

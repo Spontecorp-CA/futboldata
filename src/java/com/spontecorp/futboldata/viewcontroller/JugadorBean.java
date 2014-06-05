@@ -263,8 +263,9 @@ public class JugadorBean implements Serializable {
         for (RedSocial redEliminar : redesEliminar) {
             controllerRedSocial.remove(redEliminar);
         }
-        recreateModel();
+
         Util.addSuccessMessage("Se edito exitosamente el Jugador");
+                recreateModel();
     }
 
     public Jugador getJugador() {

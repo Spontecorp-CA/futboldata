@@ -4,7 +4,8 @@
                 template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="title">
         Administración de Arbitros
@@ -12,12 +13,30 @@
 
     <ui:define name="content">
         <h:form id="listForm">
-
             <p:fieldset style="width: 85%" legend="Lista de Asociaciones" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nueva" 
-                                         action="#{asociacionBean.prepareCreate}"/>                        
+                        <p:commandButton icon="ui-icon-pencil" 
+                                         value="Crear Asociacion" 
+                                         update=":createForm"
+                                         actionListener="#{asociacionBean.prepareCreate}"
+                                         oncomplete="PF('CreateDialog').show()" />  
+                        <p:commandButton id="ButtonEdit" 
+                                         icon="ui-icon-pencil" 
+                                         value="Editar Asociacion" 
+                                         actionListener="#{asociacionBean.prepareEdit}"
+                                         update=":editForm"
+                                         oncomplete="PF('EditDialog').show()" 
+                                         disabled="#{empty asociacionBean.asociacion.nombre}"
+                                         />    
+                        <p:commandButton id="ButtonView" 
+                                         icon="ui-icon-pencil" 
+                                         value="Ver Asociacion" 
+                                         actionListener="#{asociacionBean.prepareEdit}"
+                                         update=":viewForm"
+                                         oncomplete="PF('ViewDialog').show()" 
+                                         disabled="#{empty asociacionBean.asociacion.nombre}"
+                                         />    
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" 
@@ -25,13 +44,14 @@
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:dataTable id="AsociacionesTabla" 
-                             var="asociacion"  
-                             value="#{asociacionBean.itemsAsociacion}"
+                <p:dataTable id="asociaciones" 
+                             var="asociacion" 
+                             value="#{asociacionBean.items}"
                              rowKey="#{asociacion.id}"
-                             selection="#{asociacionBean.selectedAsociacion}" 
+                             selection="#{asociacionBean.selected}" 
                              selectionMode="single"
-                             styleClass="top-aligned-columns">                
+                             styleClass="top-aligned-columns">
+                    <f:ajax event="rowSelect" render=":listForm:ButtonEdit" />
 
                     <p:column headerText="Nombre">
                         <h:outputText value="#{asociacion.nombre}"/>
@@ -42,39 +62,18 @@
                     <p:column headerText="Dirección">
                         <h:outputText value="#{asociacion.direccionId.direccion}"/>
                     </p:column>
-                    <p:column headerText="Telefono">
-                        <ui:repeat value="#{asociacionBean.getTelefonos(asociacion.direccionId)}" var="tlf">
-                            <ul>
-                                <li>
-                                    <h:outputText value="#{tlf.telefono}"/>
-                                </li>
-                            </ul>
-                        </ui:repeat>
-                    </p:column>
-                    <p:column headerText="Email">
-                        <ui:repeat value="#{asociacionBean.getEmails(asociacion.direccionId)}" var="mail">
-                            <ul>
-                                <li>
-                                    <h:outputText value="#{mail.email}"/>
-                                </li>
-                            </ul>
-                        </ui:repeat>                                                
-                    </p:column>
-
-                    <p:column headerText="Dirección">
+                    <p:column headerText="Pagina Web">
                         <h:outputText value="#{asociacion.direccionId.paginaWeb}"/>
                     </p:column>
                     <p:column headerText="Status">
                         <h:outputText   value="#{asociacion.status== 0?'INACTIVO':'ACTIVO'}"/>
 
                     </p:column>
-                    <p:column headerText="Acciones">
-                        <p:commandLink action="#{asociacionBean.prepareEdit}" value="Editar"/>
-
-                    </p:column>
                 </p:dataTable>
             </p:fieldset>
-        </h:form>
+        </h:form>       
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml" />
+        <ui:include src="view.xhtml" />
     </ui:define>
-
 </ui:composition>
