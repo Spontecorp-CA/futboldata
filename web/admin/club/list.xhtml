@@ -26,6 +26,7 @@
                                              value="Ver Club" 
                                              icon="ui-icon-search"
                                              update=":ClubViewForm" 
+                                             actionListener="#{clubBean.prepareEdit}"
                                              oncomplete="PF('ClubViewDialog').show()"
                                              disabled="#{empty clubBean.club.nombre}"/>
                             <p:commandButton id="editButton" 

@@ -135,7 +135,7 @@ public class StaffInClubBean implements Serializable {
     public String gotoStaffPage(Club club) {
         staffList = controllerStaff.findStaffListByClub(club);
         this.club = club;
-        return "staffinclub/listStaff?faces-redirect=true";
+        return "staffinclub/listStaff";
 
     }
 

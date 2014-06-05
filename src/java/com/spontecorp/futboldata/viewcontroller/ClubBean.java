@@ -255,16 +255,6 @@ public class ClubBean implements Serializable {
         club = null;
     }
 
-
-
-//    public String prepareCreate() {
-//
-//        club = new Club();
-//        initializeEmbeddableKey();
-//        setEmbeddableKeys();
-//
-//        return "create";
-//    }
     public Club prepareCreate() {
         club = new Club();
         initializeEmbeddableKey();
@@ -339,7 +329,6 @@ public class ClubBean implements Serializable {
                     } else {
                         emailEditar.setDireccionId(club.getDireccionId());
                         controllerEmail.edit(emailEditar);
-
                     }
                 }
 
