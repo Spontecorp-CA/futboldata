@@ -166,7 +166,7 @@ public class AsociacionBean implements Serializable {
     }
 
     public void prepareCreate() {
-        
+        asociacion = null;
         
     }
 
