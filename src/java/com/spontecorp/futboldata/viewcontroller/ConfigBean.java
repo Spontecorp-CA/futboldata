@@ -169,6 +169,7 @@ public class ConfigBean implements Serializable {
 
     public void activateGrupoList() {
         grupo = null;
+        grupos = null;
         faseActiva = false;
         grupoActiva = true;
         jornadas = null;

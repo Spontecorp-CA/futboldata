@@ -58,7 +58,7 @@ public class FaseFacade extends AbstractFacade<Fase> {
             return fases;
 
         } catch (Exception e) {
-            logger.debug("Problemas al buscar la fasexLiga: ", e);
+            logger.debug("Problemas al buscar la fasexTemporada: ", e);
         } finally {
             em.close();
         }

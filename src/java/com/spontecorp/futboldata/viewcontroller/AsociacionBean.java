@@ -2,6 +2,10 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+/*
+ * Derechos Reservados Spontecorp, C.A. 2014
+ * 
+ */
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Asociacion;
@@ -11,12 +15,10 @@ import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
-import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
 import com.spontecorp.futboldata.jpacontroller.EmailFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,342 +27,86 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.persistence.EntityManagerFactory;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Named("asociacionBean")
 @SessionScoped
 public class AsociacionBean implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private Asociacion asociacion = null;
+    private Asociacion asociacion;
     private Pais pais;
-    private Direccion direccion;
-    private Telefono telefono;
-    private Email email;
-
-    private List<Email> emails = null;
-    private List<Telefono> telefonos = null;
-    private List<Telefono> telefonoEliminar = null;
-    private List<Email> emailEliminar = null;
-    private transient DataModel itemsTelefono = null;
-    private transient DataModel itemsAsociacion = null;
     private SelectItem[] ciudades;
+    private DataModel items = null;
+
+    private Direccion direccion;
+    private Email email;
+    private List<Email> emails;
+    private List<Email> emailsEliminar;
+    private List<Telefono> telefonos;
+    private List<Telefono> telefonosEliminar;
+    private List<Asociacion> filteredAsociacion;
 
     private final AsociacionFacade controllerAsociacion;
-    private final transient EntityManagerFactory emf = Util.getEmf();
-    private final DireccionFacade controllerDireccion;
-    private final TelefonoFacade controllerTelefono;
-    private final EmailFacade controllerEmail;
 
-    private final CiudadFacade controllerCiudad;
     private final PaisFacade controllerPais;
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(AsociacionBean.class);
+    private final CiudadFacade controllerCiudad;
+    private final EmailFacade controllerEmail;
+    private final TelefonoFacade controllerTelefono;
 
-    /**
-     * Creates a new instance of LocalidadBean
-     */
+    private static final Logger logger = LoggerFactory.getLogger(Asociacion.class);
+    private Telefono telefono;
+
     public AsociacionBean() {
+        controllerAsociacion = new AsociacionFacade();
         controllerPais = new PaisFacade();
         controllerCiudad = new CiudadFacade();
-        controllerEmail = new EmailFacade();
         controllerTelefono = new TelefonoFacade();
-        controllerAsociacion = new AsociacionFacade();
-        controllerDireccion = new DireccionFacade();
-
+        controllerEmail = new EmailFacade();
     }
 
-    /**
-     * permite la edición de los campos en la vista Asociación, devuelve un
-     * String con la facelet de respuesta
-     *
-     * @return un String que retorna a la lista
-     */
-    public String edit() {
-        try {
-            if (controllerAsociacion.find(asociacion.getId()) == null) {
-                Util.addErrorMessage("Asociacion no existente");
-                return prepareList();
-            } else {
-                for (Telefono telefonoEditar : telefonos) {
-                    if (controllerTelefono.findTelefono(telefonoEditar.getTelefono()) != null) {
-                        controllerTelefono.edit(telefonoEditar);
-                    } else {
-                        telefonoEditar.setDireccionId(asociacion.getDireccionId());
-                        controllerTelefono.create(telefonoEditar);
-                    }
-                }
-
-                for (Email emailEditar : emails) {
-                    if (controllerEmail.findEmail(emailEditar.getEmail()) != null) {
-                        controllerEmail.edit(emailEditar);
-                    } else {
-                        emailEditar.setDireccionId(asociacion.getDireccionId());
-                        controllerEmail.create(emailEditar);
-
-                    }
-                }
-
-                for (Email emailEli : emailEliminar) {
-                    controllerEmail.remove(emailEli);
-                }
-                for (Telefono telefonoEli : telefonoEliminar) {
-                    controllerTelefono.remove(telefonoEli);
-                }
-
-                controllerDireccion.edit(asociacion.getDireccionId());
-                controllerAsociacion.edit(asociacion);
-                Util.addSuccessMessage("Asociacion editado con éxito");
-
-                telefonos = null;
-                emails = null;
-                telefonoEliminar = null;
-                emailEliminar = null;
-                return prepareList();
-            }
-        } catch (Exception e) {
-            Util.addErrorMessage(e, "Error al editar la asociacion");
-            return null;
-        }
-    }
-
-    public SelectItem[] getPaisAvailable() {
-        return Util.getSelectItems(controllerPais.listaPaisxNombre());
-    }
-
-    public void ciudadAvailable() {
-        ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
-    }
-
-    public void ciudadAvailable(Pais pais) {
-        ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
-    }
-
-    public SelectItem[] getCiudades() {
-        return ciudades;
-    }
-
-    public List<Telefono> getTelefonos() {
-        return telefonos;
-    }
-
-    public void setTelefonos(List<Telefono> telefonos) {
-        this.telefonos = telefonos;
-    }
-
-    public Asociacion getAsociacion() {
-        return asociacion;
-    }
-
-    public void setAsociacion(Asociacion asociacion) {
-        this.asociacion = asociacion;
-    }
-
-    public DataModel getItemsAsociacion() {
-
-        if (itemsAsociacion == null) {
-            itemsAsociacion = new ListDataModel(controllerAsociacion.findAll());
-        }
-        return itemsAsociacion;
-
-    }
-
-    public List<Telefono> getTelefonos(Direccion direccion) {
-        telefonos = controllerDireccion.findListTelefonoxDireccion(direccion);
-        return telefonos;
-
-    }
-
-    public List<Email> getEmails(Direccion direccion) {
-        emails = controllerDireccion.findListEmailxDireaccion(direccion);
-        return emails;
-
-    }
-
-    public String gotoAsociacionPage() {
-        recreateModel();
-        return "/admin/asociacion/asociacion/list.xhtml?faces-redirect=true";
-    }
-
-    private void recreateModel() {
-        itemsTelefono = null;
-        asociacion = null;
-        ciudades = null;
-        telefonos = null;
-        email = null;
-    }
-
-    private void recreateModelAsociacion() {
-        itemsAsociacion = null;
-    }
-
-    public void setItemsAsociacion(DataModel items) {
-        this.itemsAsociacion = items;
-    }
-    
-    public List<Asociacion> getItemsAvailableSelectOne() {
-        return controllerAsociacion.findAll();
-    }
-
-    public String create() {
-        try {
-            if (controllerAsociacion.findAsociacion(asociacion.getNombre()) != null) {
-                Util.addErrorMessage("Asociacion ya existente, coloque otra");
-                return null;
-            } else {
-
-                controllerDireccion.create(direccion);
-                for (Email item : emails) {
-                    item.setDireccionId(direccion);
-                    controllerEmail.create(item);
-                }
-                for (Telefono item2 : telefonos) {
-                    item2.setDireccionId(direccion);
-                    controllerTelefono.create(item2);
-                }
-                direccion.setEmailCollection(emails);
-                direccion.setTelefonoCollection(telefonos);
-
-                asociacion.setDireccionId(direccion);
-
-                controllerAsociacion.create(asociacion);
-                Util.addSuccessMessage("Asociacion creada con éxito");
-                return prepareCreate();
-            }
-        } catch (Exception e) {
-            Util.addErrorMessage(e, "Error al crear la asociacion");
-            return null;
-        }
-    }
-
-    public Asociacion getSelectedAsociacion() {
+    public Asociacion getSelected() {
         if (asociacion == null) {
             asociacion = new Asociacion();
+            direccion = new Direccion();
+            asociacion.setDireccionId(direccion);
+            ciudades = null;
         }
         return asociacion;
     }
 
-    public void setSelectedAsociacion(Asociacion asociacion) {
+    public void setSelected(Asociacion asociacion) {
         this.asociacion = asociacion;
-
-    }
-
-    public String prepareList() {
-        asociacion = null;
-        recreateModelAsociacion();
-        return "/admin/asociacion/asociacion/list.xhtml";
     }
 
     public String returnAdminPage() {
         return "/admin/adminPage";
     }
 
-    public String cancelOption() {
-        asociacion = null;
-        pais = null;
-        direccion = null;
-        telefono = null;
-        email = null;
-        emails = null;
-        telefonos = null;
-        return prepareList();
+    public List<Asociacion> getFilteredAsociacion() {
+        return filteredAsociacion;
     }
 
-    public String prepareCreate() {
-        asociacion = new Asociacion();
-        direccion = new Direccion();
-        telefono = new Telefono();
-        telefonos = new ArrayList<Telefono>();
-        emails = new ArrayList<Email>();
-        email = new Email();
-        pais = new Pais();
-        ciudades = null;
-        return "/admin/asociacion/asociacion/create.xhtml";
+    public void setFilteredAsociacion(List<Asociacion> filteredAsociacion) {
+        this.filteredAsociacion = filteredAsociacion;
     }
 
-    public void cargarTelefono() {
-        telefonos.add(telefono);
-        telefono = new Telefono();
-    }
-
-    public void cargarEmail() {
-        emails.add(email);
-        email = new Email();
-    }
-
-    public void cargarTelefonoEdit() {
-        telefonos.add(telefono);
-       telefono = new Telefono();
-    }
-
-    public void cargarEmailEdit() {
-        emails.add(email);
-        email = new Email();
-    }
-
-    public void eliminarTelefono(Telefono telefono) {
-
-        logger.debug("El numero telfono: " + telefono.getTelefono(), AsociacionBean.class);
-        if (telefonos.remove(telefono)) {
-            telefonoEliminar.add(telefono);
-            for (Telefono tlf : telefonoEliminar) {
-                logger.debug("Va a eliminar a: " + tlf.toString());
-            }
-        } else {
-            logger.debug("No lo agrego a la lista de eliminar Telefono");
+    public void setEmail(Email email) {
+        if (email == null) {
+            email = new Email();
         }
+        this.email = email;
     }
 
-    public void eliminarEmail(Email email) {
-
-        if (emails.remove(email)) {
-            emailEliminar.add(email);
-            for (Email eml : emailEliminar) {
-                logger.debug("Va a eliminar a: " + eml.toString());
-            }
-        } else {
-            logger.debug("No lo agrego a la lista de eliminar Telefono");
+    public Email getEmail() {
+        if (email == null) {
+            email = new Email();
         }
-    }
-
-    public String prepareEdit() {
-        email = new Email();
-        telefono = new Telefono();
-        telefonoEliminar = new ArrayList<Telefono>();
-        emailEliminar = new ArrayList<Email>();
-        ciudadAvailable(asociacion.getDireccionId().getCiudadId().getPaisId());
-        telefonos = getTelefonos(asociacion.getDireccionId());
-        emails = getEmails(asociacion.getDireccionId());
-        return "/admin/asociacion/asociacion/edit.xhtml?faces-redirect=true";
-    }
-
-//    public void persist(Object object) {
-//        EntityManager em = emf.createEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            em.persist(object);
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            em.getTransaction().rollback();
-//        } finally {
-//            em.close();
-//        }
-//    }
-
-    public Telefono getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(Telefono telefono) {
-        if(this.telefono == null){
-            this.telefono = new Telefono();
-        }
-        this.telefono = telefono;
+        return email;
     }
 
     public Pais getPais() {
@@ -379,32 +125,205 @@ public class AsociacionBean implements Serializable {
         this.direccion = direccion;
     }
 
-    public Email getEmail() {
-        return email;
-    }
-
-    public void setEmail(Email email) {
-        this.email = email;
-    }
-
-    public List<Email> getEmails() {
-        return emails;
-    }
-
     public void setEmails(List<Email> emails) {
         this.emails = emails;
     }
 
-    public DataModel getItemsTelefono() {
-        return itemsTelefono;
+    public void setTelefonos(List<Telefono> telefonos) {
+        this.telefonos = telefonos;
     }
 
-    public void setItemsTelefono(DataModel itemsTelefono) {
-        this.itemsTelefono = itemsTelefono;
+    public Telefono getTelefono() {
+        if (telefono == null) {
+            telefono = new Telefono();
+        }
+        return telefono;
     }
 
-    public void cargarItemTelefono() {
-        telefono = (Telefono) getItemsTelefono().getRowData();
+    public List<Telefono> getTelefonos() {
+        if (telefonos == null) {
+            telefonos = new ArrayList<Telefono>();
+        }
+        return telefonos;
+    }
+
+    public List<Email> getEmails() {
+        if (emails == null) {
+            emails = new ArrayList<Email>();
+        }
+        return emails;
+    }
+
+    public void setTelefono(Telefono telefono) {
+        this.telefono = telefono;
+    }
+
+    public DataModel getItems() {
+        if (items == null) {
+            items = new ListDataModel(controllerAsociacion.findAll());
+        }
+        return items;
+    }
+
+    public void prepareCreate() {
+        
+        
+    }
+
+    public List<Asociacion> getItemsAvailableSelectOne() {
+        return controllerAsociacion.findAll();
+    }
+    protected void setEmbeddableKeys() {
+
+        asociacion.setDireccionId(direccion);
+
+    }
+
+    protected void initializeEmbeddableKey() {
+        email = new Email();
+        telefono = new Telefono();
+        direccion = new Direccion();
+        direccion = new Direccion();
+        ciudades = null;
+        pais = null;
+        emails = new ArrayList<Email>();
+        telefonos = new ArrayList<Telefono>();
+        emailsEliminar = new ArrayList<Email>();
+        telefonosEliminar = new ArrayList<Telefono>();
+        setEmbeddableKeys();
+    }
+
+    public SelectItem[] getPaisesAvalaible() {
+        return Util.getSelectItems(controllerPais.listaPaisxNombre());
+    }
+
+    public void ciudadesAvalaible() {
+        ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
+    }
+
+    public SelectItem[] getCiudades() {
+        return ciudades;
+    }
+
+    public void cargarEmail() {
+        email.setDireccionId(direccion);
+        emails.add(email);
+        email = new Email();
+    }
+
+    public void cargarTelefono() {
+        telefono.setDireccionId(direccion);
+        telefonos.add(telefono);
+        telefono = new Telefono();
+    }
+
+    public void recreateModel() {
+        email = null;
+        pais = null;
+        asociacion = null;
+        items = null;
+        direccion = null;
+    }
+
+    public void prepareEdit() {
+        emailsEliminar = new ArrayList<Email>();
+        telefonosEliminar = new ArrayList<Telefono>();
+        telefonos = getTelefonos(asociacion.getDireccionId());
+        emails = getEmails(asociacion.getDireccionId());
+        pais = asociacion.getDireccionId().getCiudadId().getPaisId();
+        ciudadesAvalaible();
+
+    }
+
+    public void ciudadesAvailable(Pais pais) {
+        ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
+    }
+
+    public void create() {
+        try {
+            if (controllerAsociacion.findAsociacion(asociacion.getNombre()) != null) {
+                Util.addErrorMessage("El asociacion ya se encuentra ");
+
+            } else {
+
+                asociacion.setDireccionId(direccion);
+                logger.debug("Esta Creando  un Asociacion");
+                controllerAsociacion.create(asociacion);
+                recreateModel();
+                Util.addSuccessMessage("Se creo exitosamente el Asociacion");
+
+            }
+
+        } catch (Exception e) {
+            logger.debug("Error al crear Asociacion :", e.getMessage());
+        }
+    }
+
+    public void edit() {
+
+        for (Email item : emails) {
+            item.setDireccionId(asociacion.getDireccionId());
+        }
+
+        for (Telefono tel1 : telefonos) {
+            tel1.setDireccionId(asociacion.getDireccionId());
+        }
+        asociacion.getDireccionId().setEmailCollection(emails);
+        asociacion.getDireccionId().setTelefonoCollection(telefonos);
+        
+        logger.debug("Esta editando un Asociacion");
+        controllerAsociacion.edit(asociacion);
+
+        for (Email item2 : emailsEliminar) {
+            controllerEmail.remove(item2);
+        }
+        for (Telefono tel : telefonosEliminar) {
+            controllerTelefono.remove(tel);
+        }
+
+        Util.addSuccessMessage("Se edito exitosamente el Asociacion");
+        recreateModel();
+    }
+
+    public Asociacion getAsociacion() {
+        if (asociacion == null) {
+            asociacion = new Asociacion();
+            initializeEmbeddableKey();
+        }
+        return asociacion;
+    }
+
+    public void setAsociacion(Asociacion asociacion) {
+        this.asociacion = asociacion;
+    }
+
+    public List<Email> getEmails(Direccion direccion) {
+        emails = controllerEmail.findListEmailxDireaccion(direccion);
+        return emails;
+    }
+
+    public List<Telefono> getTelefonos(Direccion direccion) {
+        telefonos = controllerTelefono.findListTelefonoxDireaccion(direccion);
+        return telefonos;
+    }
+
+    public void eliminarEmail(Email email) {
+
+        if (emails.remove(email)) {
+            emailsEliminar.add(email);
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
+    }
+
+    public void eliminarTelefono(Telefono telefono) {
+
+        if (telefonos.remove(telefono)) {
+            telefonosEliminar.add(telefono);
+
+        } else {
+            logger.debug("No lo agrego a la lista de eliminar Telefono");
+        }
     }
 
 }

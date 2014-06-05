@@ -11,9 +11,7 @@ import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.RedSocial;
 import com.spontecorp.futboldata.entity.TipoRedSocial;
-import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
-import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
 import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
@@ -247,8 +245,9 @@ public class JugadorBean implements Serializable {
         for (RedSocial redEliminar : redesEliminar) {
             controllerRedSocial.remove(redEliminar);
         }
-        recreateModel();
+
         Util.addSuccessMessage("Se edito exitosamente el Jugador");
+                recreateModel();
     }
 
     public Jugador getJugador() {
