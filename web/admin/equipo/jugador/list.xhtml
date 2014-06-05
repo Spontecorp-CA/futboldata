@@ -42,8 +42,10 @@
                              paginator="true" rows="10"
                              filteredValue="#{jugadorBean.filteredJugador}" >   
                     <p:ajax event="rowSelect"
-                            update=":JugadorListForm:createButton :JugadorListForm:editButton :JugadorListForm:dialog" 
-                            oncomplete="PF('jugadorDialog').show()"/>
+                            update=":JugadorListForm:createButton :JugadorListForm:editButton 
+                            :JugadorViewForm" 
+                            listener="#{jugadorBean.prepareEdit}" 
+                            oncomplete="PF('JugadorViewDialog').show()"/>
                     <p:ajax event="rowUnselect" 
                             update=":JugadorListForm:createButton :JugadorListForm:editButton" />
 
@@ -83,7 +85,8 @@
 
                 </p:dataTable>
             </p:fieldset>
-            <p:dialog id="dialog" header="Detelles Jugador" widgetVar="jugadorDialog" resizable="false"
+            
+<!--            <p:dialog id="dialog" header="Detalles Jugador" widgetVar="jugadorDialog" resizable="false"
                       showEffect="fade" hideEffect="explode">
 
                 <h:panelGrid id="display" columns="2" cellpadding="4">
@@ -96,10 +99,12 @@
                     </f:facet>
 
                 </h:panelGrid>
-            </p:dialog>
+            </p:dialog>-->
         </h:form>
+        
         <ui:include src="create.xhtml"/>
         <ui:include src="edit.xhtml"/>
+        <ui:include src="view.xhtml"/>
     </ui:define>
 
 </ui:composition>

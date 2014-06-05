@@ -9,11 +9,13 @@ import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Persona;
+import com.spontecorp.futboldata.entity.Posicion;
 import com.spontecorp.futboldata.entity.RedSocial;
 import com.spontecorp.futboldata.entity.TipoRedSocial;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
+import com.spontecorp.futboldata.jpacontroller.PosicionFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
@@ -41,6 +43,7 @@ public class JugadorBean implements Serializable {
     private Jugador jugador;
     private Pais pais;
     private SelectItem[] ciudades;
+    private List<Posicion> posiciones;
     private DataModel items = null;
 
     private Direccion direccion;
@@ -57,6 +60,7 @@ public class JugadorBean implements Serializable {
 
     private final PaisFacade controllerPais;
     private final CiudadFacade controllerCiudad;
+    private final PosicionFacade posicionFacade;
     private final RedSocialFacade controllerRedSocial;
     private final TipoRedSocialFacade tipoRedSocialController;
 
@@ -66,6 +70,7 @@ public class JugadorBean implements Serializable {
         controllerJugador = new JugadorFacade();
         controllerPais = new PaisFacade();
         controllerCiudad = new CiudadFacade();
+        posicionFacade = new PosicionFacade();
         controllerRedSocial = new RedSocialFacade();
         tipoRedSocialController = new TipoRedSocialFacade();
     }
@@ -79,6 +84,7 @@ public class JugadorBean implements Serializable {
             jugador.setPersonaId(persona);
 
             ciudades = null;
+            posiciones = null;
             redes = new ArrayList<RedSocial>();
         }
         return jugador;
@@ -161,6 +167,7 @@ public class JugadorBean implements Serializable {
         redesEliminar = new ArrayList<RedSocial>();
         direccion = new Direccion();
         ciudades = null;
+        posiciones = null;
         pais = null;
         setEmbeddableKeys();
     }
@@ -175,6 +182,17 @@ public class JugadorBean implements Serializable {
 
     public SelectItem[] getCiudades() {
         return ciudades;
+    }
+    
+    private void posicionesAvailable(){
+        posiciones = posicionFacade.findAll();
+    }
+    
+    public List<Posicion> getPosiciones(){
+        if(posiciones == null){
+            posicionesAvailable();
+        }
+        return posiciones;
     }
 
     public SelectItem[] getRedSocialAvailable() {

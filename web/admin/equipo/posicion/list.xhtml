@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
+
+        <ui:define name="title">
+            Administración de Posiciones
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="PosicionListForm">
+                <p:fieldset style="width: 85%" legend="Lista de posiciones">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   
+                                             value="Crear Posición" 
+                                             actionListener="#{posicionBean.prepareCreate}" 
+                                             update=":PosicionCreateForm" 
+                                             oncomplete="PF('PosicionCreateDialog').show()"/>
+<!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
+                                             value="Ver Competición" 
+                                             update=":LigaViewForm" 
+                                             oncomplete="PF('LigaViewDialog').show()" 
+                                             disabled="#{empty posicionBean.selected}"/>-->
+                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                             value="Editar Posición"
+                                             actionListener="#{posicionBean.prepareEdit}"
+                                             update=":PosicionEditForm" 
+                                             oncomplete="PF('PosicionEditDialog').show()" 
+                                             disabled="#{empty posicionBean.selected}"/>
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Administración" action="#{posicionBean.returnAdminPage}"
+                                             immediate="true"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <br />
+                    <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+                    <br />
+                    <p:dataTable id="items" var="item" value="#{posicionBean.items}"
+                                 widgetVar="posicionesTable"
+                                 selectionMode="single"
+                                 selection="#{posicionBean.selected}" 
+                                 rowKey = "#{item.id}"
+                                 emptyMessage="No se encontraron posiciones para ese criterio" 
+                                 filteredValue="#{posicionBean.filteredPosiciones}"
+                                 paginator="true" rows="10"  
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15"> 
+
+                        <p:ajax event="rowSelect"   update=":PosicionListForm:createButton 
+                                                            :PosicionListForm:editButton"/>
+                                onstart="#{configBean.setLiga(posicionBean.selected)}"/>
+                        <p:ajax event="rowUnselect" update=":PosicionListForm:createButton
+                                                            :PosicionListForm:editButton"/>
+
+                        <p:column id="nombreColummn" headerText="Nombre">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{item.status == 1?'Activa': 'Inactiva'}"/>
+                        </p:column>                        
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <ui:include src="create.xhtml"/>
+            <ui:include src="edit.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

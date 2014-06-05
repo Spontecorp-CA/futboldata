@@ -129,18 +129,21 @@
                             </p:selectOneMenu>
                             <p:spacer/>
                         </h:panelGrid>
+                        <h:outputLabel value="Posición: " for="posicion"/>
+                        <p:selectOneMenu id="posicion" value="#{jugadorBean.jugador.posicionId}"
+                                         style="width: 250">
+                            <f:selectItems value="#{jugadorBean.posiciones}"/>
+                        </p:selectOneMenu>
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputMask id="telefono" 
                                      value="#{jugadorBean.selected.personaId.telefono}"
-                                     required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputMask id="celular" 
                                      value="#{jugadorBean.selected.personaId.celular}"
-                                     required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="email:" for="email"/>
@@ -149,7 +152,7 @@
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
                             <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
                         </p:inputText>
 
                         <!--                    </h:panelGrid>

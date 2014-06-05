@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Posicion.findById", query = "SELECT p FROM Posicion p WHERE p.id = :id"),
     @NamedQuery(name = "Posicion.findByNombre", query = "SELECT p FROM Posicion p WHERE p.nombre = :nombre")})
 public class Posicion implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +44,8 @@ public class Posicion implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
+    @Column(name = "status")
+    private Integer status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "posicionId")
     private Collection<Convocado> convocadoCollection;
     @OneToMany(mappedBy = "posicionId")
@@ -112,6 +115,14 @@ public class Posicion implements Serializable {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     
 }

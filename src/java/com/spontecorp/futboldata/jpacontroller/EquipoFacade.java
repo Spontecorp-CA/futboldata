@@ -6,6 +6,7 @@ package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte03
  */
-public class EquipoFacade extends AbstractFacade<Equipo> {
+public class EquipoFacade extends AbstractFacade<Equipo> implements Serializable{
    
     private static final Logger logger = LoggerFactory.getLogger(EquipoFacade.class);
 

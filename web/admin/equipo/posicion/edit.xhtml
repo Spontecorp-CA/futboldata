@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:composition>
+        <p:dialog id="PosicionEditDlg" widgetVar="PosicionEditDialog" modal="true" 
+                  resizable="false" appendTo="@(body)" header="Editar Posición">
+            <h:form id="PosicionEditForm">
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="2" rendered="#{posicionBean.selected != null}">
+                        <p:outputLabel value="* Nombre: " for="nombre" />
+                        <p:inputText id="nombre" value="#{posicionBean.temporal.nombre}" 
+                                     title="Nombre de la Posición" required="true" 
+                                     requiredMessage="Debe colocar un nombre de posicion"
+                                     style="width: 240px"/>
+
+                        <p:outputLabel value="* Status" for="status" />
+                        <p:selectOneMenu id="status" value="#{posicionBean.temporal.status}"
+                                         converter= "javax.faces.Integer"
+                                         style="width: 240px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar el status">
+                            <f:selectItem itemLabel="Activo" itemValue="1"/>
+                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </h:panelGroup>
+                <p:commandButton actionListener="#{posicionBean.edit}" 
+                                 value="OK" update="display,:PosicionListForm:items,:growlAdmin" 
+                                 oncomplete="handleSubmit(args, 'PosicionEditDialog');"/>
+                <!--                                     ajax="false"/>-->
+                <p:commandButton value="Cancelar" onclick="PosicionEditDialog.hide()"/>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+

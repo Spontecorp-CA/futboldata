@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition>
+        <p:dialog id="JugadorViewDlg" widgetVar="JugadorViewDialog" 
+                  modal="true" resizable="false" 
+                  appendTo="@(body)" header="Detalle de Jugador">
+            <h:form id="JugadorViewForm">
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="3" styleClass="top-aligned-columns" rendered="#{jugadorBean.jugador != null}">
+                        <h:panelGrid columns="2" title="Datos Personales"
+                                     styleClass="top-aligned-columns">
+                            <h:outputLabel value="Nombre:" for="nombre"/>
+                            <h:outputText id="nombre" value="#{jugadorBean.jugador.personaId.nombre}"
+                                          style="width: 250px"/>
+                            <h:outputLabel value="Apellido:" for="apellido"/>
+                            <h:outputText id="apellido" value="#{jugadorBean.jugador.personaId.apellido}"
+                                         style="width: 250px"/>
+                            
+                            <h:outputLabel value="Documento Id:" for="did"/>
+                            <h:outputText id="did" value="#{jugadorBean.jugador.personaId.documentoIdentidad}"
+                                         style="width: 250px"/>
+                            
+                            <h:outputLabel value="* Sexo:" for="sex"/>
+                            <h:outputText id="sex" 
+                                          value="#{jugadorBean.jugador.personaId.sexo == 'M'? 'Masculino':'Femenino'}"/>
+                            
+                            <h:outputLabel value="Fecha Nacimiento:" for="fechaNacimiento"/>
+                            <h:outputText id="fechaNacimiento" 
+                                          value="#{jugadorBean.jugador.personaId.fechaNacimiento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                                          
+                            <h:outputLabel value="Nacional de:" for="nacionalidad"/>
+                            <h:outputText id="nacionalidad" value="#{jugadorBean.jugador.personaId.nacionalidad}"
+                                          style="width: 250px"/>
+
+                            <h:outputLabel value="Foto:" for="foto"/>
+                            <h:graphicImage height="100" width="100"
+                                            id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>
+                                
+                            <h:outputLabel value="Status:" for="status"/>
+                            <h:outputText id="status" value="#{jugadorBean.jugador.status == 1?'Activo':'Inactivo'}"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" title="Dirección">
+                            <h:outputLabel value="Pais:" for="pais"/>
+                            <h:outputText id="pais" value="#{jugadorBean.jugador.personaId.direccionId.ciudadId.paisId}"
+                                          style="width: 250px" />
+                            
+                            <h:outputLabel value="Ciudad:" for="ciudad"/>
+                            <h:outputText id="ciudad"
+                                          value="#{jugadorBean.jugador.personaId.direccionId.ciudadId}"
+                                          style="width: 250px"/>
+                            
+                            <h:outputLabel value="Dirección:" for="direccion"/>
+                            <h:outputText id="direccion"
+                                          value="#{jugadorBean.jugador.personaId.direccionId.direccion}"
+                                          style="width: 250px" />
+
+                            <h:outputLabel value="Número de Camiseta:" for="camiseta"/>
+                            <h:outputText id="camiseta" value="#{jugadorBean.jugador.camiseta}"
+                                         style="width: 250px"/>
+                            
+                            <h:outputLabel value="Físico:" for="fisico"/>
+                            <h:panelGrid id="fisico" columns="3">
+                                <h:outputLabel value="Altura: " for="altura"/>
+                                <h:outputText id="altura" value="#{jugadorBean.jugador.altura}"
+                                             style="width: 100px"/>
+                                <h:outputLabel value="mts."/>
+                                <h:outputLabel value="Peso: " for="peso"/>
+                                <h:outputText id="peso" value="#{jugadorBean.jugador.peso}"
+                                             style="width: 100px"/>
+                                <h:outputLabel value="Kgs."/>
+                                <h:outputLabel value="Destreza :" for="zurdo"/>
+                                <h:outputText id="derecho" value="Derecho"
+                                                 style="width: 100px"
+                                                 rendered="#{jugadorBean.jugador.zurdo == 1}"/>
+                                <h:outputText id="zurdo" value="Zurdo"
+                                              style="width: 100px"
+                                              rendered="#{jugadorBean.jugador.zurdo == 0}"/>
+                                <h:outputText id="ambidiestro" value="Ambidiestro"
+                                              style="width: 100px"
+                                              rendered="#{jugadorBean.jugador.zurdo == 2}"/>    
+                                <p:spacer/>
+                            </h:panelGrid>
+                            
+                            <h:outputLabel value="Posición: " for="posicion"/>
+                            <h:outputText id="posicion" value="#{jugadorBean.jugador.posicionId}"
+                                             style="width: 250"/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" title="Contacto">
+                            <h:outputLabel value="Teléfono:" for="telefono"/>
+                            <h:outputText id="telefono" 
+                                         value="#{jugadorBean.jugador.personaId.telefono}"
+                                         style="width: 250px"/>
+                            
+                            <h:outputLabel value="Celular:" for="celular"/>
+                            <h:outputText id="celular" 
+                                         value="#{jugadorBean.jugador.personaId.celular}"
+                                         style="width: 250px"/>
+                            
+                            <h:outputLabel value="email:" for="email"/>
+                            <h:outputText id="email" 
+                                         value="#{jugadorBean.jugador.personaId.email}"
+                                         style="width: 250px"/>
+
+                            <h:outputLabel value="Redes Sociales" for="redSocial"/>
+                            <p:dataList id="redes" 
+                                        var="redSocial" 
+                                        value="#{jugadorBean.redes}">
+                                        #{redSocial.tipoRedSocialId.url}/#{redSocial.usuario}
+                            </p:dataList>
+                            
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</ui:composition>
+
