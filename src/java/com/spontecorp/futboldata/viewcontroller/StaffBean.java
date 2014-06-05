@@ -160,8 +160,12 @@ public class StaffBean implements Serializable {
 
     public void prepareEdit() {       
         redes = getRedSocials(persona);
-        pais = persona.getDireccionId().getCiudadId().getPaisId();
-        ciudadesAvalaible();
+        if(persona.getDireccionId().getCiudadId()!= null){
+         pais = persona.getDireccionId().getCiudadId().getPaisId();
+            ciudadesAvalaible();   
+        }else{
+            pais = new Pais();            
+        }
     }
 
     public List<RedSocial> getRedSocials(Persona persona) {
