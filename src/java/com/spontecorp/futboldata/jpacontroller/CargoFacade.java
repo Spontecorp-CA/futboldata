@@ -6,6 +6,7 @@ package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Cargo;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
@@ -13,7 +14,7 @@ import javax.persistence.Query;
  *
  * @author sponte07
  */
-public class CargoFacade extends AbstractFacade<Cargo> {
+public class CargoFacade extends AbstractFacade<Cargo> implements Serializable{
 
     public CargoFacade() {
         super(Cargo.class);

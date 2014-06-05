@@ -26,7 +26,7 @@
                                          actionListener="#{staffBean.prepareEdit}"
                                          update=":StaffEditForm" 
                                          oncomplete="PF('StaffEditDialog').show()" 
-                                         disabled="#{empty staffBean.staff.personaId.nombre}"/>
+                                         disabled="#{empty staffBean.persona.nombre}"/>
                        
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
@@ -37,10 +37,12 @@
 
                 <p:dataTable id="staffs" var="staff"  value="#{staffBean.items}"
                              rowKey="#{staff.id}"
-                             selection="#{staffBean.staff}" 
+                             selection="#{staffBean.persona}" 
                              selectionMode="single">   
-                    <p:ajax event="rowSelect" update=":StaffListForm:createButton :StaffListForm:editButton "  />
-                    <p:ajax event="rowUnselect" update=":StaffListForm:createButton :StaffListForm:editButton" />
+                    <p:ajax event="rowSelect" 
+                            update=":StaffListForm:createButton :StaffListForm:editButton "  />
+                    <p:ajax event="rowUnselect" 
+                            update=":StaffListForm:createButton :StaffListForm:editButton" />
 
                             <p:column headerText="Nombre">
                             <h:outputText value="#{staff.nombre}"/>
