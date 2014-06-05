@@ -27,7 +27,7 @@
                         <h:outputText id="web" value="#{clubBean.selected.direccionId.paginaWeb}"/>
                         <h:outputLabel value="Teléfonos: " for="telefonos"/>
                         <h:panelGroup id="telefonos">
-                            <ui:repeat var="telefono" value="#{clubBean.selected.direccionId.telefonoCollection}">
+                            <ui:repeat var="telefono" value="#{clubBean.telefonos}">
                                 <ul>
                                     <li><h:outputText value="#{telefono.telefono}"/></li>
                                 </ul>
@@ -35,7 +35,7 @@
                         </h:panelGroup>
                         <h:outputLabel value="Emails: " for="emails"/>
                         <h:panelGroup id="emails">
-                            <ui:repeat var="email" value="#{clubBean.selected.direccionId.emailCollection}">
+                            <ui:repeat var="email" value="#{clubBean.emails}">
                                 <ul>
                                     <li><h:outputText value="#{email.email}"/></li>
                                 </ul>
