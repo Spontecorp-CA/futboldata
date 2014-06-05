@@ -4,7 +4,6 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
-import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
@@ -16,6 +15,7 @@ import com.spontecorp.futboldata.jpacontroller.AsociacionFacade;
 import com.spontecorp.futboldata.jpacontroller.CargoFacade;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
+import com.spontecorp.futboldata.jpacontroller.PersonaFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.StaffFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
@@ -66,6 +64,7 @@ public class StaffBean implements Serializable {
     private List<RedSocial> redes;
     private List<RedSocial> redesEliminar;
     private static final Logger logger = LoggerFactory.getLogger(StaffBean.class);
+    private final PersonaFacade controllerPersona;
 
     public StaffBean() {
         controllerStaff = new StaffFacade();
@@ -75,6 +74,7 @@ public class StaffBean implements Serializable {
         controllerRedSocial = new RedSocialFacade();
         tipoRedSocialController = new TipoRedSocialFacade();
         controllerCargo = new CargoFacade();
+        controllerPersona = new PersonaFacade();
     }
 
     public Staff getSelected() {
@@ -150,17 +150,17 @@ public class StaffBean implements Serializable {
     }
 
     public void recreateModel() {
+        persona = null; 
         redSocial = null;
         pais = null;
         staff = null;
         items = null;
-        persona = null;
+
     }
 
-    public void prepareEdit() {
-
-        redes = getRedSocials(staff.getPersonaId());
-        pais = staff.getPersonaId().getDireccionId().getCiudadId().getPaisId();
+    public void prepareEdit() {       
+        redes = getRedSocials(persona);
+        pais = persona.getDireccionId().getCiudadId().getPaisId();
         ciudadesAvalaible();
     }
 
@@ -169,7 +169,7 @@ public class StaffBean implements Serializable {
         return redes;
     }
 
-    public String create() {
+    public void create() {
         try {
             if (controllerStaff.findStaffxDomentoId(persona.getDocumentoIdentidad()) != null) {
                 Util.addErrorMessage("El Staff ya se encuentra Registrado por el Documenta de "
@@ -187,10 +187,10 @@ public class StaffBean implements Serializable {
         } catch (Exception e) {
             logger.debug("Error al crear Staff :", e.getMessage());
         }
-        return prepareCreate();
+//        return prepareCreate();
     }
 
-    public String prepareCreate() {
+    public void prepareCreate() {
         redSocial = new RedSocial();
         staff = new Staff();
         direccion = new Direccion();
@@ -199,22 +199,22 @@ public class StaffBean implements Serializable {
         staff.setPersonaId(persona);
         ciudades = null;
         redes = new ArrayList<RedSocial>();
-        return "list?faces-redirect=true";
+//        return "list?faces-redirect=true";
     }
 
-    public String edit() {
+    public void edit() {
         for (RedSocial red : redes) {
-            red.setPersonaId(staff.getPersonaId());
+            red.setPersonaId(persona);
         }
-        staff.getPersonaId().setRedSocialCollection(redes);
+        persona.setRedSocialCollection(redes);
         logger.debug("Esta editando un Staff");
-        controllerStaff.edit(staff);
+        controllerPersona.edit(persona);
         for (RedSocial redEliminar : redesEliminar) {
             controllerRedSocial.remove(redEliminar);
         }
         recreateModel();
         Util.addSuccessMessage("Se edito exitosamente el Staff");
-        return prepareCreate();
+//        return prepareCreate();
     }
 
     public Staff getStaff() {
@@ -233,6 +233,10 @@ public class StaffBean implements Serializable {
     public Persona getPersona() {
         if (persona == null) {
             persona = new Persona();
+            direccion = new Direccion();
+            persona.setDireccionId(direccion);
+            ciudades = null;
+            redes = new ArrayList<RedSocial>();
         }
         return persona;
     }
@@ -290,6 +294,11 @@ public class StaffBean implements Serializable {
         return direccion;
     }
 
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
