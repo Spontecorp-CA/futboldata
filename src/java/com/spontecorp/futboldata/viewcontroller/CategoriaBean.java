@@ -8,12 +8,16 @@ package com.spontecorp.futboldata.viewcontroller;
 import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
 import com.spontecorp.futboldata.utilities.Util;
+import com.spontecorp.futboldata.utilities.Util.PersistAction;
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
-
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,108 +31,164 @@ public class CategoriaBean implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    private Categoria categoria;
-    private DataModel items = null;
-    private final CategoriaFacade controllerCategoria;   
-    
+    private List<Categoria> items = null;
+    private List<Categoria> filteredCategorias = null;
+    private Categoria selected;
+
+
+    private final CategoriaFacade categoriaFacade;
+
     private static final Logger logger = LoggerFactory.getLogger(CategoriaBean.class);
 
     public CategoriaBean() {
-        controllerCategoria = new CategoriaFacade();
-    }    
-
-    public Categoria getCategoria() {
-        return categoria;
+        this.categoriaFacade = new CategoriaFacade();
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public Categoria getSelected() {
+        return selected;
     }
-    
-    public Categoria getSelected(){
-        if(categoria == null){
-            categoria = new Categoria();
-        }
-        return categoria;
+
+    public void setSelected(Categoria selected) {
+        this.selected = selected;
     }
-    
-    public DataModel getItems() {
+
+    public List<Categoria> getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerCategoria.findAll());
+            items = categoriaFacade.findAll();
         }
         return items;
     }
-    
-    public void recreateModel(){
-        items = null;
-        categoria = null;
+
+    public List<Categoria> getFilteredCategorias() {
+        return filteredCategorias;
     }
-    public String gotoCategoriasPage() {
-        return "list";
+
+    public void setFilteredCategorias(List<Categoria> filteredCategorias) {
+        this.filteredCategorias = filteredCategorias;
     }
-    
-    public String prepareCreate(){
-        categoria = new Categoria();
-        return "create";
-    }
-    
-    public String prepareEdit(){
-        categoria = (Categoria) getItems().getRowData();
-        return "edit";
-    }
-    
-    public String prepareList() {
-        return "list";
-    }
-    
+
     public String returnAdminPage() {
         return "adminPage";
     }
-    
-    public String create(){
-        try {
-            if(controllerCategoria.findCategoria(categoria.getNombre()) != null){
-                Util.addErrorMessage("Categoria ya existente, coloque otro");
-                return null;
-            } else {
-                controllerCategoria.create(categoria);
-                Util.addSuccessMessage("Categoría creada con éxito");
-                recreateModel();
-                return prepareCreate();
+
+    public Categoria prepareCreate() {
+        selected = new Categoria();
+        initializeEmbeddableKey();
+        return selected;
+    }
+
+    public void prepareEdit() {
+        // No hace nada
+    }
+
+    public void create() {
+        if (!existeNombreCategoria(selected.getNombre())) {
+            persist(PersistAction.CREATE, "Categoria creada con éxito");
+            if (!Util.isValidationFailed()) {
+                items = null;    // Invalidate list of items to trigger re-query.
             }
-        } catch (Exception e) {
-            Util.addErrorMessage(e, "Error al crear la categoría");
-            return null;
+        } else {
+            Util.addErrorMessage("Categoria ya existente, coloque un nombre diferente");
         }
     }
-    
-    public String edit(){
+
+    private boolean existeNombreCategoria(String nombre) {
+        boolean result = true;
         try {
-            if (controllerCategoria.find(categoria.getId()) == null) {
-                Util.addErrorMessage("Categoria no existente, hay un error");
-                return null;
-            } else {
-                controllerCategoria.edit(categoria);
-                Util.addSuccessMessage("Categoría editada con éxito");
-                return prepareCreate();
+            if (categoriaFacade.findCategoria(nombre) == null) {
+                result = false;
             }
-        } catch (Exception e) {
-            Util.addErrorMessage(e, "Error al editar la categoría");
-            return null;
+        } catch (NoResultException e) {
+            result = false;
+        }
+
+        return result;
+    }
+
+    public void edit() {
+        persist(PersistAction.UPDATE, "Categoria actualizada con éxito");
+        if (!Util.isValidationFailed()) {
+            items = null;    // Invalidate list of items to trigger re-query.
         }
     }
+
+    protected void setEmbeddableKeys(PersistAction persistAction) {
+        // no hace nada
+    }
+
+    protected void initializeEmbeddableKey() {
+        // no hace nada
+    }
+
+    private void persist(PersistAction persistAction, String successMessage) {
+        if (selected != null) {
+            try {
+                setEmbeddableKeys(persistAction);
+                if (persistAction == PersistAction.CREATE) {
+                    categoriaFacade.create(selected);
+                } else if (persistAction == PersistAction.UPDATE) {
+                    categoriaFacade.edit(selected);
+                }
+                Util.addSuccessMessage(successMessage);
+                selected = null;
+            } catch (Exception e) {
+                logger.error("Error creando o editando la liga: " + e.getMessage(), e);
+                Util.addErrorMessage(e, "Error al crear ó editar la liga");
+            }
+        }
+    }
+
+    public Categoria getCategoria(java.lang.Integer id) {
+        return categoriaFacade.find(id);
+    }
+
+    public List<Categoria> getItemsAvailableSelectMany() {
+        return categoriaFacade.findAll();
+    }
+
+    public List<Categoria> getItemsAvailableSelectOne() {
+        return categoriaFacade.findAll();
+    }
     
-//    public void persist(Object object) {
-//        EntityManager em = emf.createEntityManager();
-//        try {
-//            em.getTransaction().begin();
-//            em.persist(object);
-//            em.getTransaction().commit();
-//        } catch (Exception e) {
-//            java.util.logging.Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            em.getTransaction().rollback();
-//        } finally {
-//            em.close();
-//        }
-//    }
+    @FacesConverter(forClass = Categoria.class)
+    public static class CategoriaControllerConverter implements Converter {
+
+        @Override
+        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
+            if (value == null || value.length() == 0) {
+                return null;
+            }
+            CategoriaBean controller = (CategoriaBean) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "categoriaBean");
+            return controller.getCategoria(getKey(value));
+        }
+
+        java.lang.Integer getKey(String value) {
+            java.lang.Integer key;
+            key = Integer.valueOf(value);
+            return key;
+        }
+
+        String getStringKey(java.lang.Integer value) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(value);
+            return sb.toString();
+        }
+
+        @Override
+        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
+            if (object == null) {
+                return null;
+            }
+            if (object instanceof Categoria) {
+                Categoria o = (Categoria) object;
+                return getStringKey(o.getId());
+            } else {
+                logger.error("object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Categoria.class.getName()});
+                //java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Categoria.class.getName()});
+                return null;
+            }
+        }
+
+    }
 }

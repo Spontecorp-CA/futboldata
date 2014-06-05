@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Categoria.findByNombre", query = "SELECT c FROM Categoria c WHERE c.nombre = :nombre"),
     @NamedQuery(name = "Categoria.findByStatus", query = "SELECT c FROM Categoria c WHERE c.status = :status")})
 public class Categoria implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +50,8 @@ public class Categoria implements Serializable {
     @Size(max = 65535)
     @Column(name = "descripcion")
     private String descripcion;
+    @Column(name = "tiempo_juego")
+    private Integer tiempoJuego;
     @Column(name = "status")
     private Integer status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoriaId")
@@ -86,7 +89,15 @@ public class Categoria implements Serializable {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    
+    public Integer getTiempoJuego() {
+        return tiempoJuego;
+    }
 
+    public void setTiempoJuego(Integer tiempoJuego) {
+        this.tiempoJuego = tiempoJuego;
+    }
+    
     public Integer getStatus() {
         return status;
     }
@@ -137,5 +148,7 @@ public class Categoria implements Serializable {
     public String toString() {
         return nombre;
     }
+
+    
     
 }
