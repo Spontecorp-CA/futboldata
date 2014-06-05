@@ -30,7 +30,6 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{staffBean.staff.personaId.documentoIdentidad}"
-                                     required="true" requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{staffBean.staff.personaId.sexo}">
@@ -67,7 +66,6 @@
                         <p:selectOneMenu id="status" value="#{staffBean.staff.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
-                                         required="true"
                                          requiredMessage="Debe seleccionar un valor">
                             <f:selectItem itemLabel="Activo" itemValue="1"/>
                             <f:selectItem itemLabel="Inactivo" itemValue="0"/>
@@ -79,7 +77,6 @@
                                          value="#{staffBean.pais}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
-                                         required="true"
                                          requiredMessage="Debe seleccionar un perfil">                       
                             <f:selectItems value="#{staffBean.paisesAvalaible}"/>
                             <p:ajax listener="#{staffBean.ciudadesAvalaible}" 
@@ -90,14 +87,12 @@
                                          value="#{staffBean.staff.personaId.direccionId.ciudadId}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
-                                         required="true"
                                          requiredMessage="Debe seleccionar una ciudad">                       
                             <f:selectItems value="#{staffBean.ciudades}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Dirección:" for="direccion"/>
                         <p:inputTextarea id="direccion"
                                          value="#{staffBean.staff.personaId.direccionId.direccion}"
-                                         required="true" requiredMessage="Debe colocar un email"
                                          validatorMessage="Email inválido"
                                          rows="3" cols="33"
                                          style="width: 250px">
@@ -109,13 +104,11 @@
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputMask id="telefono" 
                                      value="#{staffBean.staff.personaId.telefono}"
-                                     required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputMask id="celular" 
                                      value="#{staffBean.staff.personaId.celular}"
-                                     required="true" requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>
                         <h:outputLabel value="email:" for="email"/>
@@ -124,7 +117,7 @@
                                      validatorMessage="Email inválido"
                                      style="width: 250px">
                             <f:validateRegex
-                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
                         </p:inputText>
 
                         <!--                    </h:panelGrid>
