@@ -10,73 +10,84 @@
         Administración de Temporadaes
     </ui:define>
 
-<!--    <ui:define name="content">-->
-<!--<h:form id="TemporadaListForm" rendered="#{configBean.temporadaActiva}">-->
+    <!--    <ui:define name="content">-->
+    <!--<h:form id="TemporadaListForm" rendered="#{configBean.temporadaActiva}">-->
 
-            <p:fieldset style="width: 85%" legend="Lista de Temporadas" >
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton id="createButtonTemporada" icon="ui-icon-plus"  
-                                         value="Crear Temporada" 
-                                         actionListener="#{configBean.prepareCreateTemporada}"
-                                         update=":TemporadaCreateForm"
-                                         oncomplete="PF('TemporadaCreateDialog').show()"/>
-                        <p:commandButton id="editButtonTemporada" icon="ui-icon-pencil" 
-                                         value="Editar Temporada" 
-                                         actionListener="#{configBean.prepareEditTemporada}"   
-                                         update=":TemporadaEditForm"                                        
-                                         oncomplete="PF('TemporadaEditDialog').show()" 
-                                         disabled="#{empty configBean.temporada.nombre}"/>
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
-                                         immediate="true"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
+    <p:fieldset style="width: 85%" legend="Lista de Temporadas" >
+        <p:toolbar>
+            <p:toolbarGroup align="left">
+                <p:commandButton id="createButtonTemporada" icon="ui-icon-plus"  
+                                 value="Crear Temporada" 
+                                 actionListener="#{configBean.prepareCreateTemporada}"
+                                 update=":TemporadaCreateForm"
+                                 oncomplete="PF('TemporadaCreateDialog').show()"/>
+                <p:commandButton id="editButtonTemporada" icon="ui-icon-pencil" 
+                                 value="Editar Temporada" 
+                                 actionListener="#{configBean.prepareEditTemporada}"   
+                                 update=":TemporadaEditForm"                                        
+                                 oncomplete="PF('TemporadaEditDialog').show()" 
+                                 disabled="#{empty configBean.temporada.nombre}"/>
+               
+                <p:commandButton id="viewButtonTemporada" icon="ui-icon-pencil" 
+                                 value="Ver Temporada" 
+                                 actionListener="#{configBean.prepareEditTemporada}"   
+                                 update=":TemporadaViewForm"                                        
+                                 oncomplete="PF('TemporadaViewDialog').show()" 
+                                 disabled="#{empty configBean.temporada.nombre}"/>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
+                                 immediate="true"/>
+            </p:toolbarGroup>
+        </p:toolbar>
 
-                <p:dataTable id="temporadas" var="temporada"  value="#{configBean.temporadas}"
-                             rowKey="#{temporada.id}"
-                             selection="#{configBean.temporada}" 
-                             selectionMode="single"
-                             paginator="true" rows="10"
-                             filteredValue="#{configBean.filteredTemporada}" >   
-                    <p:ajax event="rowSelect"
-                            update=":TemporadaListForm:createButtonTemporada
-                            ,:TemporadaListForm:editButtonTemporada
-                            ,:menuPrincipal,
-                            :TemporadaEditForm"   />
-                    <p:ajax event="rowUnselect" 
-                            update=":TemporadaListForm:createButtonTemporada
-                            ,:TemporadaListForm:editButtonTemporada, 
-                            :menuPrincipal" />
+        <p:dataTable id="temporadas" var="temporada"  value="#{configBean.temporadas}"
+                     rowKey="#{temporada.id}"
+                     selection="#{configBean.temporada}" 
+                     selectionMode="single"
+                     paginator="true" rows="10"
+                     filteredValue="#{configBean.filteredTemporada}" >   
+            <p:ajax event="rowSelect"
+                    update=":TemporadaListForm:createButtonTemporada
+                    ,:TemporadaListForm:editButtonTemporada
+                    ,:menuPrincipal,                  
+                    :TemporadaListForm:viewButtonTemporada"/>
+            <p:ajax event="rowUnselect" 
+                    update=":TemporadaListForm:createButtonTemporada
+                    ,:TemporadaListForm:editButtonTemporada, 
+                    :menuPrincipal,
+                    :TemporadaListForm:viewButtonTemporada" />
 
 
-                    <p:column headerText="Nombre" sortBy="nombre"
-                              filterBy="nombre">
-                        <h:outputText value="#{temporada.nombre}"/>
-                    </p:column>
+            <p:column headerText="Nombre" sortBy="nombre"
+                      filterBy="nombre">
+                <h:outputText value="#{temporada.nombre}"/>
+            </p:column>
+            <p:column headerText="Categorias" >
+                <ui:repeat var="temporadaCategoria" 
+                           value="#{configBean.gestCategorias(temporada)}"
+                           varStatus="status">
+                                 #{temporadaCategoria.nombre}
+                    <h:outputText rendered="#{!status.last}" value=","/>
+                </ui:repeat>
+            </p:column> 
+            <p:column headerText="Fecha Inicio" sortBy="fechaInicio">
+                <h:outputText value="#{temporada.fechaInicio}">
+                    <f:convertDateTime pattern="dd/MM/yyyy" />    
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Fecha Final" sortBy="fechaFin">
+                <h:outputText value="#{temporada.fechaFin}">
+                    <f:convertDateTime pattern="dd/MM/yyyy" />    
+                </h:outputText> 
 
-                    <p:column headerText="Fecha Inicio" sortBy="fechaInicio">
-                        <h:outputText value="#{temporada.fechaInicio}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />    
-                        </h:outputText>
-                    </p:column>
-                    <p:column headerText="Fecha Final" sortBy="fechaFin">
-                        <h:outputText value="#{temporada.fechaFin}">
-                                 <f:convertDateTime pattern="dd/MM/yyyy" />    
-                            </h:outputText> 
-                
-                    </p:column>
+            </p:column>
 
-                    <p:column headerText="Status">
-                        <h:outputText   value="#{temporada.status== 0?'INACTIVO':'ACTIVO'}"/>
-                    </p:column>
+            <p:column headerText="Status">
+                <h:outputText   value="#{temporada.status== 0?'INACTIVO':'ACTIVO'}"/>
+            </p:column>
 
-                </p:dataTable>
-            </p:fieldset>
-
-        <!--</h:form>-->
-<!--        <ui:include src="create.xhtml"/>
-        <ui:include src="edit.xhtml"/>-->
+        </p:dataTable>
+    </p:fieldset>
 
 </ui:composition>

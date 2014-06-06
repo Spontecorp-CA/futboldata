@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Temporadas
+    </ui:define>
+
+    <p:dialog id="TemporadaViewDlg" widgetVar="TemporadaViewDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Edición de Temporadas">
+        <h:form id="TemporadaViewForm">
+
+            <p:fieldset style="width: 85%" legend="Viewar Temporada">                
+
+                <h:panelGrid columns="2" title="Datos Personales"
+                             styleClass="top-aligned-columns">
+
+                    <h:outputLabel value="Liga:" />
+
+                    <h:outputLabel value="#{configBean.temporada.competicionId.nombre}" />
+
+                    <h:outputLabel value="* Nombre:" for="nombre"/>
+                    <h:outputText id="nombre" value="#{configBean.temporada.nombre}"/>
+
+                    <h:outputLabel value="Fecha Inicio:" for="fechaInicio"/>
+                    <h:outputText value="#{configBean.temporada.fechaInicio}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />    
+                    </h:outputText>
+                    <h:outputLabel value="Fecha Final:" for="fechaFinal"/>
+                    <h:outputText value="#{configBean.temporada.fechaFin}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />    
+                    </h:outputText>
+
+                    <h:outputLabel value="Categorias en la Liga:"/>
+                    <p:dataList  var="categoria" value="#{configBean.categoriasTemporada.target}">
+                        #{categoria.nombre}
+                    </p:dataList>
+
+                    <h:outputText value="Status" />
+                        <h:outputText   value="#{temporada.status== 0?'INACTIVO':'ACTIVO'}"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Cancelar" onclick="TemporadaViewDialog.hide()"/>
+            </p:fieldset>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>

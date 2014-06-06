@@ -305,14 +305,17 @@ public class ConfigBean implements Serializable {
 
     public void prepareEditTemporada() {
         categoriaSource = categoriaFacade.findAll();
-        categoriaTarget = temporadaCategoriaFacade.getCategorias(temporada);
+        categoriaTarget = gestCategorias(temporada);
         categoriaSource.removeAll(categoriaTarget);
         categorias = null;
         listTemporadaCategoria = new ArrayList<TemporadaCategoria>();
 
     }
-
-    public void createTemporada() {
+  
+    public List<Categoria> gestCategorias (Temporada temporada){
+      return temporadaCategoriaFacade.getCategorias(temporada);
+    }
+            public void createTemporada() {
         try {
             if (temporadaFacade.findTemporada(temporada.getNombre()) != null) {
                 Util.addErrorMessage("El temporada ya se encuentra Registrado por el Documento de "

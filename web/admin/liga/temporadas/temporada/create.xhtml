@@ -39,15 +39,19 @@
                                 pattern="dd/mm/yyyy" 
                                 locale="es"/>
                     <h:outputLabel value="Categorias en la Liga:"/>
-                    
-         
+
+
                     <p:pickList id="pickList" 
                                 value="#{configBean.categoriasTemporada}" 
                                 var="categorias"
                                 itemLabel="#{categorias}" 
                                 itemValue="#{categorias}" 
-                                converter="categoriaConverter" />
-            
+                                converter="categoriaConverter" >
+
+                        <f:facet name="sourceCaption">Disponibles</f:facet>
+                        <f:facet name="targetCaption">Seleccionados</f:facet>
+                    </p:pickList>
+
 
                     <h:outputLabel value="* status:" for="status"/>
                     <p:selectOneMenu id="status" value="#{configBean.temporada.status}"
