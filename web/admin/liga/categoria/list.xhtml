@@ -11,12 +11,22 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="usersForm">
+        <h:form id="CategoriaListForm">
 
             <p:fieldset style="width: 85%" legend="Lista de Categorías">
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="crear categoria" action="#{categoriaBean.prepareCreate}"/>                        
+                        <p:commandButton id="createButton" icon="ui-icon-plus"   
+                                         value="Crear Categoria" 
+                                         actionListener="#{categoriaBean.prepareCreate}" 
+                                         update=":CategoriaCreateForm" 
+                                         oncomplete="PF('CategoriaCreateDialog').show()"/>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Categoria"
+                                         actionListener="#{categoriaBean.prepareEdit}"
+                                         update=":CategoriaEditForm" 
+                                         oncomplete="PF('CategoriaEditDialog').show()" 
+                                         disabled="#{empty categoriaBean.selected.nombre}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{categoriaBean.returnAdminPage}"
@@ -24,26 +34,41 @@
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
-                <p:dataTable id="categorias" var="category" value="#{categoriaBean.items}"
-                             rowKey="#{category.nombre}"
-                             selection="#{categoriaBean.categoria}" selectionMode="single">                
+                <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+                <br />
+
+                <p:dataTable id="categorias" var="item" value="#{categoriaBean.items}"
+                             widgetVar="categoriasTable"
+                             selectionMode="single"
+                             selection="#{categoriaBean.selected}" 
+                             rowKey = "#{item.id}"
+                             emptyMessage="No se encontraron categorias para ese criterio" 
+                             filteredValue="#{categoriaBean.filteredCategorias}"
+                             paginator="true" rows="10"  
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,15"> 
+                    
+                    <p:ajax event="rowSelect" update=":CategoriaListForm:createButton :CategoriaListForm:editButton"/>
+                    <p:ajax event="rowUnselect" update=":CategoriaListForm:createButton :CategoriaListForm:editButton"/>
 
                     <p:column headerText="Nombre">
-                        <h:outputText value="#{category.nombre}"/>
+                        <h:outputText value="#{item.nombre}"/>
                     </p:column>
                     <p:column headerText="Descripción">
-                        <h:outputText value="#{category.descripcion}"/>
+                        <h:outputText value="#{item.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Tiempo de Juego (min)">
+                        <h:outputText value="#{item.tiempoJuego}"/>
                     </p:column>
                     <p:column headerText="Status">
-                        <h:outputText value="#{category.status == 1?'Activa':'Inactiva'}"/>
+                        <h:outputText value="#{item.status == 1?'Activa':'Inactiva'}"/>
                     </p:column>
                     
-                    <p:column headerText="Acciones">
-                        <p:commandLink value="Editar" action="#{categoriaBean.prepareEdit}" />                  
-                    </p:column>
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>
     </ui:define>   
 
 </ui:composition>

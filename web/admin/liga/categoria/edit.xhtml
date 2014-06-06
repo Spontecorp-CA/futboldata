@@ -1,57 +1,47 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
-
-    <ui:define name="title">
-        Administración de Categorias
-    </ui:define>
-
-    <ui:define name="content">
-        <h:form id="editForm">
-
-            <p:fieldset style="width: 85%" legend="Editar una Categoría">                
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="OK" action="#{categoriaBean.edit}" 
-                                         update="editForm"/>
-                        <p:commandButton value="Ver Lista" action="#{categoriaBean.prepareList}"
-                                         immediate="true"/>
-                        <p:toolbarGroup align="right">
-                            <p:commandButton value="Administración" action="#{categoriaBean.returnAdminPage}"
-                                             immediate="true"/>
-                        </p:toolbarGroup>
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <br />
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="* Nombre:" for="nombre"/>
-                    <p:inputText id="nombre" value="#{categoriaBean.selected.nombre}"
-                                 required="true" requiredMessage="Debe colocar un nombre"
-                                 style="width: 250px"/>
-                    <h:outputLabel value="* Descripción:" for="descripcion"/>
-                    <p:inputText id="descripcion" value="#{categoriaBean.selected.descripcion}"
-                                 required="true" requiredMessage="Debe colocar un apellido"
-                                 style="width: 250px"/>
-                    <h:outputLabel value="* Status:" for="status" />
-                    <p:selectOneMenu id="status" value="#{categoriaBean.selected.status}"
-                                     converter= "javax.faces.Integer"
-                                     style="width: 250px"
-                                     required="true"
-                                     requiredMessage="Debe seleccionar el status">
-                        <f:selectItem itemLabel="Activo" itemValue="1"/>
-                        <f:selectItem itemLabel="Inactivo" itemValue="0"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <ui:composition>
+        <p:dialog id="CategoriaEditDlg" widgetVar="CategoriaEditDialog" modal="true" 
+                  resizable="false" appendTo="@(body)" header="Editar Categoría">
+            <h:form id="CategoriaEditForm">
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="2" rendered="#{categoriaBean.selected != null}">
+                        <h:outputLabel value="* Nombre:" for="nombre"/>
+                        <p:inputText id="nombre" value="#{categoriaBean.selected.nombre}"
+                                     required="true" requiredMessage="Debe colocar un nombre"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="* Descripción:" for="descripcion"/>
+                        <p:inputText id="descripcion" value="#{categoriaBean.selected.descripcion}"
+                                     required="true" requiredMessage="Debe colocar un apellido"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="* Tiempo de Juego (en min):" for="tiempojuego"/>
+                        <p:inputText id="tiempojuego" value="#{categoriaBean.selected.tiempoJuego}"
+                                     required="true" requiredMessage="Debe colocar el tiempo de juego"
+                                     style="width: 250px">
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+                        <h:outputLabel value="* Status:" for="status" />
+                        <p:selectOneMenu id="status" value="#{categoriaBean.selected.status}"
+                                         converter= "javax.faces.Integer"
+                                         style="width: 250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar el status">
+                            <f:selectItem itemLabel="Activo" itemValue="1"/>
+                            <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <p:commandButton actionListener="#{categoriaBean.edit}" 
+                                     value="OK" update="display,:CategoriaListForm:categorias,:growlAdmin" 
+                                     oncomplete="handleSubmit(args, 'CategoriaEditDialog');"/>
+                    <p:commandButton value="Cancelar" onclick="CategoriaEditDialog.hide()"/>
                 </h:panelGroup>
-            </p:fieldset>
-        </h:form>
-    </ui:define>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
 
-</ui:composition>

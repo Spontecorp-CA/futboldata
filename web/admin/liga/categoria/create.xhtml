@@ -1,42 +1,29 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
-
-    <ui:define name="title">
-        Administración de Categorias
-    </ui:define>
-
-    <ui:define name="content">
-        <h:form id="createForm">
-
-            <p:fieldset style="width: 85%" legend="Creación de Categoría">                
-                <p:toolbar>
-                    <p:toolbarGroup align="left">
-                        <p:commandButton value="Guardar" action="#{categoriaBean.create}" 
-                                         update="createForm"/>
-                        <p:commandButton value="Ver Lista" action="#{categoriaBean.prepareList}"
-                                         immediate="true"/>                        
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="#{categoriaBean.returnAdminPage}"
-                                         immediate="true"/>
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <br />
+    <p:dialog id="CategoriaCreateDlg" widgetVar="CategoriaCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Categoría">
+        <h:form id="CategoriaCreateForm">
+            <h:panelGroup id="display" class="top-aligned-columns">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="* Nombre:" for="nombre"/>
                     <p:inputText id="nombre" value="#{categoriaBean.selected.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
-                    <h:outputLabel value="* Descripción:" for="descripcion"/>
+                    <h:outputLabel value="Descripción:" for="descripcion"/>
                     <p:inputText id="descripcion" value="#{categoriaBean.selected.descripcion}"
-                                 required="true" requiredMessage="Debe colocar un apellido"
                                  style="width: 250px"/>
+                    <h:outputLabel value="* Tiempo de Juego (en min):" for="tiempojuego"/>
+                    <p:inputText id="tiempojuego" value="#{categoriaBean.selected.tiempoJuego}"
+                                 required="true" requiredMessage="Debe colocar el tiempo de juego"
+                                 style="width: 250px">
+                        <f:convertNumber integerOnly="true"/>
+                    </p:inputText>
                     <h:outputLabel value="* Status:" for="status" />
                     <p:selectOneMenu id="status" value="#{categoriaBean.selected.status}"
                                      converter= "javax.faces.Integer"
@@ -47,11 +34,12 @@
                         <f:selectItem itemLabel="Inactivo" itemValue="0"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
-                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
-                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-                </h:panelGroup>
-            </p:fieldset>
+            </h:panelGroup>
+            <p:commandButton actionListener="#{categoriaBean.create}" value="Guardar" 
+                             update="display,:CategoriaListForm:categorias,:growlAdmin" 
+                             oncomplete="handleSubmit(args,'CategoriaCreateDialog');"/>
+            <p:commandButton value="Cancelar" onclick="CategoriaCreateDialog.hide()"/>
         </h:form>
-    </ui:define>
+    </p:dialog>
 
 </ui:composition>

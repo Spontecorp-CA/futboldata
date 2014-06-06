@@ -107,18 +107,19 @@ public class PosicionBean implements Serializable {
                 items = null;    // Invalidate list of items to trigger re-query.
             }
         } else {
-            Util.addErrorMessage("Posición ya existente, coloque un nombre diferente");
+            Util.addErrorMessage("Posición ya existente o no editable, coloque un nombre diferente");
         }
     }
 
     private boolean existeNombrePosicion(String nombre) {
         boolean result = true;
         try {
-            if (posicionFacade.findPosicion(nombre) == null) {
+            Posicion pos = (Posicion)posicionFacade.findPosicion(nombre);
+            if (pos != null && !pos.getNombre().equals(temporal.getNombre())) {
                 result = false;
             }
-        } catch (NoResultException e) {
-            result = false;
+        } catch (Exception e) {
+            result = true;
         }
         return result;
     }
