@@ -8,9 +8,7 @@ import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
-import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.Pais;
-import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.entity.Telefono;
 import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
@@ -23,7 +21,6 @@ import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;

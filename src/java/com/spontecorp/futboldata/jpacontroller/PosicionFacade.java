@@ -32,18 +32,18 @@ public class PosicionFacade extends AbstractFacade<Posicion>{
 
     public Object findPosicion(String nombre) {
         EntityManager em = getEntityManager();
-        Posicion competicion = null;
+        Posicion posicion = null;
         try {
             Query query = em.createNamedQuery("Posicion.findByNombre", Posicion.class);
             query.setParameter("nombre", nombre);
-            competicion = (Posicion) query.getSingleResult();
+            posicion = (Posicion) query.getSingleResult();
         } catch (NoResultException e) {
             logger.debug("Problema al buscar posicion", e.getMessage());
-            throw new NoResultException();
+            posicion = null; //throw new NoResultException();
         } finally {
             em.close();
         }
-        return competicion;
+        return posicion;
     }
     
 }

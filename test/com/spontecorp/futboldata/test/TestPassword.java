@@ -1,4 +1,4 @@
-package com.spontecorp.test;
+package com.spontecorp.futboldata.test;
 
 import com.spontecorp.futboldata.utilities.SecurePassword;
 

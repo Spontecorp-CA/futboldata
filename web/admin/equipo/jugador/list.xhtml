@@ -28,6 +28,12 @@
                                          update=":JugadorEditForm" 
                                          oncomplete="PF('JugadorEditDialog').show()" 
                                          disabled="#{empty jugadorBean.jugador.personaId.nombre}"/>
+                        <p:commandButton id="viewButton" icon="ui-icon-pencil" 
+                                         value="Ver Jugador" 
+                                         actionListener="#{jugadorBean.prepareEdit}"
+                                         update=":JugadorViewForm" 
+                                         oncomplete="PF('JugadorViewDialog').show()" 
+                                         disabled="#{empty jugadorBean.jugador.personaId.nombre}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
@@ -43,11 +49,12 @@
                              filteredValue="#{jugadorBean.filteredJugador}" >   
                     <p:ajax event="rowSelect"
                             update=":JugadorListForm:createButton :JugadorListForm:editButton 
-                            :JugadorViewForm" 
-                            listener="#{jugadorBean.prepareEdit}" 
-                            oncomplete="PF('JugadorViewDialog').show()"/>
+                            :JugadorViewForm"/>
+<!--                            listener="#{jugadorBean.prepareEdit}" 
+                            oncomplete="PF('JugadorViewDialog').show()"/>-->
                     <p:ajax event="rowUnselect" 
-                            update=":JugadorListForm:createButton :JugadorListForm:editButton" />
+                            update=":JugadorListForm:createButton :JugadorListForm:editButton 
+                            :JugadorViewForm" />
 
                     <p:column headerText="Nombre" sortBy="personaId.nombre"
                               filterBy="personaId.nombre">
