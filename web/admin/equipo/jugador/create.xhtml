@@ -32,6 +32,9 @@
                         <p:inputText id="did" value="#{jugadorBean.jugador.personaId.documentoIdentidad}"
                                      requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
+                        <h:outputLabel value="Apodo:" for="apodo"/>
+                        <p:inputText id="apodo" value="#{jugadorBean.jugador.personaId.apodo}"                                    
+                                     style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{jugadorBean.jugador.personaId.sexo}">
                             <f:selectItem itemLabel="M" itemValue="M"/>
@@ -63,7 +66,7 @@
                         </p:fileUpload>
                         &nbsp; 
                         <h:graphicImage height="100" width="100"
-                             id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>    
+                                        id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>    
                         <h:outputLabel value="* status:" for="status"/>
                         <p:selectOneMenu id="status" value="#{jugadorBean.jugador.status}"
                                          converter= "javax.faces.Integer"
