@@ -65,4 +65,25 @@ public class FaseFacade extends AbstractFacade<Fase> implements Serializable{
         }
         return fases;
     }
+    
+        public Fase findFasexTemporada(String nombre,Temporada temporada) {
+        EntityManager em = getEntityManager();
+        Fase fase = null;
+
+        try {
+            String q = "SELECT f FROM Fase f WHERE f.temporadaId = :temporada "
+                    + "AND f.nombre =:nombre";
+            Query query = em.createQuery(q, Fase.class);
+            query.setParameter("temporada", temporada);
+            query.setParameter("nombre", nombre);
+            fase = (Fase) query.getSingleResult();
+            return fase;
+
+        } catch (Exception e) {
+            logger.debug("Problemas al buscar la fasexTemporada: ", e.getMessage());
+        } finally {
+            em.close();
+        }
+        return fase;
+    }
 }

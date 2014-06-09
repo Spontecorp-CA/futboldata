@@ -64,4 +64,25 @@ public class TemporadaFacade extends AbstractFacade<Temporada> {
         }
         return temporadas;
     }
+    
+        public Temporada findTemporadaxLiga(String nombre,Competicion competicion) {
+        EntityManager em = getEntityManager();
+        Temporada temporada = null;
+
+        try {
+            String q = "SELECT t FROM Temporada t WHERE t.competicionId = :competicion "
+                    + "AND t.nombre = :nombre";
+            Query query = em.createQuery(q, Temporada.class);
+            query.setParameter("competicion", competicion);
+            query.setParameter("nombre", nombre);
+            temporada = (Temporada) query.getSingleResult();
+            return temporada;
+
+        } catch (Exception e) {
+            logger.debug("Problemas al buscar la temporadaxLiga: ", e.getMessage());
+        } finally {
+            em.close();
+        }
+        return temporada;
+    }
 }

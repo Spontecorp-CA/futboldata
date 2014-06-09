@@ -48,7 +48,7 @@ public class LlaveFacade extends AbstractFacade<Llave>{
         EntityManager em = getEntityManager();
         Llave llav = null;
         try {
-            String query = "SELECT l FROM Llave l WHERE g.faseId = :fase "
+            String query = "SELECT l FROM Llave l WHERE l.faseId = :fase "
                     + "AND l.nombre = :llave";
             Query q = em.createQuery(query,Llave.class);
             q.setParameter("fase", fase);

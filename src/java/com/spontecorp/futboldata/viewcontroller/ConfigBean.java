@@ -53,7 +53,7 @@ public class ConfigBean implements Serializable {
     private boolean grupoActiva;
     private boolean jornadaActiva;
     private boolean llaveActiva;
-    
+
     private List<Temporada> temporadaList;
     private List<Fase> faseList;
     private List<Llave> llaveLlist;
@@ -84,7 +84,6 @@ public class ConfigBean implements Serializable {
     private TemporadaCategoria temporadaCategoria;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
     private List<Jornada> filteredJornada;
-
 
     public ConfigBean() {
         this.temporadaFacade = new TemporadaFacade();
@@ -206,7 +205,7 @@ public class ConfigBean implements Serializable {
     public void setLlaveActiva(boolean llaveActiva) {
         this.llaveActiva = llaveActiva;
     }
-        
+
     public void setFaseActiva(boolean faseActiva) {
         this.faseActiva = faseActiva;
     }
@@ -311,13 +310,14 @@ public class ConfigBean implements Serializable {
         listTemporadaCategoria = new ArrayList<TemporadaCategoria>();
 
     }
-  
-    public List<Categoria> gestCategorias (Temporada temporada){
-      return temporadaCategoriaFacade.getCategorias(temporada);
+
+    public List<Categoria> gestCategorias(Temporada temporada) {
+        return temporadaCategoriaFacade.getCategorias(temporada);
     }
-            public void createTemporada() {
+
+    public void createTemporada() {
         try {
-            if (temporadaFacade.findTemporada(temporada.getNombre()) != null) {
+            if (temporadaFacade.findTemporadaxLiga(temporada.getNombre(), liga) != null) {
                 Util.addErrorMessage("El temporada ya se encuentra Registrado por el Documento de "
                         + "identificacion");
 
@@ -450,14 +450,15 @@ public class ConfigBean implements Serializable {
 
     public void createFase() {
         try {
-            if (faseFacade.findFase(fase.getNombre()) != null) {
+            if (faseFacade.findFasexTemporada(fase.getNombre(), temporada) != null) {
                 Util.addErrorMessage("El fase ya se encuentra Registrado ");
 
+            } else {
+                fase.setTemporadaId(temporada);
+                faseFacade.create(fase);
+                Util.addSuccessMessage("Se creo exitosamente el Fase");
+                recreateModelFase();
             }
-            fase.setTemporadaId(temporada);
-            faseFacade.create(fase);
-            Util.addSuccessMessage("Se creo exitosamente el Fase");
-            recreateModelFase();
 
         } catch (Exception e) {
             logger.debug("Error al crear Fase :", e);
@@ -538,11 +539,12 @@ public class ConfigBean implements Serializable {
             if (grupoFacade.findGrupoXFase(fase, grupo.getNombre()) != null) {
                 Util.addErrorMessage("El grupo ya se encuentra Registrado ");
 
+            } else {
+                grupo.setFaseId(fase);
+                grupoFacade.create(grupo);
+                Util.addSuccessMessage("Se creo exitosamente el Fase");
+                recreateModelGrupo();
             }
-            grupo.setFaseId(fase);
-            grupoFacade.create(grupo);
-            Util.addSuccessMessage("Se creo exitosamente el Fase");
-            recreateModelGrupo();
 
         } catch (Exception e) {
             logger.debug("Error al crear Fase :", e);
@@ -599,11 +601,12 @@ public class ConfigBean implements Serializable {
             if (jornadaFacade.findJornadaxGrupo(grupo, jornada.getNombre()) != null) {
                 Util.addErrorMessage("La jornada  ya se encuentra Registrado ");
 
+            } else {
+                jornada.setGrupoId(grupo);
+                jornadaFacade.create(jornada);
+                Util.addSuccessMessage("Se creo exitosamente la Jornada");
+                recreateModelJornada();
             }
-            jornada.setGrupoId(grupo);
-            jornadaFacade.create(jornada);
-            Util.addSuccessMessage("Se creo exitosamente la Jornada");
-            recreateModelJornada();
 
         } catch (Exception e) {
             logger.debug("Error al crear Jornada :", e);
@@ -660,11 +663,12 @@ public class ConfigBean implements Serializable {
             if (llaveFacade.findLlaveXFase(fase, llave.getNombre()) != null) {
                 Util.addErrorMessage("La llave ya se encuentra Registrado ");
 
+            } else {
+                llave.setFaseId(fase);
+                llaveFacade.create(llave);
+                Util.addSuccessMessage("Se creo exitosamente la Llave");
+                recreateModelLlave();
             }
-            llave.setFaseId(fase);
-            llaveFacade.create(llave);
-            Util.addSuccessMessage("Se creo exitosamente la Llave");
-            recreateModelLlave();
 
         } catch (Exception e) {
             logger.debug("Error al crear LLave :", e);

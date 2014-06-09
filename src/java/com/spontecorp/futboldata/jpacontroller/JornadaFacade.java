@@ -56,7 +56,7 @@ public class JornadaFacade extends AbstractFacade<Jornada> {
             q.setParameter("nombre", nombre);
             jornada = (Jornada) q.getSingleResult();
         } catch (Exception e) {
-            logger.error("Error recuperando los grupos de una fase", e);
+            logger.error("Error recuperando los grupos de una fase", e.getMessage());
         }
 
         return jornada;

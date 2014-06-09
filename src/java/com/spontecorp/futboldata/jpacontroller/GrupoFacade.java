@@ -57,7 +57,7 @@ public class GrupoFacade extends AbstractFacade<Grupo>{
             q.setParameter("grupo", nombre);
             grup = (Grupo) q.getSingleResult();
         } catch (Exception e) {
-            logger.error("Error recuperando los grupos de una fase", e);
+            logger.error("Error recuperando los grupos de una fase", e.getMessage());
         }
         
         return grup;
