@@ -4,8 +4,11 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Asociacion;
 import com.spontecorp.futboldata.entity.Cargo;
 import com.spontecorp.futboldata.entity.Club;
+import com.spontecorp.futboldata.entity.Competicion;
+import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.jpacontroller.CargoFacade;
@@ -26,6 +29,9 @@ public class StaffInClubBean implements Serializable {
     private Club club;
     private Cargo cargo;
     private Persona persona;
+    private Equipo equipo;
+    private Asociacion asociacion;
+    private Competicion competicion;
     private List<Cargo> cargoList;
     private List<Staff> staffList;
     private List<Persona> staffListAll;
@@ -38,7 +44,7 @@ public class StaffInClubBean implements Serializable {
     public void prepareEdit() {
         staff = new Staff();
         cargo = new Cargo();
-       
+
     }
 
     public StaffInClubBean() {
@@ -51,16 +57,29 @@ public class StaffInClubBean implements Serializable {
         staff.setStatus(INACTIVO);
         controllerStaff.edit(staff);
         staff = null;
+        staffList = null;
     }
 
     public void create() {
-       
+
         staff = new Staff();
         staff.setPersonaId(persona);
         staff.setStatus(ACTIVO);
         staff.setCargoId(cargo);
-        staff.setClubId(club);
+        if (club != null) {
+            staff.setClubId(club);
+        }
+        if (equipo != null) {
+            staff.setEquipoId(equipo);
+        }
+        if (asociacion != null) {
+            staff.setAsociacionId(asociacion);
+        }
+        if (competicion != null) {
+            staff.setCompeticionId(competicion);
+        }
         controllerStaff.edit(staff);
+        staffList = null;
     }
 
     public Staff getStaff() {
@@ -76,6 +95,30 @@ public class StaffInClubBean implements Serializable {
 
     public void setPersona(Persona persona) {
         this.persona = persona;
+    }
+
+    public Equipo getEquipo() {
+        return equipo;
+    }
+
+    public void setEquipo(Equipo equipo) {
+        this.equipo = equipo;
+    }
+
+    public Asociacion getAsociacion() {
+        return asociacion;
+    }
+
+    public void setAsociacion(Asociacion asociacion) {
+        this.asociacion = asociacion;
+    }
+
+    public Competicion getCompeticion() {
+        return competicion;
+    }
+
+    public void setCompeticion(Competicion competicion) {
+        this.competicion = competicion;
     }
 
     public void setStaff(Staff staff) {
@@ -108,6 +151,21 @@ public class StaffInClubBean implements Serializable {
     }
 
     public List<Staff> getStaffList() {
+        if (staffList == null) {
+            if (club != null) {
+                staffList = controllerStaff.findStaffListByClub(club);
+            }
+            if (equipo != null) {
+                staffList = controllerStaff.findStaffListByEquipo(equipo);
+            }
+            if (asociacion != null) {
+                staffList = controllerStaff.findStaffListByAsociacion(asociacion);
+            }
+            if (competicion != null) {
+                staffList = controllerStaff.findStaffListByCompeticion(competicion);
+            }
+
+        }
         return staffList;
     }
 
@@ -135,12 +193,60 @@ public class StaffInClubBean implements Serializable {
     public String gotoStaffPage(Club club) {
         staffList = controllerStaff.findStaffListByClub(club);
         this.club = club;
-        return "staffinclub/listStaff";
+        equipo = null;
+        competicion = null;
+        asociacion = null;
+        return "/admin/staff/listStaff?faces-redirect=true";
+
+    }
+
+    public String gotoStaffPage(Equipo equipo) {
+        staffList = controllerStaff.findStaffListByEquipo(equipo);
+        this.equipo = equipo;
+        asociacion = null;
+        competicion = null;
+        club = null;
+        return "/admin/staff/listStaff?faces-redirect=true";
+
+    }
+
+    public String gotoStaffPage(Asociacion asociacion) {
+        staffList = controllerStaff.findStaffListByAsociacion(asociacion);
+        this.asociacion = asociacion;
+        equipo = null;
+        competicion = null;
+        club = null;
+        return "/admin/staff/listStaff?faces-redirect=true";
+
+    }
+
+    public String gotoStaffPage(Competicion competicion) {
+        staffList = controllerStaff.findStaffListByCompeticion(competicion);
+        this.competicion = competicion;
+        equipo = null;
+        asociacion = null;
+        club = null;
+        return "/admin/staff/listStaff?faces-redirect=true";
 
     }
 
     public String gotoClubPage() {
-        return "/admin/club/list";
+        return "/admin/club/list?faces-redirect=true";
+
+    }
+
+    public String gotoEquipoPage() {
+        return "/admin/equipo/equipo/list?faces-redirect=true";
+
+    }
+
+    public String gotoAsociacionPage() {
+        return "/admin/asociacion/asociacion/list?faces-redirect=true";
+
+    }
+
+    public String gotoCompeticionPage() {
+        return "/admin/liga/competicion/list?faces-redirect=true";
 
     }
 }

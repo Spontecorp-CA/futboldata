@@ -16,6 +16,9 @@
 
             <p:fieldset style="width: 85%" legend="Eliminar Staff">                
                 <p:panelGrid columns="2" >
+                    <h:outputText value="Nombre:" />
+                    <h:outputText value="#{staffInClub.staff.personaId.nombre} 
+                                  #{staffInClub.staff.personaId.apellido}"/>
                     <h:outputText value="Fecha de Salida:"/>
                     <p:calendar id="fechaSalida" 
                                 value="#{staffInClub.staff.fechaHasta}"
@@ -28,11 +31,10 @@
 
                 </p:panelGrid>
 
-                <p:commandButton id="deleteButton" actionListener="#{staffBean.delete}" 
+                <p:commandButton id="deleteButton" actionListener="#{staffInClub.delete}" 
                                  value="Desvincular al Club" 
                                  update="StaffDeleteForm,:StaffListForm:staffs,:growlAdmin,:StaffListForm:deleteButton" 
                                  oncomplete="handleSubmit(args,'StaffDeleteDialog');"
-                                 disabled="#{empty equipoHasJugadorBean.equipoHasJugador.fechaSalida}"
                                  >
                     <p:confirm header="Confirmacion" 
                                message="¿Esta Seguro que desea Eliminar el Staff del Club?"

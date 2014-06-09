@@ -39,6 +39,11 @@
                                              value="Ver Jugadores" 
                                              action="#{equipoHasJugadorBean.prepareCreate()}"
                                              disabled="#{empty equipoBean.selected}"/>
+                            <p:commandButton id="addStaffButton" 
+                                             icon="ui-icon-flag" 
+                                             value="Ver Staff" 
+                                             action="#{staffInClub.gotoStaffPage(equipoBean.selected)}"
+                                             disabled="#{empty equipoBean.selected.nombre}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{equipoBean.returnAdminPage}"
@@ -59,10 +64,14 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
-                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton :EquipoListForm:editButton :EquipoListForm:addButton,
+                        <p:ajax event="rowSelect"   update=":EquipoListForm:createButton 
+                                :EquipoListForm:editButton 
+                                :EquipoListForm:addButton, :EquipoListForm:addStaffButton,
                                 :EquipoListForm:dialog" oncomplete="PF('equipoDialog').show()"
                                 listener="#{equipoHasJugadorBean.setEquipo(equipoBean.selected)}"/>
-                        <p:ajax event="rowUnselect" update=":EquipoListForm:createButton :EquipoListForm:editButton :EquipoListForm:addButton"/>
+                        <p:ajax event="rowUnselect" update=":EquipoListForm:createButton 
+                                :EquipoListForm:editButton :EquipoListForm:addButton,
+                                :EquipoListForm:addStaffButton"/>
 
                         <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre"
                                   filterMatchMode="exact">
@@ -94,7 +103,7 @@
 
                         <f:facet name="header">
                             <p:graphicImage height="120" width="120"
-                                value="#{equipoBean.hostImagen}#{equipoBean.selected.logo}"/>
+                                            value="#{equipoBean.hostImagen}#{equipoBean.selected.logo}"/>
                             <br/>
                             <h:outputText value="Nombre:#{equipoBean.selected.nombre}"/>
                         </f:facet>

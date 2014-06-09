@@ -36,7 +36,13 @@
                                          update=":viewForm"
                                          oncomplete="PF('ViewDialog').show()" 
                                          disabled="#{empty asociacionBean.asociacion.nombre}"
-                                         />    
+                                         />  
+                        <p:commandButton id="addStaffButton" 
+                                         icon="ui-icon-flag" 
+                                         value="Ver Staff" 
+                                         action="#{staffInClub.gotoStaffPage(asociacionBean.asociacion)}"
+                                         disabled="#{empty asociacionBean.asociacion.nombre}"/>
+
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" 
@@ -51,7 +57,10 @@
                              selection="#{asociacionBean.selected}" 
                              selectionMode="single"
                              styleClass="top-aligned-columns">
-                    <f:ajax event="rowSelect" render=":listForm:ButtonEdit" />
+                    <f:ajax event="rowSelect" render=":listForm:ButtonEdit 
+                            :listForm:addStaffButton :listForm:ButtonView" />
+                    <f:ajax event="rowUnselect" render=":listForm:ButtonEdit 
+                            :listForm:addStaffButton :listForm:ButtonView" />
 
                     <p:column headerText="Nombre">
                         <h:outputText value="#{asociacion.nombre}"/>

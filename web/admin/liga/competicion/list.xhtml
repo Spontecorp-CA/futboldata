@@ -33,6 +33,11 @@
                                              update=":LigaEditForm" 
                                              oncomplete="PF('LigaEditDialog').show()" 
                                              disabled="#{empty ligaBean.selected}"/>
+                            <p:commandButton id="addStaffButton" 
+                                             icon="ui-icon-flag" 
+                                             value="Ver Staff" 
+                                             action="#{staffInClub.gotoStaffPage(ligaBean.selected)}"
+                                             disabled="#{empty ligaBean.selected.nombre}"/>
                             <p:commandButton id="configButton" icon="ui-icon-calendar" 
                                              value="Calendarios"
                                              action="#{configBean.gotoConfig()}"
@@ -58,9 +63,13 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                                  rowsPerPageTemplate="5,10,15"> 
 
-                        <p:ajax event="rowSelect" update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"/>
-                                onstart="#{configBean.setLiga(ligaBean.selected)}"/>
-                        <p:ajax event="rowUnselect" update=":LigaListForm:createButton :LigaListForm:viewButton :LigaListForm:editButton :LigaListForm:configButton"/>
+                        <p:ajax event="rowSelect" update=":LigaListForm:createButton 
+                                :LigaListForm:viewButton :LigaListForm:editButton 
+                                :LigaListForm:configButton, :LigaListForm:addStaffButton"/>
+                        onstart="#{configBean.setLiga(ligaBean.selected)}"/>
+                        <p:ajax event="rowUnselect" update=":LigaListForm:createButton 
+                                :LigaListForm:viewButton :LigaListForm:editButton 
+                                :LigaListForm:configButton, :LigaListForm:addStaffButton"/>
 
                         <p:column id="ligaColummn" headerText="Liga">
                             <h:outputText value="#{item.nombre}"/>

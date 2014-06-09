@@ -4,7 +4,10 @@
  */
 package com.spontecorp.futboldata.jpacontroller;
 
+import com.spontecorp.futboldata.entity.Asociacion;
 import com.spontecorp.futboldata.entity.Club;
+import com.spontecorp.futboldata.entity.Competicion;
+import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.utilities.Util;
@@ -61,7 +64,7 @@ public class StaffFacade extends AbstractFacade<Staff> {
         List<Staff> staffList = null;
         EntityManager em = getEntityManager();
         try {
-            String query = "SELECT j FROM Staff j WHERE j.clubId = :club";
+            String query = "SELECT j FROM Staff j WHERE j.clubId = :club AND j.status= 1";
             Query q = em.createQuery(query);
             q.setParameter("club", club);
             staffList = q.getResultList();
@@ -74,12 +77,64 @@ public class StaffFacade extends AbstractFacade<Staff> {
         }
         return staffList;
     }
+    
+        public List<Staff> findStaffListByEquipo(Equipo equipo) {
+        List<Staff> staffList = null;
+        EntityManager em = getEntityManager();
+        try {
+            String query = "SELECT j FROM Staff j WHERE j.equipoId = :equipo AND j.status= 1";
+            Query q = em.createQuery(query);
+            q.setParameter("equipo", equipo);
+            staffList = q.getResultList();
+        } catch (NoResultException e) {
+            logger.debug("Error al buscar lista de staff por Equipo findStaffListByEquipo ", e.getMessage());
+        } catch (Exception e) {
+            logger.debug("Ha ocurrido un error: " + e);
+        } finally {
+            em.close();
+        }
+        return staffList;
+    }
+            public List<Staff> findStaffListByAsociacion(Asociacion asociacion) {
+        List<Staff> staffList = null;
+        EntityManager em = getEntityManager();
+        try {
+            String query = "SELECT j FROM Staff j WHERE j.asociacionId = :asociacion AND j.status= 1";
+            Query q = em.createQuery(query);
+            q.setParameter("asociacion", asociacion);
+            staffList = q.getResultList();
+        } catch (NoResultException e) {
+            logger.debug("Error al buscar lista de staff por asociacion findStaffListByasociacion" , e.getMessage());
+        } catch (Exception e) {
+            logger.debug("Ha ocurrido un error: " + e);
+        } finally {
+            em.close();
+        }
+        return staffList;
+    }
+                public List<Staff> findStaffListByCompeticion(Competicion competicion) {
+        List<Staff> staffList = null;
+        EntityManager em = getEntityManager();
+        try {
+            String query = "SELECT j FROM Staff j WHERE j.competicionId = :competicion AND j.status= 1";
+            Query q = em.createQuery(query);
+            q.setParameter("competicion", competicion);
+            staffList = q.getResultList();
+        } catch (NoResultException e) {
+            logger.debug("Error al buscar lista de staff por club findStaffListBycompeticion ", e.getMessage());
+        } catch (Exception e) {
+            logger.debug("Ha ocurrido un error: " + e);
+        } finally {
+            em.close();
+        }
+        return staffList;
+    }
 
     public List<Persona> findDistinctStaffList() {
         List<Persona> staffList = null;
         EntityManager em = getEntityManager();
         try {
-            String query = "select distinct p from Persona p, Staff s where s.personaId = p";
+            String query = "select distinct p from Persona p, Staff s where s.personaId = p ";
             Query q = em.createQuery(query);
             staffList = q.getResultList();
             if (!staffList.isEmpty()) {
