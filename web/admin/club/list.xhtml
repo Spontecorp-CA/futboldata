@@ -1,11 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns="http://www.w3.org/1999/xhtml">
-
-    <ui:composition template="./../../WEB-INF/templates/adminTemplate.xhtml">
+    <ui:composition template="./../../WEB-INF/templates/adminTemplate.xhtml"
+                    xmlns:ui="http://java.sun.com/jsf/facelets"
+                    xmlns:h="http://xmlns.jcp.org/jsf/html"
+                    xmlns:p="http://primefaces.org/ui"
+                    xmlns="http://www.w3.org/1999/xhtml" >
 
         <ui:define name="title">
             Administración de Clubes
@@ -24,16 +23,16 @@
                                              oncomplete="PF('ClubCreateDialog').show()"/>
                             <p:commandButton id="viewButton"
                                              value="Ver Club" 
-                                             icon="ui-icon-search"
-                                             update=":ClubViewForm" 
+                                             icon="ui-icon-search"                                             
                                              actionListener="#{clubBean.prepareEdit}"
+                                             update=":ClubViewForm" 
                                              oncomplete="PF('ClubViewDialog').show()"
                                              disabled="#{empty clubBean.club.nombre}"/>
                             <p:commandButton id="editButton" 
                                              icon="ui-icon-pencil" 
-                                             value="Editar Club" 
-                                             update=":ClubEditForm"
+                                             value="Editar Club"                                             
                                              actionListener="#{clubBean.prepareEdit}"
+                                              update=":ClubEditForm"
                                              oncomplete="PF('ClubEditDialog').show()" 
                                              disabled="#{empty clubBean.club.nombre}"/>
                             <p:commandButton id="addStaffButton" 
@@ -85,4 +84,3 @@
         </ui:define>   
 
     </ui:composition>
-</html>

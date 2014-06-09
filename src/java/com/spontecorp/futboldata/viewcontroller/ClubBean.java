@@ -21,6 +21,7 @@ import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.binding.Bindings;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;
@@ -189,6 +190,7 @@ public class ClubBean implements Serializable {
         telefonoEliminar = new ArrayList<Telefono>();
         emailEliminar = new ArrayList<Email>();
         direccion = new Direccion();
+        pais = new Pais();
     }
 
     public DataModel getItems() {
@@ -254,18 +256,19 @@ public class ClubBean implements Serializable {
 
     public Club prepareCreate() {
         club = new Club();
-        initializeEmbeddableKey();
+        initializeEmbeddableKey();        
         setEmbeddableKeys();
         return club;
     }
 
     public void prepareEdit() {
-        initializeEmbeddableKey();
-        //club = (Club) getItems().getRowData();
-        pais = club.getDireccionId().getCiudadId().getPaisId();
+
         telefonos = getTelefonos(club.getDireccionId());
         emails = getEmails(club.getDireccionId());
-        ciudadAvailable(club.getDireccionId().getCiudadId().getPaisId());
+        if (club.getDireccionId().getCiudadId() != null) {
+            pais = club.getDireccionId().getCiudadId().getPaisId();
+            ciudadAvailable(club.getDireccionId().getCiudadId().getPaisId());
+        }
 
         //return "edit";
     }
@@ -346,8 +349,5 @@ public class ClubBean implements Serializable {
             //return null;
         }
     }
-
-
- 
 
 }
