@@ -49,12 +49,12 @@
                              filteredValue="#{jugadorBean.filteredJugador}" >   
                     <p:ajax event="rowSelect"
                             update=":JugadorListForm:createButton :JugadorListForm:editButton 
-                            :JugadorViewForm"/>
+                            :JugadorListForm:viewButton"/>
 <!--                            listener="#{jugadorBean.prepareEdit}" 
                             oncomplete="PF('JugadorViewDialog').show()"/>-->
                     <p:ajax event="rowUnselect" 
                             update=":JugadorListForm:createButton :JugadorListForm:editButton 
-                            :JugadorViewForm" />
+                            :JugadorListForm:viewButton" />
 
                     <p:column headerText="Nombre" sortBy="personaId.nombre"
                               filterBy="personaId.nombre">
@@ -72,12 +72,12 @@
                         <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
                     </p:column>
 
-                    <p:column headerText="Red Social">
+<!--                    <p:column headerText="Red Social">
                         <p:dataList value="#{jugadorBean.getRedSocials(jugador.personaId)}" var="redsocial">
                             <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
                         </p:dataList>
 
-                    </p:column>
+                    </p:column>-->
 
                     <p:column headerText="Telefono">
                         <h:outputText value="#{jugador.personaId.telefono}"/>
