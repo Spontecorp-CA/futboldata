@@ -52,16 +52,17 @@
 
                         <h:outputLabel value="Foto:" for="foto"/>
                         <p:fileUpload id="foto" 
-                                      value="#{staffBean.selected.personaId.foto}"
+                                      value="#{staffBean.staff.personaId.foto}"
                                       mode="advanced" dragDropSupport="false" 
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
                                       style="width: 250px"
-                                      fileUploadListener="#{StaffBean.handleFileUpload}"
+                                      fileUploadListener="#{staffBean.handleFileUpload}"
                                       update="Perfil" >
 
                         </p:fileUpload>
                         &nbsp; 
-                        <h:graphicImage id="Perfil" url="#{staffBean.hostImagen}#{staffBean.staff.personaId.foto}"/>    
+                        <h:graphicImage id="Perfil" url="#{staffBean.hostImagen}#{staffBean.staff.personaId.foto}"
+                                        height="100"/>    
                         <h:outputLabel value="* status:" for="status"/>
                         <p:selectOneMenu id="status" value="#{staffBean.staff.status}"
                                          converter= "javax.faces.Integer"

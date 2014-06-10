@@ -13,13 +13,13 @@
                 <h:panelGroup id="display">
                     <h:panelGrid columns="2" rendered="#{posicionBean.selected != null}">
                         <p:outputLabel value="* Nombre: " for="nombre" />
-                        <p:inputText id="nombre" value="#{posicionBean.temporal.nombre}" 
+                        <p:inputText id="nombre" value="#{posicionBean.selected.nombre}" 
                                      title="Nombre de la Posición" required="true" 
                                      requiredMessage="Debe colocar un nombre de posicion"
                                      style="width: 240px"/>
 
                         <p:outputLabel value="* Status" for="status" />
-                        <p:selectOneMenu id="status" value="#{posicionBean.temporal.status}"
+                        <p:selectOneMenu id="status" value="#{posicionBean.selected.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 240px"
                                          required="true"

@@ -30,7 +30,6 @@ public class PosicionBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Posicion selected;
-    private Posicion temporal;
     private List<Posicion> items;
     private List<Posicion> filteredPosiciones = null;
 
@@ -47,14 +46,6 @@ public class PosicionBean implements Serializable {
 
     public void setSelected(Posicion selected) {
         this.selected = selected;
-    }
-
-    public Posicion getTemporal() {
-        return temporal;
-    }
-
-    public void setTemporal(Posicion temporal) {
-        this.temporal = temporal;
     }
 
     public List<Posicion> getFilteredPosiciones() {
@@ -82,13 +73,10 @@ public class PosicionBean implements Serializable {
     }
 
     public void prepareEdit() {
-        temporal = (Posicion) posicionFacade.findPosicion(selected.getNombre());
-        temporal.setNombre(selected.getNombre());
-        temporal.setStatus(selected.getStatus());
     }
 
     public void create() {
-        if (!existeNombrePosicion(selected.getNombre())) {
+        if (!existeNombrePosicionCrear(selected.getNombre())) {
             persist(Util.PersistAction.CREATE, "Posición creada con éxito");
             if (!Util.isValidationFailed()) {
                 items = null;    // Invalidate list of items to trigger re-query.
@@ -99,26 +87,13 @@ public class PosicionBean implements Serializable {
     }
 
     public void edit() {
-        if (!existeNombrePosicion(temporal.getNombre())) {
-            selected.setNombre(temporal.getNombre());
-            selected.setStatus(temporal.getStatus());
-            persist(Util.PersistAction.UPDATE, "Posición actualizada con éxito");
-            if (!Util.isValidationFailed()) {
-                items = null;    // Invalidate list of items to trigger re-query.
-            }
-        } else {
-            Util.addErrorMessage("Posición ya existente o no editable, coloque un nombre diferente");
-        }
+       persist(Util.PersistAction.UPDATE, "Posición editada con éxito");
     }
-
-    private boolean existeNombrePosicion(String nombre) {
-        boolean result = true;
-        try {
-            Posicion pos = (Posicion)posicionFacade.findPosicion(nombre);
-            if (pos != null && !pos.getNombre().equals(temporal.getNombre())) {
-                result = false;
-            }
-        } catch (Exception e) {
+    
+    private boolean existeNombrePosicionCrear(String nombre){
+        boolean result = false;
+        Posicion pos = (Posicion) posicionFacade.findPosicion(nombre);
+        if (pos != null){
             result = true;
         }
         return result;
@@ -134,6 +109,7 @@ public class PosicionBean implements Serializable {
                 }
                 Util.addSuccessMessage(successMessage);
                 selected = null;
+                items = null;
             } catch (Exception e) {
                 logger.error("Error creando o editando la posición: " + e.getMessage(), e);
                 Util.addErrorMessage(e, "Error al crear ó editar la posición");
