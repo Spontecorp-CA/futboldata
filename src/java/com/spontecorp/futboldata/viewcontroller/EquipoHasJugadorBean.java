@@ -30,10 +30,10 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class EquipoHasJugadorBean implements Serializable {
 
-    private DataModel items = null;
-    private DataModel itemsJugador = null;
-    private DataModel itemsEquipo = null;
-    private DataModel filtereditemsEquipo = null;
+    private List<EquipoHasJugador> items = null;
+    private List<Jugador> itemsJugador = null;
+    private List<Equipo> itemsEquipo = null;
+    private List<Equipo> filtereditemsEquipo = null;
     private List<Equipo> filteredEquipo;
     private List<EquipoHasJugador> filteredEquipoHasJugador;
     private List<Jugador> filteredJugador;
@@ -91,11 +91,11 @@ public class EquipoHasJugadorBean implements Serializable {
         this.filteredEquipo = filteredEquipo;
     }
 
-    public DataModel getFiltereditemsEquipo() {
+    public List<Equipo> getFiltereditemsEquipo() {
         return filtereditemsEquipo;
     }
 
-    public void setFiltereditemsEquipo(DataModel filtereditemsEquipo) {
+    public void setFiltereditemsEquipo(List<Equipo> filtereditemsEquipo) {
         this.filtereditemsEquipo = filtereditemsEquipo;
     }
 
@@ -115,23 +115,23 @@ public class EquipoHasJugadorBean implements Serializable {
         this.equipo = equipo;
     }
 
-    public DataModel getItems() {
+    public List<EquipoHasJugador> getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerEquipoHasJugador.getListEquipoHasJugador(this.equipo));
+            items = controllerEquipoHasJugador.getListEquipoHasJugador(this.equipo);
         }
         return items;
     }
 
-    public DataModel getItemJugador() {
+    public List<Jugador> getItemJugador() {
         if (itemsJugador == null) {
-            itemsJugador = new ListDataModel(controllerJugador.findAll());
+            itemsJugador = controllerJugador.findAll();
         }
         return itemsJugador;
     }
 
-    public DataModel getItemEquipo() {
+    public List<Equipo> getItemEquipo() {
         if (itemsEquipo == null) {
-            itemsEquipo = new ListDataModel(controllerEquipo.findAll());
+            itemsEquipo = controllerEquipo.findAll();
         }
         return itemsEquipo;
     }

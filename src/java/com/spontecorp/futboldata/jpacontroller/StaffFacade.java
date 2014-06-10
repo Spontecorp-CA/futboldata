@@ -11,6 +11,7 @@ import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.Persona;
 import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -22,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte07
  */
-public class StaffFacade extends AbstractFacade<Staff> {
+public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
 
     private static final PersonaFacade controllerPersona = new PersonaFacade();
     private static final Logger logger = LoggerFactory.getLogger(StaffFacade.class);
