@@ -8,6 +8,7 @@ import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte03
  */
-public class EquipoHasJugadorFacade extends AbstractFacade<EquipoHasJugador> {
+public class EquipoHasJugadorFacade extends AbstractFacade<EquipoHasJugador> implements Serializable{
 
     private static final Logger logger = LoggerFactory.getLogger(EquipoHasJugadorFacade.class);
     private final int ACTIVO = 1;
