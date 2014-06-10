@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+                    
+    <p:dialog id="CargoCreateDlg" widgetVar="CargoCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Cargo">
+        <h:form id="CargoCreateForm">
+            <h:panelGroup id="display" class="top-aligned-columns">
+                <h:panelGrid columns="2" rendered="#{cargoBean.selected != null}">
+                    <p:outputLabel value="* Nombre: " for="nombre" />
+                    <p:inputText id="nombre" value="#{cargoBean.selected.nombre}" 
+                                 title="Nombre de la Posición" required="true" 
+                                 requiredMessage="Debe colocar un nombre de cargo"
+                                 style="width: 240px"/>
+                    
+                    <p:outputLabel value="* Status" for="status" />
+                    <p:selectOneMenu id="status" value="#{cargoBean.selected.status}"
+                                     converter= "javax.faces.Integer"
+                                     style="width: 240px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar el status">
+                        <f:selectItem itemLabel="Activo" itemValue="1"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton actionListener="#{cargoBean.create}" value="Guardar" 
+                                 update="display,:CargoListForm:items,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'CargoCreateDialog');"/>
+                <p:commandButton value="Cancelar" onclick="CargoCreateDialog.hide()"/>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+</ui:composition>
+
