@@ -64,7 +64,7 @@ public class ArbitroBean implements Serializable {
     private final RedSocialFacade controllerRedSocial;
     private final TipoRedSocialFacade tipoRedSocialController;
 
-    private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(ArbitroBean.class);
 
     public ArbitroBean() {
         controllerArbitro = new ArbitroFacade();
@@ -141,9 +141,9 @@ public class ArbitroBean implements Serializable {
 
     public void ciudadesAvalaible() {
         ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
-        for (SelectItem city : ciudades) {
-            logger.debug(city.getLabel());
-        }
+//        for (SelectItem city : ciudades) {
+//            logger.debug(city.getLabel());
+//        }
     }
 
     public SelectItem[] getCiudades() {
@@ -182,7 +182,7 @@ public class ArbitroBean implements Serializable {
     public void create() {
         try {
             if (controllerArbitro.findArbitroByDomentoId(persona.getDocumentoIdentidad()) != null) {
-                Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documenta de "
+                Util.addErrorMessage("El arbitro ya se encuentra Registrado por el Documento de "
                         + "identificacion");
 
             } else {
@@ -190,7 +190,7 @@ public class ArbitroBean implements Serializable {
                 persona.setRedSocialCollection(redes);
                 persona.setDireccionId(direccion);
                 arbitro.setPersonaId(persona);
-                logger.debug("Esta Creando  un Jugador");
+                logger.debug("Esta Creando  un Arbitro");
                 controllerArbitro.create(arbitro);
                 recreateModel();
                 Util.addSuccessMessage("Se creo exitosamente el Jugador");
