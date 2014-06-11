@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Equipos
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="EquipoListForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Equipos de la #{equipoInLigaBean.competicion.nombre}" >
+
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Nombre de Liga: " for="nombreClub" style="font-weight: bold"/>
+                    <h:outputText id="nombreClub" value="#{equipoInLigaBean.competicion.nombre}"/>
+                </h:panelGrid>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="createButton" icon="ui-icon-pencil" 
+                                         value="Agregar Equipo" 
+                                         actionListener="#{equipoInLigaBean.prepareEdit}"
+                                         update=":EquipoEditForm" 
+                                         oncomplete="PF('EquipoEditDialog').show()" 
+                                         disabled="#{empty equipoInLigaBean.competicion.nombre}"/>
+                        <p:commandButton id="deleteButton" icon="ui-icon-closethick" 
+                                         value="Desvincular Equipo" 
+                                         action="#{equipoInLigaBean.delete}"
+                                         update=":EquipoListForm:equipos"
+                                         disabled="#{empty equipoInLigaBean.equipoInLiga.equipoId.nombre}">
+                            <p:confirm header="Confirmacion" message="¿Estas seguro de desvincular el equipo?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:commandButton id="equipoButton" icon="ui-icon-search" 
+                                         value="Listado Equipos" 
+                                         action="#{equipoBean.gotoEquiposPage}"
+                                         />
+
+                        <p:commandButton id="competicionButton" icon="ui-icon-search" 
+                                         value="Listado de Ligas" 
+                                         action="#{equipoInLigaBean.gotoLigaPage()}" />
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="equipos" var="equipoInLiga"  value="#{equipoInLigaBean.items}"
+                             rowKey="#{equipoInLiga.id}"
+                             selection="#{equipoInLigaBean.equipoInLiga}" 
+                             selectionMode="single"
+                             paginator="true" rows="10"
+                             filteredValue="#{equipoInLigaBean.filteredEquipoInLiga}" >   
+                    <p:ajax event="rowSelect" 
+                            update=":EquipoListForm:display :EquipoListForm:deleteButton :EquipoListForm:confirdialog" 
+                            oncomplete="PF('equipoDialog').show()"  />
+                    <f:ajax execute="equipos" event="rowSelect"  />
+                    <p:ajax event="rowUnselect"
+                            update=":EquipoListForm:deleteButton"/>
+
+
+                    <f:facet name="header">
+                        Lista de Equipos en el Equipo
+                    </f:facet>
+                    <p:column headerText="Equipo" sortBy="equipoId.nombre"
+                              filterBy="equipoId.nombre">
+                        <h:outputText value="#{equipoInLiga.equipoId.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Categoria" >
+                        <h:outputText value="#{equipoInLiga.equipoId.categoriaId.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Iniciales" sortBy="equipoId.abreviacion"
+                              filterBy="equipoId.abreviacion">
+                        <h:outputText value="#{equipoInLiga.equipoId.abreviacion}"/>
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <h:outputText value="#{equipoInLiga.status == 1?'Activo':'Inactivo'}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:fieldset>
+            <p:dialog id="dialog" header="Detelles Equipo" widgetVar="equipoDialog" resizable="false"
+                      showEffect="fade" hideEffect="explode">
+
+                <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                    <f:facet name="header">
+                        <p:graphicImage value="#{equipoInLigaBean.hostImagen}#{equipoInLigaBean.equipoInLiga.equipoId.logo}"/>
+                        <br/>
+                        <h:outputText value="Nombre:#{equipoInLigaBean.equipoInLiga.equipoId.nombre}"/>
+                    </f:facet>
+
+                </h:panelGrid>
+            </p:dialog>
+            <p:confirmDialog id="confirdialog" global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton  id="siButton" value="Si"
+                                  type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>     
+            </p:confirmDialog>
+        </h:form>
+        <ui:include src="agregarequipo.xhtml"/>
+    </ui:define>
+
+</ui:composition>
