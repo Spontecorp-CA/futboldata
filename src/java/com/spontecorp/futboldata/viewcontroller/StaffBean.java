@@ -203,6 +203,7 @@ public class StaffBean implements Serializable {
         staff.setPersonaId(persona);
         ciudades = null;
         redes = new ArrayList<RedSocial>();
+        pais = null;
 //        return "list?faces-redirect=true";
     }
 
@@ -265,11 +266,11 @@ public class StaffBean implements Serializable {
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-
         long lDateTime = new Date().getTime();
         System.out.println("Date() - Time in milliseconds: " + lDateTime);
         String nombreArchivo = "staff" + lDateTime;
         Util.subirArchivo(event, "staff/", nombreArchivo);
+        persona.setFoto(nombreArchivo);
         staff.getPersonaId().setFoto(nombreArchivo);
 
     }

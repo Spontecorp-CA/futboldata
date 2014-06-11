@@ -123,7 +123,6 @@ public class Util implements Serializable {
     }
 
     public static void subirArchivo(FileUploadEvent event, String ruta, String nombreArchivo) {
-
         try {
             ExternalContext ctx = FacesContext.getCurrentInstance().getExternalContext();
             File path = new File(STORAGE_ROOT + ruta);
