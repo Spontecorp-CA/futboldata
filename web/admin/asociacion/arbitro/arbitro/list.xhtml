@@ -29,7 +29,7 @@
                                          disabled="#{empty arbitroBean.arbitro.personaId.nombre}"/>
                         <p:commandButton id="viewButton" icon="ui-icon-search" 
                                          value="Ver Arbitro" 
-                                         actionListener="#{jugadorBean.prepareEdit}"
+                                         actionListener="#{arbitroBean.prepareEdit}"
                                          update=":ArbitroViewForm" 
                                          oncomplete="PF('ArbitroViewDialog').show()" 
                                          disabled="#{empty arbitroBean.arbitro.personaId.nombre}"/>
