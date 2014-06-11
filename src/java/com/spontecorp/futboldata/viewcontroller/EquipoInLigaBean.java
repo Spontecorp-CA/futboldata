@@ -4,12 +4,14 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoInLiga;
-import com.spontecorp.futboldata.entity.Jugador;
+import com.spontecorp.futboldata.entity.Competicion;
+import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoInLigaFacade;
-import com.spontecorp.futboldata.jpacontroller.JugadorFacade;
+import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import static com.spontecorp.futboldata.utilities.Util.ACTIVO;
 import static com.spontecorp.futboldata.utilities.Util.INACTIVO;
@@ -29,28 +31,33 @@ import org.slf4j.LoggerFactory;
 public class EquipoInLigaBean implements Serializable {
 
     private List<EquipoInLiga> items = null;
-    private List<Jugador> itemsJugador = null;
+    private List<Competicion> itemsCompeticion = null;
+    private List<Competicion> itemsLiga = null;
     private List<Equipo> itemsEquipo = null;
     private List<Equipo> filtereditemsEquipo = null;
     private List<Equipo> filteredEquipo;
     private List<EquipoInLiga> filteredEquipoInLiga;
-    private List<Jugador> filteredJugador;
+    private List<Competicion> filteredCompeticion;
 
     private final EquipoInLigaFacade controllerEquipoInLiga;
     private final EquipoFacade controllerEquipo;
-    private final JugadorFacade controllerJugador;
+    private final CompeticionFacade controllerCompeticion;
+    private final CompeticionFacade controllerLiga;
 
     private static final Logger logger = LoggerFactory.getLogger(EquipoInLigaBean.class);
-    private Jugador jugador;
+    private Competicion liga;
     private Equipo equipo;
     private EquipoInLiga equipoInLiga;
+    private List<Competicion> filteredLigas;
 
     public EquipoInLigaBean() {
         controllerEquipoInLiga = new EquipoInLigaFacade();
         controllerEquipo = new EquipoFacade();
-        controllerJugador = new JugadorFacade();
-
+        controllerCompeticion = new CompeticionFacade();
+        controllerLiga = new CompeticionFacade();
     }
+    
+    
 
     public EquipoInLiga getEquipoInLiga() {
         if (equipoInLiga == null) {
@@ -65,12 +72,39 @@ public class EquipoInLigaBean implements Serializable {
         this.equipoInLiga = equipoInLiga;
     }
     
-    public List<Jugador> getFilteredJugador() {
-        return filteredJugador;
+    
+    
+        public List<Competicion> getItemsLiga() {
+        if (itemsLiga == null) {
+            itemsLiga = controllerLiga.findAll();
+        }
+        return itemsLiga;
     }
 
-    public void setFilteredJugador(List<Jugador> filteredJugador) {
-        this.filteredJugador = filteredJugador;
+    public List<Equipo> getItemsEquipo() {
+        if (itemsEquipo == null){
+            itemsEquipo = controllerEquipo.findAll();
+        }
+        return itemsEquipo;
+    }
+
+    public void setItemsEquipo(List<Equipo> itemsEquipo) {
+        this.itemsEquipo = itemsEquipo;
+    }
+   
+    public List<Competicion> getFilteredLigas() {
+        return filteredLigas;
+    }
+
+    public void setFilteredLigas(List<Competicion> filteredLigas) {
+        this.filteredLigas = filteredLigas;
+    }
+    public List<Competicion> getFilteredCompeticion() {
+        return filteredCompeticion;
+    }
+
+    public void setFilteredCompeticion(List<Competicion> filteredCompeticion) {
+        this.filteredCompeticion = filteredCompeticion;
     }
 
     public List<EquipoInLiga> getFilteredEquipoInLiga() {
@@ -97,12 +131,12 @@ public class EquipoInLigaBean implements Serializable {
         this.filtereditemsEquipo = filtereditemsEquipo;
     }
 
-    public Jugador getJugador() {
-        return jugador;
+    public Competicion getCompeticion() {
+        return liga;
     }
 
-    public void setJugador(Jugador jugador) {
-        this.jugador = jugador;
+    public void setCompeticion(Competicion liga) {
+        this.liga = liga;
     }
 
     public Equipo getEquipo() {
@@ -115,42 +149,34 @@ public class EquipoInLigaBean implements Serializable {
 
     public List<EquipoInLiga> getItems() {
         if (items == null) {
-            items = controllerEquipoInLiga.getListEquipoInLiga(this.equipo);
+            items = controllerEquipoInLiga.getListEquipoInLiga(this.liga);
         }
         return items;
     }
 
-    public List<Jugador> getItemJugador() {
-        if (itemsJugador == null) {
-            itemsJugador = controllerJugador.findAll();
+    public List<Competicion> getItemCompeticion() {
+        if (itemsCompeticion == null) {
+            itemsCompeticion = controllerCompeticion.findAll();
         }
-        return itemsJugador;
-    }
-
-    public List<Equipo> getItemEquipo() {
-        if (itemsEquipo == null) {
-            itemsEquipo = controllerEquipo.findAll();
-        }
-        return itemsEquipo;
+        return itemsCompeticion;
     }
 
     public String prepareCreate() {
         equipoInLiga = new EquipoInLiga();
         recreateModel();
-        return "/admin/equipo/equipohasjugador/listjugador?faces-redirect=true";
+        return "/admin/equipo/equipohasliga/listliga?faces-redirect=true";
     }
 
     protected void setEmbeddableKeys() {
 
-        //      equipoInLiga.setPersonaId(jugador);
+        //      equipoInLiga.setPersonaId(liga);
     }
 
     protected void initializeEmbeddableKey() {
-        jugador = new Jugador();
+        liga = new Competicion();
     }
 
     public void recreateModel() {
-        jugador = new Jugador();
         equipoInLiga = new EquipoInLiga();
         items = null;
 
@@ -162,24 +188,24 @@ public class EquipoInLigaBean implements Serializable {
 
     public String create() {
       
-        if (controllerEquipoInLiga.getEquipoInLiga(equipo, jugador) == null) {
+        if (controllerEquipoInLiga.getEquipoInLiga(equipo, liga) == null) {
             
            try {
             equipoInLiga.setEquipoId(this.equipo);
-            logger.debug("Nombre del jugador " + jugador.getPersonaId().getNombre());
-            equipoInLiga.setEquipoId(this.equipo);
+            logger.debug("Nombre del liga ");
+            equipoInLiga.setCompeticionId(liga);
             logger.debug("Nombre del Equipo " + equipo.getNombre());
             logger.debug("Esta Creando  un EquipoInLiga");
             equipoInLiga.setStatus(ACTIVO);
             controllerEquipoInLiga.create(equipoInLiga);
             recreateModel();
-            Util.addSuccessMessage("Se Agrego Exitosamente el Jugador");
+            Util.addSuccessMessage("Se Agrego Exitosamente el Competicion");
         } catch (Exception e) {
             logger.debug("Error al crear EquipoInLiga :", e);
         }
         
         }else{
-            Util.addErrorMessage("El Jugador ya esta en el equipo, Seleccion otro");         
+            Util.addErrorMessage("El Competicion ya esta en el equipo, Seleccion otro");         
         }                      
         return prepareCreate();
     }
@@ -195,25 +221,32 @@ public class EquipoInLigaBean implements Serializable {
     }
    public String delete() {
        try {
+           logger.debug(equipoInLiga.getEquipoId().getNombre());
            equipoInLiga.setStatus(INACTIVO);
            controllerEquipoInLiga.edit(equipoInLiga);
            equipoInLiga = null;
                   Util.addSuccessMessage("Se elimino exitosamente");
        } catch (Exception e) {
            logger.debug("Error al eliminar la entidad EquipoInLiga : ",e.getMessage());
-           Util.addErrorMessage("Error al eliminar al Jugador del Equipo");
+           Util.addErrorMessage("Error al eliminar al Competicion del Equipo");
        }
 
        return prepareCreate();
    }
     public String getHostImagen() {
-        String host = Util.getHostImagen() + "jugador/";
+        String host = Util.getHostImagen() + "equipo/";
         return host;
     }
 
     public String gotoEquipoInLigaPage() {
         recreateModel();
         equipo = new Equipo();
-        return "/admin/equipo/equipohasjugador/listequipo?faces-redirect=true";
+        return "/admin/liga/equipoinliga/listequipo?faces-redirect=true";
+    }
+    
+    
+    public String gotoLigaPage() {
+        recreateModel();
+        return "/admin/liga/equipoinliga/list?faces-redirect=true";
     }
 }

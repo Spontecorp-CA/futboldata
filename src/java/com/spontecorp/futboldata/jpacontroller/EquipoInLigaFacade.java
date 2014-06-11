@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.jpacontroller;
 
+import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoInLiga;
 import com.spontecorp.futboldata.entity.Jugador;
@@ -33,45 +34,45 @@ public class EquipoInLigaFacade extends AbstractFacade<EquipoInLiga> implements 
         return Util.getEmf().createEntityManager();
     }
 
-    public List<EquipoInLiga> getListEquipoInLiga(Equipo equipo) {
-        List<EquipoInLiga> equipoHasJugador = null;
+    public List<EquipoInLiga> getListEquipoInLiga(Competicion liga) {
+        List<EquipoInLiga> equipoInLiga = null;
         EntityManager em = getEntityManager();
 
         try {
-            String query = "SELECT e FROM EquipoInLiga e WHERE  e.equipoId = :equipo "
+            String query = "SELECT e FROM EquipoInLiga e WHERE  e.competicionId = :liga "
                     + "AND e.status = :status";
             Query q = em.createQuery(query, EquipoInLiga.class);
-            q.setParameter("equipo", equipo);
+            q.setParameter("liga", liga);
             q.setParameter("status", ACTIVO);
-            equipoHasJugador = (List<EquipoInLiga>) q.getResultList();
+            equipoInLiga = (List<EquipoInLiga>) q.getResultList();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoInLiga: " + e.getLocalizedMessage());
         } finally {
             em.close();
         }
-        return equipoHasJugador;
+        return equipoInLiga;
     }
 
-    public EquipoInLiga getEquipoInLiga(Equipo equipo, Jugador jugador) {
-        EquipoInLiga equipoHasJugador = null;
+    public EquipoInLiga getEquipoInLiga(Equipo equipo, Competicion liga) {
+        EquipoInLiga equipoInLiga = null;
 
         EntityManager em = getEntityManager();
         try {
 
             String query = "SELECT e FROM EquipoInLiga e WHERE  e.equipoId = :equipo "
-                    + "AND e.jugadorId = :jugador AND e.status =:status";
+                    + "AND e.competicionId = :liga AND e.status =:status";
             Query q = em.createQuery(query, EquipoInLiga.class);
             q.setParameter("equipo", equipo);
-            q.setParameter("jugador", jugador);
+            q.setParameter("liga", liga);
             q.setParameter("status", ACTIVO);
-            equipoHasJugador = (EquipoInLiga) q.getSingleResult();
+            equipoInLiga = (EquipoInLiga) q.getSingleResult();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoInLiga: " + e.getLocalizedMessage());
 
         } finally {
             em.close();
         }
-        return equipoHasJugador;
+        return equipoInLiga;
     }
 
     public void persist(Object object) {
