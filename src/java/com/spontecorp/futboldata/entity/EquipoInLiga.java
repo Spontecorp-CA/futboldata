@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EquipoInLiga.findAll", query = "SELECT e FROM EquipoInLiga e"),
     @NamedQuery(name = "EquipoInLiga.findById", query = "SELECT e FROM EquipoInLiga e WHERE e.id = :id")})
 public class EquipoInLiga implements Serializable {
+    @Column(name = "status")
+    private Integer status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,6 +99,14 @@ public class EquipoInLiga implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.EquipoInLiga[ id=" + id + " ]";
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
     
 }
