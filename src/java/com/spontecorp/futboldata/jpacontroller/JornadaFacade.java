@@ -45,15 +45,15 @@ public class JornadaFacade extends AbstractFacade<Jornada> {
         return jornadas;
     }
 
-    public Jornada findJornadaxGrupo(Grupo grupo,String nombre) {
+    public Jornada findJornadaxGrupo(Grupo grupo,Integer numero) {
         EntityManager em = getEntityManager();
         Jornada jornada = null;
         try {
             String query = "SELECT j FROM Jornada j WHERE j.grupoId = :grupo "
-                    + "AND j.nombre = :nombre";
+                    + "AND j.numero = :numero";
             Query q = em.createQuery(query, Jornada.class);
             q.setParameter("grupo", grupo);
-            q.setParameter("nombre", nombre);
+            q.setParameter("numero", numero);
             jornada = (Jornada) q.getSingleResult();
         } catch (Exception e) {
             logger.error("Error recuperando los grupos de una fase", e.getMessage());

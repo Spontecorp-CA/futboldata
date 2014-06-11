@@ -598,7 +598,7 @@ public class ConfigBean implements Serializable {
 
     public void createJornada() {
         try {
-            if (jornadaFacade.findJornadaxGrupo(grupo, jornada.getNombre()) != null) {
+            if (jornadaFacade.findJornadaxGrupo(grupo, jornada.getNumero()) != null) {
                 Util.addErrorMessage("La jornada  ya se encuentra Registrado ");
 
             } else {

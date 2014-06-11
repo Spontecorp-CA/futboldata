@@ -22,9 +22,15 @@
                     <h:outputLabel value="Grupo:" for="grupo"/>
                     <h:outputText id="grupo" value="#{configBean.grupo.nombre}" />
 
-                    <h:outputLabel value="*Nombre:" for="nombre"/>
-                    <p:inputText id="nombre" value="#{configBean.jornada.nombre}"
-                                 required="true" requiredMessage="Debe colocar un nombre"
+                    <h:outputLabel value="*Número:" for="numero"/>
+                    <p:inputText id="numero" value="#{configBean.jornada.numero}"
+                                 required="true" requiredMessage="Debe colocar un número"
+                                 style="width: 250px">
+                        <f:converter converterId="javax.faces.Integer"/>
+                    </p:inputText>
+                    
+                    <h:outputLabel value="Nombre:" for="alias"/>
+                    <h:inputText id="alias" value="#{configBean.jornada.alias}"
                                  style="width: 250px"/>
 
                     <h:outputLabel value="*status:" for="status"/>

@@ -34,18 +34,22 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Jornada.findAll", query = "SELECT j FROM Jornada j"),
     @NamedQuery(name = "Jornada.findById", query = "SELECT j FROM Jornada j WHERE j.id = :id"),
-    @NamedQuery(name = "Jornada.findByNombre", query = "SELECT j FROM Jornada j WHERE j.nombre = :nombre"),
+    @NamedQuery(name = "Jornada.findByNumero", query = "SELECT j FROM Jornada j WHERE j.numero = :numero"),
     @NamedQuery(name = "Jornada.findByStatus", query = "SELECT j FROM Jornada j WHERE j.status = :status")})
 public class Jornada implements Serializable {
-    @Size(max = 45)
-    @Column(name = "nombre")
-    private String nombre;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Column(name = "numero")
+    private Integer numero;
+    @Size(max = 45)
+    @Column(name = "alias")
+    private String alias;
+    @Size(max = 45)
     @Column(name = "status")
     private Integer status;
     @JoinColumn(name = "grupo_id", referencedColumnName = "id")
@@ -71,6 +75,21 @@ public class Jornada implements Serializable {
         this.id = id;
     }
 
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
     public Integer getStatus() {
         return status;
@@ -128,15 +147,7 @@ public class Jornada implements Serializable {
 
     @Override
     public String toString() {
-        return String.valueOf(nombre);
+        return String.valueOf(numero);
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
 }

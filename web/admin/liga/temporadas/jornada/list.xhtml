@@ -20,7 +20,7 @@
                                  actionListener="#{configBean.prepareEditJornada}"   
                                  update=":JornadaEditForm"                                        
                                  oncomplete="PF('JornadaEditDialog').show()" 
-                                 disabled="#{empty configBean.jornada.nombre}"/>
+                                 disabled="#{empty configBean.jornada.numero}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
@@ -45,8 +45,12 @@
             <p:ajax event="rowUnselect" 
                     update=":menuPrincipal ,:JornadaListForm:editButton "/>
 
-            <p:column headerText="Jornada" >
-                <h:outputText value="#{item.nombre}"/>
+            <p:column headerText="Número" >
+                <h:outputText value="#{item.numero}"/>
+            </p:column>
+            
+            <p:column headerText="Nombre" >
+                <h:outputText value="#{item.alias}"/>
             </p:column>
 
             <p:column headerText="Grupo" >
@@ -54,7 +58,7 @@
             </p:column>
 
             <p:column headerText="Status">
-                <h:outputText   value="#{item.status== 0?'INACTIVO':'ACTIVO'}"/>
+                <h:outputText   value="#{item.status== 0?'INACTIVA':'ACTIVA'}"/>
             </p:column>
 
         </p:dataTable>
