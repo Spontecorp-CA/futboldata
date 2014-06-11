@@ -89,23 +89,46 @@ public class ArbitroBean implements Serializable {
         return arbitro;
     }
 
-    public String prepareCreate() {
+    public void prepareCreate() {
         arbitro = new Arbitro();
+//        direccion = new Direccion();
+//        persona = new Persona();
+//        asociacion = new Asociacion();
+//        persona.setDireccionId(direccion);
+//        arbitro.setPersonaId(persona);
+//        ciudades = null;
+//        redes = new ArrayList<RedSocial>();
+//        redesEliminar = new ArrayList<RedSocial>();
+//        return "list?faces-redirect=true";
+        initializeEmbeddableKey();
+    }
+
+    protected void initializeEmbeddableKey() {
+        redSocial = new RedSocial();
         direccion = new Direccion();
         persona = new Persona();
-        asociacion = new Asociacion();
-        persona.setDireccionId(direccion);
-        arbitro.setPersonaId(persona);
-        ciudades = null;
+        persona.setFoto("vacio");
         redes = new ArrayList<RedSocial>();
         redesEliminar = new ArrayList<RedSocial>();
-        return "list?faces-redirect=true";
+        direccion = new Direccion();
+        ciudades = null;
+        pais = null;
+        setEmbeddableKeys();
+    }
+
+    protected void setEmbeddableKeys() {
+        persona.setDireccionId(direccion);
+        arbitro.setPersonaId(persona);
+
     }
 
     public void prepareEdit() {
         redes = getRedSocials(arbitro.getPersonaId());
-        pais = arbitro.getPersonaId().getDireccionId().getCiudadId().getPaisId();
-        ciudadesAvalaible();
+        if (arbitro.getPersonaId().getDireccionId().getCiudadId() != null) {
+            pais = arbitro.getPersonaId().getDireccionId().getCiudadId().getPaisId();
+            ciudadesAvalaible();
+        }
+
     }
 
     public SelectItem[] getAsociacionesAvalaible() {
@@ -156,7 +179,7 @@ public class ArbitroBean implements Serializable {
         return items;
     }
 
-    public String create() {
+    public void create() {
         try {
             if (controllerArbitro.findArbitroByDomentoId(persona.getDocumentoIdentidad()) != null) {
                 Util.addErrorMessage("El jugador ya se encuentra Registrado por el Documenta de "
@@ -175,17 +198,16 @@ public class ArbitroBean implements Serializable {
             }
 
         } catch (Exception e) {
-            logger.debug("Error al crear Jugador :", e.getMessage());
+            logger.debug("Error al crear Arbitro: ", e.getMessage());
         }
-        return prepareCreate();
     }
 
     public void handleFileUpload(FileUploadEvent event) {
 
         long lDateTime = new Date().getTime();
         System.out.println("Date() - Time in milliseconds: " + lDateTime);
-        String nombreArchivo = "jugador" + lDateTime;
-        Util.subirArchivo(event, "arbitro\\", nombreArchivo);
+        String nombreArchivo = "arbitro" + lDateTime;
+        Util.subirArchivo(event, "arbitro/", nombreArchivo);
         arbitro.getPersonaId().setFoto(nombreArchivo);
 
     }
@@ -195,10 +217,9 @@ public class ArbitroBean implements Serializable {
         return redes;
     }
 
-    public String edit() {
+    public void edit() {
         for (RedSocial red : redes) {
             red.setPersonaId(arbitro.getPersonaId());
-//            controllerRedSocial.edit(red);
         }
         arbitro.getPersonaId().setRedSocialCollection(redes);
         logger.debug("Esta editando un Arbitro");
@@ -206,9 +227,9 @@ public class ArbitroBean implements Serializable {
         for (RedSocial redEliminar : redesEliminar) {
             controllerRedSocial.remove(redEliminar);
         }
+
+        Util.addSuccessMessage("Se editó exitosamente el Arbitro");
         recreateModel();
-        Util.addSuccessMessage("Se edito exitosamente el Arbitro");
-        return prepareCreate();
     }
 
     public void recreateModel() {
@@ -323,6 +344,11 @@ public class ArbitroBean implements Serializable {
 
     public void setRedes(List<RedSocial> redes) {
         this.redes = redes;
+    }
+
+    public String getHostImagen() {
+        String host = Util.getHostImagen() + "arbitro/";
+        return host;
     }
 
 }

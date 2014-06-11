@@ -147,7 +147,7 @@ public class JugadorBean implements Serializable {
 //        jugador.setPersonaId(persona);
 //        ciudades = null;
 //        redes = new ArrayList<RedSocial>();
-         jugador = new Jugador();
+        jugador = new Jugador();
         initializeEmbeddableKey();
 //        return "list?faces-redirect=true";
     }
@@ -183,13 +183,13 @@ public class JugadorBean implements Serializable {
     public SelectItem[] getCiudades() {
         return ciudades;
     }
-    
-    private void posicionesAvailable(){
+
+    private void posicionesAvailable() {
         posiciones = posicionFacade.findAll();
     }
-    
-    public List<Posicion> getPosiciones(){
-        if(posiciones == null){
+
+    public List<Posicion> getPosiciones() {
+        if (posiciones == null) {
             posicionesAvailable();
         }
         return posiciones;
@@ -219,7 +219,6 @@ public class JugadorBean implements Serializable {
     }
 
     public void prepareEdit() {
-
         redes = getRedSocials(jugador.getPersonaId());
         pais = jugador.getPersonaId().getDireccionId().getCiudadId().getPaisId();
         ciudadesAvalaible();
@@ -265,7 +264,7 @@ public class JugadorBean implements Serializable {
         }
 
         Util.addSuccessMessage("Se edito exitosamente el Jugador");
-                recreateModel();
+        recreateModel();
     }
 
     public Jugador getJugador() {
@@ -279,25 +278,6 @@ public class JugadorBean implements Serializable {
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
     }
-
-//    public Direccion getDireccion() {
-//        return direccion;
-//    }
-//
-//    public void setDireccion(Direccion direccion) {
-//        this.direccion = direccion;
-//    }
-
-//    public Persona getPersona() {
-//        if (persona == null) {
-//            persona = new Persona();
-//        }
-//        return persona;
-//    }
-//
-//    public void setPersona(Persona persona) {
-//        this.persona = persona;
-//    }
 
     public RedSocial getRedSocial() {
         if (redSocial == null) {

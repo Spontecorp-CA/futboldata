@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * @param <T>
  */
 public abstract class AbstractFacade<T> {
-    private Class<T> entityClass;
+    private final Class<T> entityClass;
     private static final Logger logger = LoggerFactory.getLogger(AbstractFacade.class);
     
     public AbstractFacade(Class<T> entityClass) {
@@ -33,7 +33,7 @@ public abstract class AbstractFacade<T> {
             em.persist(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
-            logger.debug("Erro en Abstract Facade : "+ e);
+            logger.debug("Error creando en Abstract Facade : " + e);
         }finally{
             if(em != null){
                 em.close();
@@ -49,7 +49,7 @@ public abstract class AbstractFacade<T> {
             em.merge(entity);
             em.getTransaction().commit();
         } catch (Exception e) {
-            logger.debug("Erro en Abstract Facade : "+ e);
+            logger.debug("Error editando en Abstract Facade : " + e);
         } finally {
             if(em != null){
                 em.close();
@@ -65,7 +65,7 @@ public abstract class AbstractFacade<T> {
             em.remove(em.merge(entity));
             em.getTransaction().commit();
         } catch (Exception e) {
-            logger.debug("Error en Abstract Facade : "+ e.getMessage());
+            logger.debug("Error eliminando en Abstract Facade : "+ e.getMessage());
         } finally {
             if (em != null) {
                 em.close();

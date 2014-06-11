@@ -50,6 +50,14 @@
                                          panelStyle="width:250px">
                             <f:selectItems value="#{arbitroBean.paisesAvalaible}"/>
                         </p:selectOneMenu> 
+                        
+                        <h:outputLabel value="Asociación:" for="asociacion"/>
+                        <p:selectOneMenu id="asociacion" 
+                                         value="#{arbitroBean.asociacion}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px">
+                            <f:selectItems value="#{arbitroBean.asociacionesAvalaible}"/>
+                        </p:selectOneMenu> 
 
                         <h:outputLabel value="Foto:" for="foto"/>
                         <p:fileUpload id="foto" 
@@ -63,7 +71,8 @@
                         </p:fileUpload>
                     
                         &nbsp; 
-                        <h:graphicImage id="Perfil" library="images/arbitro" name="#{arbitroBean.arbitro.personaId.foto}"/>       
+                        <h:graphicImage id="Perfil" style="height: 100px"
+                                        url="#{arbitroBean.hostImagen}#{arbitroBean.selected.personaId.foto}"/>       
 
                         <h:outputLabel value="* status:" for="status"/>
 

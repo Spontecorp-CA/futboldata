@@ -61,7 +61,9 @@
                                       value="#{arbitroBean.selected.personaId.foto}"
                                       mode="advanced" dragDropSupport="false" 
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                      style="width: 250px"/>
+                                      fileUploadListener="#{arbitroBean.handleFileUpload}"
+                                      style="width: 250px"
+                                      update="Perfil"/>
                         <h:outputLabel value="* status:" for="status"/>
                         <p:selectOneMenu id="status" value="#{arbitroBean.selected.status}"
                                          converter= "javax.faces.Integer"
@@ -73,13 +75,13 @@
                         </p:selectOneMenu>
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Dirección">
-                        <h:outputLabel value="Pais:" for="pais"/>
+                        <h:outputLabel value="* Pais:" for="pais"/>
                         <p:selectOneMenu id="pais" 
                                          value="#{arbitroBean.pais}"
                                          style="width: 250px"
                                          panelStyle="width:250px"
-                                         
-                                         requiredMessage="Debe seleccionar un perfil">                       
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un pais">                       
                             <f:selectItems value="#{arbitroBean.paisesAvalaible}"/>
                             <p:ajax listener="#{arbitroBean.ciudadesAvalaible}" 
                                     update="ciudad" />
@@ -88,8 +90,7 @@
                         <p:selectOneMenu id="ciudad"
                                          value="#{arbitroBean.selected.personaId.direccionId.ciudadId}"
                                          style="width: 250px"
-                                         panelStyle="width:250px"
-                                         
+                                         panelStyle="width:250px"                                         
                                          requiredMessage="Debe seleccionar un perfil">                       
                             <f:selectItems value="#{arbitroBean.ciudades}"/>
                         </p:selectOneMenu>
@@ -101,7 +102,11 @@
                                          rows="3" cols="33"
                                          style="width: 250px">
                         </p:inputTextarea>
+                        &nbsp; 
+                        <h:graphicImage id="Perfil" style="height: 100px"
+                                        url="#{arbitroBean.hostImagen}#{arbitroBean.selected.personaId.foto}"/> 
                     </h:panelGrid>
+                    
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputMask id="telefono" 
@@ -169,7 +174,7 @@
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <p:commandButton actionListener="#{arbitro.create}" value="Guardar" 
+                <p:commandButton actionListener="#{arbitroBean.create}" value="Guardar" 
                                  update="ArbitroCreateForm,:ArbitroListForm:arbitros,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'ArbitroCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="ArbitroCreateDialog.hide()"/>
