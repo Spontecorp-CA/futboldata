@@ -16,8 +16,6 @@ import static com.spontecorp.futboldata.utilities.Util.INACTIVO;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +24,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-@Named("equipoHasJugadorBean")
+@Named("equipoInLigaBean")
 @SessionScoped
 public class EquipoInLigaBean implements Serializable {
 
@@ -45,7 +43,7 @@ public class EquipoInLigaBean implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(EquipoInLigaBean.class);
     private Jugador jugador;
     private Equipo equipo;
-    private EquipoInLiga equipoHasJugador;
+    private EquipoInLiga equipoInLiga;
 
     public EquipoInLigaBean() {
         controllerEquipoInLiga = new EquipoInLigaFacade();
@@ -55,16 +53,16 @@ public class EquipoInLigaBean implements Serializable {
     }
 
     public EquipoInLiga getEquipoInLiga() {
-        if (equipoHasJugador == null) {
-            equipoHasJugador = new EquipoInLiga();
+        if (equipoInLiga == null) {
+            equipoInLiga = new EquipoInLiga();
             initializeEmbeddableKey();
             setEmbeddableKeys();
         }
-        return equipoHasJugador;
+        return equipoInLiga;
     }
 
-    public void setEquipoInLiga(EquipoInLiga equipoHasJugador) {
-        this.equipoHasJugador = equipoHasJugador;
+    public void setEquipoInLiga(EquipoInLiga equipoInLiga) {
+        this.equipoInLiga = equipoInLiga;
     }
     
     public List<Jugador> getFilteredJugador() {
@@ -137,14 +135,14 @@ public class EquipoInLigaBean implements Serializable {
     }
 
     public String prepareCreate() {
-        equipoHasJugador = new EquipoInLiga();
+        equipoInLiga = new EquipoInLiga();
         recreateModel();
         return "/admin/equipo/equipohasjugador/listjugador?faces-redirect=true";
     }
 
     protected void setEmbeddableKeys() {
 
-        //      equipoHasJugador.setPersonaId(jugador);
+        //      equipoInLiga.setPersonaId(jugador);
     }
 
     protected void initializeEmbeddableKey() {
@@ -153,13 +151,13 @@ public class EquipoInLigaBean implements Serializable {
 
     public void recreateModel() {
         jugador = new Jugador();
-        equipoHasJugador = new EquipoInLiga();
+        equipoInLiga = new EquipoInLiga();
         items = null;
 
     }
 
     public void prepareEdit() {
-        equipoHasJugador = new EquipoInLiga();
+        equipoInLiga = new EquipoInLiga();
     }
 
     public String create() {
@@ -167,13 +165,13 @@ public class EquipoInLigaBean implements Serializable {
         if (controllerEquipoInLiga.getEquipoInLiga(equipo, jugador) == null) {
             
            try {
-            equipoHasJugador.setEquipoId(this.equipo);
+            equipoInLiga.setEquipoId(this.equipo);
             logger.debug("Nombre del jugador " + jugador.getPersonaId().getNombre());
-            equipoHasJugador.setEquipoId(this.equipo);
+            equipoInLiga.setEquipoId(this.equipo);
             logger.debug("Nombre del Equipo " + equipo.getNombre());
             logger.debug("Esta Creando  un EquipoInLiga");
-            equipoHasJugador.setStatus(ACTIVO);
-            controllerEquipoInLiga.create(equipoHasJugador);
+            equipoInLiga.setStatus(ACTIVO);
+            controllerEquipoInLiga.create(equipoInLiga);
             recreateModel();
             Util.addSuccessMessage("Se Agrego Exitosamente el Jugador");
         } catch (Exception e) {
@@ -189,7 +187,7 @@ public class EquipoInLigaBean implements Serializable {
     public String edit() {
 
         logger.debug("Esta editando un EquipoInLiga");
-        controllerEquipoInLiga.edit(equipoHasJugador);
+        controllerEquipoInLiga.edit(equipoInLiga);
 
         recreateModel();
         Util.addSuccessMessage("Se edito exitosamente el EquipoInLiga");
@@ -197,9 +195,9 @@ public class EquipoInLigaBean implements Serializable {
     }
    public String delete() {
        try {
-           equipoHasJugador.setStatus(INACTIVO);
-           controllerEquipoInLiga.edit(equipoHasJugador);
-           equipoHasJugador = null;
+           equipoInLiga.setStatus(INACTIVO);
+           controllerEquipoInLiga.edit(equipoInLiga);
+           equipoInLiga = null;
                   Util.addSuccessMessage("Se elimino exitosamente");
        } catch (Exception e) {
            logger.debug("Error al eliminar la entidad EquipoInLiga : ",e.getMessage());
