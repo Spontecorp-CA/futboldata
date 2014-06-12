@@ -6,22 +6,20 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-
-
-    <p:fieldset style="width: 85%" legend="Lista de Jornadas" >
+    <p:fieldset style="width: 85%" legend="Lista de Partidos en Jornada" >
         <p:toolbar>
             <p:toolbarGroup align="left">
                 <p:commandButton id="createButton" icon="ui-icon-plus"  
-                                 value="Crear Jornada" 
-                                 actionListener="#{configBean.prepareCreateJornada}"
-                                 update=":JornadaCreateForm"
-                                 oncomplete="PF('JornadaCreateDialog').show()"/>
+                                 value="Crear partido" 
+                                 actionListener="#{configBean.prepareCreatePartido}"
+                                 update=":PartidoCreateForm"
+                                 oncomplete="PF('PartidoCreateDialog').show()"/>
                 <p:commandButton id="editButton" icon="ui-icon-pencil" 
-                                 value="Editar Jornada" 
-                                 actionListener="#{configBean.prepareEditJornada}"   
-                                 update=":JornadaEditForm"                                        
-                                 oncomplete="PF('JornadaEditDialog').show()" 
-                                 disabled="#{empty configBean.jornada.numero}"/>
+                                 value="Editar Partido" 
+                                 actionListener="#{configBean.prepareEditPartido}"   
+                                 update=":PartidoEditForm"                                        
+                                 oncomplete="PF('PartidoEditDialog').show()" 
+                                 disabled="#{empty configBean.partido}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
@@ -31,39 +29,26 @@
         <br />
         <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
         <br />
-        <p:dataTable id="jornadas" var="item" value="#{configBean.jornadas}"
-                     widgetVar="jornadasTable"
+        <p:dataTable id="partidos" var="item" value="#{configBean.partidos}"
+                     widgetVar="partidosTable"
                      rowKey="#{item.id}"
-                     selection="#{configBean.jornada}" 
+                     selection="#{configBean.partido}" 
                      selectionMode="single"
-                     filteredValue="#{jornadaBean.filteredJornadas}" 
-                     emptyMessage="No se encontraron jornadas para ese criterio" 
+                     filteredValue="#{partidoBean.filteredPartidos}" 
+                     emptyMessage="No se encontraron partidos para ese criterio" 
                      paginator="true" rows="10"  
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                      rowsPerPageTemplate="5,10,15">   
             <p:ajax event="rowSelect"
-                    update=":menuPrincipal ,:JornadaListForm:editButton" />
+                    update=":menuPrincipal ,:PartidoEnJornadaListForm:editButton" />
             <p:ajax event="rowUnselect" 
-                    update=":menuPrincipal ,:JornadaListForm:editButton "/>
-            
-            <p:column headerText="Número" >
-                <h:outputText value="#{item.numero}"/>
-            </p:column>
-            
-            <p:column headerText="Nombre" >
-                <h:outputText value="#{item.alias}"/>
-            </p:column>
+                    update=":menuPrincipal ,:PartidoEnJornadaListForm:editButton "/>
 
-            <p:column headerText="Grupo" >
-                <h:outputText value="#{item.grupoId.nombre}"/>
-            </p:column>
-
+           
             <p:column headerText="Status">
                 <h:outputText   value="#{item.status== 0?'INACTIVA':'ACTIVA'}"/>
             </p:column>
 
         </p:dataTable>
     </p:fieldset>
-
 </ui:composition>
-

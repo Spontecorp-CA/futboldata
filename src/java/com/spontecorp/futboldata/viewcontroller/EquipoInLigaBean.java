@@ -238,8 +238,9 @@ public class EquipoInLigaBean implements Serializable {
         return host;
     }
 
-    public String gotoEquipoInLigaPage() {
+    public String gotoEquipoInLigaPage(Competicion liga) {
         recreateModel();
+        this.liga = liga;
         equipo = new Equipo();
         return "/admin/liga/equipoinliga/listequipo?faces-redirect=true";
     }

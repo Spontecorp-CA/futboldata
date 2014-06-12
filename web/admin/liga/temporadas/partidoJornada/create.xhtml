@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">
+        Administración de Partidos
+    </ui:define>
+
+    <p:dialog id="PartidoCreateDlg" widgetVar="PartidoCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Partidos">
+        <h:form id="PartidoCreateForm">
+
+            <p:fieldset style="width: 85%" legend="Crear Partido">                
+
+
+                <h:panelGrid columns="2" title="Partidos"
+                             styleClass="top-aligned-columns">
+
+                    <h:outputLabel value="Jornada:" for="jornada"/>
+                    <h:outputText id="jornada" value="#{configBean.jornada.numero}" />
+                    
+                    <h:outputLabel value="Fecha:" for="fecha"/>
+                    <p:calendar id="fecha" 
+                                value="#{configBean.partido.fecha}"
+                                navigator="true" 
+                                pattern="dd/MM/yyyy" 
+                                locale="es"/>
+                    
+                    <h:outputLabel value="Hora Inicio:" for="hInicio"/>
+                    <p:calendar id="hInicio" 
+                                value="#{configBean.partido.horaInicio}"
+                                navigator="true" 
+                                pattern="hh:mm a"
+                                timeOnly="true"/>
+
+                    <h:outputLabel value="Hora Fin:" for="hFin"/>
+                    <p:calendar id="hFin" 
+                                value="#{configBean.partido.horaInicio}"
+                                navigator="true" 
+                                pattern="hh:mm a"
+                                timeOnly="true"/>
+                    
+                    <h:outputLabel value="Equipo Local:" for="eqlocal"/>
+                    <p:selectOneMenu id="eqlocal" value="#{configBean.partido.equipoLocalId}">
+                        <f:selectItems value="#{equipoInLigaBean.itemsEquipo}" />
+                    </p:selectOneMenu>
+
+                                     
+                    
+<!--                    <h:outputLabel value="*Número:" for="numero"/>
+                    <p:inputText id="numero" value="#{configBean.partido.numero}"
+                                 required="true" requiredMessage="Debe colocar un número"
+                                 style="width: 250px">
+                        <f:converter converterId="javax.faces.Integer"/>
+                    </p:inputText>
+
+                    <h:outputLabel value="Nombre:" for="alias"/>
+                    <h:inputText id="alias" value="#{configBean.partido.alias}"
+                                 style="width: 250px"/>
+
+                    <h:outputLabel value="*status:" for="status"/>
+                    <p:selectOneMenu id="status" value="#{configBean.partido.status}"
+                                     converter= "javax.faces.Integer"
+                                     style="width: 250px"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar un valor">
+                        <f:selectItem itemLabel="Activa" itemValue="1"/>
+                        <f:selectItem itemLabel="Inactiva" itemValue="0"/>
+                    </p:selectOneMenu>-->
+                </h:panelGrid>
+
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <p:commandButton actionListener="#{configBean.createPartido}" value="Guardar" 
+                                 update="PartidoCreateForm,:PartidoEnJornadaListForm:partidos,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'PartidoCreateDialog');"/>
+                <p:commandButton value="Cancelar" onclick="PartidoCreateDialog.hide()"/>
+            </p:fieldset>
+        </h:form>
+    </p:dialog>
+</ui:composition>
+

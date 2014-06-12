@@ -17,7 +17,7 @@
                 <p:toolbar >
                     <p:toolbarGroup>
                         <h3>
-                            <h:outputLabel value="Liga (Competicion):#{configBean.liga.nombre}"/> 
+                            <h:outputLabel value="Competición: #{configBean.liga.nombre}"/> 
                         </h3>     
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
@@ -30,7 +30,7 @@
                                 actionListener="#{configBean.activateTemporadaList}" 
                                 update=":JornadaListForm,:TemporadaListForm, 
                                 :FaseListForm ,:menuPrincipal :GrupoListForm
-                                :LlaveListForm"
+                                :LlaveListForm , :PartidoEnJornadaListForm"
                                 disabled="#{empty configBean.liga.nombre}"
                                 immediate="true"/>
 
@@ -39,7 +39,7 @@
                                 disabled="#{empty configBean.temporada.nombre}"
                                 update=":JornadaListForm,:FaseListForm,
                                 :TemporadaListForm :GrupoListForm :menuPrincipal
-                                :LlaveListForm"
+                                :LlaveListForm , :PartidoEnJornadaListForm"
                                 immediate="true"/>
 
                     <p:menuitem value="Grupos" 
@@ -47,21 +47,30 @@
                                 actionListener="#{configBean.activateGrupoList}"
                                 update=":JornadaListForm,:GrupoListForm :FaseListForm, 
                                 :TemporadaListForm :menuPrincipal
-                                :LlaveListForm"/>
+                                :LlaveListForm , :PartidoEnJornadaListForm"/>
 
                     <p:menuitem value="Jornadas" 
                                 disabled="#{empty configBean.grupo.nombre}"
                                 actionListener="#{configBean.activateJornadaList}"
                                 update=":JornadaListForm,:GrupoListForm ,
                                 :FaseListForm, :TemporadaListForm ,:menuPrincipal
-                                :LlaveListForm"/>
+                                :LlaveListForm , :PartidoEnJornadaListForm"/>
 
                     <p:menuitem value="Llaves" 
                                 disabled="#{configBean.faseTipo != 1}"
-                                actionListener="#{configBean.activateLLaveList()}"
+                                actionListener="#{configBean.activateLlaveList()}"
                                 update=":JornadaListForm,:GrupoListForm , 
                                 :FaseListForm, :TemporadaListForm ,:menuPrincipal 
-                                :LlaveListForm "/>
+                                :LlaveListForm , :PartidoEnJornadaListForm"/>
+                    
+                    <p:menuitem value="Partidos en Jornada" 
+                                disabled="#{empty configBean.jornada.numero}"
+                                actionListener="#{configBean.activatePartidosJornadaList()}"
+                                update=":JornadaListForm , :GrupoListForm , 
+                                :FaseListForm , :TemporadaListForm , :menuPrincipal 
+                                :LlaveListForm , :JornadaListForm
+                                :PartidoEnJornadaListForm"/>
+
                 </p:menubar>
             </h:form>
 
@@ -105,30 +114,15 @@
             </h:form>
             <ui:include src="./llave/create.xhtml"/>
             <ui:include src="./llave/edit.xhtml"/>
-
-
-
-
-            <!--                <p:tabView id="calendario" 
-                                       dynamic="true" 
-                                       effect="fade" 
-                                       effectDuration="fast" 
-                                       activeIndex="#{temporadaBean.index}">                       
-                                <p:tab title="Temporada">
-                                    <ui:include src="./temporada/list.xhtml"/>
-                                </p:tab>
-                                <p:tab  id="fases" title="Fases" disabled="#{empty  temporadaBean.selected.nombre}" >
-                                    <ui:include src="./fase/list.xhtml"/>
-                                </p:tab>
-                                <p:tab title="Grupos" 
-                                       disabled="#{empty  faseBean.selected.nombre or (faseBean.selected.tipoFase != 0 )}">
-                                    <ui:include src="./grupo/list.xhtml"/>
-                                </p:tab>
-                                <p:tab title="Llaves" 
-                                       disabled="#{empty  faseBean.selected.nombre or (faseBean.selected.tipoFase != 1 )}">
             
-                                </p:tab>
-                            </p:tabView>-->
+            <h:form id="PartidoEnJornadaListForm">
+                <h:panelGroup id="partidoEnJornadaPanel" rendered="#{configBean.partidoJornadaActivo}">
+                    <ui:include src="./partidoJornada/list.xhtml" />   
+                </h:panelGroup>
+            </h:form>
+            <ui:include src="./partidoJornada/create.xhtml"/>
+            <ui:include src="./partidoJornada/edit.xhtml"/>
+
         </ui:define>
     </ui:composition>
 

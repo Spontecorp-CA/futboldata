@@ -14,11 +14,11 @@
     <ui:define name="content">
         <h:form id="EquipoListForm">
 
-            <p:fieldset style="width: 85%" legend="Lista de Equipos de la #{equipoInLigaBean.competicion.nombre}" >
+            <p:fieldset style="width: 85%" legend="Lista de Equipos de: #{equipoInLigaBean.competicion.nombre}" >
 
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="Nombre de Liga: " for="nombreClub" style="font-weight: bold"/>
-                    <h:outputText id="nombreClub" value="#{equipoInLigaBean.competicion.nombre}"/>
+                    <h:outputLabel value="Nombre de Competición: " for="nombreLiga" style="font-weight: bold"/>
+                    <h:outputText id="nombreLiga" value="#{equipoInLigaBean.competicion.nombre}"/>
                 </h:panelGrid>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
@@ -33,16 +33,17 @@
                                          action="#{equipoInLigaBean.delete}"
                                          update=":EquipoListForm:equipos"
                                          disabled="#{empty equipoInLigaBean.equipoInLiga.equipoId.nombre}">
-                            <p:confirm header="Confirmacion" message="¿Estas seguro de desvincular el equipo?" icon="ui-icon-alert" />
+                            <p:confirm header="Confirmacion" 
+                                       message="¿Estas seguro de desvincular el equipo?" 
+                                       icon="ui-icon-alert" />
                         </p:commandButton>
 
                         <p:commandButton id="equipoButton" icon="ui-icon-search" 
-                                         value="Listado Equipos" 
-                                         action="#{equipoBean.gotoEquiposPage}"
-                                         />
+                                         value="Administración de Equipos" 
+                                         action="#{equipoBean.gotoEquiposPage}"/>
 
                         <p:commandButton id="competicionButton" icon="ui-icon-search" 
-                                         value="Listado de Ligas" 
+                                         value="Administración de Competiciones" 
                                          action="#{equipoInLigaBean.gotoLigaPage()}" />
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
@@ -66,7 +67,7 @@
 
 
                     <f:facet name="header">
-                        Lista de Equipos en el Equipo
+                        Lista de Equipos en: #{equipoInLigaBean.competicion.nombre}
                     </f:facet>
                     <p:column headerText="Equipo" sortBy="equipoId.nombre"
                               filterBy="equipoId.nombre">

@@ -38,6 +38,8 @@ public class Util implements Serializable {
     public static final String rutaRelativa = "resources\\images\\";
     public static final Logger logger = LoggerFactory.getLogger(Util.class);
     
+    //status del partido
+    
     // dirección de imagenes para máquinas de sponte03 y sponte07
     //public static final String STORAGE_ROOT = "C:/Program Files/Apache Software Foundation/Apache Tomcat 7.0.41/webapps/imagenes/";
     
@@ -157,7 +159,6 @@ public class Util implements Serializable {
     }
 
     public static enum PersistAction {
-
         CREATE,
         DELETE,
         UPDATE
