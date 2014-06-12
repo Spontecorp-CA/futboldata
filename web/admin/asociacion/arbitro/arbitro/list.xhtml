@@ -57,12 +57,6 @@
                     <p:column headerText="Dirección">
                         <h:outputText value="#{arbitro.personaId.direccionId.direccion}"/>
                     </p:column>
-                    <p:column headerText="Red Social">
-                        <p:dataList value="#{arbitroBean.getRedSocials(arbitro.personaId)}" var="redsocial">
-                            <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
-                        </p:dataList>
-
-                    </p:column>
                     <p:column headerText="Telefono">
                         <h:outputText value="#{arbitro.personaId.telefono}"/>
                     </p:column>

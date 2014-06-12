@@ -91,15 +91,6 @@ public class ArbitroBean implements Serializable {
 
     public void prepareCreate() {
         arbitro = new Arbitro();
-//        direccion = new Direccion();
-//        persona = new Persona();
-//        asociacion = new Asociacion();
-//        persona.setDireccionId(direccion);
-//        arbitro.setPersonaId(persona);
-//        ciudades = null;
-//        redes = new ArrayList<RedSocial>();
-//        redesEliminar = new ArrayList<RedSocial>();
-//        return "list?faces-redirect=true";
         initializeEmbeddableKey();
     }
 
@@ -113,17 +104,20 @@ public class ArbitroBean implements Serializable {
         direccion = new Direccion();
         ciudades = null;
         pais = null;
+        asociacion = new Asociacion();
         setEmbeddableKeys();
     }
 
     protected void setEmbeddableKeys() {
         persona.setDireccionId(direccion);
         arbitro.setPersonaId(persona);
+        arbitro.setAsociacionId(asociacion);
 
     }
 
     public void prepareEdit() {
         redes = getRedSocials(arbitro.getPersonaId());
+        asociacion = arbitro.getAsociacionId();
         if (arbitro.getPersonaId().getDireccionId().getCiudadId() != null) {
             pais = arbitro.getPersonaId().getDireccionId().getCiudadId().getPaisId();
             ciudadesAvalaible();
@@ -181,24 +175,25 @@ public class ArbitroBean implements Serializable {
 
     public void create() {
         try {
-            if (controllerArbitro.findArbitroByDomentoId(persona.getDocumentoIdentidad()) != null) {
-                Util.addErrorMessage("El arbitro ya se encuentra Registrado por el Documento de "
-                        + "identificacion");
-
-            } else {
+//            if (controllerArbitro.findArbitroByDomentoId(persona.getDocumentoIdentidad()) != null) {
+//                Util.addErrorMessage("El arbitro ya se encuentra Registrado por el Documento de "
+//                        + "identificacion");
+//
+//            } else {
 
                 persona.setRedSocialCollection(redes);
                 persona.setDireccionId(direccion);
                 arbitro.setPersonaId(persona);
+                arbitro.setAsociacionId(asociacion);
                 logger.debug("Esta Creando  un Arbitro");
                 controllerArbitro.create(arbitro);
                 recreateModel();
                 Util.addSuccessMessage("Se creo exitosamente el Jugador");
-
-            }
+//
+//            }
 
         } catch (Exception e) {
-            logger.debug("Error al crear Arbitro: ", e.getMessage());
+            logger.debug("Error al crear Arbitro: ", e);
         }
     }
 
@@ -223,6 +218,7 @@ public class ArbitroBean implements Serializable {
         }
         arbitro.getPersonaId().setRedSocialCollection(redes);
         logger.debug("Esta editando un Arbitro");
+        arbitro.setAsociacionId(asociacion);
         controllerArbitro.edit(arbitro);
         for (RedSocial redEliminar : redesEliminar) {
             controllerRedSocial.remove(redEliminar);
@@ -238,6 +234,7 @@ public class ArbitroBean implements Serializable {
         arbitro = null;
         items = null;
         persona = null;
+        asociacion = null;
     }
 
     public void eliminarRedSocial(RedSocial redsocial) {
