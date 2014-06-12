@@ -38,6 +38,10 @@
                                              value="Ver Staff" 
                                              action="#{staffInClub.gotoStaffPage(ligaBean.selected)}"
                                              disabled="#{empty ligaBean.selected.nombre}"/>
+                            <p:commandButton id="equipoButton" icon="ui-icon-plus"   
+                                             value="Lista de Equipos" 
+                                             action="#{equipoInLigaBean.gotoEquipoInLigaPage(ligaBean.selected)}"     
+                                             disabled="#{empty ligaBean.selected.nombre}"/>
                             <p:commandButton id="configButton" icon="ui-icon-calendar" 
                                              value="Calendarios"
                                              action="#{configBean.gotoConfig()}"
@@ -65,11 +69,12 @@
 
                         <p:ajax event="rowSelect" update=":LigaListForm:createButton 
                                 :LigaListForm:viewButton :LigaListForm:editButton 
-                                :LigaListForm:configButton, :LigaListForm:addStaffButton"/>
-                        onstart="#{configBean.setLiga(ligaBean.selected)}"/>
+                                :LigaListForm:configButton, :LigaListForm:addStaffButton
+                                , :LigaListForm:equipoButton "/>
                         <p:ajax event="rowUnselect" update=":LigaListForm:createButton 
                                 :LigaListForm:viewButton :LigaListForm:editButton 
-                                :LigaListForm:configButton, :LigaListForm:addStaffButton"/>
+                                :LigaListForm:configButton, :LigaListForm:addStaffButton
+                                 ,:LigaListForm:equipoButton"/>
 
                         <p:column id="ligaColummn" headerText="Liga">
                             <h:outputText value="#{item.nombre}"/>
