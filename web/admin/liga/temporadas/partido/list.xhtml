@@ -29,9 +29,9 @@
         <br />
         <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
         <br />
-        <p:dataTable id="partidos" var="item" value="#{configBean.partidos}"
+        <p:dataTable id="partidos" var="partido" value="#{configBean.partidos}"
                      widgetVar="partidosTable"
-                     rowKey="#{item.id}"
+                     rowKey="#{partido.id}"
                      selection="#{configBean.partido}" 
                      selectionMode="single"
                      filteredValue="#{partidoBean.filteredPartidos}" 
@@ -40,14 +40,39 @@
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                      rowsPerPageTemplate="5,10,15">   
             <p:ajax event="rowSelect"
-                    update=":menuPrincipal ,:PartidoEnJornadaListForm:editButton" />
+                    update=":menuPrincipal ,:PartidoListForm:editButton" />
             <p:ajax event="rowUnselect" 
-                    update=":menuPrincipal ,:PartidoEnJornadaListForm:editButton "/>
+                    update=":menuPrincipal ,:PartidoListForm:editButton "/>
 
-           
-            <p:column headerText="Status">
-                <h:outputText   value="#{item.status== 0?'INACTIVA':'ACTIVA'}"/>
+            <p:column headerText="Equipo Local">
+                <h:outputText value="#{partido.equipoLocalText}: " 
+                              rendered="#{not empty configBean.llave.nombre}"/>
+                <h:outputText   value="#{partido.equipoLocalId.nombre}"/>
             </p:column>
+            <p:column headerText="Equipo Visitante">
+                <h:outputText value="#{partido.equipoVisitanteText}: " 
+                              rendered="#{not empty configBean.llave.nombre}"/>
+                <h:outputText   value="#{partido.equipoVisitanteId.nombre}"/>
+            </p:column>
+            <p:column headerText="Cancha">
+                <h:outputText   value="#{partido.canchaId.nombre}"/>
+            </p:column>
+
+            <p:column headerText="Fecha">
+                <h:outputFormat   value="#{partido.fecha}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputFormat>
+            </p:column>
+            <p:column headerText="Hora">
+                <h:outputFormat   value="#{partido.horaInicio}" >
+                    <f:convertDateTime pattern="hh:mm a"
+                                       locale="es_VE"/>
+                </h:outputFormat>
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText   value="#{partido.statusPartidoId.nombre}"/>
+            </p:column>
+
 
         </p:dataTable>
     </p:fieldset>

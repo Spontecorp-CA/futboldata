@@ -12,7 +12,6 @@ import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
 import com.spontecorp.futboldata.entity.Llave;
 import com.spontecorp.futboldata.entity.Partido;
-import com.spontecorp.futboldata.entity.StatusPartido;
 import com.spontecorp.futboldata.entity.Temporada;
 import com.spontecorp.futboldata.entity.TemporadaCategoria;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
@@ -22,6 +21,7 @@ import com.spontecorp.futboldata.jpacontroller.GrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.JornadaFacade;
 import com.spontecorp.futboldata.jpacontroller.LlaveFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
+import com.spontecorp.futboldata.jpacontroller.StatusPartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.utilities.Util;
@@ -56,7 +56,7 @@ public class ConfigBean implements Serializable {
     private boolean grupoActiva;
     private boolean jornadaActiva;
     private boolean llaveActiva;
-    private boolean partidoJornadaActivo;
+    private boolean partidoActivo;
 
     private List<Temporada> temporadaList;
 
@@ -75,6 +75,7 @@ public class ConfigBean implements Serializable {
     private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private DualListModel<Categoria> categorias;
 
+    private final StatusPartidoFacade statusPartidoFacade;
     private final TemporadaFacade temporadaFacade;
     private final FaseFacade faseFacade;
     private final LlaveFacade llaveFacade;
@@ -99,6 +100,7 @@ public class ConfigBean implements Serializable {
         this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
         this.grupoFacade = new GrupoFacade();
         this.equipoInLigaFacade = new EquipoInLigaFacade();
+        this.statusPartidoFacade = new StatusPartidoFacade();
 
         liga = new Competicion();
         categoriaSource = new ArrayList<Categoria>();
@@ -190,13 +192,13 @@ public class ConfigBean implements Serializable {
         grupoActiva = true;
         jornadas = null;
         jornadaActiva = false;
-        partidoJornadaActivo = false;
+        partidoActivo = false;
     }
 
     public void activateJornadaList() {
         grupoActiva = false;
         jornadaActiva = true;
-        partidoJornadaActivo = false;
+        partidoActivo = false;
         jornada = null;
     }
 
@@ -205,14 +207,14 @@ public class ConfigBean implements Serializable {
         faseActiva = false;
         llaveActiva = true;
         llaves = null;
-        partidoJornadaActivo = false;
+        partidoActivo = false;
 
     }
 
     public void activatePartidosJornadaList() {
         partidos = getPartidos(jornada);
         jornadaActiva = false;
-        partidoJornadaActivo = true;
+        partidoActivo = true;
     }
 
     public void activatePartidosLlaveList() {
@@ -220,7 +222,7 @@ public class ConfigBean implements Serializable {
         partidos = getPartidos(llave);
         partidos = null;
         llaveActiva = false;
-        partidoJornadaActivo = true;
+        partidoActivo = true;
     }
 
     private void inicializeMenu() {
@@ -262,8 +264,8 @@ public class ConfigBean implements Serializable {
         this.jornadaActiva = jornadaActiva;
     }
 
-    public boolean isPartidoJornadaActivo() {
-        return partidoJornadaActivo;
+    public boolean isPartidoActivo() {
+        return partidoActivo;
     }
 
     /**
@@ -719,7 +721,14 @@ public class ConfigBean implements Serializable {
      * Manejo de partidos
      */
     public List<Partido> getPartidos() {
-        return null;
+        partidos = null;
+        if (jornada != null) {
+            partidos = partidoFacade.findPartidos(jornada);
+        }
+        if (llave != null) {
+            partidos = partidoFacade.findPartidos(llave);
+        }
+        return partidos;
     }
 
     public List<Partido> getPartidos(Jornada jornada) {
@@ -757,6 +766,7 @@ public class ConfigBean implements Serializable {
 
     public void createPartido() {
         try {
+            partido.setStatusPartidoId(statusPartidoFacade.findStatusPartidoXValue(0));
             if (jornada != null) {
                 partido.setJornadaId(jornada);
             } else if (llave != null) {
@@ -764,7 +774,20 @@ public class ConfigBean implements Serializable {
             }
             partidoFacade.create(partido);
             Util.addSuccessMessage("Partido creado con éxito");
+            recreateModelPartido();
         } catch (Exception e) {
+            Util.addErrorMessage("Se presento un erro al Crear el partido");
+            logger.error(e.toString());
+        }
+    }
+
+    public void editPartido() {
+        try {
+            partidoFacade.edit(partido);
+            Util.addSuccessMessage("Partido editado con éxito");
+        } catch (Exception e) {
+            Util.addErrorMessage("Se presento un erro al Editar el partido");
+            logger.error(e.toString());
         }
     }
 

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <p:dialog id="StatusPartidoCreateDlg" widgetVar="StatusPartidoCreateDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Creación de Status de Partido">
+        <h:form id="StatusPartidoCreateForm">
+            <h:panelGroup id="display">
+                <h:panelGrid columns="2" rendered="#{statusPartidoBean.selected != null}">
+                    <p:outputLabel value="* Nombre: " for="nombre" />
+                    <p:inputText id="nombre" value="#{statusPartidoBean.selected.nombre}" 
+                                 title="Nombre del Status de Partido" required="true" 
+                                 requiredMessage="Debe colocar un nombre para el Status de Partido"
+                                 style="width: 240px"/>
+                </h:panelGrid>
+            </h:panelGroup>
+            <p:commandButton actionListener="#{statusPartidoBean.create}" value="Guardar" 
+                             update="display,:StatusPartidoListForm:items,:growlAdmin" 
+                             oncomplete="handleSubmit(args,'StatusPartidoCreateDialog');"/>
+            <p:commandButton value="Cancelar" onclick="StatusPartidoCreateDialog.hide()"/>
+        </h:form>
+    </p:dialog>
+</ui:composition>
+

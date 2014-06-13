@@ -30,7 +30,7 @@
                                 actionListener="#{configBean.activateTemporadaList}" 
                                 update=":JornadaListForm,:TemporadaListForm, 
                                 :FaseListForm ,:menuPrincipal :GrupoListForm
-                                :LlaveListForm , :PartidoEnJornadaListForm"
+                                :LlaveListForm , :PartidoListForm"
                                 disabled="#{empty configBean.liga.nombre}"
                                 immediate="true"/>
 
@@ -39,7 +39,7 @@
                                 disabled="#{empty configBean.temporada.nombre}"
                                 update=":JornadaListForm,:FaseListForm,
                                 :TemporadaListForm :GrupoListForm :menuPrincipal
-                                :LlaveListForm , :PartidoEnJornadaListForm"
+                                :LlaveListForm , :PartidoListForm"
                                 immediate="true"/>
 
                     <p:menuitem value="Grupos" 
@@ -47,14 +47,14 @@
                                 actionListener="#{configBean.activateGrupoList}"
                                 update=":JornadaListForm,:GrupoListForm :FaseListForm, 
                                 :TemporadaListForm :menuPrincipal
-                                :LlaveListForm , :PartidoEnJornadaListForm"/>
+                                :LlaveListForm , :PartidoListForm"/>
 
                     <p:menuitem value="Jornadas" 
                                 disabled="#{empty configBean.grupo.nombre}"
                                 actionListener="#{configBean.activateJornadaList}"
                                 update=":JornadaListForm,:GrupoListForm ,
                                 :FaseListForm, :TemporadaListForm ,:menuPrincipal
-                                :LlaveListForm , :PartidoEnJornadaListForm"/>
+                                :LlaveListForm , :PartidoListForm"/>
                     
                     <p:menuitem value="Partidos en Jornada" 
                                 disabled="#{empty configBean.jornada.numero}"
@@ -62,14 +62,14 @@
                                 update=":JornadaListForm , :GrupoListForm , 
                                 :FaseListForm , :TemporadaListForm , :menuPrincipal 
                                 :LlaveListForm , :JornadaListForm
-                                :PartidoEnJornadaListForm"/>
+                                :PartidoListForm"/>
 
                     <p:menuitem value="Llaves" 
                                 disabled="#{configBean.faseTipo != 1}"
                                 actionListener="#{configBean.activateLlaveList()}"
                                 update=":JornadaListForm,:GrupoListForm , 
                                 :FaseListForm, :TemporadaListForm ,:menuPrincipal 
-                                :LlaveListForm , :PartidoEnJornadaListForm"/>
+                                :LlaveListForm , :PartidoListForm"/>
                     
                     <p:menuitem value="Partidos en Llave" 
                                 disabled="#{empty configBean.llave.nombre}"
@@ -77,7 +77,7 @@
                                 update=":JornadaListForm , :GrupoListForm , 
                                 :FaseListForm , :TemporadaListForm , :menuPrincipal 
                                 :LlaveListForm , :JornadaListForm
-                                :PartidoEnJornadaListForm"/>
+                                :PartidoListForm"/>
                     
                     
 
@@ -125,13 +125,13 @@
             <ui:include src="./llave/create.xhtml"/>
             <ui:include src="./llave/edit.xhtml"/>
             
-            <h:form id="PartidoEnJornadaListForm">
-                <h:panelGroup id="partidoEnJornadaPanel" rendered="#{configBean.partidoJornadaActivo}">
-                    <ui:include src="./partidoJornada/list.xhtml" />   
+            <h:form id="PartidoListForm">
+                <h:panelGroup id="partidoPanel" rendered="#{configBean.partidoActivo}">
+                    <ui:include src="./partido/list.xhtml" />   
                 </h:panelGroup>
             </h:form>
-            <ui:include src="./partidoJornada/create.xhtml"/>
-            <ui:include src="./partidoJornada/edit.xhtml"/>
+            <ui:include src="./partido/create.xhtml"/>
+            <ui:include src="./partido/edit.xhtml"/>
 
         </ui:define>
     </ui:composition>

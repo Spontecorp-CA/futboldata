@@ -325,7 +325,7 @@ public class LigaBean implements Serializable {
     public String gotoLiga(){
       selected = null;
       return "/admin/liga/competicion/list?faces-redirect=true";
-    };
+    }
 
     @FacesConverter(forClass = Competicion.class)
     public static class CompeticionControllerConverter implements Converter {

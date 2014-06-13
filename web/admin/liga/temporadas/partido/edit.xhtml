@@ -5,16 +5,16 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
     <ui:define name="title">
         Administración de Partidos
     </ui:define>
 
-    <p:dialog id="PartidoCreateDlg" widgetVar="PartidoCreateDialog" modal="true"
-              resizable="false" appendTo="@(body)" header="Creación de Partidos">
-        <h:form id="PartidoCreateForm">
+    <p:dialog id="PartidoEditDlg" widgetVar="PartidoEditDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Edición de Partidos">
+        <h:form id="PartidoEditForm">
 
-            <p:fieldset style="width: 85%" legend="Crear Partido">                
-
+            <p:fieldset style="width: 85%" legend="Editar Partido">                
 
                 <h:panelGrid columns="2" title="Partidos"
                              styleClass="top-aligned-columns">
@@ -79,12 +79,13 @@
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <p:commandButton actionListener="#{configBean.createPartido}" value="Guardar" 
-                                 update="PartidoCreateForm,:PartidoEnJornadaListForm:partidos,:growlAdmin" 
-                                 oncomplete="handleSubmit(args,'PartidoCreateDialog');"/>
-                <p:commandButton value="Cancelar" onclick="PartidoCreateDialog.hide()"/>
+                <p:commandButton actionListener="#{configBean.editPartido}" value="Guardar" 
+                                 update="PartidoEditForm, :PartidoListForm:partidos,:growlAdmin" 
+                                 oncomplete="handleSubmit(args,'PartidoEditDialog');"
+                                 />
+                <p:commandButton value="Cancelar" onclick="PartidoEditDialog.hide()"/>
             </p:fieldset>
         </h:form>
-    </p:dialog>
+    </p:dialog>   
 </ui:composition>
 

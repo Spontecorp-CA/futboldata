@@ -48,11 +48,11 @@ public class PartidoFacade extends AbstractFacade<Partido>{
                 query = "SELECT p FROM Partido p WHERE p.llaveId = :llave";
                 q = em.createQuery(query);
                 Llave parLlave = (Llave) obj;
-                q.setParameter("grupo", parLlave);
+                q.setParameter("llave", parLlave);
             }            
             partidos = q.getResultList();
         } catch (Exception e) {
-            logger.error("Error recuperando los partidos de un grupo", e.getMessage());
+            logger.error("Error recuperando los partidos de un grupo", e);
         }
         return partidos;
     }
