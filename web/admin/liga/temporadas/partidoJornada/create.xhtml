@@ -19,57 +19,61 @@
                 <h:panelGrid columns="2" title="Partidos"
                              styleClass="top-aligned-columns">
 
-                    <h:outputLabel value="Jornada:" for="jornada"/>
-                    <h:outputText id="jornada" value="#{configBean.jornada.numero}" />
+                    <h:outputLabel value="Jornada:" for="jornada" 
+                                   rendered="#{not empty  configBean.jornada.numero}" />
+                    <h:outputText id="jornada" value="#{configBean.jornada.numero}"
+                                  rendered="#{not empty  configBean.jornada.numero}"/>
+                    <h:outputLabel value="Llave:" for="llave" 
+                                   rendered="#{not empty  configBean.llave.nombre}"/>
+                    <h:outputText id="llave" value="#{configBean.llave.nombre}" 
+                                  rendered="#{not empty configBean.llave.nombre}" />
+                    <h:outputText value="Etiqueta equipo local:" 
+                                  rendered="#{not empty configBean.llave.nombre}"/>
+                    <p:inputText value="#{configBean.partido.equipoLocalText}" 
+                                 rendered="#{not empty configBean.llave.nombre}"
+                                 style="width: 250px"/>
+                    <h:outputLabel value="Equipo Local:" for="eqlocal"/>
+                    <p:selectOneMenu id="eqlocal" value="#{configBean.partido.equipoLocalId}"
+                                     style="width: 250px">
+                        <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
+                        <f:selectItems value="#{configBean.equipoInLiga}"   />
+                    </p:selectOneMenu>
+                    <h:outputText value="Etiqueta equipo visitante:"
+                                  rendered="#{not empty configBean.llave.nombre}"/>
+                    <p:inputText value="#{configBean.partido.equipoVisitanteText}"
+                                 rendered="#{not empty configBean.llave.nombre}"
+                                 style="width: 250px"/>
                     
+                    <h:outputLabel value="Equipo Visitante:" for="eqvisitante"/>
+                    <p:selectOneMenu id="eqvisitante" value="#{configBean.partido.equipoVisitanteId}"
+                                     style="width: 250px">
+                        <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
+                        <f:selectItems value="#{configBean.equipoInLiga}" />
+                    </p:selectOneMenu>
+
+                    <h:outputLabel value="Cancha: " for="cancha"/>
+                    <p:selectOneMenu id="cancha" value="#{configBean.partido.canchaId}"
+                                     style="width: 250px">
+                        <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
+                        <f:selectItems value="#{canchaBean.items}" />
+                    </p:selectOneMenu>
+
                     <h:outputLabel value="Fecha:" for="fecha"/>
                     <p:calendar id="fecha" 
                                 value="#{configBean.partido.fecha}"
                                 navigator="true" 
                                 pattern="dd/MM/yyyy" 
-                                locale="es"/>
-                    
+                                locale="es"
+                                style="width: 250px"/>
+
                     <h:outputLabel value="Hora Inicio:" for="hInicio"/>
                     <p:calendar id="hInicio" 
                                 value="#{configBean.partido.horaInicio}"
                                 navigator="true" 
                                 pattern="hh:mm a"
-                                timeOnly="true"/>
+                                timeOnly="true"
+                                style="width: 250px"/>
 
-                    <h:outputLabel value="Hora Fin:" for="hFin"/>
-                    <p:calendar id="hFin" 
-                                value="#{configBean.partido.horaInicio}"
-                                navigator="true" 
-                                pattern="hh:mm a"
-                                timeOnly="true"/>
-                    
-                    <h:outputLabel value="Equipo Local:" for="eqlocal"/>
-                    <p:selectOneMenu id="eqlocal" value="#{configBean.partido.equipoLocalId}">
-                        <f:selectItems value="#{equipoInLigaBean.itemsEquipo}" />
-                    </p:selectOneMenu>
-
-                                     
-                    
-<!--                    <h:outputLabel value="*Número:" for="numero"/>
-                    <p:inputText id="numero" value="#{configBean.partido.numero}"
-                                 required="true" requiredMessage="Debe colocar un número"
-                                 style="width: 250px">
-                        <f:converter converterId="javax.faces.Integer"/>
-                    </p:inputText>
-
-                    <h:outputLabel value="Nombre:" for="alias"/>
-                    <h:inputText id="alias" value="#{configBean.partido.alias}"
-                                 style="width: 250px"/>
-
-                    <h:outputLabel value="*status:" for="status"/>
-                    <p:selectOneMenu id="status" value="#{configBean.partido.status}"
-                                     converter= "javax.faces.Integer"
-                                     style="width: 250px"
-                                     required="true"
-                                     requiredMessage="Debe seleccionar un valor">
-                        <f:selectItem itemLabel="Activa" itemValue="1"/>
-                        <f:selectItem itemLabel="Inactiva" itemValue="0"/>
-                    </p:selectOneMenu>-->
                 </h:panelGrid>
 
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">

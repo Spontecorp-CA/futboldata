@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte03
  */
-public class EquipoInLigaFacade extends AbstractFacade<EquipoInLiga> implements Serializable{
+public class EquipoInLigaFacade extends AbstractFacade<EquipoInLiga> implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(EquipoInLigaFacade.class);
     private final int ACTIVO = 1;
@@ -45,6 +45,25 @@ public class EquipoInLigaFacade extends AbstractFacade<EquipoInLiga> implements 
             q.setParameter("liga", liga);
             q.setParameter("status", ACTIVO);
             equipoInLiga = (List<EquipoInLiga>) q.getResultList();
+        } catch (Exception e) {
+            logger.debug("Error encontrando EquipoInLiga: " + e.getLocalizedMessage());
+        } finally {
+            em.close();
+        }
+        return equipoInLiga;
+    }
+
+    public List<Equipo> getEquipoInLiga(Competicion liga) {
+        List<Equipo> equipoInLiga = null;
+        EntityManager em = getEntityManager();
+
+        try {
+            String query = "SELECT e.equipoId FROM EquipoInLiga e WHERE  e.competicionId = :liga "
+                    + "AND e.status = :status";
+            Query q = em.createQuery(query, Equipo.class);
+            q.setParameter("liga", liga);
+            q.setParameter("status", ACTIVO);
+            equipoInLiga = (List<Equipo>) q.getResultList();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoInLiga: " + e.getLocalizedMessage());
         } finally {

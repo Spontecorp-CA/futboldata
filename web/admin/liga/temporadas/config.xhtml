@@ -55,13 +55,6 @@
                                 update=":JornadaListForm,:GrupoListForm ,
                                 :FaseListForm, :TemporadaListForm ,:menuPrincipal
                                 :LlaveListForm , :PartidoEnJornadaListForm"/>
-
-                    <p:menuitem value="Llaves" 
-                                disabled="#{configBean.faseTipo != 1}"
-                                actionListener="#{configBean.activateLlaveList()}"
-                                update=":JornadaListForm,:GrupoListForm , 
-                                :FaseListForm, :TemporadaListForm ,:menuPrincipal 
-                                :LlaveListForm , :PartidoEnJornadaListForm"/>
                     
                     <p:menuitem value="Partidos en Jornada" 
                                 disabled="#{empty configBean.jornada.numero}"
@@ -70,6 +63,23 @@
                                 :FaseListForm , :TemporadaListForm , :menuPrincipal 
                                 :LlaveListForm , :JornadaListForm
                                 :PartidoEnJornadaListForm"/>
+
+                    <p:menuitem value="Llaves" 
+                                disabled="#{configBean.faseTipo != 1}"
+                                actionListener="#{configBean.activateLlaveList()}"
+                                update=":JornadaListForm,:GrupoListForm , 
+                                :FaseListForm, :TemporadaListForm ,:menuPrincipal 
+                                :LlaveListForm , :PartidoEnJornadaListForm"/>
+                    
+                    <p:menuitem value="Partidos en Llave" 
+                                disabled="#{empty configBean.llave.nombre}"
+                                actionListener="#{configBean.activatePartidosLlaveList()}"
+                                update=":JornadaListForm , :GrupoListForm , 
+                                :FaseListForm , :TemporadaListForm , :menuPrincipal 
+                                :LlaveListForm , :JornadaListForm
+                                :PartidoEnJornadaListForm"/>
+                    
+                    
 
                 </p:menubar>
             </h:form>

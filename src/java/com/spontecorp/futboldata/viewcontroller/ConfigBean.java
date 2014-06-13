@@ -6,14 +6,17 @@ package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Competicion;
+import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
 import com.spontecorp.futboldata.entity.Llave;
 import com.spontecorp.futboldata.entity.Partido;
+import com.spontecorp.futboldata.entity.StatusPartido;
 import com.spontecorp.futboldata.entity.Temporada;
 import com.spontecorp.futboldata.entity.TemporadaCategoria;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
+import com.spontecorp.futboldata.jpacontroller.EquipoInLigaFacade;
 import com.spontecorp.futboldata.jpacontroller.FaseFacade;
 import com.spontecorp.futboldata.jpacontroller.GrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.JornadaFacade;
@@ -56,7 +59,7 @@ public class ConfigBean implements Serializable {
     private boolean partidoJornadaActivo;
 
     private List<Temporada> temporadaList;
-    
+
     private List<Fase> fases = null;
     private List<Fase> filteredFase;
     private List<Grupo> grupos;
@@ -78,12 +81,12 @@ public class ConfigBean implements Serializable {
     private final GrupoFacade grupoFacade;
     private final JornadaFacade jornadaFacade;
     private final PartidoFacade partidoFacade;
-    
     private final CategoriaFacade categoriaFacade;
     private TemporadaCategoria temporadaCategoria;
+    private final EquipoInLigaFacade equipoInLigaFacade;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
     private List<Jornada> filteredJornada;
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ConfigBean.class);
 
     public ConfigBean() {
@@ -95,6 +98,7 @@ public class ConfigBean implements Serializable {
         this.categoriaFacade = new CategoriaFacade();
         this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
         this.grupoFacade = new GrupoFacade();
+        this.equipoInLigaFacade = new EquipoInLigaFacade();
 
         liga = new Competicion();
         categoriaSource = new ArrayList<Categoria>();
@@ -141,6 +145,9 @@ public class ConfigBean implements Serializable {
     }
 
     public Partido getPartido() {
+        if (partido == null) {
+            partido = new Partido();
+        }
         return partido;
     }
 
@@ -165,6 +172,7 @@ public class ConfigBean implements Serializable {
 
     public void activateFaseList() {
         activateGrupoList();
+        activateLlaveList();
         faseTipo = -1;
         fases = null;
         llave = null;
@@ -197,10 +205,21 @@ public class ConfigBean implements Serializable {
         faseActiva = false;
         llaveActiva = true;
         llaves = null;
+        partidoJornadaActivo = false;
+
     }
-    
-    public void activatePartidosJornadaList(){
+
+    public void activatePartidosJornadaList() {
+        partidos = getPartidos(jornada);
         jornadaActiva = false;
+        partidoJornadaActivo = true;
+    }
+
+    public void activatePartidosLlaveList() {
+        jornada = null;
+        partidos = getPartidos(llave);
+        partidos = null;
+        llaveActiva = false;
         partidoJornadaActivo = true;
     }
 
@@ -246,7 +265,7 @@ public class ConfigBean implements Serializable {
     public boolean isPartidoJornadaActivo() {
         return partidoJornadaActivo;
     }
-    
+
     /**
      * ******************************Codigo de la vista de
      * temporada****************
@@ -509,10 +528,11 @@ public class ConfigBean implements Serializable {
         return "/admin/liga/fase/list?faces-redirect=true";
     }
 
-
     /**
-     * ********************Grupo Bean ***********************************
-     * @return 
+     * ********************Grupo Bean
+     *
+     ***********************************
+     * @return
      */
     public List<Grupo> getGrupos() {
         if (grupos == null) {
@@ -694,28 +714,28 @@ public class ConfigBean implements Serializable {
             logger.debug("Error al crear LLave :", e);
         }
     }
-    
+
     /*
      * Manejo de partidos
      */
-    public List<Partido> getPartidos(){
+    public List<Partido> getPartidos() {
         return null;
     }
-    
-    public List<Partido> getPartidos(Jornada jornada){
-        if(partidos == null){
+
+    public List<Partido> getPartidos(Jornada jornada) {
+        if (partidos == null) {
             partidos = partidoFacade.findPartidos(jornada);
         }
         return partidos;
     }
-    
+
     public List<Partido> getPartidos(Llave llave) {
         if (partidos == null) {
             partidos = partidoFacade.findPartidos(llave);
         }
         return partidos;
     }
-    
+
     private void recreateModelPartido() {
         partidos = null;
     }
@@ -727,26 +747,29 @@ public class ConfigBean implements Serializable {
     public void setFilteredPartidos(List<Partido> filteredPartidos) {
         this.filteredPartidos = filteredPartidos;
     }
-    
-    public void prepareCreatePartido(){
+
+    public void prepareCreatePartido() {
         partido = new Partido();
     }
-    
-    public void prepareEditPartido(){
-    }
-    
-    public void createPartidoXJornada(){
-        try {
-            
-        } catch (Exception e) {
-        }
-    }
-    
-    public void createPartidoXLlave() {
-        try {
 
+    public void prepareEditPartido() {
+    }
+
+    public void createPartido() {
+        try {
+            if (jornada != null) {
+                partido.setJornadaId(jornada);
+            } else if (llave != null) {
+                partido.setLlaveId(llave);
+            }
+            partidoFacade.create(partido);
+            Util.addSuccessMessage("Partido creado con éxito");
         } catch (Exception e) {
         }
+    }
+
+    public List<Equipo> getEquipoInLiga() {
+        return equipoInLigaFacade.getEquipoInLiga(liga);
     }
 
 }

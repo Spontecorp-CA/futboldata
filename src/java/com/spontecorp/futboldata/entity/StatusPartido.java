@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
@@ -18,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -33,14 +33,18 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "StatusPartido.findById", query = "SELECT s FROM StatusPartido s WHERE s.id = :id"),
     @NamedQuery(name = "StatusPartido.findByStatus", query = "SELECT s FROM StatusPartido s WHERE s.status = :status")})
 public class StatusPartido implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "value")
+    private Integer value;
+    @Size(max = 45)
+    @Column(name = "nombre")
+    private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusPartidoId")
     private Collection<Partido> partidoCollection;
 
@@ -59,12 +63,20 @@ public class StatusPartido implements Serializable {
         this.id = id;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getValue() {
+        return value;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @XmlTransient
@@ -98,7 +110,7 @@ public class StatusPartido implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.StatusPartido[ id=" + id + " ]";
+        return nombre;
     }
-    
+
 }
