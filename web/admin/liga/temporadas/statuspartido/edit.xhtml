@@ -16,6 +16,13 @@
                                  title="Nombre del Status de Partido" required="true" 
                                  requiredMessage="Debe colocar un nombre para el  Status de Partido"
                                  style="width: 240px"/>
+                    <p:outputLabel value="Status: " for="status" />
+                    <p:selectOneMenu id="status" value="#{statusPartidoBean.selected.status}"
+                                     converter= "javax.faces.Integer"
+                                     style="width: 240px">
+                        <f:selectItem itemLabel="Activo" itemValue="1"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                    </p:selectOneMenu>
                 </h:panelGrid>
                 <p:commandButton actionListener="#{statusPartidoBean.edit}" 
                                  value="OK" update="display,:StatusPartidoListForm:items,:growlAdmin" 

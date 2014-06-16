@@ -84,6 +84,7 @@ public class StatusPartidoBean implements Serializable{
         if (!existeNombreStatus(selected.getNombre())) {
             List<StatusPartido> statusEnBD = statusPartidoFacade.findAll();
             int lastValue = statusEnBD.get(statusEnBD.size() - 1).getValue();
+            selected.setStatus(Util.ACTIVO);
             selected.setValue(lastValue + 1);
             persist(PersistAction.CREATE, "Status de Partido creado con éxito");
             if (!Util.isValidationFailed()) {

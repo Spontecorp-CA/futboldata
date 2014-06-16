@@ -2,12 +2,11 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,15 +14,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author sponte03
+ * @author jgcastillo
  */
 @Entity
 @Table(name = "status_partido")
@@ -32,9 +30,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "StatusPartido.findAll", query = "SELECT s FROM StatusPartido s"),
     @NamedQuery(name = "StatusPartido.findById", query = "SELECT s FROM StatusPartido s WHERE s.id = :id"),
     @NamedQuery(name = "StatusPartido.findByValue", query = "SELECT s FROM StatusPartido s WHERE s.value = :value"),
-    @NamedQuery(name = "StatusPartido.findByNombre", query = "SELECT s FROM StatusPartido s WHERE s.nombre = :nombre")})
+    @NamedQuery(name = "StatusPartido.findByNombre", query = "SELECT s FROM StatusPartido s WHERE s.nombre = :nombre"),
+    @NamedQuery(name = "StatusPartido.findByStatus", query = "SELECT s FROM StatusPartido s WHERE s.status = :status")})
 public class StatusPartido implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,14 +44,21 @@ public class StatusPartido implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "statusPartidoId")
-    private Collection<Partido> partidoCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "status")
+    private int status;
 
     public StatusPartido() {
     }
 
     public StatusPartido(Integer id) {
         this.id = id;
+    }
+
+    public StatusPartido(Integer id, int status) {
+        this.id = id;
+        this.status = status;
     }
 
     public Integer getId() {
@@ -80,13 +85,12 @@ public class StatusPartido implements Serializable {
         this.nombre = nombre;
     }
 
-    @XmlTransient
-    public Collection<Partido> getPartidoCollection() {
-        return partidoCollection;
+    public int getStatus() {
+        return status;
     }
 
-    public void setPartidoCollection(Collection<Partido> partidoCollection) {
-        this.partidoCollection = partidoCollection;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override
@@ -113,5 +117,5 @@ public class StatusPartido implements Serializable {
     public String toString() {
         return nombre;
     }
-
+    
 }
