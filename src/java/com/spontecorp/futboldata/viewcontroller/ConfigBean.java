@@ -7,6 +7,7 @@ package com.spontecorp.futboldata.viewcontroller;
 import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Equipo;
+import com.spontecorp.futboldata.entity.EquipoEnGrupo;
 import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
@@ -15,6 +16,7 @@ import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.entity.Temporada;
 import com.spontecorp.futboldata.entity.TemporadaCategoria;
 import com.spontecorp.futboldata.jpacontroller.CategoriaFacade;
+import com.spontecorp.futboldata.jpacontroller.EquipoEnGrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoInLigaFacade;
 import com.spontecorp.futboldata.jpacontroller.FaseFacade;
 import com.spontecorp.futboldata.jpacontroller.GrupoFacade;
@@ -26,6 +28,7 @@ import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -72,6 +75,10 @@ public class ConfigBean implements Serializable {
     private List<Llave> filteredLlaves;
     private List<Partido> partidos;
     private List<Partido> filteredPartidos;
+    private List<Jornada> filteredJornada;
+    private List<Equipo> equipos;
+    private List<Equipo> equiposEli;
+    private List<EquipoEnGrupo> equipoEnGrupo;
     private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private DualListModel<Categoria> categorias;
 
@@ -86,7 +93,7 @@ public class ConfigBean implements Serializable {
     private TemporadaCategoria temporadaCategoria;
     private final EquipoInLigaFacade equipoInLigaFacade;
     private final TemporadaCategoriaFacade temporadaCategoriaFacade;
-    private List<Jornada> filteredJornada;
+    private final EquipoEnGrupoFacade equipoEnGrupoFacade;
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigBean.class);
 
@@ -97,6 +104,7 @@ public class ConfigBean implements Serializable {
         this.jornadaFacade = new JornadaFacade();
         this.partidoFacade = new PartidoFacade();
         this.categoriaFacade = new CategoriaFacade();
+        this.equipoEnGrupoFacade =  new EquipoEnGrupoFacade();
         this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
         this.grupoFacade = new GrupoFacade();
         this.equipoInLigaFacade = new EquipoInLigaFacade();
@@ -112,6 +120,25 @@ public class ConfigBean implements Serializable {
 
     public String returnAdminPage() {
         return "/admin/adminPage";
+    }
+
+    public List<Equipo> getEquiposEli() {
+        return equiposEli;
+    }
+
+    public void setEquiposEli(List<Equipo> equiposEli) {
+        this.equiposEli = equiposEli;
+    }
+
+    public List<Equipo> getEquipos() {
+        return equipos;
+    }
+
+    public void setEquipos(List<Equipo> equipos) {
+        this.equipos = equipos;
+        for (Equipo equi : equipos) {
+            logger.debug("Equipo en la lista:" + equi.getNombre());
+        }
     }
 
     public int getFaseTipo() {
@@ -549,6 +576,8 @@ public class ConfigBean implements Serializable {
 
     private void recreateModelGrupo() {
         grupos = null;
+        equipos = new ArrayList<Equipo>();
+        equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
     }
 
     public List<Grupo> getFilteredGrupos() {
@@ -560,16 +589,41 @@ public class ConfigBean implements Serializable {
     }
 
     public void prepareCreateGrupo() {
+        equiposEli = new ArrayList<Equipo>();
+        equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
+        equipos = new ArrayList<Equipo>();
         grupo = new Grupo();
 
     }
 
     public void prepareEditGrupo() {
+        equiposEli = new ArrayList<Equipo>();
+        equipos = new ArrayList<Equipo>();
+        equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
+        for (EquipoEnGrupo equiG : grupo.getEquipoEnGrupoCollection()) {
+            equipos.add(equiG.getEquipoId());
+        }
 
     }
 
     public void editGrupo() {
+        EquipoEnGrupo equipoEnGrupoTemp;
         logger.debug("Esta editando un Grupo");
+
+        for (EquipoEnGrupo equiG : grupo.getEquipoEnGrupoCollection()) {
+            equipos.remove(equiG.getEquipoId());
+        }
+        for (Equipo equi : equipos) {
+            equipoEnGrupoTemp = new EquipoEnGrupo();
+            equipoEnGrupoTemp.setEquipoId(equi);
+            equipoEnGrupoTemp.setGrupoId(grupo);
+            equipoEnGrupo.add(equipoEnGrupoTemp);
+        }
+        for (Equipo equiEli : equiposEli) {
+            logger.debug("Equipo que se van a eliminar: " + equiEli.getNombre());
+
+        }
+        grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
         grupoFacade.edit(grupo);
         recreateModelGrupo();
         Util.addSuccessMessage("Se edito exitosamente el Grupo");
@@ -577,11 +631,19 @@ public class ConfigBean implements Serializable {
 
     public void createGrupo() {
         logger.debug("hola hola hola ");
+        EquipoEnGrupo equipoEnGrupoTemp;
         try {
             if (grupoFacade.findGrupoXFase(fase, grupo.getNombre()) != null) {
                 Util.addErrorMessage("El grupo ya se encuentra Registrado ");
 
             } else {
+                for (Equipo equi : equipos) {
+                    equipoEnGrupoTemp = new EquipoEnGrupo();
+                    equipoEnGrupoTemp.setEquipoId(equi);
+                    equipoEnGrupoTemp.setGrupoId(grupo);
+                    equipoEnGrupo.add(equipoEnGrupoTemp);
+                }
+                grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
                 grupo.setFaseId(fase);
                 grupoFacade.create(grupo);
                 Util.addSuccessMessage("Se creo exitosamente el Fase");

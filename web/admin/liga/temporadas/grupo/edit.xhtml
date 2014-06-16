@@ -26,6 +26,10 @@
                     <p:inputText id="nombre" value="#{configBean.grupo.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
+                    <p:outputLabel value="Equipos en Grupo" />
+                    <p:selectManyMenu value="#{configBean.equipos}" converter="equipo">
+                        <f:selectItems value="#{configBean.equipoInLiga}"  />
+                    </p:selectManyMenu>
 
                     <h:outputLabel value="* status:" for="status"/>
                     <p:selectOneMenu id="status" value="#{configBean.grupo.status}"

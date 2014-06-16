@@ -200,7 +200,7 @@ public class EquipoBean implements Serializable {
         return host;
     }
 
-    @FacesConverter(forClass = Equipo.class)
+    @FacesConverter(forClass = Equipo.class,value = "equipo")
     public static class EquipoControllerConverter implements Converter {
 
         @Override

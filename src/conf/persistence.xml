@@ -53,6 +53,7 @@
     <class>com.spontecorp.futboldata.entity.EquipoHasJugador</class>
     <class>com.spontecorp.futboldata.entity.Afiliacion</class>
     <class>com.spontecorp.futboldata.entity.EquipoInLiga</class>
+    <class>com.spontecorp.futboldata.entity.EquipoEnGrupo</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
