@@ -73,8 +73,7 @@
                                 :EquipoListForm:editButton :EquipoListForm:addButton,
                                 :EquipoListForm:addStaffButton"/>
 
-                        <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre"
-                                  filterMatchMode="exact">
+                        <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre">
                             <f:facet name="filter">
                                 <p:selectOneMenu onchange="PF('equiposTable').filter()" >
                                     <f:selectItems value="#{equipoBean.clubOptions}" />

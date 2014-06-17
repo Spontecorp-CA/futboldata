@@ -50,7 +50,8 @@
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:dataTable id="jugadores" var="equipoHasJugador"  value="#{equipoHasJugadorBean.items}"
+                <p:dataTable id="jugadores" var="equipoHasJugador" 
+                             value="#{equipoHasJugadorBean.items}"
                              rowKey="#{equipoHasJugador.id}"
                              selection="#{equipoHasJugadorBean.equipoHasJugador}" 
                              selectionMode="single"
@@ -86,16 +87,15 @@
                         <h:outputText value="#{equipoHasJugador.jugadorId.posicionId.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="Fecha Entrada" sortBy="fechaEntrada"
-                              filterBy="fechaEntrada">
+                    <p:column headerText="Fecha Entrada" sortBy="fechaEntrada">
                         <h:outputText  value="#{equipoHasJugador.fechaEntrada}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
 
                     </p:column>
 
-                    <p:column headerText="Fecha Salida" sortBy="fechaSalida" 
-                              filterBy="fechaSalida">
+                    <p:column headerText="Fecha Salida"
+                              sortBy="fechaSalida">
                         <h:outputText value="#{equipoHasJugador.fechaSalida}"/>
                     </p:column>
 
