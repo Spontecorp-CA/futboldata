@@ -611,7 +611,7 @@ public class ConfigBean implements Serializable {
         logger.debug("Esta editando un Grupo");
 
         for (EquipoEnGrupo equiG : grupo.getEquipoEnGrupoCollection()) {
-            equipos.remove(equiG.getEquipoId());
+            equipoEnGrupoFacade.remove(equiG);
         }
         for (Equipo equi : equipos) {
             equipoEnGrupoTemp = new EquipoEnGrupo();
@@ -619,10 +619,7 @@ public class ConfigBean implements Serializable {
             equipoEnGrupoTemp.setGrupoId(grupo);
             equipoEnGrupo.add(equipoEnGrupoTemp);
         }
-        for (Equipo equiEli : equiposEli) {
-            logger.debug("Equipo que se van a eliminar: " + equiEli.getNombre());
 
-        }
         grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
         grupoFacade.edit(grupo);
         recreateModelGrupo();

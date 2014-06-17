@@ -13,7 +13,7 @@
                 <p:commandButton id="createButton" icon="ui-icon-plus"  
                                  value="Crear Grupo" 
                                  actionListener="#{configBean.prepareCreateGrupo}"
-                                 update=":GrupoCreateForm"
+                                 update=":GrupoCreateForm :GrupoListForm:editButton"
                                  oncomplete="PF('GrupoCreateDialog').show()"/>
                 <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                  value="Editar Grupo" 
