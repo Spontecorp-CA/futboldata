@@ -20,6 +20,11 @@
                                  update=":PartidoEditForm"                                        
                                  oncomplete="PF('PartidoEditDialog').show()" 
                                  disabled="#{empty configBean.partido}"/>
+                <p:commandButton id="detalleButton" icon="ui-icon-pencil" 
+                                 value="Detalles Partido" 
+                                 action="#{resultadoBean.gotoResultadoPage(configBean.partido)}"                                        
+                                 disabled="#{empty configBean.partido}"/>
+
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
