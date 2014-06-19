@@ -16,21 +16,22 @@
 
             <p:fieldset style="width: 85%" legend="Agregar Equipo">                
 
-                <p:dataTable id="equipo" var="equipo"  value="#{equipoInLigaBean.itemsEquipo}"
+                <p:dataTable id="equipos" var="equipo"  value="#{equipoInLigaBean.itemsEquipo}"
                              rowKey="#{equipo.id}"
                              selection="#{equipoInLigaBean.equipo}" 
                              selectionMode="single"
                              paginator="true" rows="10"
                              filteredValue="#{equipoInLigaBean.filteredEquipo}" > 
-                    <p:ajax event="rowSelect" update=":EquipoEditForm:editButton"  />
+                    <p:ajax event="rowSelect"
+                            update=":EquipoEditForm:editButton "   />
                     <p:ajax event="rowUnselect" update=":EquipoEditForm:editButton" />
 
                     <f:facet name="header">
                         Lista de Equipos para agregar a la Liga
                     </f:facet>
                     <p:column headerText="Nombre" 
-                              sortBy="personaId.nombre" 
-                              filterBy="personaId.nombre">
+                              sortBy="nombre" 
+                              filterBy="nombre">
                         <h:outputText value="#{equipo.nombre}"/>
                     </p:column>
 

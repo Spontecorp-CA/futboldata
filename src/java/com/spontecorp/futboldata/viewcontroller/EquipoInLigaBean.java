@@ -60,7 +60,6 @@ public class EquipoInLigaBean implements Serializable {
     public EquipoInLiga getEquipoInLiga() {
         if (equipoInLiga == null) {
             equipoInLiga = new EquipoInLiga();
-            initializeEmbeddableKey();
             setEmbeddableKeys();
         }
         return equipoInLiga;
@@ -176,9 +175,9 @@ public class EquipoInLigaBean implements Serializable {
         //      equipoInLiga.setPersonaId(liga);
     }
 
-    protected void initializeEmbeddableKey() {
-        liga = new Competicion();
-    }
+//    protected void initializeEmbeddableKey() {
+//        liga = new Competicion();
+//    }
 
     public void recreateModel() {
         equipoInLiga = new EquipoInLiga();
@@ -195,7 +194,7 @@ public class EquipoInLigaBean implements Serializable {
         if (controllerEquipoInLiga.getEquipoInLiga(equipo, liga) == null) {
 
             try {
-                equipoInLiga.setEquipoId(this.equipo);
+                equipoInLiga.setEquipoId(equipo);
                 logger.debug("Nombre del liga ");
                 equipoInLiga.setCompeticionId(liga);
                 logger.debug("Nombre del Equipo " + equipo.getNombre());

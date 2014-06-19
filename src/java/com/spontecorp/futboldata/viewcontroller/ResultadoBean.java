@@ -7,11 +7,13 @@ package com.spontecorp.futboldata.viewcontroller;
 import com.spontecorp.futboldata.entity.Convocado;
 import com.spontecorp.futboldata.entity.Convocatoria;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
+import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.jpacontroller.ConvocatoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -32,6 +34,9 @@ public class ResultadoBean implements Serializable {
     private EquipoHasJugador equipoHasJugador;
     private final PartidoFacade partidoFacade;
     private final ConvocatoriaFacade convocatoriaFacade;
+    
+    private List<Jugador> jugadorEquipoLocal;
+    private List<Jugador> convocadoEquipoLocal;
 
     /**
      * Creates a new instance of ResultadoBean
@@ -67,6 +72,23 @@ public class ResultadoBean implements Serializable {
 
         }
         return convocatoriaVisitante;
+    }
+
+    public List<Jugador> getJugadorEquipoLocal() {
+
+        return jugadorEquipoLocal;
+    }
+
+    public void setJugadorEquipoLocal(List<Jugador> jugadorEquipoLocal) {
+        this.jugadorEquipoLocal = jugadorEquipoLocal;
+    }
+
+    public List<Jugador> getConvocadoEquipoLocal() {
+        return convocadoEquipoLocal;
+    }
+
+    public void setConvocadoEquipoLocal(List<Jugador> convocadoEquipoLocal) {
+        this.convocadoEquipoLocal = convocadoEquipoLocal;
     }
 
     

@@ -58,39 +58,47 @@
                     </p:tab>
 
                     <p:tab title="Detalles:">  
-                    <p:panelGrid columns="2" >
-                        <p:dataTable value="#{resultadoBean.partido.equipoLocalId.equipoHasJugadorCollection}"
-                                     var="equipoHasJugador" 
-                                     rowIndexVar="equipoHasJugador.id"
-                                     selection="equipoHasJugador" style="width: 300px"
-                                     scrollWidth="300"  scrollHeight="300" scrollable="true" >
-                            <f:facet name="header">
-                                Jugadores (Equipo Visitante)
-                            </f:facet>
-                            <p:column headerText="Nombre:">
-                                <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Apellido:">
-                                <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
-                            </p:column>                             
-                        </p:dataTable>
+                        <h1>
+                            <p:panelGrid columns="2" style="width:auto" >
+                                <p:dataTable  value="#{resultadoBean.partido.equipoLocalId.equipoHasJugadorCollection}"
+                                              var="equipoHasJugador" 
+                                              rowKey="#{equipoHasJugador.id}"
+                                              rowIndexVar="equipoHasJugador.id"
+                                              selection="#{resultadoBean.equipoHasJugador}" style="width:auto"
+                                              scrollHeight="300" scrollable="true" 
+                                              selectionMode="single">
+                                    <f:facet name="header">
+                                        Jugadores (Equipo Visitante)
+                                    </f:facet>
+                                    <p:column headerText="Nombre:">
+                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Apellido:">
+                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                                    </p:column>                             
+                                </p:dataTable>
 
-                        <p:dataTable value="#{resultadoBean.convocatoriaLocal.convocadoCollection}"
-                                     var="convocado" 
-                                     rowIndexVar="convocado.id"
-                                     selection="convocado" style="width: 300px"
-                                     scrollWidth="300"  scrollHeight="300" scrollable="true" >
-                            <f:facet name="header">
-                                Convocados (Equipo Visitante)
-                            </f:facet>
-                            <p:column headerText="Nombre:">
-                                <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Apellido:">
-                                <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
-                            </p:column>                             
-                        </p:dataTable>
-                    </p:panelGrid>
+                                <p:dataTable id="convocados"
+                                             value="#{resultadoBean.convocatoriaLocal.convocadoCollection}"
+                                             var="convocado" 
+                                             rowKey="#{convocatoriaLocal.id}"
+                                             rowIndexVar="convocado.id"
+                                             selection="#{resultadoBean.convocatoriaLocal}" style="width: auto"
+                                             scrollHeight="300" scrollable="true" 
+                                             selectionMode="single">
+                                    <f:facet name="header">
+                                        Convocados (Equipo Visitante)
+                                    </f:facet>
+                                    <p:column headerText="Nombre:">
+                                        <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Apellido:">
+                                        <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
+                                    </p:column>                             
+                                </p:dataTable>
+
+                            </p:panelGrid>
+                        </h1> 
                     </p:tab>
                 </p:accordionPanel>
             </p:fieldset>
