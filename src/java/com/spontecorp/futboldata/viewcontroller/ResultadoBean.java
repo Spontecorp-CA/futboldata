@@ -71,9 +71,15 @@ public class ResultadoBean implements Serializable {
     public void editConvocado(){
         if(convocado.getConvocatoriaId()== convocatoriaLocal){
             editConvocado(convocatoriaLocal, convocadoEquipoLocal);
+            indexTab = 1;
         }else{
             editConvocado(convocatoriaVisitante, convocadoEquipoVisitante);
+            indexTab = 2;
         }
+    }
+    public void removeConvocado(){
+        convocadoFacade.remove(convocado);
+        Util.addSuccessMessage("Se saco el Jugador del partido");
     }
     
     public void editConvocado(Convocatoria convocatoria ,List<Convocado> convocados) {

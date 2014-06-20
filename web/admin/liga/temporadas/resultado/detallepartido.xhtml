@@ -100,6 +100,8 @@
                                     <f:facet name="header">
                                         Convocados (Equipo Local)
                                     </f:facet>
+                                    <f:ajax event="rowSelect" render="deleteButton" />
+                                    <f:ajax event="rowUnselect" render="deleteButton" />
                                     <p:column headerText="Nombre:">
                                         <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
                                     </p:column>
@@ -107,10 +109,10 @@
                                         <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
                                     </p:column>    
                                     <f:facet name="footer">
-                                        <p:commandButton id="addButton"   icon="ui-icon-ok" 
+                                        <p:commandButton id="deleteButton"   icon="ui-icon-ok" 
                                                          value="Sacar" 
                                                          update=":ConvocadoEditDlg"
-                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
+                                                         disabled="#{empty resultadoBean.convocado.convocatoriaId}"
                                                          oncomplete="PF('ConvocadoEditDialog').show()" />
                                     </f:facet>
                                 </p:dataTable>
@@ -161,6 +163,8 @@
                                     <f:facet name="header">
                                         Convocados (Equipo Visitante)
                                     </f:facet>
+                                    <f:ajax event="rowSelect" render="deleteButtonV" />
+                                    <f:ajax event="rowUnselect" render="deleteButtonV" />
                                     <p:column headerText="Nombre:">
                                         <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
                                     </p:column>
@@ -168,10 +172,10 @@
                                         <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
                                     </p:column>    
                                     <f:facet name="footer">
-                                        <p:commandButton id="addButton"   icon="ui-icon-ok" 
+                                        <p:commandButton id="deleteButtonV"   icon="ui-icon-ok" 
                                                          value="Sacar" 
                                                          update=":ConvocadoEditDlg"
-                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
+                                                         disabled="#{empty resultadoBean.convocado.convocatoriaId}"
                                                          oncomplete="PF('ConvocadoEditDialog').show()" />
                                     </f:facet>
                                 </p:dataTable>
