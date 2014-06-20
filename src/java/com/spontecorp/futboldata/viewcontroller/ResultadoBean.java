@@ -7,7 +7,6 @@ package com.spontecorp.futboldata.viewcontroller;
 import com.spontecorp.futboldata.entity.Convocado;
 import com.spontecorp.futboldata.entity.Convocatoria;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
-import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.jpacontroller.ConvocatoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
