@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte03
  */
-public class ConvocatoriaFacade extends AbstractFacade<Convocatoria> implements Serializable{
+public class ConvocatoriaFacade extends AbstractFacade<Convocatoria> implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(ConvocatoriaFacade.class);
     private final int ACTIVO = 1;
