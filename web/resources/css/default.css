@@ -67,8 +67,8 @@ ul,li {
     margin-left: auto;
     margin-right: auto;
     background-image: url(#{resource['images:background_admin.png']});
-background-repeat: no-repeat;
-height: 100%;
+    background-repeat: no-repeat;
+    height: 100%;
 }
 
 
@@ -91,6 +91,7 @@ height: 100%;
 .admin_message ul{
     list-style-image: url(#{resource['images:bullet_green.png']});
 }
+
 
 /*.ui-widget-content , .ui-panelgrid  {
     border: none;

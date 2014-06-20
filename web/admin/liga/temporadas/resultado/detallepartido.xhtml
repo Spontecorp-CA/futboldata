@@ -24,31 +24,35 @@
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <h3>
-                    <p:panelGrid id="dataGrip" columns="8"  >
 
-                        <h:outputText value="Equipo Local:"/>
-                        <h:outputText   value="#{resultadoBean.partido.equipoLocalId.nombre}"/>
+                <h:panelGroup>
+                    <p:panelGrid id="datagrid" columns="3" styleClass="datagrid" style="border:none;margin:0 auto;">
+                        <h:outputLabel value="N° Partido:" for="numero" style="width:500px;"/>
+                        <h:outputLabel value="Local:" for="local"/>
+                        <h:outputLabel value="Visitante:" for="visitante"/>
 
+                        <h:outputText id="numero" value="#"/>
+                        <h:outputText id="local"  value="#{resultadoBean.partido.equipoLocalId.nombre}"/>
+                        <h:outputText id="visitante" value="#{resultadoBean.partido.equipoVisitanteId.nombre}"/>
 
-                        <h:outputText value="Equipo Visitante:" />
-                        <h:outputText   value="#{resultadoBean.partido.equipoVisitanteId.nombre}"/>
+                        <h:outputLabel value="Fecha:" for="fecha"/>
+                        <h:outputLabel value="Hora:" for="hora"/>
+                        <h:outputLabel value="Ciudad/Lugar:" for="lugar"/>
 
-
-
-                        <h:outputText value="Fecha:"/>
-                        <h:outputFormat   value="#{resultadoBean.partido.fecha}" >
+                        <h:outputFormat id="fecha" value="#{resultadoBean.partido.fecha}" >
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputFormat>
-                        <h:outputText value="Hora:"/>
-                        <h:outputFormat   value="#{resultadoBean.partido.horaInicio}" >
+
+                        <h:outputFormat id="hora" value="#{resultadoBean.partido.horaInicio}" >
                             <f:convertDateTime pattern="hh:mm a"
                                                locale="es_VE"/>
                         </h:outputFormat>
-                        <h:outputText   value="#{resultadoBean.partido.canchaId.nombre}"/>
+                        <h:outputText id="lugar" value="#{resultadoBean.partido.canchaId.direccionId.ciudadId}/#{resultadoBean.partido.canchaId.nombre}"/>
+
                         <h:outputText   value="#{resultadoBean.partido.statusPartidoId.nombre}"/> 
 
-                    </p:panelGrid> </h3>
+                    </p:panelGrid>
+                </h:panelGroup>                
                 <p:accordionPanel activeIndex="#{resultadoBean.indexTab}"   >
                     <p:tab title="Resultados:">
                         <h:outputText value=" Goles de local: "/>
