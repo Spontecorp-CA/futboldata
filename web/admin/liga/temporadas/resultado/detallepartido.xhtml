@@ -108,8 +108,7 @@
                                     </p:column>    
                                     <f:facet name="footer">
                                         <p:commandButton id="addButton"   icon="ui-icon-ok" 
-                                                         value="Agregar" 
-                                                         actionListener="#{resultadoBean.preEditConvocado}"
+                                                         value="Sacar" 
                                                          update=":ConvocadoEditDlg"
                                                          disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
                                                          oncomplete="PF('ConvocadoEditDialog').show()" />
@@ -144,7 +143,7 @@
                                     <f:facet name="footer">
                                         <p:commandButton id="addButtonV" process="jugadoresV"  icon="ui-icon-ok" 
                                                          value="Agregar" 
-                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaLocal)}"
+                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaVisitante)}"
                                                          update=":ConvocadoEditDlg"
                                                          disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
                                                          oncomplete="PF('ConvocadoEditDialog').show()" />
@@ -170,8 +169,7 @@
                                     </p:column>    
                                     <f:facet name="footer">
                                         <p:commandButton id="addButton"   icon="ui-icon-ok" 
-                                                         value="Agregar" 
-                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaVisitante)}"
+                                                         value="Sacar" 
                                                          update=":ConvocadoEditDlg"
                                                          disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
                                                          oncomplete="PF('ConvocadoEditDialog').show()" />
