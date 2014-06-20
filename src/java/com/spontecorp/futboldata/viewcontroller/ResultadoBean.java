@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
 public class ResultadoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    private int indexTab;
     private Partido partido;
     private Convocado convocado;
     private Convocatoria convocatoriaVisitante;
@@ -43,6 +43,9 @@ public class ResultadoBean implements Serializable {
 
     private List<EquipoHasJugador> jugadorEquipoLocal;
     private List<Convocado> convocadoEquipoLocal;
+    
+    private List<EquipoHasJugador> jugadorEquipoVisitante;
+    private List<Convocado> convocadoEquipoVisitante;
 
     private static final Logger logger = LoggerFactory.getLogger(ResultadoBean.class);
 
@@ -56,33 +59,36 @@ public class ResultadoBean implements Serializable {
         equipoHasJugadorFacade = new EquipoHasJugadorFacade();
     }
 
-    public void preEditConvocado() {
+    public void preEditConvocado(Convocatoria convocatoria) {
         convocado = new Convocado();
         convocado.setJugadorId(equipoHasJugador.getJugadorId());
-        convocado.setConvocatoriaId(convocatoriaLocal);
+        convocado.setConvocatoriaId(convocatoria);
         convocado.setCamiseta(equipoHasJugador.getJugadorId().getCamiseta());
         convocado.setPosicionId(equipoHasJugador.getJugadorId().getPosicionId());
 
     }
 
-    public void editConvocado() {
+    public void editConvocado(){
+        if(convocado.getConvocatoriaId()== convocatoriaLocal){
+            editConvocado(convocatoriaLocal, convocadoEquipoLocal);
+        }else{
+            editConvocado(convocatoriaVisitante, convocadoEquipoVisitante);
+        }
+    }
+    
+    public void editConvocado(Convocatoria convocatoria ,List<Convocado> convocados) {
         try {
-            if (convocadoFacade.getConvocado(convocado.getJugadorId(), convocatoriaLocal) == null) {
+            if (convocadoFacade.getConvocado(convocado.getJugadorId(),convocatoria) == null) {
                 convocadoFacade.edit(convocado);
                 Util.addSuccessMessage("Se agrego el convocado con exito");
-                convocadoEquipoLocal.add(convocado);
-
+                convocados.add(convocado);
             }else{
                 Util.addErrorMessage("Ya se agrego el Jugador a la Convocatoria");
-            }
-            
-
+            }          
         } catch (Exception e) {
-
             Util.addErrorMessage("Error al agregar Convocado");
             logger.error("Error al agregar Convocado" + e.toString());
         }
-
     }
 
     public Convocatoria getConvocatoriaLocal() {
@@ -98,13 +104,13 @@ public class ResultadoBean implements Serializable {
         }
         return convocatoriaLocal;
     }
-
+    
     public Convocatoria getConvocatoriaVisitante() {
         if (convocatoriaVisitante == null) {
             convocatoriaVisitante = convocatoriaFacade.getConvocatoria(partido, partido.getEquipoVisitanteId());
             if (convocatoriaVisitante == null) {
                 convocatoriaVisitante = new Convocatoria();
-                convocatoriaVisitante.setEquipoId(partido.getEquipoLocalId());
+                convocatoriaVisitante.setEquipoId(partido.getEquipoVisitanteId());
                 convocatoriaVisitante.setPartidoId(partido);
                 convocatoriaFacade.edit(convocatoriaVisitante);
             }
@@ -132,7 +138,6 @@ public class ResultadoBean implements Serializable {
     }
 
     public void setJugadorEquipoLocal(List<EquipoHasJugador> jugadorEquipoLocal) {
-
         this.jugadorEquipoLocal = jugadorEquipoLocal;
     }
 
@@ -146,6 +151,28 @@ public class ResultadoBean implements Serializable {
     public void setConvocadoEquipoLocal(List<Convocado> convocadoEquipoLocal) {
         this.convocadoEquipoLocal = convocadoEquipoLocal;
     }
+    
+        public List<EquipoHasJugador> getJugadorEquipoVisitante() {
+        if (jugadorEquipoVisitante == null) {
+            this.jugadorEquipoVisitante =equipoHasJugadorFacade.getListEquipoHasJugador(partido.getEquipoVisitanteId());
+        }
+        return jugadorEquipoVisitante;
+    }
+
+    public void setJugadorEquipoVisitante(List<EquipoHasJugador> jugadorEquipoVisitante) {
+        this.jugadorEquipoVisitante = jugadorEquipoVisitante;
+    }
+
+    public List<Convocado> getConvocadoEquipoVisitante() {
+        if (convocadoEquipoVisitante == null) {
+            convocadoEquipoVisitante = (List<Convocado>) getConvocatoriaVisitante().getConvocadoCollection();
+        }
+        return convocadoEquipoVisitante;
+    }
+
+    public void setConvocadoEquipoVisitante(List<Convocado> convocadoEquipoVisitante) {
+        this.convocadoEquipoVisitante = convocadoEquipoVisitante;
+    }
 
     public EquipoHasJugador getEquipoHasJugador() {
         return equipoHasJugador;
@@ -158,6 +185,15 @@ public class ResultadoBean implements Serializable {
     public Partido getPartido() {
         return partido;
     }
+
+    public int getIndexTab() {
+        return indexTab;
+    }
+
+    public void setIndexTab(int indexTab) {
+        this.indexTab = indexTab;
+    }
+    
 
     public void setPartido(Partido partido) {
         this.partido = partido;
@@ -173,6 +209,7 @@ public class ResultadoBean implements Serializable {
         this.partido = partido;
         jugadorEquipoLocal = null;
         convocadoEquipoLocal = null;
+        indexTab = 0;
         return "/admin/liga/temporadas/resultado/detallepartido??faces-redirect=true";
     }
 }

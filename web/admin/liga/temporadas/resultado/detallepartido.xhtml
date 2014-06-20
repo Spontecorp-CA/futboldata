@@ -49,7 +49,7 @@
                         <h:outputText   value="#{resultadoBean.partido.statusPartidoId.nombre}"/> 
 
                     </p:panelGrid> </h3>
-                <p:accordionPanel activeIndex="1">
+                <p:accordionPanel activeIndex="#{resultadoBean.indexTab}"   >
                     <p:tab title="Resultados:">
                         <h:outputText value=" Goles de local: "/>
                         <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
@@ -57,7 +57,7 @@
                         <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" min="0" max="20" />
                     </p:tab>
 
-                    <p:tab title="Detalles:">  
+                    <p:tab title="#{resultadoBean.partido.equipoLocalId.nombre}" >  
                         <h1>
                             <p:panelGrid columns="2" style="width:auto" >
                                 <p:dataTable  id="jugadores"
@@ -69,7 +69,7 @@
                                               scrollHeight="300" scrollable="true" 
                                               selectionMode="single">
                                     <f:facet name="header">
-                                        Jugadores (Equipo Visitante)
+                                        Jugadores (Equipo Local)
                                     </f:facet>
                                     <f:ajax event="rowSelect" render="addButton" />
                                     <f:ajax event="rowUnselect" render="addButton" />
@@ -82,7 +82,7 @@
                                     <f:facet name="footer">
                                         <p:commandButton id="addButton" process="jugadores"  icon="ui-icon-ok" 
                                                          value="Agregar" 
-                                                         actionListener="#{resultadoBean.preEditConvocado}"
+                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaLocal)}"
                                                          update=":ConvocadoEditDlg"
                                                          disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
                                                          oncomplete="PF('ConvocadoEditDialog').show()" />
@@ -98,6 +98,68 @@
                                              scrollHeight="300" scrollable="true" 
                                              selectionMode="single">
                                     <f:facet name="header">
+                                        Convocados (Equipo Local)
+                                    </f:facet>
+                                    <p:column headerText="Nombre:">
+                                        <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Apellido:">
+                                        <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
+                                    </p:column>    
+                                    <f:facet name="footer">
+                                        <p:commandButton id="addButton"   icon="ui-icon-ok" 
+                                                         value="Agregar" 
+                                                         actionListener="#{resultadoBean.preEditConvocado}"
+                                                         update=":ConvocadoEditDlg"
+                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
+                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
+                                    </f:facet>
+                                </p:dataTable>
+
+                            </p:panelGrid>
+                        </h1> 
+                    </p:tab>
+                    <p:tab title="#{resultadoBean.partido.equipoVisitanteId.nombre}" >
+                        <h1>
+                            <p:panelGrid columns="2" style="width:auto" >
+                                <p:dataTable  id="jugadoresV"
+                                              value="#{resultadoBean.jugadorEquipoVisitante}"
+                                              var="equipoHasJugador" 
+                                              rowKey="#{equipoHasJugador.id}"
+                                              rowIndexVar="equipoHasJugador.id"
+                                              selection="#{resultadoBean.equipoHasJugador}" style="width:auto"
+                                              scrollHeight="300" scrollable="true" 
+                                              selectionMode="single">
+                                    <f:facet name="header">
+                                        Jugadores (Equipo Visitante)
+                                    </f:facet>
+                                    <f:ajax event="rowSelect" render="addButtonV" />
+                                    <f:ajax event="rowUnselect" render="addButtonV" />
+                                    <p:column headerText="Nombre:">
+                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Apellido:">
+                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                                    </p:column>   
+                                    <f:facet name="footer">
+                                        <p:commandButton id="addButtonV" process="jugadoresV"  icon="ui-icon-ok" 
+                                                         value="Agregar" 
+                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaLocal)}"
+                                                         update=":ConvocadoEditDlg"
+                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
+                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
+                                    </f:facet>
+                                </p:dataTable>
+
+                                <p:dataTable id="convocadosV"
+                                             value="#{resultadoBean.convocadoEquipoVisitante}"
+                                             var="convocado" 
+                                             rowKey="#{convocado.jugadorId}"
+                                             rowIndexVar="convocado.id"
+                                             selection="#{resultadoBean.convocado}" style="width: auto"
+                                             scrollHeight="300" scrollable="true" 
+                                             selectionMode="single">
+                                    <f:facet name="header">
                                         Convocados (Equipo Visitante)
                                     </f:facet>
                                     <p:column headerText="Nombre:">
@@ -105,11 +167,21 @@
                                     </p:column>
                                     <p:column headerText="Apellido:">
                                         <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
-                                    </p:column>                             
+                                    </p:column>    
+                                    <f:facet name="footer">
+                                        <p:commandButton id="addButton"   icon="ui-icon-ok" 
+                                                         value="Agregar" 
+                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaVisitante)}"
+                                                         update=":ConvocadoEditDlg"
+                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
+                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
+                                    </f:facet>
                                 </p:dataTable>
 
                             </p:panelGrid>
                         </h1> 
+
+
                     </p:tab>
                 </p:accordionPanel>
             </p:fieldset>
