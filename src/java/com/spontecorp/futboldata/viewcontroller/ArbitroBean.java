@@ -44,7 +44,7 @@ public class ArbitroBean implements Serializable {
     private Arbitro arbitro;
     private Pais pais;
     private SelectItem[] ciudades;
-    private DataModel items;
+    private List<Arbitro> items;
     private Direccion direccion;
     private Persona persona;
     private String cuenta;
@@ -166,9 +166,9 @@ public class ArbitroBean implements Serializable {
         return controllerRedSocial.findRedSocialxPersona(persona);
     }
 
-    public DataModel getItems() {
+    public List<Arbitro> getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerArbitro.findAll());
+            items = controllerArbitro.findAll();
         }
         return items;
     }

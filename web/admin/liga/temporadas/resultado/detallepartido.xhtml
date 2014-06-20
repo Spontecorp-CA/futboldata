@@ -55,10 +55,19 @@
                 </h:panelGroup>                
                 <p:accordionPanel activeIndex="#{resultadoBean.indexTab}"   >
                     <p:tab title="Resultados:">
-                        <h:outputText value=" Goles de local: "/>
-                        <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
-                        <h:outputText value=" Goles de visitante: "/>
-                        <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" min="0" max="20" />
+                        <h:panelGrid columns="4">
+                            <h:outputText value=" Goles de local: "/>
+                            <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
+                            <h:outputText value=" Goles de visitante: "/>
+                            <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" min="0" max="20" />
+                            <h:outputText value=" Status del Partido: " />
+                            <p:selectOneMenu id="status" value="#{resultadoBean.partido.statusPartidoId}"
+                                             required="true"
+                                             requiredMessage="Debe seleccionar el status"
+                                             style="width: 150px">
+                                <f:selectItems value="#{statusPartidoBean.items}"/>
+                            </p:selectOneMenu>
+                        </h:panelGrid>
                     </p:tab>
 
                     <p:tab title="#{resultadoBean.partido.equipoLocalId.nombre}" >  
@@ -188,6 +197,40 @@
                         </h1> 
 
 
+                    </p:tab>
+                    <p:tab title="Staff de Juego" >
+                        <h:panelGrid columns="2" style="width:auto" >
+                            <p:dataTable  id="arbitros"
+                                          value="#{arbitroBean.items}"
+                                          var="arbitro" 
+                                          rowKey="#{arbitro.id}"
+                                          rowIndexVar="arbitro.id"
+                                          selection="#{resultadoBean.arbitro}" style="width:auto"
+                                          scrollHeight="300" scrollable="true" 
+                                          selectionMode="single">
+                                <f:facet name="header">
+                                    Arbitros
+                                </f:facet>
+                                <f:ajax event="rowSelect" render="addButton" />
+                                <f:ajax event="rowUnselect" render="addButton" />
+                                <p:column headerText="Nombre:">
+                                    <h:outputText value="#{arbitro.personaId.nombre}"/>
+                                </p:column>
+                                <p:column headerText="Apellido:">
+                                    <h:outputText value="#{arbitro.personaId.apellido}"/>
+                                </p:column>   
+                                <p:column headerText="Asociacion:">
+                                    <h:outputText value="#{arbitro.asociacionId.nombre}"/>
+                                </p:column> 
+                                <f:facet name="footer">
+                                    <p:commandButton id="addButton" process="arbitros"  icon="ui-icon-ok" 
+                                                     value="Agregar" 
+                                                     update=":ConvocadoEditDlg"
+                                                     disabled="#{empty resultadoBean.arbitro.personaId}"
+                                                     oncomplete="PF('ConvocadoEditDialog').show()" />
+                                </f:facet>
+                            </p:dataTable>
+                            </h:panelGrid>
                     </p:tab>
                 </p:accordionPanel>
             </p:fieldset>
