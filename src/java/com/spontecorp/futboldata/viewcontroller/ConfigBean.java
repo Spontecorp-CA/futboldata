@@ -783,9 +783,10 @@ public class ConfigBean implements Serializable {
         partidos = null;
         if (jornada != null) {
             partidos = partidoFacade.findPartidos(jornada);
-        }
-        if (llave != null) {
+        } else if (llave != null) {
             partidos = partidoFacade.findPartidos(llave);
+        } else {
+            partidos = partidoFacade.findAll();
         }
         return partidos;
     }
@@ -821,6 +822,10 @@ public class ConfigBean implements Serializable {
     }
 
     public void prepareEditPartido() {
+    }
+    
+    public String prepareResultPartido(){
+        return "detallepartido";
     }
 
     public void createPartido() {
