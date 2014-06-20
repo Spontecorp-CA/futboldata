@@ -49,7 +49,7 @@
                         <h:outputText   value="#{resultadoBean.partido.statusPartidoId.nombre}"/> 
 
                     </p:panelGrid> </h3>
-                <p:accordionPanel>
+                <p:accordionPanel activeIndex="1">
                     <p:tab title="Resultados:">
                         <h:outputText value=" Goles de local: "/>
                         <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
@@ -60,7 +60,8 @@
                     <p:tab title="Detalles:">  
                         <h1>
                             <p:panelGrid columns="2" style="width:auto" >
-                                <p:dataTable  value="#{resultadoBean.partido.equipoLocalId.equipoHasJugadorCollection}"
+                                <p:dataTable  id="jugadores"
+                                              value="#{resultadoBean.jugadorEquipoLocal}"
                                               var="equipoHasJugador" 
                                               rowKey="#{equipoHasJugador.id}"
                                               rowIndexVar="equipoHasJugador.id"
@@ -70,20 +71,30 @@
                                     <f:facet name="header">
                                         Jugadores (Equipo Visitante)
                                     </f:facet>
+                                    <f:ajax event="rowSelect" render="addButton" />
+                                    <f:ajax event="rowUnselect" render="addButton" />
                                     <p:column headerText="Nombre:">
                                         <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
                                     </p:column>
                                     <p:column headerText="Apellido:">
                                         <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
-                                    </p:column>                             
+                                    </p:column>   
+                                    <f:facet name="footer">
+                                        <p:commandButton id="addButton" process="jugadores"  icon="ui-icon-ok" 
+                                                         value="Agregar" 
+                                                         actionListener="#{resultadoBean.preEditConvocado}"
+                                                         update=":ConvocadoEditDlg"
+                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
+                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
+                                    </f:facet>
                                 </p:dataTable>
 
                                 <p:dataTable id="convocados"
-                                             value="#{resultadoBean.convocatoriaLocal.convocadoCollection}"
+                                             value="#{resultadoBean.convocadoEquipoLocal}"
                                              var="convocado" 
-                                             rowKey="#{convocatoriaLocal.id}"
+                                             rowKey="#{convocado.jugadorId}"
                                              rowIndexVar="convocado.id"
-                                             selection="#{resultadoBean.convocatoriaLocal}" style="width: auto"
+                                             selection="#{resultadoBean.convocado}" style="width: auto"
                                              scrollHeight="300" scrollable="true" 
                                              selectionMode="single">
                                     <f:facet name="header">
@@ -103,5 +114,6 @@
                 </p:accordionPanel>
             </p:fieldset>
         </h:form>
+        <ui:include src="addConvocado.xhtml" />
     </ui:define>
 </ui:composition>
