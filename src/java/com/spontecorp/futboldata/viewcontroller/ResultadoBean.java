@@ -9,8 +9,9 @@ import com.spontecorp.futboldata.entity.Convocado;
 import com.spontecorp.futboldata.entity.Convocatoria;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.Partido;
+import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocadoFacade;
-import com.spontecorp.futboldata.jpacontroller.ConvocatoriaFacade;
+import com.spontecorp.futboldata.jpacontroller.ConvocatoriasFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoHasJugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.utilities.Util;
@@ -38,7 +39,7 @@ public class ResultadoBean implements Serializable {
     private Convocatoria convocatoriaLocal;
     private EquipoHasJugador equipoHasJugador;
     private final PartidoFacade partidoFacade;
-    private final ConvocatoriaFacade convocatoriaFacade;
+    private final ConvocatoriasFacade convocatoriaFacade;
     private final ConvocadoFacade convocadoFacade;
     private final EquipoHasJugadorFacade equipoHasJugadorFacade;
 
@@ -55,7 +56,7 @@ public class ResultadoBean implements Serializable {
      */
     public ResultadoBean() {
         partidoFacade = new PartidoFacade();
-        convocatoriaFacade = new ConvocatoriaFacade();
+        convocatoriaFacade = new ConvocatoriasFacade();
         convocadoFacade = new ConvocadoFacade();
         equipoHasJugadorFacade = new EquipoHasJugadorFacade();
     }

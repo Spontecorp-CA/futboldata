@@ -2,6 +2,7 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
+
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Convocatoria;
@@ -19,12 +20,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte03
  */
-public class ConvocatoriaFacade extends AbstractFacade<Convocatoria> implements Serializable {
+public class ConvocatoriasFacade extends AbstractFacade<Convocatoria> implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(ConvocatoriaFacade.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConvocatoriasFacade.class);
     private final int ACTIVO = 1;
 
-    public ConvocatoriaFacade() {
+    public ConvocatoriasFacade() {
         super(Convocatoria.class);
     }
 

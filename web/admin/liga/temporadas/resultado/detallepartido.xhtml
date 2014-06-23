@@ -55,7 +55,7 @@
                 </h:panelGroup>                
                 <p:accordionPanel activeIndex="#{resultadoBean.indexTab}"   >
                     <p:tab title="Resultados:">
-                        <h:panelGrid columns="4">
+                        <h:panelGrid columns="6">
                             <h:outputText value=" Goles de local: "/>
                             <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
                             <h:outputText value=" Goles de visitante: "/>
@@ -70,7 +70,7 @@
                         </h:panelGrid>
                     </p:tab>
 
-                    <p:tab title="#{resultadoBean.partido.equipoLocalId.nombre}" >  
+                    <p:tab title="Jugadores: #{resultadoBean.partido.equipoLocalId.nombre}" >  
                         <h1>
                             <p:panelGrid columns="2" style="width:auto" >
                                 <p:dataTable  id="jugadores"
@@ -133,7 +133,7 @@
                             </p:panelGrid>
                         </h1> 
                     </p:tab>
-                    <p:tab title="#{resultadoBean.partido.equipoVisitanteId.nombre}" >
+                    <p:tab title="Jugadores: #{resultadoBean.partido.equipoVisitanteId.nombre}" >
                         <h1>
                             <p:panelGrid columns="2" style="width:auto" >
                                 <p:dataTable  id="jugadoresV"
@@ -198,7 +198,7 @@
 
 
                     </p:tab>
-                    <p:tab title="Staff de Juego" >
+                    <p:tab title="Arbitros" >
                         <h:panelGrid columns="2" style="width:auto" >
                             <p:dataTable  id="arbitros"
                                           value="#{arbitroBean.items}"
