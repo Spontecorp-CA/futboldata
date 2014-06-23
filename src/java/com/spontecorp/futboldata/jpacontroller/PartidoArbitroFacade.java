@@ -5,9 +5,6 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Arbitro;
-import com.spontecorp.futboldata.entity.Convocatoria;
-import com.spontecorp.futboldata.entity.Equipo;
-import com.spontecorp.futboldata.entity.Jugador;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.entity.PartidoArbitro;
 import com.spontecorp.futboldata.utilities.Util;
@@ -25,7 +22,6 @@ import org.slf4j.LoggerFactory;
 public class PartidoArbitroFacade extends AbstractFacade<PartidoArbitro> implements Serializable{
 
     private static final Logger logger = LoggerFactory.getLogger(PartidoArbitroFacade.class);
-    private final int ACTIVO = 1;
 
     public PartidoArbitroFacade() {
         super(PartidoArbitro.class);
