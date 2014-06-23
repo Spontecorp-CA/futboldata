@@ -51,7 +51,9 @@
             <p:ajax event="rowUnselect" 
                     update=":menuPrincipal ,:PartidoListForm:editButton 
                     :PartidoListForm:detalleButton"/>
-
+            <p:column headerText="#Partido" >
+                <h:outputText value="#{partido.numero}"/>
+            </p:column>            
             <p:column headerText="Equipo Local">
                 <h:outputText value="#{partido.equipoLocalText}: " 
                               rendered="#{not empty configBean.llave.nombre}"/>

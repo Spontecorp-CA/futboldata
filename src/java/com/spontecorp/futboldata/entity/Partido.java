@@ -53,6 +53,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Partido.findByGolesLocalPenalties", query = "SELECT p FROM Partido p WHERE p.golesLocalPenalties = :golesLocalPenalties"),
     @NamedQuery(name = "Partido.findByGolesVisitantePenalties", query = "SELECT p FROM Partido p WHERE p.golesVisitantePenalties = :golesVisitantePenalties")})
 public class Partido implements Serializable {
+    @Column(name = "numero")
+    private Integer numero;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -365,6 +367,14 @@ public class Partido implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Partido[ id=" + id + " ]";
+    }
+
+    public Integer getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
     
 }

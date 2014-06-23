@@ -144,7 +144,7 @@ public class Convocado implements Serializable {
 
     @Override
     public String toString() {
-        return jugadorId.getPersonaId().getNombre() + " " + jugadorId.getPersonaId().getApellido();
+        return "com.spontecorp.futboldata.entity.Convocado[ id=" + id + " ]";
     }
     
 }

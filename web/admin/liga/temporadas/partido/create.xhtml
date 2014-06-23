@@ -32,9 +32,12 @@
                     <p:inputText value="#{configBean.partido.equipoLocalText}" 
                                  rendered="#{not empty configBean.llave.nombre}"
                                  style="width: 250px"/>
+                    <h:outputLabel value="#Partido" />
+                    <p:spinner value="#{configBean.partido.numero}" min="0" max="100" />
                     <h:outputLabel value="Equipo Local:" for="eqlocal"/>
                     <p:selectOneMenu id="eqlocal" value="#{configBean.partido.equipoLocalId}"
-                                     style="width: 250px">
+                                     style="width: 250px"
+                                     converter="equipo">
                         <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
                         <f:selectItems value="#{configBean.equipoInLiga}"   />
                     </p:selectOneMenu>
@@ -43,10 +46,11 @@
                     <p:inputText value="#{configBean.partido.equipoVisitanteText}"
                                  rendered="#{not empty configBean.llave.nombre}"
                                  style="width: 250px"/>
-                    
+
                     <h:outputLabel value="Equipo Visitante:" for="eqvisitante"/>
                     <p:selectOneMenu id="eqvisitante" value="#{configBean.partido.equipoVisitanteId}"
-                                     style="width: 250px">
+                                     style="width: 250px"
+                                     converter="equipo">
                         <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
                         <f:selectItems value="#{configBean.equipoInLiga}" />
                     </p:selectOneMenu>

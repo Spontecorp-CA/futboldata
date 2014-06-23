@@ -9,7 +9,6 @@ import com.spontecorp.futboldata.entity.Convocado;
 import com.spontecorp.futboldata.entity.Convocatoria;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.Partido;
-import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocadoFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocatoriasFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoHasJugadorFacade;
@@ -19,6 +18,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,16 +73,22 @@ public class ResultadoBean implements Serializable {
     public void editConvocado() {
         if (convocado.getConvocatoriaId() == convocatoriaLocal) {
             editConvocado(convocatoriaLocal, convocadoEquipoLocal);
-            indexTab = 1;
         } else {
             editConvocado(convocatoriaVisitante, convocadoEquipoVisitante);
-            indexTab = 2;
         }
     }
 
     public void removeConvocado() {
-        convocadoFacade.remove(convocado);
-        Util.addSuccessMessage("Se saco el Jugador del partido");
+        logger.debug("convocado" + convocado);
+        if (this.convocado.getConvocatoriaId() == convocatoriaLocal) {
+            convocadoEquipoLocal.remove(this.convocado);
+            convocadoFacade.remove(this.convocado);
+            Util.addErrorMessage("Se elimino exitosamente");
+        } else {
+            convocadoEquipoVisitante.remove(this.convocado);
+            convocadoFacade.remove(this.convocado);
+            Util.addErrorMessage("Se elimino exitosamente");
+        }
     }
 
     public void editConvocado(Convocatoria convocatoria, List<Convocado> convocados) {
@@ -136,6 +142,7 @@ public class ResultadoBean implements Serializable {
     }
 
     public void setConvocado(Convocado convocado) {
+        logger.debug("Convocado  modificandose " +convocado);
         this.convocado = convocado;
     }
 
@@ -214,9 +221,7 @@ public class ResultadoBean implements Serializable {
     public void setArbitro(Arbitro arbitro) {
         this.arbitro = arbitro;
     }
-    
-    
-    
+
     public void guardar() {
         partidoFacade.edit(partido);
         Util.addSuccessMessage("Se edito con exito");
@@ -229,5 +234,31 @@ public class ResultadoBean implements Serializable {
         convocadoEquipoLocal = null;
         indexTab = 0;
         return "/admin/liga/temporadas/resultado/detallepartido??faces-redirect=true";
+    }
+
+    public void onTabChange(TabChangeEvent event) {
+        try {
+            if (event != null) {
+                if (event.getTab().getId().equals("tab1")) {
+                    indexTab = 0;
+                }
+                if (event.getTab().getId().equals("tab2")) {
+                    indexTab = 1;
+                }
+                if (event.getTab().getId().equals("tab3")) {
+                    indexTab = 2;
+                }
+                if (event.getTab().getId().equals("tab4")) {
+                    indexTab = 3;
+                }
+                if (event.getTab().getId().equals("tab5")) {
+                    indexTab = 4;
+                }
+            }
+
+        } catch (NullPointerException e) {
+            logger.error("El evento era Null", e.getMessage());
+        }
+
     }
 }

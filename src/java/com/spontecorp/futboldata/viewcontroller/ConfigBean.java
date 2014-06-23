@@ -28,10 +28,13 @@ import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
@@ -104,7 +107,7 @@ public class ConfigBean implements Serializable {
         this.jornadaFacade = new JornadaFacade();
         this.partidoFacade = new PartidoFacade();
         this.categoriaFacade = new CategoriaFacade();
-        this.equipoEnGrupoFacade =  new EquipoEnGrupoFacade();
+        this.equipoEnGrupoFacade = new EquipoEnGrupoFacade();
         this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
         this.grupoFacade = new GrupoFacade();
         this.equipoInLigaFacade = new EquipoInLigaFacade();
@@ -823,8 +826,8 @@ public class ConfigBean implements Serializable {
 
     public void prepareEditPartido() {
     }
-    
-    public String prepareResultPartido(){
+
+    public String prepareResultPartido() {
         return "detallepartido";
     }
 

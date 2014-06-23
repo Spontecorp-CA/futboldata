@@ -24,15 +24,15 @@
                                   #{resultadoBean.convocado.jugadorId.personaId.apellido}"/>
                     <h:outputText value="Camiseta:" />
                     <p:spinner value="#{resultadoBean.convocado.camiseta}" min="0" max="100" />
-                    <h:outputText value="Salida:" />
-                    <p:selectOneMenu id="titular" value="#{resultadoBean.convocado.titular}"
+                    <br/>
+                    <p:selectOneRadio id="titular" value="#{resultadoBean.convocado.titular}"
                                      converter= "javax.faces.Integer"
                                      style="width: 250px"
                                      required="true"
                                      requiredMessage="Debe seleccionar el status">
                         <f:selectItem itemLabel="Titular" itemValue="1"/>
                         <f:selectItem itemLabel="Suplente" itemValue="0"/>
-                    </p:selectOneMenu>
+                    </p:selectOneRadio>
                     <h:outputText value="Posicion:" />
                     <p:selectOneMenu value="#{resultadoBean.convocado.posicionId}">
                         <f:selectItems value="#{posicionBean.items}"/>

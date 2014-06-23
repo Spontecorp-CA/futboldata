@@ -31,19 +31,20 @@ public class CargoConverter implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value == null || value.length() == 0) {
             return null;
-        }    
-           return getController().findCargo(value);
+        }
+        return getController().findCargo(value);
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-         if (value == null) {
+        if (value == null) {
             return null;
         }
-        if(value instanceof Cargo){
+        if (value instanceof Cargo) {
             return value.toString();
         } else {
             throw new IllegalArgumentException("El objecto " + value + " es de tipo " + value.getClass().getName() + "; se espera: " + Cargo.class.getName());
-        }   }
+        }
+    }
 
 }

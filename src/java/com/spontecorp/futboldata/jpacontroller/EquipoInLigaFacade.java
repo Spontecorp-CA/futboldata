@@ -94,6 +94,28 @@ public class EquipoInLigaFacade extends AbstractFacade<EquipoInLiga> implements 
         return equipoInLiga;
     }
 
+    public EquipoInLiga getEquipoInLiga(String equipo, Competicion liga) {
+        EquipoInLiga equipoInLiga = null;
+
+        EntityManager em = getEntityManager();
+        try {
+
+            String query = "SELECT e FROM EquipoInLiga e WHERE  e.equipoId.nombre = :equipo "
+                    + "AND e.competicionId = :liga AND e.status =:status";
+            Query q = em.createQuery(query, EquipoInLiga.class);
+            q.setParameter("equipo", equipo);
+            q.setParameter("liga", liga);
+            q.setParameter("status", ACTIVO);
+            equipoInLiga = (EquipoInLiga) q.getSingleResult();
+        } catch (Exception e) {
+            logger.debug("Error encontrando EquipoInLiga: " + e.getLocalizedMessage());
+
+        } finally {
+            em.close();
+        }
+        return equipoInLiga;
+    }
+
     public void persist(Object object) {
         EntityManager em = getEntityManager();
         try {
