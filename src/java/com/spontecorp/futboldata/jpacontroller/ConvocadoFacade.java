@@ -34,19 +34,17 @@ public class ConvocadoFacade extends AbstractFacade<Convocado> implements Serial
         return Util.getEmf().createEntityManager();
     }
 
-    public List<Convocado> getListConvocado(Equipo equipo) {
+    public List<Convocado> getListConvocado(Convocatoria convocatoria) {
         List<Convocado> convocado = null;
         EntityManager em = getEntityManager();
 
         try {
-            String query = "SELECT e FROM Convocado e WHERE  e.equipoId = :equipo "
-                    + "AND e.status = :status";
+            String query = "SELECT c FROM Convocado c WHERE  c.convocatoriaId = :convocatoria ";
             Query q = em.createQuery(query, Convocado.class);
-            q.setParameter("equipo", equipo);
-            q.setParameter("status", ACTIVO);
+            q.setParameter("convocatoria",convocatoria);
             convocado = (List<Convocado>) q.getResultList();
         } catch (Exception e) {
-            logger.debug("Error encontrando Convocado: " + e.getLocalizedMessage());
+            logger.debug("Error encontrando lista de Convocado: " + e.getLocalizedMessage());
         } finally {
             em.close();
         }

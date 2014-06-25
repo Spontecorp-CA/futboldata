@@ -4,12 +4,13 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
-import com.spontecorp.futboldata.entity.TipoArbitro;
 import com.spontecorp.futboldata.entity.Pais;
-import com.spontecorp.futboldata.jpacontroller.TipoArbitroFacade;
+import com.spontecorp.futboldata.entity.TipoArbitro;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
+import com.spontecorp.futboldata.jpacontroller.TipoArbitroFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
@@ -30,7 +31,7 @@ public class TipoArbitroBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private TipoArbitro tipoArbitro;
-    private transient DataModel itemsTipoArbitro = null;
+    private transient List<TipoArbitro> itemsTipoArbitro = null;
     private final TipoArbitroFacade controllerTipoArbitro;
     private final transient EntityManagerFactory emf = Util.getEmf();
 
@@ -67,10 +68,10 @@ public class TipoArbitroBean implements Serializable {
         this.tipoArbitro = tipoArbitro;
     }
 
-    public DataModel getItemsTipoArbitro() {
+    public List<TipoArbitro> getItemsTipoArbitro() {
 
         if (itemsTipoArbitro == null) {
-            itemsTipoArbitro = new ListDataModel(controllerTipoArbitro.findAll());
+            itemsTipoArbitro = controllerTipoArbitro.findAll();
         }
         return itemsTipoArbitro;
 
@@ -81,7 +82,7 @@ public class TipoArbitroBean implements Serializable {
     }
 
     public void setItemsTipoArbitro(DataModel items) {
-        this.itemsTipoArbitro = items;
+        this.itemsTipoArbitro = (List<TipoArbitro>) items;
     }
 
     public TipoArbitro getSelectedTipoArbitro() {
@@ -127,7 +128,7 @@ public class TipoArbitroBean implements Serializable {
     }
 
     public String prepareEdit() {
-        tipoArbitro = (TipoArbitro) getItemsTipoArbitro().getRowData();
+//        tipoArbitro = (TipoArbitro) getItemsTipoArbitro().getRowData();
         return "/admin/asociacion/arbitro/tipo_arbitro/edit.xhtml";
     }
 

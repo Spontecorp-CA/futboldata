@@ -53,9 +53,12 @@
 
                     </p:panelGrid>
                 </h:panelGroup>                
-                <p:accordionPanel activeIndex="#{resultadoBean.indexTab}"   >
-                    <p:tab title="Resultados:">
-                        <h:panelGrid columns="6">
+                <p:accordionPanel id="menu" activeIndex="#{resultadoBean.indexTab}" >
+                    <f:ajax event="tabChange"  listener="#{resultadoBean.onTabChange}" />
+                    <p:tab id="tab1" title="Resultados:"  >
+
+                        <h:panelGrid columns="6"  >
+
                             <h:outputText value=" Goles de local: "/>
                             <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
                             <h:outputText value=" Goles de visitante: "/>
@@ -70,7 +73,7 @@
                         </h:panelGrid>
                     </p:tab>
 
-                    <p:tab title="Jugadores: #{resultadoBean.partido.equipoLocalId.nombre}" >  
+                    <p:tab id="tab2" title="Jugadores: #{resultadoBean.partido.equipoLocalId.nombre}" >  
                         <h1>
                             <p:panelGrid columns="2" style="width:auto" >
                                 <p:dataTable  id="jugadores"
@@ -105,9 +108,8 @@
                                 <p:dataTable id="convocados"
                                              value="#{resultadoBean.convocadoEquipoLocal}"
                                              var="convocado" 
-                                             rowKey="#{convocado.jugadorId}"
-                                             rowIndexVar="convocado.id"
-                                             selection="#{resultadoBean.convocado}" style="width: auto"
+                                             rowKey="#{convocado}"
+                                             selection="#{resultadoBean.convocadoLocal}" style="width: auto"
                                              scrollHeight="300" scrollable="true" 
                                              selectionMode="single">
                                     <f:facet name="header">
@@ -124,16 +126,17 @@
                                     <f:facet name="footer">
                                         <p:commandButton id="deleteButton"   icon="ui-icon-ok" 
                                                          value="Sacar" 
-                                                         update=":ConvocadoEditDlg"
-                                                         disabled="#{empty resultadoBean.convocado.convocatoriaId}"
-                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
+                                                         action="#{resultadoBean.removeConvocado(resultadoBean.convocadoLocal)}"
+                                                         update=":detalleForm:menu ,:growlAdmin"
+                                                         disabled="#{empty resultadoBean.convocadoLocal.convocatoriaId}">
+                                        </p:commandButton>
                                     </f:facet>
                                 </p:dataTable>
 
                             </p:panelGrid>
                         </h1> 
                     </p:tab>
-                    <p:tab title="Jugadores: #{resultadoBean.partido.equipoVisitanteId.nombre}" >
+                    <p:tab id="tab3" title="Jugadores: #{resultadoBean.partido.equipoVisitanteId.nombre}" >
                         <h1>
                             <p:panelGrid columns="2" style="width:auto" >
                                 <p:dataTable  id="jugadoresV"
@@ -168,8 +171,7 @@
                                 <p:dataTable id="convocadosV"
                                              value="#{resultadoBean.convocadoEquipoVisitante}"
                                              var="convocado" 
-                                             rowKey="#{convocado.jugadorId}"
-                                             rowIndexVar="convocado.id"
+                                             rowKey="#{convocado}"
                                              selection="#{resultadoBean.convocado}" style="width: auto"
                                              scrollHeight="300" scrollable="true" 
                                              selectionMode="single">
@@ -187,9 +189,9 @@
                                     <f:facet name="footer">
                                         <p:commandButton id="deleteButtonV"   icon="ui-icon-ok" 
                                                          value="Sacar" 
-                                                         update=":ConvocadoEditDlg"
+                                                         update="convocadosV"
                                                          disabled="#{empty resultadoBean.convocado.convocatoriaId}"
-                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
+                                                         action="#{resultadoBean.removeConvocado(resultadoBean.convocado)}" />
                                     </f:facet>
                                 </p:dataTable>
 
@@ -198,8 +200,9 @@
 
 
                     </p:tab>
-                    <p:tab title="Arbitros" >
+                    <p:tab id="tab4" title="Arbitros" >
                         <h:panelGrid columns="2" style="width:auto" >
+
                             <p:dataTable  id="arbitros"
                                           value="#{arbitroBean.items}"
                                           var="arbitro" 
@@ -225,16 +228,47 @@
                                 <f:facet name="footer">
                                     <p:commandButton id="addButton" process="arbitros"  icon="ui-icon-ok" 
                                                      value="Agregar" 
-                                                     update=":ConvocadoEditDlg"
+                                                     actionListener="#{resultadoBean.preEditArbitro}"
+                                                     update=":ArbitroEditDlg"
                                                      disabled="#{empty resultadoBean.arbitro.personaId}"
-                                                     oncomplete="PF('ConvocadoEditDialog').show()" />
+                                                     oncomplete="PF('ArbitroEditDialog').show()" />
                                 </f:facet>
                             </p:dataTable>
-                            </h:panelGrid>
+                            <p:dataTable  id="arbitrosConvocados"
+                                          value="#{resultadoBean.partidoArbitros}"
+                                          var="partidoArbitro" 
+                                          rowKey="#{partidoArbitro.arbitroId}"
+                                          selection="#{resultadoBean.partidoArbitro}" style="width:auto"
+                                          scrollHeight="300" scrollable="true" 
+                                          selectionMode="single">
+                                <f:facet name="header">
+                                    Arbitros
+                                </f:facet>
+                                <f:ajax event="rowSelect" render="deleteButtonArbitro" />
+                                <f:ajax event="rowUnselect" render="deleteButtonArbitro" />
+                                <p:column headerText="Nombre:">
+                                    <h:outputText value="#{partidoArbitro.arbitroId.personaId.nombre}"/>
+                                </p:column>
+                                <p:column headerText="Apellido:">
+                                    <h:outputText value="#{partidoArbitro.arbitroId.personaId.apellido}"/>
+                                </p:column>   
+                                <p:column headerText="Asociacion:">
+                                    <h:outputText value="#{partidoArbitro.arbitroId.asociacionId.nombre}"/>
+                                </p:column> 
+                                <f:facet name="footer">
+                                    <p:commandButton id="deleteButtonArbitro" process="arbitrosConvocados"  icon="ui-icon-ok" 
+                                                     value="Sacar" 
+                                                     action="#{resultadoBean.removeArbitro()}"
+                                                     update="arbitrosConvocados , :growlAdmin"                                                     
+                                                     disabled="#{empty resultadoBean.partidoArbitro.arbitroId}"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </h:panelGrid>
                     </p:tab>
                 </p:accordionPanel>
             </p:fieldset>
         </h:form>
         <ui:include src="addConvocado.xhtml" />
+        <ui:include src="addarbitro.xhtml"/>
     </ui:define>
 </ui:composition>

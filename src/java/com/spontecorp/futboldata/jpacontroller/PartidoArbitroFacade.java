@@ -39,7 +39,7 @@ public class PartidoArbitroFacade extends AbstractFacade<PartidoArbitro> impleme
         try {
             String query = "SELECT p FROM PartidoArbitro p WHERE  p.partidoId = :partido ";
             Query q = em.createQuery(query, PartidoArbitro.class);
-            q.setParameter("equipo", partido);
+            q.setParameter("partido", partido);
             partidoArbitro = (List<PartidoArbitro>) q.getResultList();
         } catch (Exception e) {
             logger.debug("Error encontrando PartidoArbitro: " + e.getLocalizedMessage());
