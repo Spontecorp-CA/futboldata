@@ -372,6 +372,8 @@ public class ConfigBean implements Serializable {
         listTemporadaCategoria = new ArrayList<TemporadaCategoria>();
         categoriaSource = new ArrayList<Categoria>();
         categoriaTarget = new ArrayList<Categoria>();
+        recreateModelFase();
+
     }
 
     public void prepareEditTemporada() {
@@ -456,7 +458,14 @@ public class ConfigBean implements Serializable {
     }
 
     public String gotoTemporadaPage() {
+        recreateModelTemporada();
         return "/admin/liga/temporada/list?faces-redirect=true";
+    }
+
+    public String gotoResultPage() {
+        liga = null;
+        recreateModelTemporada();
+        return "/admin/liga/temporadas/resultado/list?faces-redirect=true";
     }
 
     public String gotoConfig() {
@@ -513,6 +522,8 @@ public class ConfigBean implements Serializable {
     public void recreateModelFase() {
         fase = null;
         fases = null;
+        recreateModelGrupo();
+        recreateModelLlave();
 
     }
 
@@ -578,9 +589,11 @@ public class ConfigBean implements Serializable {
     }
 
     private void recreateModelGrupo() {
+        grupo = null;
         grupos = null;
         equipos = new ArrayList<Equipo>();
         equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
+        recreateModelJornada();
     }
 
     public List<Grupo> getFilteredGrupos() {
@@ -673,7 +686,9 @@ public class ConfigBean implements Serializable {
     }
 
     private void recreateModelJornada() {
+        jornada = null;
         jornadas = null;
+        recreateModelPartido();
     }
 
     public List<Jornada> getFilteredJornada() {
@@ -735,7 +750,9 @@ public class ConfigBean implements Serializable {
     }
 
     private void recreateModelLlave() {
+        llave = null;
         llaves = null;
+        recreateModelPartido();
     }
 
     public List<Llave> getFilteredLlaves() {
@@ -783,32 +800,58 @@ public class ConfigBean implements Serializable {
      * Manejo de partidos
      */
     public List<Partido> getPartidos() {
-        partidos = null;
         if (jornada != null) {
             partidos = partidoFacade.findPartidos(jornada);
         } else if (llave != null) {
             partidos = partidoFacade.findPartidos(llave);
-        } else {
+        } else if (partidos == null) {
             partidos = partidoFacade.findAll();
         }
         return partidos;
     }
 
     public List<Partido> getPartidos(Jornada jornada) {
-        if (partidos == null) {
-            partidos = partidoFacade.findPartidos(jornada);
-        }
+        partidos = partidoFacade.findPartidos(jornada);
         return partidos;
     }
 
     public List<Partido> getPartidos(Llave llave) {
-        if (partidos == null) {
-            partidos = partidoFacade.findPartidos(llave);
-        }
+        partidos = partidoFacade.findPartidos(llave);
+        return partidos;
+    }
+
+    public List<Partido> getPartidos(Competicion liga) {
+
+        partidos = partidoFacade.findPartidos(liga);
+        temporadaList = null;
+        return partidos;
+    }
+
+    public List<Partido> getPartidos(Temporada temporada) {
+        partidos = partidoFacade.findPartidos(temporada);
+        fases = null;
+        getFases();
+        return partidos;
+    }
+
+    public List<Partido> getPartidos(Fase fase) {
+        partidos = partidoFacade.findPartidos(fase);
+        grupos = null;
+        getGrupos();
+        llaves = null;
+        getLlaves();
+        return partidos;
+    }
+
+    public List<Partido> getPartidos(Grupo grupo) {
+        partidos = partidoFacade.findPartidos(grupo);
+        jornadas = null;
+        getJornadas();
         return partidos;
     }
 
     private void recreateModelPartido() {
+        partido = null;
         partidos = null;
     }
 
