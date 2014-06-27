@@ -811,16 +811,12 @@ public class ConfigBean implements Serializable {
     }
 
     public List<Partido> getPartidos(Jornada jornada) {
-        if (partidos == null) {
-            partidos = partidoFacade.findPartidos(jornada);
-        }
+        partidos = partidoFacade.findPartidos(jornada);
         return partidos;
     }
 
     public List<Partido> getPartidos(Llave llave) {
-        if (partidos == null) {
-            partidos = partidoFacade.findPartidos(llave);
-        }
+        partidos = partidoFacade.findPartidos(llave);
         return partidos;
     }
 
@@ -849,6 +845,8 @@ public class ConfigBean implements Serializable {
 
     public List<Partido> getPartidos(Grupo grupo) {
         partidos = partidoFacade.findPartidos(grupo);
+        jornadas = null;
+        getJornadas();
         return partidos;
     }
 

@@ -57,13 +57,20 @@
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.grupos}" />
                         <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getGrupo())}" 
-                                 update="partidos"/>
+                                 update="partidos jornadas"/>
                     </p:selectOneMenu>
                     <h:outputLabel value="Llave: " for="llaves" />
                     <p:selectOneMenu id="llaves" value="#{configBean.llave}" style="width: 200px" >
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.llaves}" />
                         <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getLlave())}" 
+                                 update="partidos"/>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Jornada: " for="Jornada" />
+                    <p:selectOneMenu id="jornadas" value="#{configBean.jornada}" style="width: 200px" >
+                        <f:selectItem itemLabel="-------------" />
+                        <f:selectItems value="#{configBean.jornadas}" />
+                        <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getJornada())}" 
                                  update="partidos"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
