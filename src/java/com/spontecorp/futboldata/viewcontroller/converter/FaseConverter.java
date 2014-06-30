@@ -18,7 +18,7 @@ import javax.faces.convert.FacesConverter;
         FaseFacade controller = new FaseFacade();
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
+            if (value == null || value.length() == 0 || getKey(value)==null) {
                 return null;
             }
             return controller.find(getKey(value));

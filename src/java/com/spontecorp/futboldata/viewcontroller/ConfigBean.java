@@ -8,6 +8,7 @@ import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoEnGrupo;
+import com.spontecorp.futboldata.entity.EquipoInLiga;
 import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
@@ -31,10 +32,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 import javax.inject.Named;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
@@ -56,6 +53,7 @@ public class ConfigBean implements Serializable {
     private Partido partido;
     private int faseTipo;
     private Competicion liga;
+    private Categoria categoria;
 
     private boolean temporadaActiva;
     private boolean faseActiva;
@@ -73,6 +71,7 @@ public class ConfigBean implements Serializable {
     private List<Temporada> filteredTemporada;
     private List<Categoria> categoriaSource;
     private List<Categoria> categoriaTarget;
+    private List<Categoria> categoriasT;
     private List<Jornada> jornadas;
     private List<Llave> llaves;
     private List<Llave> filteredLlaves;
@@ -81,6 +80,7 @@ public class ConfigBean implements Serializable {
     private List<Jornada> filteredJornada;
     private List<Equipo> equipos;
     private List<Equipo> equiposEli;
+    private List<Equipo> equipoInLiga;
     private List<EquipoEnGrupo> equipoEnGrupo;
     private ArrayList<TemporadaCategoria> listTemporadaCategoria;
     private DualListModel<Categoria> categorias;
@@ -129,6 +129,17 @@ public class ConfigBean implements Serializable {
         return equiposEli;
     }
 
+    public List<Categoria> getCategoriasT() {
+        if (categoriasT == null) {
+            categoriasT = temporadaCategoriaFacade.getCategorias(temporada);
+        }
+        return categoriasT;
+    }
+
+    public void setCategoriasT(List<Categoria> categoriasT) {
+        this.categoriasT = categoriasT;
+    }
+
     public void setEquiposEli(List<Equipo> equiposEli) {
         this.equiposEli = equiposEli;
     }
@@ -150,6 +161,14 @@ public class ConfigBean implements Serializable {
 
     public void setFaseTipo(int faseTipo) {
         this.faseTipo = faseTipo;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public Grupo getGrupo() {
@@ -465,6 +484,7 @@ public class ConfigBean implements Serializable {
     public String gotoResultPage() {
         liga = null;
         recreateModelTemporada();
+        partidos = new ArrayList<Partido>();
         return "/admin/liga/temporadas/resultado/list?faces-redirect=true";
     }
 
@@ -688,7 +708,9 @@ public class ConfigBean implements Serializable {
     private void recreateModelJornada() {
         jornada = null;
         jornadas = null;
-        recreateModelPartido();
+        partidos = new ArrayList<Partido>();
+        partido = null;
+
     }
 
     public List<Jornada> getFilteredJornada() {
@@ -752,7 +774,8 @@ public class ConfigBean implements Serializable {
     private void recreateModelLlave() {
         llave = null;
         llaves = null;
-        recreateModelPartido();
+        partido = null;
+        partidos = new ArrayList<Partido>();
     }
 
     public List<Llave> getFilteredLlaves() {
@@ -765,6 +788,7 @@ public class ConfigBean implements Serializable {
 
     public void prepareCreateLlave() {
         llave = new Llave();
+        partidos = new ArrayList<Partido>();
 
     }
 
@@ -810,6 +834,20 @@ public class ConfigBean implements Serializable {
         return partidos;
     }
 
+    public void mostrarPartidos() {
+        if (grupo != null) {
+            partidos = partidoFacade.findPartidos(grupo);
+        } else if (fase != null) {
+            partidos = partidoFacade.findPartidos(fase);
+
+        } else if (temporada != null) {
+            partidos = partidoFacade.findPartidos(temporada);
+        } else if (liga != null) {
+            partidos = partidoFacade.findPartidos(liga);
+        }
+        partido = null;
+    }
+
     public List<Partido> getPartidos(Jornada jornada) {
         partidos = partidoFacade.findPartidos(jornada);
         return partidos;
@@ -820,32 +858,29 @@ public class ConfigBean implements Serializable {
         return partidos;
     }
 
-    public List<Partido> getPartidos(Competicion liga) {
+    public void ligaSelected() {
 
-        partidos = partidoFacade.findPartidos(liga);
+//        partidos = partidoFacade.findPartidos(liga);
+        recreateModelTemporada();
         temporadaList = null;
-        return partidos;
     }
 
-    public List<Partido> getPartidos(Temporada temporada) {
-        partidos = partidoFacade.findPartidos(temporada);
-        fases = null;
-        getFases();
-        return partidos;
+    public void temporadaSelected() {
+//        partidos = partidoFacade.findPartidos(temporada);
+        recreateModelFase();
     }
 
-    public List<Partido> getPartidos(Fase fase) {
-        partidos = partidoFacade.findPartidos(fase);
-        grupos = null;
-        getGrupos();
-        llaves = null;
-        getLlaves();
-        return partidos;
+    public void faseSelected() {
+//        partidos = partidoFacade.findPartidos(fase);
+        recreateModelGrupo();
+
+        recreateModelLlave();
+
     }
 
-    public List<Partido> getPartidos(Grupo grupo) {
-        partidos = partidoFacade.findPartidos(grupo);
-        jornadas = null;
+    public List<Partido> grupoSelected() {
+//        partidos = partidoFacade.findPartidos(grupo);
+        recreateModelJornada();
         getJornadas();
         return partidos;
     }
@@ -864,10 +899,13 @@ public class ConfigBean implements Serializable {
     }
 
     public void prepareCreatePartido() {
+        categoriasT = null;
         partido = new Partido();
     }
 
     public void prepareEditPartido() {
+        categoria = partido.getEquipoLocalId().getCategoriaId();
+        categoriasT = null;
     }
 
     public String prepareResultPartido() {
@@ -902,7 +940,17 @@ public class ConfigBean implements Serializable {
     }
 
     public List<Equipo> getEquipoInLiga() {
-        return equipoInLigaFacade.getEquipoInLiga(liga);
+
+        if (categoria != null) {
+             logger.debug("Categoria : " +categoria.getNombre());
+            equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, categoria);
+            return equipoInLiga;
+        } else {
+            logger.debug("Se fue por liga ");
+            equipoInLiga= equipoInLigaFacade.getEquipoInLiga(liga); 
+            return equipoInLiga;
+        }
+
     }
 
 }

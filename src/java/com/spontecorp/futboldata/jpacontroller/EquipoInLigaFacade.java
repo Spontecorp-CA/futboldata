@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.jpacontroller;
 
+import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoInLiga;
@@ -62,6 +63,26 @@ public class EquipoInLigaFacade extends AbstractFacade<EquipoInLiga> implements 
                     + "AND e.status = :status";
             Query q = em.createQuery(query, Equipo.class);
             q.setParameter("liga", liga);
+            q.setParameter("status", ACTIVO);
+            equipoInLiga = (List<Equipo>) q.getResultList();
+        } catch (Exception e) {
+            logger.debug("Error encontrando EquipoInLiga: " + e.getLocalizedMessage());
+        } finally {
+            em.close();
+        }
+        return equipoInLiga;
+    }
+    
+        public List<Equipo> getEquipoInLiga(Competicion liga ,Categoria categoria) {
+        List<Equipo> equipoInLiga = null;
+        EntityManager em = getEntityManager();
+
+        try {
+            String query = "SELECT e.equipoId FROM EquipoInLiga e WHERE  e.competicionId = :liga "
+                    + " AND e.equipoId.categoriaId =:categoria AND e.status = :status";
+            Query q = em.createQuery(query, Equipo.class);
+            q.setParameter("liga", liga);
+            q.setParameter("categoria", categoria);
             q.setParameter("status", ACTIVO);
             equipoInLiga = (List<Equipo>) q.getResultList();
         } catch (Exception e) {
