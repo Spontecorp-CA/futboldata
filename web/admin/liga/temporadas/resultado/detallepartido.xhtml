@@ -26,50 +26,58 @@
                 </p:toolbar>
 
                 <h:panelGroup>
-                    <p:panelGrid id="datagrid" columns="3" styleClass="datagrid" style="border:none;margin:0 auto;">
+                    <p:panelGrid id="datagrid" columns="4" styleClass="datagrid" style="border:none;margin:0 auto;">
                         <h:outputLabel value="N° Partido:" for="numero" style="width:500px;"/>
                         <h:outputLabel value="Local:" for="local"/>
                         <h:outputLabel value="Visitante:" for="visitante"/>
+                        <h:outputLabel value="Fecha:" for="fecha"/>
 
-                        <h:outputText id="numero" value="#"/>
+                        <h:outputText id="numero" value="#{resultadoBean.partido.numero}"/>
                         <h:outputText id="local"  value="#{resultadoBean.partido.equipoLocalId.nombre}"/>
                         <h:outputText id="visitante" value="#{resultadoBean.partido.equipoVisitanteId.nombre}"/>
-
-                        <h:outputLabel value="Fecha:" for="fecha"/>
-                        <h:outputLabel value="Hora:" for="hora"/>
-                        <h:outputLabel value="Ciudad/Lugar:" for="lugar"/>
-
                         <h:outputFormat id="fecha" value="#{resultadoBean.partido.fecha}" >
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputFormat>
+
+                        <h:outputLabel value="Hora:" for="hora"/>
+                        <h:outputLabel value="Ciudad/Lugar:" for="lugar"/>
+                        <h:outputLabel value ="Grupo: " for ="grupo" />
+                        <h:outputLabel value="Jornada:" for ="jornada"/>
+
 
                         <h:outputFormat id="hora" value="#{resultadoBean.partido.horaInicio}" >
                             <f:convertDateTime pattern="hh:mm a"
                                                locale="es_VE"/>
                         </h:outputFormat>
                         <h:outputText id="lugar" value="#{resultadoBean.partido.canchaId.direccionId.ciudadId}/#{resultadoBean.partido.canchaId.nombre}"/>
+                        <h:outputText id="grupo" value="#{resultadoBean.partido.jornadaId.grupoId.nombre}"/>
+                        <h:outputText id="jornada" value="#{resultadoBean.partido.jornadaId.numero}" />
 
-                        <h:outputText   value="#{resultadoBean.partido.statusPartidoId.nombre}"/> 
+                        <h:outputLabel value="Llave: " for ="llave" />
+                        <h:outputText id ="llave" value="#{resultadoBean.partido.llaveId.nombre}" />
 
                     </p:panelGrid>
                 </h:panelGroup>                
                 <p:accordionPanel id="menu" activeIndex="#{resultadoBean.indexTab}" >
                     <f:ajax event="tabChange"  listener="#{resultadoBean.onTabChange}" />
                     <p:tab id="tab1" title="Resultados:"  >
+                        <h:panelGrid columns="3" style="width: auto" >
 
-                        <h:panelGrid columns="6"  >
+                            <h:outputLabel value=" Goles de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                                           for="golesLocal"/>
+                            <h:outputText value=" Goles de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "/>
+                            <h:outputLabel value=" Status del Partido: "  for="status" />
 
-                            <h:outputText value=" Goles de local: "/>
                             <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
-                            <h:outputText value=" Goles de visitante: "/>
-                            <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" min="0" max="20" />
-                            <h:outputText value=" Status del Partido: " />
+                            <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" 
+                                       min="0" max="20" />
                             <p:selectOneMenu id="status" value="#{resultadoBean.partido.statusPartidoId}"
                                              required="true"
                                              requiredMessage="Debe seleccionar el status"
                                              style="width: 150px">
                                 <f:selectItems value="#{statusPartidoBean.items}"/>
                             </p:selectOneMenu>
+
                         </h:panelGrid>
                     </p:tab>
 
@@ -122,6 +130,9 @@
                                     </p:column>
                                     <p:column headerText="Apellido:">
                                         <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
+                                    </p:column>    
+                                    <p:column headerText="Posicion :">
+                                        <h:outputText value="#{convocado.posicionId.nombre}"/>
                                     </p:column>    
                                     <f:facet name="footer">
                                         <p:commandButton id="deleteButton"   icon="ui-icon-ok" 
@@ -185,6 +196,9 @@
                                     </p:column>
                                     <p:column headerText="Apellido:">
                                         <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
+                                    </p:column>   
+                                    <p:column headerText="Posicion :">
+                                        <h:outputText value="#{convocado.posicionId.nombre}"/>
                                     </p:column>    
                                     <f:facet name="footer">
                                         <p:commandButton id="deleteButtonV"   icon="ui-icon-ok" 
@@ -251,7 +265,10 @@
                                 </p:column>
                                 <p:column headerText="Apellido:">
                                     <h:outputText value="#{partidoArbitro.arbitroId.personaId.apellido}"/>
-                                </p:column>   
+                                </p:column> 
+                                <p:column headerText="Tipo:">
+                                    <h:outputText value="#{partidoArbitro.tipoArbitroId.nombre}"/>
+                                </p:column> 
                                 <p:column headerText="Asociacion:">
                                     <h:outputText value="#{partidoArbitro.arbitroId.asociacionId.nombre}"/>
                                 </p:column> 
@@ -265,10 +282,26 @@
                             </p:dataTable>
                         </h:panelGrid>
                     </p:tab>
-                </p:accordionPanel>
-            </p:fieldset>
-        </h:form>
-        <ui:include src="addConvocado.xhtml" />
-        <ui:include src="addarbitro.xhtml"/>
-    </ui:define>
+                    <p:tab title="Eventos Partido">
+                        <h:panelGrid columns="6" >
+
+
+                            <h:outputLabel value="tiempo:" for="tiempo" />
+                            <p:spinner min="0" max="150" />
+                            <h:outputLabel value="Jugador Local:" />
+                            <p:selectOneMenu value="#{resultadoBean.convocadoLocal}" >
+                                <f:selectItems value="#{resultadoBean.convocadoEquipoLocal}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Jugador Visitante:" />
+                            <p:selectOneMenu value="#{resultadoBean.convocado}" >
+                                <f:selectItems value="#{resultadoBean.convocadoEquipoVisitante}" />
+                            </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:tab>
+            </p:accordionPanel>
+        </p:fieldset>
+    </h:form>
+    <ui:include src="addConvocado.xhtml" />
+    <ui:include src="addarbitro.xhtml"/>
+</ui:define>
 </ui:composition>

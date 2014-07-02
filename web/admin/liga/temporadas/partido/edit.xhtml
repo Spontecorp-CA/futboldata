@@ -35,7 +35,7 @@
                     <h:outputLabel value="#Partido" />
                     <p:spinner value="#{configBean.partido.numero}" min="0" max="100" />
                     <h:outputLabel value="Categoria:"/>
-                    <p:selectOneMenu id="categoria" value="#{configBean.categoria}"
+                    <p:selectOneMenu id="categoria" value="#{configBean.partido.categoriaId}"
                                      style="width: 250px" converter="categoriaConverter">
                         <f:ajax event="valueChange" listener="#{configBean.getEquipoInLiga}"
                                 render="eqvisitante eqlocal"/>
