@@ -5,7 +5,8 @@
     xmlns:p="http://primefaces.org/ui">
     <h:body>
         <h:form id="menuForm">
-            <p:panelMenu style="width: 95%">
+            <h:panelGroup>
+                <p:panelMenu style="width: 100%;">
 
                 <p:submenu label="Localidades">
                     <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
@@ -76,9 +77,8 @@
                                 icon="ui-icon-closethick"/>
                 </p:submenu>
             </p:panelMenu>
-            <h:panelGroup>
-                <h:graphicImage id="logo" name="logo_FutbolData.png"
-                                library="images" styleClass="logo_position" /> 
+<!--                <h:graphicImage id="logo" name="logo_FutbolData.png"
+                                library="images" styleClass="logo_position"/> -->
             </h:panelGroup>
         </h:form>
     </h:body>
