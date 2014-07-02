@@ -100,7 +100,7 @@ public class ResultadoBean implements Serializable {
         } else {
             Util.addErrorMessage("Ya se encuentra agregado el Arbitro");
         }
-                recreateModel();
+        recreateModel();
     }
 
     public void removeConvocado(Convocado convocado) {
@@ -113,7 +113,7 @@ public class ResultadoBean implements Serializable {
             convocadoFacade.remove(convocado);
             Util.addErrorMessage("Se elimino exitosamente");
         }
-             recreateModel();
+        recreateModel();
     }
 
     public void removeArbitro() {
@@ -292,9 +292,13 @@ public class ResultadoBean implements Serializable {
 
     public String gotoResultadoPage(Partido partido) {
         this.partido = partido;
-        convocatoriaLocal=getConvocatoriaLocal();
-        convocadoEquipoVisitante = getConvocadoEquipoVisitante();
+
         recreateModel();
+        convocatoriaLocal = getConvocatoriaLocal();
+        convocatoriaVisitante = getConvocatoriaVisitante();
+        convocadoEquipoVisitante = getConvocadoEquipoVisitante();
+        convocadoEquipoLocal = getConvocadoEquipoLocal();
+
         indexTab = 0;
         return "/admin/liga/temporadas/resultado/detallepartido??faces-redirect=true";
     }

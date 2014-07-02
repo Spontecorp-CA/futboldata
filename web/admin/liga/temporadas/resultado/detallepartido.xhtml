@@ -293,15 +293,15 @@
                                 <f:selectItems value="#{resultadoBean.convocadoEquipoLocal}"/>
                             </p:selectOneMenu>
                             <h:outputLabel value="Jugador Visitante:" />
-                            <p:selectOneMenu value="#{resultadoBean.convocado}" >
+                            <p:selectOneMenu value="#{resultadoBean.convocado}"  >
                                 <f:selectItems value="#{resultadoBean.convocadoEquipoVisitante}" />
                             </p:selectOneMenu>
-                    </h:panelGrid>
-                </p:tab>
-            </p:accordionPanel>
-        </p:fieldset>
-    </h:form>
-    <ui:include src="addConvocado.xhtml" />
-    <ui:include src="addarbitro.xhtml"/>
-</ui:define>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:accordionPanel>
+            </p:fieldset>
+        </h:form>
+        <ui:include src="addConvocado.xhtml" />
+        <ui:include src="addarbitro.xhtml"/>
+    </ui:define>
 </ui:composition>

@@ -940,11 +940,13 @@ public class ConfigBean implements Serializable {
     }
 
     public List<Equipo> getEquipoInLiga() {
-
-        if (partido.getCategoriaId() != null) {
-             logger.debug("Categoria : " +categoria.getNombre());
+        
+        if (partido != null) {
+            if (partido.getCategoriaId()!=null){
             equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, partido.getCategoriaId());
             return equipoInLiga;
+            }
+             return equipoInLiga;
         } else {
             logger.debug("Se fue por liga ");
             equipoInLiga= equipoInLigaFacade.getEquipoInLiga(liga); 
