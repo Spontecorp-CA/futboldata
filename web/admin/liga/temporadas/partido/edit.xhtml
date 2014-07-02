@@ -34,12 +34,21 @@
                                  style="width: 250px"/>
                     <h:outputLabel value="#Partido" />
                     <p:spinner value="#{configBean.partido.numero}" min="0" max="100" />
+                    <h:outputLabel value="Categoria:"/>
+                    <p:selectOneMenu id="categoria" value="#{configBean.partido.categoriaId}"
+                                     style="width: 250px" converter="categoriaConverter">
+                        <f:ajax event="valueChange" listener="#{configBean.getEquipoInLiga}"
+                                render="eqvisitante eqlocal"/>
+                        <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
+                        <f:selectItems value="#{configBean.categoriasT}" />
+                    </p:selectOneMenu>
                     <h:outputLabel value="Equipo Local:" for="eqlocal"/>
                     <p:selectOneMenu id="eqlocal" value="#{configBean.partido.equipoLocalId}"
                                      style="width: 250px"
-                                     converter="equipo">
-                        <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
-                        <f:selectItems value="#{configBean.equipoInLiga}"   />
+                                     converter="equipo"  >
+
+                        <f:selectItem itemLabel=" --- " itemValue="#{null}" />
+                        <f:selectItems value="#{configBean.equipoInLiga}"  />
                     </p:selectOneMenu>
                     <h:outputText value="Etiqueta equipo visitante:"
                                   rendered="#{not empty configBean.llave.nombre}"/>

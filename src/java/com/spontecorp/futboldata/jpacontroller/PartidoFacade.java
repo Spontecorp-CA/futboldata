@@ -41,12 +41,14 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         try {
             String query = null;
             Query q = null;
-            query = " SELECT p FROM Partido  p WHERE  p.llaveId.faseId.temporadaId.competicionId = :liga ";
+            query = " SELECT p FROM Partido  p WHERE  p.llaveId.faseId.temporadaId.competicionId = :liga "
+                    + "ORDER BY p.fecha   DESC ";
             q = em.createQuery(query, Partido.class);
             q.setParameter("liga", liga);
             partidos = q.getResultList();
 
-            query = " SELECT p FROM Partido p WHERE p.jornadaId.grupoId.faseId.temporadaId.competicionId = :liga";
+            query = " SELECT p FROM Partido p WHERE p.jornadaId.grupoId.faseId.temporadaId.competicionId = :liga "
+                    + "ORDER BY p.fecha   DESC";
             q = em.createQuery(query, Partido.class);
             q.setParameter("liga", liga);
             partidos.addAll(q.getResultList());
@@ -66,12 +68,14 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         try {
             String query = null;
             Query q = null;
-            query = "SELECT p FROM Partido p WHERE p.llaveId.faseId.temporadaId =:temporada";
+            query = "SELECT p FROM Partido p WHERE p.llaveId.faseId.temporadaId =:temporada "
+                    + "ORDER BY p.fecha   DESC";
             q = em.createQuery(query, Partido.class);
             q.setParameter("temporada", temporada);
             partidos = q.getResultList();
 
-            query = "SELECT p FROM Partido p WHERE  p.jornadaId.grupoId.faseId.temporadaId =:temporada";
+            query = "SELECT p FROM Partido p WHERE  p.jornadaId.grupoId.faseId.temporadaId =:temporada "
+                    + "ORDER BY p.fecha   DESC";
             q = em.createQuery(query, Partido.class);
             q.setParameter("temporada", temporada);
             partidos.addAll(q.getResultList());
@@ -91,12 +95,14 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         try {
             String query = null;
             Query q = null;
-            query = "SELECT p FROM Partido p WHERE p.llaveId.faseId =:fase";
+            query = "SELECT p FROM Partido p WHERE p.llaveId.faseId =:fase "
+                    + "ORDER BY p.fecha   DESC";
             q = em.createQuery(query, Partido.class);
             q.setParameter("fase", fase);
             partidos = q.getResultList();
             
-            query = "SELECT p FROM Partido p WHERE p.jornadaId.grupoId.faseId =:fase";
+            query = "SELECT p FROM Partido p WHERE p.jornadaId.grupoId.faseId =:fase "
+                    + "ORDER BY p.fecha   DESC";
             q = em.createQuery(query, Partido.class);
             q.setParameter("fase", fase);
             partidos.addAll(q.getResultList());
@@ -116,7 +122,8 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         try {
             String query = null;
             Query q = null;
-            query = "SELECT p FROM Partido p WHERE  p.jornadaId.grupoId =:grupo";
+            query = "SELECT p FROM Partido p WHERE  p.jornadaId.grupoId =:grupo "
+                    + "ORDER BY p.fecha   DESC";
             q = em.createQuery(query, Partido.class);
             q.setParameter("grupo", grupo);
             partidos = q.getResultList();
@@ -138,12 +145,14 @@ public class PartidoFacade extends AbstractFacade<Partido> {
             Query q = null;
 
             if (obj instanceof Jornada) {
-                query = "SELECT p FROM Partido p WHERE p.jornadaId = :jornada";
+                query = "SELECT p FROM Partido p WHERE p.jornadaId = :jornada "
+                        + "ORDER BY p.fecha   DESC";
                 q = em.createQuery(query);
                 Jornada parJornada = (Jornada) obj;
                 q.setParameter("jornada", parJornada);
             } else if (obj instanceof Llave) {
-                query = "SELECT p FROM Partido p WHERE p.llaveId = :llave";
+                query = "SELECT p FROM Partido p WHERE p.llaveId = :llave "
+                        + "ORDER BY p.fecha   DESC";
                 q = em.createQuery(query);
                 Llave parLlave = (Llave) obj;
                 q.setParameter("llave", parLlave);

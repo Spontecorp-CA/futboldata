@@ -6,7 +6,9 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,37 +18,32 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author sponte03
  */
 @Entity
-@Table(name = "clasificacion")
+@Table(name = "clasificacion_grupo")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Clasificacion.findAll", query = "SELECT c FROM Clasificacion c"),
-    @NamedQuery(name = "Clasificacion.findById", query = "SELECT c FROM Clasificacion c WHERE c.id = :id"),
-    @NamedQuery(name = "Clasificacion.findByJJugados", query = "SELECT c FROM Clasificacion c WHERE c.jJugados = :jJugados"),
-    @NamedQuery(name = "Clasificacion.findByJGanados", query = "SELECT c FROM Clasificacion c WHERE c.jGanados = :jGanados"),
-    @NamedQuery(name = "Clasificacion.findByJEmpatados", query = "SELECT c FROM Clasificacion c WHERE c.jEmpatados = :jEmpatados"),
-    @NamedQuery(name = "Clasificacion.findByJPerdidos", query = "SELECT c FROM Clasificacion c WHERE c.jPerdidos = :jPerdidos"),
-    @NamedQuery(name = "Clasificacion.findByGolesFavor", query = "SELECT c FROM Clasificacion c WHERE c.golesFavor = :golesFavor"),
-    @NamedQuery(name = "Clasificacion.findByGolesContra", query = "SELECT c FROM Clasificacion c WHERE c.golesContra = :golesContra"),
-    @NamedQuery(name = "Clasificacion.findByDiferencia", query = "SELECT c FROM Clasificacion c WHERE c.diferencia = :diferencia"),
-    @NamedQuery(name = "Clasificacion.findByPuntos", query = "SELECT c FROM Clasificacion c WHERE c.puntos = :puntos"),
-    @NamedQuery(name = "Clasificacion.findByIsLocal", query = "SELECT c FROM Clasificacion c WHERE c.isLocal = :isLocal")})
-public class Clasificacion implements Serializable {
-    @Column(name = "status")
-    private Integer status;
-    @JoinColumn(name = "partido_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Partido partidoId;
-    @JoinColumn(name = "clasificacion_grupo_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private ClasificacionGrupo clasificacionGrupoId;
+    @NamedQuery(name = "ClasificacionGrupo.findAll", query = "SELECT c FROM ClasificacionGrupo c"),
+    @NamedQuery(name = "ClasificacionGrupo.findById", query = "SELECT c FROM ClasificacionGrupo c WHERE c.id = :id"),
+    @NamedQuery(name = "ClasificacionGrupo.findByJJugados", query = "SELECT c FROM ClasificacionGrupo c WHERE c.jJugados = :jJugados"),
+    @NamedQuery(name = "ClasificacionGrupo.findByJGanados", query = "SELECT c FROM ClasificacionGrupo c WHERE c.jGanados = :jGanados"),
+    @NamedQuery(name = "ClasificacionGrupo.findByJEmpatados", query = "SELECT c FROM ClasificacionGrupo c WHERE c.jEmpatados = :jEmpatados"),
+    @NamedQuery(name = "ClasificacionGrupo.findByJPerdidos", query = "SELECT c FROM ClasificacionGrupo c WHERE c.jPerdidos = :jPerdidos"),
+    @NamedQuery(name = "ClasificacionGrupo.findByGolesFavor", query = "SELECT c FROM ClasificacionGrupo c WHERE c.golesFavor = :golesFavor"),
+    @NamedQuery(name = "ClasificacionGrupo.findByGolesContra", query = "SELECT c FROM ClasificacionGrupo c WHERE c.golesContra = :golesContra"),
+    @NamedQuery(name = "ClasificacionGrupo.findByDiferencia", query = "SELECT c FROM ClasificacionGrupo c WHERE c.diferencia = :diferencia"),
+    @NamedQuery(name = "ClasificacionGrupo.findByPuntos", query = "SELECT c FROM ClasificacionGrupo c WHERE c.puntos = :puntos"),
+    @NamedQuery(name = "ClasificacionGrupo.findByIsLocal", query = "SELECT c FROM ClasificacionGrupo c WHERE c.isLocal = :isLocal"),
+    @NamedQuery(name = "ClasificacionGrupo.findByStatus", query = "SELECT c FROM ClasificacionGrupo c WHERE c.status = :status")})
+public class ClasificacionGrupo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,17 +68,21 @@ public class Clasificacion implements Serializable {
     private Integer puntos;
     @Column(name = "is_local")
     private Integer isLocal;
-    @JoinColumn(name = "jornada_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Jornada jornadaId;
+    @Column(name = "status")
+    private Integer status;
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Equipo equipoId;
+    @JoinColumn(name = "grupo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Grupo grupoId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clasificacionGrupoId")
+    private Collection<Clasificacion> clasificacionCollection;
 
-    public Clasificacion() {
+    public ClasificacionGrupo() {
     }
 
-    public Clasificacion(Integer id) {
+    public ClasificacionGrupo(Integer id) {
         this.id = id;
     }
 
@@ -165,12 +166,12 @@ public class Clasificacion implements Serializable {
         this.isLocal = isLocal;
     }
 
-    public Jornada getJornadaId() {
-        return jornadaId;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setJornadaId(Jornada jornadaId) {
-        this.jornadaId = jornadaId;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Equipo getEquipoId() {
@@ -179,6 +180,23 @@ public class Clasificacion implements Serializable {
 
     public void setEquipoId(Equipo equipoId) {
         this.equipoId = equipoId;
+    }
+
+    public Grupo getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(Grupo grupoId) {
+        this.grupoId = grupoId;
+    }
+
+    @XmlTransient
+    public Collection<Clasificacion> getClasificacionCollection() {
+        return clasificacionCollection;
+    }
+
+    public void setClasificacionCollection(Collection<Clasificacion> clasificacionCollection) {
+        this.clasificacionCollection = clasificacionCollection;
     }
 
     @Override
@@ -191,10 +209,10 @@ public class Clasificacion implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Clasificacion)) {
+        if (!(object instanceof ClasificacionGrupo)) {
             return false;
         }
-        Clasificacion other = (Clasificacion) object;
+        ClasificacionGrupo other = (ClasificacionGrupo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -203,31 +221,7 @@ public class Clasificacion implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.Clasificacion[ id=" + id + " ]";
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Partido getPartidoId() {
-        return partidoId;
-    }
-
-    public void setPartidoId(Partido partidoId) {
-        this.partidoId = partidoId;
-    }
-
-    public ClasificacionGrupo getClasificacionGrupoId() {
-        return clasificacionGrupoId;
-    }
-
-    public void setClasificacionGrupoId(ClasificacionGrupo clasificacionGrupoId) {
-        this.clasificacionGrupoId = clasificacionGrupoId;
+        return "com.spontecorp.futboldata.entity.ClasificacionGrupo[ id=" + id + " ]";
     }
     
 }

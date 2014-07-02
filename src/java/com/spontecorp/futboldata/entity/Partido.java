@@ -53,6 +53,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Partido.findByGolesLocalPenalties", query = "SELECT p FROM Partido p WHERE p.golesLocalPenalties = :golesLocalPenalties"),
     @NamedQuery(name = "Partido.findByGolesVisitantePenalties", query = "SELECT p FROM Partido p WHERE p.golesVisitantePenalties = :golesVisitantePenalties")})
 public class Partido implements Serializable {
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    @ManyToOne
+    private Categoria categoriaId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "partidoId")
+    private Collection<Clasificacion> clasificacionCollection;
     @Column(name = "numero")
     private Integer numero;
     private static final long serialVersionUID = 1L;
@@ -375,6 +380,23 @@ public class Partido implements Serializable {
 
     public void setNumero(Integer numero) {
         this.numero = numero;
+    }
+
+    public Categoria getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Categoria categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    @XmlTransient
+    public Collection<Clasificacion> getClasificacionCollection() {
+        return clasificacionCollection;
+    }
+
+    public void setClasificacionCollection(Collection<Clasificacion> clasificacionCollection) {
+        this.clasificacionCollection = clasificacionCollection;
     }
     
 }

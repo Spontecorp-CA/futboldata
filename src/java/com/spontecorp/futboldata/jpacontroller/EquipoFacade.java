@@ -47,4 +47,22 @@ public class EquipoFacade extends AbstractFacade<Equipo> implements Serializable
         }
         return equipo;
     }
+    
+        public Equipo findEquipo(Equipo equi,Categoria categoria) {
+        EntityManager em = getEntityManager();
+        Equipo equipo = null;
+        try {
+            String query = "SELECT e FROM equipo e WHERE e.id = :equipo AND "
+                    + "e.categoriaId = :categoria";
+            Query q = em.createQuery(query, Equipo.class);
+            q.setParameter("equipo", equi);
+            q.setParameter("categoria", categoria);
+            equipo = (Equipo) q.getSingleResult();
+        } catch (Exception e) {
+            logger.debug("Error encontrando la Equipo: " + e.getLocalizedMessage(), e);
+        } finally{
+            em.close();
+        }
+        return equipo;
+    }
 }

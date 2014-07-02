@@ -12,14 +12,20 @@
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="PartidoResultListForm">
+        <h:form id="PartidoListForm">
             <p:fieldset style="width: 85%" legend="Lista de Partidos" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="editResultButton" icon="ui-icon-pencil" 
                                          value="Resultados del Partido" 
                                          action="#{resultadoBean.gotoResultadoPage(configBean.partido)}"
-                                         disabled="#{empty configBean.partido.equipoLocalId}"/>   
+                                         disabled="#{empty configBean.partido.id}"/>   
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Partido" 
+                                         actionListener="#{configBean.prepareEditPartido}"   
+                                         update=":PartidoEditForm"                                        
+                                         oncomplete="PF('PartidoEditDialog').show()" 
+                                         disabled="#{empty configBean.partido.id}"/>
 
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
@@ -32,31 +38,31 @@
                     <p:selectOneMenu id="ligas" value="#{configBean.liga}"  >
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{ligaBean.items}" />
-                        <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.liga)}" 
-                                 update="partidos temporadas"/>
+                        <p:ajax  event="valueChange" listener="#{configBean.ligaSelected}" 
+                                 update="partidos temporadas ,fases ,grupos ,jornadas ,llaves "/>
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Temporadas: " for="temporadas" />
                     <p:selectOneMenu id="temporadas" value="#{configBean.temporada}" style="width: 200px" converter="temporada" >
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.temporadas}" />
-                        <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getTemporada())}" 
-                                 update="partidos fases"/>
+                        <p:ajax  event="valueChange" listener="#{configBean.temporadaSelected}" 
+                                 update="partidos fases ,grupos ,jornadas ,llaves"/>
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Fase: " for="fases" />
                     <p:selectOneMenu id="fases" value="#{configBean.fase}" style="width: 200px" >
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.fases}" />
-                        <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getFase())}" 
-                                 update="partidos ,grupos , llaves"/>
+                        <p:ajax  event="valueChange" listener="#{configBean.faseSelected}" 
+                                 update="partidos jornadas  ,grupos , llaves"/>
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Grupo: " for="grupos" />
                     <p:selectOneMenu id="grupos" value="#{configBean.grupo}" style="width: 200px" >
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.grupos}" />
-                        <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getGrupo())}" 
+                        <p:ajax  event="valueChange" listener="#{configBean.grupoSelected}" 
                                  update="partidos jornadas"/>
                     </p:selectOneMenu>
                     <h:outputLabel value="Llave: " for="llaves" />
@@ -73,7 +79,11 @@
                         <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getJornada())}" 
                                  update="partidos"/>
                     </p:selectOneMenu>
+                    <p:commandButton value="Buscar" action="#{configBean.mostrarPartidos}" 
+                                     update="partidos"
+                                     style="width: 100px" />
                 </h:panelGrid>
+
                 <br />
                 <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
                 <br />
@@ -88,18 +98,22 @@
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                              rowsPerPageTemplate="5,10,15">
                     <p:ajax event="rowSelect"
-                            update=":PartidoResultListForm:editResultButton"/>
+                            update=":PartidoListForm:editResultButton 
+                            ,:PartidoListForm:editButton"/>
                     <p:ajax event="rowUnselect"
-                            update=":PartidoResultListForm:editResultButton"/>
+                            update=":PartidoListForm:editResultButton ,
+                            :PartidoListForm:editButton"/>
 
-                    <p:column headerText="Equipo Local">
+
+                    <p:column headerText="Equipo Local" >
                         <h:outputText value="#{partido.equipoLocalText}: " 
-                                      rendered="#{not empty configBean.llave.nombre}"/>
-                        <h:outputText   value="#{partido.equipoLocalId.nombre}"/>
+                                      rendered="#{not empty partido.llaveId}"/>
+                        <h:outputText value="#{partido.equipoLocalId.nombre}"/>
                     </p:column>
+
                     <p:column headerText="Equipo Visitante">
                         <h:outputText value="#{partido.equipoVisitanteText}: " 
-                                      rendered="#{not empty configBean.llave.nombre}"/>
+                                      rendered="#{not empty partido.llaveId}"/>
                         <h:outputText   value="#{partido.equipoVisitanteId.nombre}"/>
                     </p:column>
                     <p:column headerText="Ciudad">
@@ -111,7 +125,7 @@
 
                     <p:column headerText="Fecha">
                         <h:outputFormat   value="#{partido.fecha}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            <f:convertDateTime pattern="EEE dd/MM/yyyy " />
                         </h:outputFormat>
                     </p:column>
                     <p:column headerText="Hora">
@@ -127,6 +141,7 @@
                 </p:dataTable>
             </p:fieldset>
         </h:form>
+        <ui:include src="./../partido/edit.xhtml"/>
     </ui:define>
 </ui:composition>
 
