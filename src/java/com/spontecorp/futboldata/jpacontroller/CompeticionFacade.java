@@ -7,6 +7,7 @@ package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -17,7 +18,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Casper
  */
-public class CompeticionFacade extends AbstractFacade<Competicion>{
+public class CompeticionFacade extends AbstractFacade<Competicion> implements Serializable{
 
     private static final Logger logger = LoggerFactory.getLogger(CompeticionFacade.class);
     

@@ -107,7 +107,7 @@ public class PartidoArbitro implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.PartidoArbitro[ id=" + id + " ]";
+        return arbitroId.getPersonaId().toString();
     }
     
 }

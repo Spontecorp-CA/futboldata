@@ -129,6 +129,11 @@
                             </p:selectOneMenu>
                             <p:spacer/>
                         </h:panelGrid>
+                        <h:outputLabel value="Categoria: " for="categoria"/>
+                        <p:selectOneMenu id="categoria" value="#{jugadorBean.jugador.categoriaId}"
+                                         style="width: 250">
+                            <f:selectItems value="#{categoriaBean.items}"/>
+                        </p:selectOneMenu>
                         <h:outputLabel value="Posición: " for="posicion"/>
                         <p:selectOneMenu id="posicion" value="#{jugadorBean.jugador.posicionId}"
                                          style="width: 250">

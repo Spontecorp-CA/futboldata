@@ -132,6 +132,8 @@
                                         <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
                                     </p:column>    
                                     <p:column headerText="Posicion :">
+                                        <h:outputText value="#{convocado.titular == 1 ? '(T)': '(S)'}"/>
+
                                         <h:outputText value="#{convocado.posicionId.nombre}"/>
                                     </p:column>    
                                     <f:facet name="footer">
@@ -282,21 +284,74 @@
                             </p:dataTable>
                         </h:panelGrid>
                     </p:tab>
-                    <p:tab title="Eventos Partido">
-                        <h:panelGrid columns="6" >
+                    <p:tab id="tab5" title="Eventos Partido">
+                        <h:panelGrid columns="6"  >
+
+                            <h:outputLabel value="Equipo:" />
+                            <p:selectOneMenu id="equipo" value="#{resultadoBean.equipo}" 
+                                             converter="equipo">
+
+                                <f:selectItem itemLabel="-----------" />
+                                <f:selectItem itemValue="#{resultadoBean.partido.equipoLocalId}" 
+                                              itemLabel="#{resultadoBean.partido.equipoLocalId}" />                                              />
+
+                                <f:selectItem itemValue="#{resultadoBean.partido.equipoVisitanteId}" 
+                                              itemLabel="#{resultadoBean.partido.equipoVisitanteId}"/>
+                                <p:ajax  event="valueChange" 
+                                         listener="#{resultadoBean.equipoSelected()}"
+                                         update="jugador staff " />
+                            </p:selectOneMenu>
 
 
-                            <h:outputLabel value="tiempo:" for="tiempo" />
-                            <p:spinner min="0" max="150" />
-                            <h:outputLabel value="Jugador Local:" />
-                            <p:selectOneMenu value="#{resultadoBean.convocadoLocal}" >
-                                <f:selectItems value="#{resultadoBean.convocadoEquipoLocal}"/>
+                            <h:outputLabel value="Jugador :" />
+                            <p:selectOneMenu id="jugador" value="#{resultadoBean.convocado}"  >
+                                <f:selectItem itemLabel="-------------"   />
+                                <f:selectItems value="#{resultadoBean.convocados}"   />
                             </p:selectOneMenu>
-                            <h:outputLabel value="Jugador Visitante:" />
-                            <p:selectOneMenu value="#{resultadoBean.convocado}"  >
-                                <f:selectItems value="#{resultadoBean.convocadoEquipoVisitante}" />
+
+                            <h:outputLabel value="Staff :" />
+                            <p:selectOneMenu id="staff" value="#{resultadoBean.staff}"  >
+                                <f:selectItem itemLabel="-------------"   />
+                                <f:selectItems value="#{resultadoBean.staffs}"   />
                             </p:selectOneMenu>
+
+
+                            <h:outputLabel value="Evento" />
+                            <p:selectOneMenu value="#{resultadoBean.partidoEvento.eventoId}" >
+                                <f:selectItems value="#{eventoBean.items}" />
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Minuto:" />
+                            <p:spinner id="min" value="#{resultadoBean.partidoEvento.minuto}" min="0" max="150"  />
+                            <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
+                                             style="width: 150px" 
+                                             update="eventos ,min :growlAdmin , equipo ,jugador ,staff"/>
+                            <p:commandButton id="editButtonE" value="Editar" action="#{resultadoBean.editEvento}" 
+                                             style="width: 150px"
+                                             disabled="#{empty resultadoBean.eventoSelected}"/>
                         </h:panelGrid>
+                        <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  
+                                     var="partidoEvento" 
+                                     selection="#{resultadoBean.eventoSelected}" 
+                                     selectionMode="single" 
+                                     rowKey="#{partidoEvento.id}" >
+                            <p:ajax event="rowSelect" update=":detalleForm:menu:editButtonE" />
+                            <p:ajax event="rowUnselect" update=":detalleForm:menu:editButtonE" />
+                            <p:column headerText="Evento" >
+                                <h:outputText value="#{partidoEvento.eventoId.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Tiempo" >
+                                <h:outputText value="#{partidoEvento.minuto}" />
+                            </p:column>
+                            <p:column headerText="Jugador Local" >
+                                <h:outputText value="#{partidoEvento.jugador1Id.personaId}"/>
+                            </p:column>
+
+                            <p:column headerText="Staff" >
+                                <h:outputText value="#{resultadoBean.partidoEvento.staffId.personaId}"/>
+
+                            </p:column>
+                            <p:column headerText="Arbitro " />
+                        </p:dataTable>
                     </p:tab>
                 </p:accordionPanel>
             </p:fieldset>

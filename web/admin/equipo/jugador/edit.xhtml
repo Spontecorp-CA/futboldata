@@ -30,7 +30,7 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{jugadorBean.selected.personaId.documentoIdentidad}"
-                                     required="true" requiredMessage="Debe colocar el documento"
+                                     requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="Apodo:" for="apodo"/>
                         <p:inputText id="apodo" value="#{jugadorBean.jugador.personaId.apodo}"                                    
@@ -73,7 +73,7 @@
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
                                          required="true"
-                                         requiredMessage="Debe repetir el password">
+                                         requiredMessage="Debe repetir el Status">
                             <f:selectItem itemLabel="Activo" itemValue="1"/>
                             <f:selectItem itemLabel="Inactivo" itemValue="0"/>
                         </p:selectOneMenu>
@@ -83,9 +83,7 @@
                         <p:selectOneMenu id="pais" 
                                          value="#{jugadorBean.pais}"
                                          style="width: 250px"
-                                         panelStyle="width:250px"
-                                         required="true"
-                                         requiredMessage="Debe seleccionar un perfil">                       
+                                         panelStyle="width:250px">                       
                             <f:selectItems value="#{jugadorBean.paisesAvalaible}"/>
                             <p:ajax listener="#{jugadorBean.ciudadesAvalaible}" 
                                     update="ciudad" />
@@ -94,15 +92,13 @@
                         <p:selectOneMenu id="ciudad"
                                          value="#{jugadorBean.selected.personaId.direccionId.ciudadId}"
                                          style="width: 250px"
-                                         panelStyle="width:250px"
-                                         required="true"
-                                         requiredMessage="Debe seleccionar una ciudad">                       
+                                         panelStyle="width:250px">                       
                             <f:selectItems value="#{jugadorBean.ciudades}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Dirección:" for="direccion"/>
                         <p:inputTextarea id="direccion"
                                          value="#{jugadorBean.selected.personaId.direccionId.direccion}"
-                                         required="true" requiredMessage="Debe colocar un email"
+                                         requiredMessage="Debe colocar un email"
                                          validatorMessage="Email inválido"
                                          rows="3" cols="33"
                                          style="width: 250px">
@@ -132,6 +128,10 @@
                             </p:selectOneMenu>
                             <p:spacer/>
                         </h:panelGrid>
+                        <p:selectOneMenu id="categoria" value="#{jugadorBean.jugador.categoriaId}"
+                                         style="width: 250">
+                            <f:selectItems value="#{categoriaBean.items}"/>
+                        </p:selectOneMenu>
                         <h:outputLabel value="Posición: " for="posicion"/>
                         <p:selectOneMenu id="posicion" value="#{jugadorBean.jugador.posicionId}"
                                          style="width: 250">
@@ -192,7 +192,6 @@
                                         #{redSocial.tipoRedSocialId.url}
                                         <p:column headerText="Redes Sociales">
                                             <p:inputText  value="#{redSocial.usuario}"
-                                                          required="true"
                                                           style="width: 250px"/>
                                             &nbsp;
                                             <p:commandButton icon="ui-icon-closethick" 

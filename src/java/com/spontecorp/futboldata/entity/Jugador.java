@@ -41,6 +41,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Jugador.findByPeso", query = "SELECT j FROM Jugador j WHERE j.peso = :peso"),
     @NamedQuery(name = "Jugador.findByStatus", query = "SELECT j FROM Jugador j WHERE j.status = :status")})
 public class Jugador implements Serializable {
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id")
+    @ManyToOne
+    private Categoria categoriaId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -264,6 +267,14 @@ public class Jugador implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.Jugador[ id=" + id + " ]";
+    }
+
+    public Categoria getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Categoria categoriaId) {
+        this.categoriaId = categoriaId;
     }
     
 }

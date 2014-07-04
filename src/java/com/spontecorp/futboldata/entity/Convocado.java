@@ -147,7 +147,7 @@ public class Convocado implements Serializable {
         if(jugadorId == null){
                    return "com.spontecorp.futboldata.entity.Convocado[ id=" + id + " ]"; 
         }else {
-            return "si el jugador no es null por que da error";
+            return jugadorId.getPersonaId().toString();
         }
 
     }

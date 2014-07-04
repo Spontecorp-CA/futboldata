@@ -8,77 +8,78 @@
             <h:panelGroup>
                 <p:panelMenu style="width: 100%;">
 
-                <p:submenu label="Localidades">
-                    <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
-                                action="#{ciudadBean.gotoCiudadPage}"/>
-                    <p:menuitem value="Configura Cancha" icon="ui-icon-clipboard"
-                                action="/admin/localidad/cancha/list?faces-redirect=true"/>
-                </p:submenu>
-                <p:submenu label="Asociaciones">
-                    <p:menuitem value="Configura Asociación" icon="ui-icon-document"
-                                action="/admin/asociacion/asociacion/list?faces-redirect=true"/>
-                    <p:submenu label="Arbitros">
-                        <p:menuitem value="Tipos de Arbitro" icon="ui-icon-document"
-                                    action="/admin/asociacion/arbitro/tipo_arbitro/list?faces-redirect=true"/>
-                        <p:menuitem value="Configura Arbitro" icon="ui-icon-document"
-                                    action="/admin/asociacion/arbitro/arbitro/list?faces-redirect=true"/>
-                        <p:menuitem value="Premios de Arbitro" icon="ui-icon-document"
-                                    action="/admin/asociacion/arbitro/premio_arbitro/list?faces-redirect=true"/>
+                    <p:submenu label="Localidades">
+                        <p:menuitem value="Configura Ciudades" icon="ui-icon-home"
+                                    action="#{ciudadBean.gotoCiudadPage}"/>
+                        <p:menuitem value="Configura Cancha" icon="ui-icon-clipboard"
+                                    action="/admin/localidad/cancha/list?faces-redirect=true"/>
                     </p:submenu>
-                </p:submenu>
-
-                <p:submenu label="Competiciones">
-                    <p:menuitem value="Configura Competición" icon="ui-icon-clipboard"
-                                action="/admin/liga/competicion/list?faces-redirect=true"/>
-                    <p:menuitem value="Configura Categoría" icon="ui-icon-clipboard"
-                                action="/admin/liga/categoria/list?faces-redirect=true"/>
-                </p:submenu>
-
-                <p:submenu label="Clubes">
-                    <p:menuitem value="Configura Club" icon="ui-icon-clipboard"
-                                action="/admin/club/list?faces-redirect=true" />
-                    <p:submenu label="Equipos">
-                        <p:menuitem value="Configura Equipo" icon="ui-icon-person"
-                                    action="/admin/equipo/equipo/list?faces-redirect=true"/>                       
+                    <p:submenu label="Asociaciones">
+                        <p:menuitem value="Configura Asociación" icon="ui-icon-document"
+                                    action="/admin/asociacion/asociacion/list?faces-redirect=true"/>
+                        <p:submenu label="Arbitros">
+                            <p:menuitem value="Tipos de Arbitro" icon="ui-icon-document"
+                                        action="/admin/asociacion/arbitro/tipo_arbitro/list?faces-redirect=true"/>
+                            <p:menuitem value="Configura Arbitro" icon="ui-icon-document"
+                                        action="/admin/asociacion/arbitro/arbitro/list?faces-redirect=true"/>
+                            <p:menuitem value="Premios de Arbitro" icon="ui-icon-document"
+                                        action="/admin/asociacion/arbitro/premio_arbitro/list?faces-redirect=true"/>
+                        </p:submenu>
                     </p:submenu>
-                </p:submenu>
 
-                <p:submenu label="Jugadores">
-                    <p:menuitem value="Configura Jugador" icon="ui-icon-person"
-                                action="/admin/equipo/jugador/list?faces-redirect=true"/>
-                    <!--                            <p:menuitem value="Asigna Jugador a Equipo" icon="ui-icon-person"
-                                                            action="#{equipoHasJugadorBean.gotoEquipoHasJugadorPage()}"/>-->
-                    <p:menuitem value="Configura Posición" icon="ui-icon-person"
-                                action="/admin/equipo/posicion/list?faces-redirect=true"/>
-                </p:submenu>
-                
-                <p:submenu label="Resultados">
-                    <p:menuitem value="Configura Status de Partido" icon="ui.icon-tag"
-                                action="/admin/liga/temporadas/statuspartido/list?faces-redirect=true"/>
-                    <p:menuitem value="Configura Resultados de Partido" icon="ui.icon-tag"
-                                action="#{configBean.gotoResultPage()}"/>
-                </p:submenu>
-
-                <p:submenu label="Staff">                    
-                    <p:menuitem value="Configura Staff" icon="ui-icon-person"
-                                action="/admin/staff/list?faces-redirect=true"/>
-                    <p:menuitem value="Cargos de Staff" icon="ui-icon-person"
-                                action="/admin/staff/cargo/list?faces-redirect=true"/>
-                </p:submenu>
-
-                <p:submenu label="Sistema">
-                    <p:submenu label="Usuarios"
-                               rendered="#{loginBean.isAdmin}">
-                        <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
-                                    action="#{usuarioBean.gotoAdminPage}"/>
+                    <p:submenu label="Competiciones">
+                        <p:menuitem value="Configura Competición" icon="ui-icon-clipboard"
+                                    action="/admin/liga/competicion/list?faces-redirect=true"/>
+                        <p:menuitem value="Configura Categoría" icon="ui-icon-clipboard"
+                                    action="/admin/liga/categoria/list?faces-redirect=true"/>
                     </p:submenu>
-                    <p:separator/>
-                    <p:menuitem value="Salir" action="#{loginBean.logout}" 
-                                icon="ui-icon-closethick"/>
-                </p:submenu>
-            </p:panelMenu>
-<!--                <h:graphicImage id="logo" name="logo_FutbolData.png"
-                                library="images" styleClass="logo_position"/> -->
+
+                    <p:submenu label="Clubes">
+                        <p:menuitem value="Configura Club" icon="ui-icon-clipboard"
+                                    action="/admin/club/list?faces-redirect=true" />
+                        <p:submenu label="Equipos">
+                            <p:menuitem value="Configura Equipo" icon="ui-icon-person"
+                                        action="/admin/equipo/equipo/list?faces-redirect=true"/>                       
+                        </p:submenu>
+                    </p:submenu>
+
+                    <p:submenu label="Jugadores">
+                        <p:menuitem value="Configura Jugador" icon="ui-icon-person"
+                                    action="/admin/equipo/jugador/list?faces-redirect=true"/>
+                        <p:menuitem value="Configura Posición" icon="ui-icon-person"
+                                    action="/admin/equipo/posicion/list?faces-redirect=true"/>
+                    </p:submenu>
+
+                    <p:submenu label="Resultados">
+                        <p:menuitem value="Configura Status de Partido" icon="ui-icon-tag"
+                                    action="/admin/liga/temporadas/statuspartido/list?faces-redirect=true"/>
+                        <p:menuitem value="Configura Resultados de Partido" icon="ui-icon-tag"
+                                    action="#{configBean.gotoResultPage()}"/>
+                        <p:menuitem value="Configura Eventos" icon="ui-icon-clipboard"
+                                    action="/admin/liga/temporadas/evento/list?faces-redirect=true"/>
+
+                    </p:submenu>
+
+                    <p:submenu label="Staff">                    
+                        <p:menuitem value="Configura Staff" icon="ui-icon-person"
+                                    action="/admin/staff/list?faces-redirect=true"/>
+                        <p:menuitem value="Cargos de Staff" icon="ui-icon-person"
+                                    action="/admin/staff/cargo/list?faces-redirect=true"/>
+                    </p:submenu>
+
+                    <p:submenu label="Sistema">
+                        <p:submenu label="Usuarios"
+                                   rendered="#{loginBean.isAdmin}">
+                            <p:menuitem value="Configura Usuarios" icon="ui-icon-person"
+                                        action="#{usuarioBean.gotoAdminPage}"/>
+                        </p:submenu>
+                        <p:separator/>
+                        <p:menuitem value="Salir" action="#{loginBean.logout}" 
+                                    icon="ui-icon-closethick"/>
+                    </p:submenu>
+                </p:panelMenu>
+                <!--                <h:graphicImage id="logo" name="logo_FutbolData.png"
+                                                library="images" styleClass="logo_position"/> -->
             </h:panelGroup>
         </h:form>
     </h:body>

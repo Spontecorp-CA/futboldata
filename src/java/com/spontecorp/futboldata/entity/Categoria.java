@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Categoria.findByStatus", query = "SELECT c FROM Categoria c WHERE c.status = :status")})
 public class Categoria implements Serializable {
     @OneToMany(mappedBy = "categoriaId")
+    private Collection<Jugador> jugadorCollection;
+    @OneToMany(mappedBy = "categoriaId")
     private Collection<Partido> partidoCollection;
     
     private static final long serialVersionUID = 1L;
@@ -158,6 +160,15 @@ public class Categoria implements Serializable {
 
     public void setPartidoCollection(Collection<Partido> partidoCollection) {
         this.partidoCollection = partidoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Jugador> getJugadorCollection() {
+        return jugadorCollection;
+    }
+
+    public void setJugadorCollection(Collection<Jugador> jugadorCollection) {
+        this.jugadorCollection = jugadorCollection;
     }
 
     

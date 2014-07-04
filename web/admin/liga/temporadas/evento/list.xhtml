@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml" >
+
+    <ui:define name="title">
+        Administración de Eventos de Partido
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="EventoListForm">
+            <p:fieldset style="width: 85%" legend="Lista de Eventos de Partido">
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="createButton"
+                                         value="Crear Evento del Partido" 
+                                         icon="ui-icon-plus"
+                                         action="#{eventoBean.prepareCreate}"
+                                         update=":EventoCreateForm" 
+                                         oncomplete="PF('EventoCreateDialog').show()"/>
+                        <p:commandButton id="editButton" 
+                                         icon="ui-icon-pencil" 
+                                         value="Editar Evento del Partido"                                             
+                                         actionListener="#{eventoBean.prepareEdit}"
+                                         update=":EventoEditForm"
+                                         oncomplete="PF('EventoEditDialog').show()" 
+                                         disabled="#{empty eventoBean.selected.nombre}"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{eventoBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br />
+                <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
+                <br />
+                <p:dataTable id="items" var="item" value="#{eventoBean.items}"
+                             rowKey="#{item.nombre}"
+                             selection="#{eventoBean.selected}" selectionMode="single"
+                             paginator="true" rows="10"  
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                             rowsPerPageTemplate="5,10,15">                
+
+                    <p:ajax event="rowSelect" 
+                            update=":EventoListForm:createButton 
+                            :EventoListForm:editButton"/>
+                    <p:ajax event="rowUnselect" 
+                            update=":EventoListForm:createButton 
+                            :EventoListForm:editButton"/>
+
+                    <p:column headerText="Nombre del Evento">
+                        <h:outputText value="#{item.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Descripcion del Evento">
+                        <h:outputText value="#{item.descripcion}"/>
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{item.status == 1 ? 'Activo': 'Inactivo'}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+        <ui:include src="create.xhtml"/>
+        <ui:include src="edit.xhtml"/>
+    </ui:define>
+</ui:composition>
+
