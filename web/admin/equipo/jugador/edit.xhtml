@@ -30,6 +30,7 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{jugadorBean.selected.personaId.documentoIdentidad}"
+                                     required="true"
                                      requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="Apodo:" for="apodo"/>
@@ -129,6 +130,8 @@
                             <p:spacer/>
                         </h:panelGrid>
                         <p:selectOneMenu id="categoria" value="#{jugadorBean.jugador.categoriaId}"
+                                         required="true"
+                                         requiredMessage="Ingrese la categoria del Jugador"
                                          style="width: 250">
                             <f:selectItems value="#{categoriaBean.items}"/>
                         </p:selectOneMenu>

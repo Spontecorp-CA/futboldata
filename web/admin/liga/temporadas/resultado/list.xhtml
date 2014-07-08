@@ -106,13 +106,13 @@
 
 
                     <p:column headerText="Equipo Local" >
-                        <h:outputText value="#{partido.equipoLocalText}: " 
+                        <h:outputText value="#{partido.equipoLocalText} " 
                                       rendered="#{not empty partido.llaveId}"/>
                         <h:outputText value="#{partido.equipoLocalId.nombre}"/>
                     </p:column>
 
                     <p:column headerText="Equipo Visitante">
-                        <h:outputText value="#{partido.equipoVisitanteText}: " 
+                        <h:outputText value="#{partido.equipoVisitanteText} " 
                                       rendered="#{not empty partido.llaveId}"/>
                         <h:outputText   value="#{partido.equipoVisitanteId.nombre}"/>
                     </p:column>

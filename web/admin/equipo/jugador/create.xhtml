@@ -30,6 +30,7 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{jugadorBean.jugador.personaId.documentoIdentidad}"
+                                     required="true"
                                      requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="Apodo:" for="apodo"/>
@@ -71,7 +72,6 @@
                         <p:selectOneMenu id="status" value="#{jugadorBean.jugador.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
-                                         required="true"
                                          requiredMessage="Debe seleccionar un valor">
                             <f:selectItem itemLabel="Activo" itemValue="1"/>
                             <f:selectItem itemLabel="Inactivo" itemValue="0"/>
@@ -82,8 +82,7 @@
                         <p:selectOneMenu id="pais" 
                                          value="#{jugadorBean.pais}"
                                          style="width: 250px"
-                                         panelStyle="width:250px"
-                                         required="true"
+                                         panelStyle="width:250px"                                       
                                          requiredMessage="Debe seleccionar un pais">                       
                             <f:selectItems value="#{jugadorBean.paisesAvalaible}"/>
                             <p:ajax listener="#{jugadorBean.ciudadesAvalaible}" 
@@ -131,7 +130,9 @@
                         </h:panelGrid>
                         <h:outputLabel value="Categoria: " for="categoria"/>
                         <p:selectOneMenu id="categoria" value="#{jugadorBean.jugador.categoriaId}"
-                                         style="width: 250">
+                                         style="width: 250"
+                                         required="true"
+                                         requiredMessage="Ingrese la categoria del Jugador">
                             <f:selectItems value="#{categoriaBean.items}"/>
                         </p:selectOneMenu>
                         <h:outputLabel value="Posición: " for="posicion"/>

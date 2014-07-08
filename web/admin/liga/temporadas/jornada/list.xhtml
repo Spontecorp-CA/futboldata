@@ -21,7 +21,7 @@
                                  actionListener="#{configBean.prepareEditJornada}"   
                                  update=":JornadaEditForm"                                        
                                  oncomplete="PF('JornadaEditDialog').show()" 
-                                 disabled="#{empty configBean.jornada.numero}"/>
+                                 disabled="#{empty configBean.jornada.id}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"

@@ -57,7 +57,7 @@
                                 :LlaveListForm , :PartidoListForm"/>
                     
                     <p:menuitem value="Partidos en Jornada" 
-                                disabled="#{empty configBean.jornada.numero}"
+                                disabled="#{empty configBean.jornada.id}"
                                 actionListener="#{configBean.activatePartidosJornadaList()}"
                                 update=":JornadaListForm , :GrupoListForm , 
                                 :FaseListForm , :TemporadaListForm , :menuPrincipal 

@@ -21,7 +21,6 @@ import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.binding.Bindings;
 import javax.enterprise.context.SessionScoped;
 
 import javax.faces.model.DataModel;

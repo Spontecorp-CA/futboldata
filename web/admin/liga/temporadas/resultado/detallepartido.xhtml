@@ -20,7 +20,7 @@
 
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="/admin/liga/temporadas/resultado/list.xhtml"
+                        <p:commandButton value="Atras" action="/admin/liga/temporadas/resultado/list.xhtml"
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
@@ -200,6 +200,7 @@
                                         <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
                                     </p:column>   
                                     <p:column headerText="Posicion :">
+                                        <h:outputText value="#{convocado.titular == 1 ? '(T)': '(S)'}"/>
                                         <h:outputText value="#{convocado.posicionId.nombre}"/>
                                     </p:column>    
                                     <f:facet name="footer">
@@ -230,8 +231,8 @@
                                 <f:facet name="header">
                                     Arbitros
                                 </f:facet>
-                                <f:ajax event="rowSelect" render="addButton" />
-                                <f:ajax event="rowUnselect" render="addButton" />
+                                <f:ajax event="rowSelect" render="addButtonA" />
+                                <f:ajax event="rowUnselect" render="addButtonA" />
                                 <p:column headerText="Nombre:">
                                     <h:outputText value="#{arbitro.personaId.nombre}"/>
                                 </p:column>
@@ -242,7 +243,7 @@
                                     <h:outputText value="#{arbitro.asociacionId.nombre}"/>
                                 </p:column> 
                                 <f:facet name="footer">
-                                    <p:commandButton id="addButton" process="arbitros"  icon="ui-icon-ok" 
+                                    <p:commandButton id="addButtonA" process="arbitros"  icon="ui-icon-ok" 
                                                      value="Agregar" 
                                                      actionListener="#{resultadoBean.preEditArbitro}"
                                                      update=":ArbitroEditDlg"
@@ -333,7 +334,7 @@
                                      var="partidoEvento" 
                                      selection="#{resultadoBean.eventoSelected}" 
                                      selectionMode="single" 
-                                     rowKey="#{partidoEvento.id}" >
+                                     rowKey="#{partidoEvento}" >
                             <p:ajax event="rowSelect" update=":detalleForm:menu:editButtonE" />
                             <p:ajax event="rowUnselect" update=":detalleForm:menu:editButtonE" />
                             <p:column headerText="Evento" >
@@ -342,7 +343,7 @@
                             <p:column headerText="Tiempo" >
                                 <h:outputText value="#{partidoEvento.minuto}" />
                             </p:column>
-                            <p:column headerText="Jugador Local" >
+                            <p:column headerText="Jugador " >
                                 <h:outputText value="#{partidoEvento.jugador1Id.personaId}"/>
                             </p:column>
 
@@ -350,7 +351,6 @@
                                 <h:outputText value="#{resultadoBean.partidoEvento.staffId.personaId}"/>
 
                             </p:column>
-                            <p:column headerText="Arbitro " />
                         </p:dataTable>
                     </p:tab>
                 </p:accordionPanel>
