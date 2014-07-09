@@ -116,6 +116,9 @@
                                       rendered="#{not empty partido.llaveId}"/>
                         <h:outputText   value="#{partido.equipoVisitanteId.nombre}"/>
                     </p:column>
+                    <p:column headerText="Categoria" >
+                        <h:outputText value="#{partido.categoriaId.nombre}" />
+                    </p:column>
                     <p:column headerText="Ciudad">
                         <h:outputText   value="#{partido.canchaId.direccionId.ciudadId}"/>
                     </p:column>

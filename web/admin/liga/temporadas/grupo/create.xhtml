@@ -27,11 +27,21 @@
                     <p:inputText id="nombre" value="#{configBean.grupo.nombre}"
                                  required="true" requiredMessage="Debe colocar un nombre"
                                  style="width: 250px"/>
+                    <h:outputLabel value="Categoria:"/>
+                    <p:selectOneMenu id="categoria" value="#{configBean.partido.categoriaId}"
+                                     style="width: 250px"
+                                     converter="categoriaConverter">
+                        <f:ajax event="valueChange" listener="#{configBean.getEquipoInLigaGrupo(changeListener)}"
+                                render="equipos"/>
+                        <f:selectItems value="#{configBean.categoriasT}"/>
+
+                    </p:selectOneMenu>
+
                     <p:outputLabel value="Equipos en Grupo" />
-                    <p:selectManyMenu value="#{configBean.equipos}" converter="equipo">
+                    <p:selectManyMenu id="equipos" value="#{configBean.equipos}" converter="equipo">
                         <f:selectItems value="#{configBean.equipoInLiga}"  />
                     </p:selectManyMenu>
-  
+
 
                     <h:outputLabel value="* status:" for="status"/>
                     <p:selectOneMenu id="status" value="#{configBean.grupo.status}"

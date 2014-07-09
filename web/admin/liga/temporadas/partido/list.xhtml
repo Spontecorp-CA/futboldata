@@ -55,14 +55,17 @@
                 <h:outputText value="#{partido.numero}"/>
             </p:column>            
             <p:column headerText="Equipo Local">
-                <h:outputText value="#{partido.equipoLocalText}: " 
+                <h:outputText value="#{partido.equipoLocalText} " 
                               rendered="#{not empty configBean.llave.nombre}"/>
                 <h:outputText   value="#{partido.equipoLocalId.nombre}"/>
             </p:column>
             <p:column headerText="Equipo Visitante">
-                <h:outputText value="#{partido.equipoVisitanteText}: " 
+                <h:outputText value="#{partido.equipoVisitanteText} " 
                               rendered="#{not empty configBean.llave.nombre}"/>
                 <h:outputText   value="#{partido.equipoVisitanteId.nombre}"/>
+            </p:column>
+            <p:column headerText="Categoria" >
+                <h:outputText value="#{partido.categoriaId.nombre}" />
             </p:column>
             <p:column headerText="Cancha">
                 <h:outputText   value="#{partido.canchaId.nombre}"/>

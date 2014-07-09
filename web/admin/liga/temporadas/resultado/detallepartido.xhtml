@@ -326,7 +326,8 @@
                             <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
                                              style="width: 150px" 
                                              update="eventos ,min :growlAdmin , equipo ,jugador ,staff"/>
-                            <p:commandButton id="editButtonE" value="Editar" action="#{resultadoBean.editEvento}" 
+                            <p:commandButton id="editButtonE" value="Editar" oncomplete="PF('EventoEditDialog').show()"
+                                             update=":EventoEditForm"
                                              style="width: 150px"
                                              disabled="#{empty resultadoBean.eventoSelected}"/>
                         </h:panelGrid>
@@ -346,10 +347,8 @@
                             <p:column headerText="Jugador " >
                                 <h:outputText value="#{partidoEvento.jugador1Id.personaId}"/>
                             </p:column>
-
                             <p:column headerText="Staff" >
-                                <h:outputText value="#{resultadoBean.partidoEvento.staffId.personaId}"/>
-
+                                <h:outputText value="#{partidoEvento.staffId.toString()}"/>
                             </p:column>
                         </p:dataTable>
                     </p:tab>
@@ -358,5 +357,6 @@
         </h:form>
         <ui:include src="addConvocado.xhtml" />
         <ui:include src="addarbitro.xhtml"/>
+        <ui:include src="editEvento.xhtml"/>
     </ui:define>
 </ui:composition>

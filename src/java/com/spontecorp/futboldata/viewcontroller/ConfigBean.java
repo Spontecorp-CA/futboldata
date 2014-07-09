@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ValueChangeListener;
 import javax.inject.Named;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
@@ -629,6 +630,7 @@ public class ConfigBean implements Serializable {
         equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
         equipos = new ArrayList<Equipo>();
         grupo = new Grupo();
+        categoriasT = null;
 
     }
 
@@ -938,7 +940,10 @@ public class ConfigBean implements Serializable {
             logger.error(e.toString());
         }
     }
+    public void getEquipoInLigaGrupo(ValueChangeListener changeListener){
+        equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, categoria);
 
+    }
     public List<Equipo> getEquipoInLiga() {
         
         if (partido != null) {
@@ -948,7 +953,6 @@ public class ConfigBean implements Serializable {
             }
              return equipoInLiga;
         } else {
-            logger.debug("Se fue por liga ");
             equipoInLiga= equipoInLigaFacade.getEquipoInLiga(liga); 
             return equipoInLiga;
         }
