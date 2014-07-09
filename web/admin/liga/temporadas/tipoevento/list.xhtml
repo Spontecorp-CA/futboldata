@@ -7,58 +7,52 @@
                 xmlns="http://www.w3.org/1999/xhtml" >
 
     <ui:define name="title">
-        Administración de Eventos de Partido
+        Administración de TipoEventos de Partido
     </ui:define>
 
     <ui:define name="content">
-        <h:form id="EventoListForm">
-            <p:fieldset style="width: 85%" legend="Lista de Eventos de Partido">
+        <h:form id="TipoEventoListForm">
+            <p:fieldset style="width: 85%" legend="Lista de TipoEventos de Partido">
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="createButton"
-                                         value="Crear Evento del Partido" 
+                                         value="Crear TipoEvento del Partido" 
                                          icon="ui-icon-plus"
-                                         action="#{eventoBean.prepareCreate}"
-                                         update=":EventoCreateForm" 
-                                         oncomplete="PF('EventoCreateDialog').show()"/>
+                                         action="#{tipoEventoBean.prepareCreate}"
+                                         update=":TipoEventoCreateForm" 
+                                         oncomplete="PF('TipoEventoCreateDialog').show()"/>
                         <p:commandButton id="editButton" 
                                          icon="ui-icon-pencil" 
-                                         value="Editar Evento del Partido"                                             
-                                         actionListener="#{eventoBean.prepareEdit}"
-                                         update=":EventoEditForm"
-                                         oncomplete="PF('EventoEditDialog').show()" 
-                                         disabled="#{empty eventoBean.selected.nombre}"/>
+                                         value="Editar TipoEvento del Partido"                                             
+                                         actionListener="#{tipoEventoBean.prepareEdit}"
+                                         update=":TipoEventoEditForm"
+                                         oncomplete="PF('TipoEventoEditDialog').show()" 
+                                         disabled="#{empty tipoEventoBean.selected.nombre}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
-                        <p:commandButton value="Administración" action="#{eventoBean.returnAdminPage}"
+                        <p:commandButton value="Administración" action="#{tipoEventoBean.returnAdminPage}"
                                          immediate="true"/>
                     </p:toolbarGroup>
                 </p:toolbar>
                 <br />
                 <h:outputText value="Haga 'click' en una fila para seleccionarla ó 'Ctrl-click' para deseleccionarla"/>
                 <br />
-                <p:dataTable id="items" var="item" value="#{eventoBean.items}"
+                <p:dataTable id="items" var="item" value="#{tipoEventoBean.items}"
                              rowKey="#{item.nombre}"
-                             selection="#{eventoBean.selected}" selectionMode="single"
+                             selection="#{tipoEventoBean.selected}" selectionMode="single"
                              paginator="true" rows="10"  
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
                              rowsPerPageTemplate="5,10,15">                
 
                     <p:ajax event="rowSelect" 
-                            update=":EventoListForm:createButton 
-                            :EventoListForm:editButton"/>
+                            update=":TipoEventoListForm:createButton 
+                            :TipoEventoListForm:editButton"/>
                     <p:ajax event="rowUnselect" 
-                            update=":EventoListForm:createButton 
-                            :EventoListForm:editButton"/>
+                            update=":TipoEventoListForm:createButton 
+                            :TipoEventoListForm:editButton"/>
 
-                    <p:column headerText="Nombre del Evento">
+                    <p:column headerText="Nombre del TipoEvento">
                         <h:outputText value="#{item.nombre}"/>
-                    </p:column>
-                    <p:column headerText="Descripcion del Evento">
-                        <h:outputText value="#{item.descripcion}"/>
-                    </p:column>
-                    <p:column headerText="Tipo Evento">
-                        <h:outputText value="#{item.tipoEventoId.nombre}"/>
                     </p:column>
                     <p:column headerText="Status">
                         <h:outputText value="#{item.status == 1 ? 'Activo': 'Inactivo'}"/>

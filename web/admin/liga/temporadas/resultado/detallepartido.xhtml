@@ -286,7 +286,7 @@
                         </h:panelGrid>
                     </p:tab>
                     <p:tab id="tab5" title="Eventos Partido">
-                        <h:panelGrid columns="6"  >
+                        <h:panelGrid columns="4"  >
 
                             <h:outputLabel value="Equipo:" />
                             <p:selectOneMenu id="equipo" value="#{resultadoBean.equipo}" 
@@ -316,6 +316,10 @@
                                 <f:selectItems value="#{resultadoBean.staffs}"   />
                             </p:selectOneMenu>
 
+                            <h:outputLabel value="Tipo Evento" />
+                            <p:selectOneMenu value="#{resultadoBean.tipoEvento}" >
+                                <f:selectItems value="#{tipoEventoBean.items}" />
+                            </p:selectOneMenu>
 
                             <h:outputLabel value="Evento" />
                             <p:selectOneMenu value="#{resultadoBean.partidoEvento.eventoId}" >
@@ -323,13 +327,15 @@
                             </p:selectOneMenu>
                             <h:outputLabel value="Minuto:" />
                             <p:spinner id="min" value="#{resultadoBean.partidoEvento.minuto}" min="0" max="150"  />
+                            <br/>
+                            <br/>
                             <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
                                              style="width: 150px" 
                                              update="eventos ,min :growlAdmin , equipo ,jugador ,staff"/>
-                            <p:commandButton id="editButtonE" value="Editar" oncomplete="PF('EventoEditDialog').show()"
-                                             update=":EventoEditForm"
+                            <p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
+                                             update="eventos :growlAdmin "
                                              style="width: 150px"
-                                             disabled="#{empty resultadoBean.eventoSelected}"/>
+                                             disabled="#{empty resultadoBean.eventoSelected.id}"/>
                         </h:panelGrid>
                         <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  
                                      var="partidoEvento" 

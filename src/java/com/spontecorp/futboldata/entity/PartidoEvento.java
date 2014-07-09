@@ -13,10 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -31,6 +33,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PartidoEvento.findById", query = "SELECT p FROM PartidoEvento p WHERE p.id = :id"),
     @NamedQuery(name = "PartidoEvento.findByMinuto", query = "SELECT p FROM PartidoEvento p WHERE p.minuto = :minuto")})
 public class PartidoEvento implements Serializable {
+    @Lob
+    @Size(max = 65535)
+    @Column(name = "descripcion")
+    private String descripcion;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -141,6 +147,14 @@ public class PartidoEvento implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.PartidoEvento[ id=" + id + " ]";
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
 }

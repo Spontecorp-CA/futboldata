@@ -14,6 +14,7 @@ import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.entity.PartidoArbitro;
 import com.spontecorp.futboldata.entity.PartidoEvento;
 import com.spontecorp.futboldata.entity.Staff;
+import com.spontecorp.futboldata.entity.TipoEvento;
 import com.spontecorp.futboldata.jpacontroller.ClasificacionFacade;
 import com.spontecorp.futboldata.jpacontroller.ClasificacionGrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocadoFacade;
@@ -54,6 +55,7 @@ public class ResultadoBean implements Serializable {
     private PartidoArbitro partidoArbitro;
     private EquipoHasJugador equipoHasJugador;
     private PartidoEvento partidoEvento;
+    private TipoEvento tipoEvento;
     private final PartidoFacade partidoFacade;
     private final ConvocatoriasFacade convocatoriaFacade;
     private final ConvocadoFacade convocadoFacade;
@@ -517,7 +519,22 @@ public class ResultadoBean implements Serializable {
         }
 
     }
+    
+    public void deleteEvento(){
+        eventoFacade.remove(eventoSelected);
+        eventos.remove(eventoSelected);
+        Util.addSuccessMessage("Se elimino el evento con éxito");
+    }
 
+    public TipoEvento getTipoEvento() {
+        return tipoEvento;
+    }
+
+    public void setTipoEvento(TipoEvento tipoEvento) {
+        this.tipoEvento = tipoEvento;
+    }
+
+    
     public PartidoEvento getEventoSelected() {
         return eventoSelected;
     }

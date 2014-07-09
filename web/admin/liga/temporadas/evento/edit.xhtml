@@ -16,6 +16,11 @@
                                  title="Nombre del Evento del Partido" required="true" 
                                  requiredMessage="Debe colocar un nombre para el  Evento del Partido"
                                  style="width: 240px"/>
+                    <h:outputLabel value="Tipo de Evento:" />
+                    <p:selectOneMenu value="#{eventoBean.selected.tipoEventoId}" 
+                                     required="true">
+                        <f:selectItems value="#{tipoEventoBean.items}" />
+                    </p:selectOneMenu>
 
                     <p:outputLabel value="* Descripcion: " for="descripcion" />
                     <p:inputTextarea id="descripcion" value="#{eventoBean.selected.descripcion}" 

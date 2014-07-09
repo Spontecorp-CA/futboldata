@@ -5,8 +5,10 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Evento;
+import com.spontecorp.futboldata.entity.TipoEvento;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.slf4j.Logger;
@@ -36,6 +38,23 @@ public class EventoFacade extends AbstractFacade<Evento> implements Serializable
             Query q = em.createNamedQuery("Evento.findByNombre", Evento.class);
             q.setParameter("nombre", nombre);
             evento = (Evento) q.getSingleResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        } finally {
+            em.close();
+        }
+        return evento;
+    }
+
+    public List<Evento> findEvento(TipoEvento tipoEvento) {
+        EntityManager em = getEntityManager();
+        List<Evento> evento = null;
+        try {
+            String query = "SELECT e FROM Evento e WHERE e.tipoEventoId =:tipoEvento AND c.status =:status";
+            Query q = em.createQuery(query, Evento.class);
+            q.setParameter("tipoEvento",tipoEvento);
+            q.setParameter("status", 1);
+            evento =  q.getResultList();
         } catch (Exception e) {
             logger.error(e.getMessage());
         } finally {

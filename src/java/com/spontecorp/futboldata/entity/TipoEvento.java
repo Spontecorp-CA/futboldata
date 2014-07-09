@@ -14,14 +14,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -31,16 +27,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "evento")
+@Table(name = "tipo_evento")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Evento.findAll", query = "SELECT e FROM Evento e"),
-    @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id"),
-    @NamedQuery(name = "Evento.findByNombre", query = "SELECT e FROM Evento e WHERE e.nombre = :nombre")})
-public class Evento implements Serializable {
-    @JoinColumn(name = "tipo_evento_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TipoEvento tipoEventoId;
+    @NamedQuery(name = "TipoEvento.findAll", query = "SELECT t FROM TipoEvento t"),
+    @NamedQuery(name = "TipoEvento.findById", query = "SELECT t FROM TipoEvento t WHERE t.id = :id"),
+    @NamedQuery(name = "TipoEvento.findByNombre", query = "SELECT t FROM TipoEvento t WHERE t.nombre = :nombre")})
+public class TipoEvento implements Serializable {
     @Column(name = "status")
     private Integer status;
     private static final long serialVersionUID = 1L;
@@ -49,28 +42,17 @@ public class Evento implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
+    @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "descripcion")
-    private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
-    private Collection<PartidoEvento> partidoEventoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEventoId")
+    private Collection<Evento> eventoCollection;
 
-    public Evento() {
+    public TipoEvento() {
     }
 
-    public Evento(Integer id) {
+    public TipoEvento(Integer id) {
         this.id = id;
-    }
-
-    public Evento(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
     }
 
     public Integer getId() {
@@ -89,21 +71,13 @@ public class Evento implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     @XmlTransient
-    public Collection<PartidoEvento> getPartidoEventoCollection() {
-        return partidoEventoCollection;
+    public Collection<Evento> getEventoCollection() {
+        return eventoCollection;
     }
 
-    public void setPartidoEventoCollection(Collection<PartidoEvento> partidoEventoCollection) {
-        this.partidoEventoCollection = partidoEventoCollection;
+    public void setEventoCollection(Collection<Evento> eventoCollection) {
+        this.eventoCollection = eventoCollection;
     }
 
     @Override
@@ -116,10 +90,10 @@ public class Evento implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Evento)) {
+        if (!(object instanceof TipoEvento)) {
             return false;
         }
-        Evento other = (Evento) object;
+        TipoEvento other = (TipoEvento) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -137,14 +111,6 @@ public class Evento implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public TipoEvento getTipoEventoId() {
-        return tipoEventoId;
-    }
-
-    public void setTipoEventoId(TipoEvento tipoEventoId) {
-        this.tipoEventoId = tipoEventoId;
     }
     
 }
