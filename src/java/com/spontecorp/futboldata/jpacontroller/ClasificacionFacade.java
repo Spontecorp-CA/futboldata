@@ -5,9 +5,11 @@
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.Clasificacion;
+import com.spontecorp.futboldata.entity.ClasificacionGrupo;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.utilities.Util;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.slf4j.Logger;
@@ -51,6 +53,27 @@ public class ClasificacionFacade extends AbstractFacade<Clasificacion> {
 
         }
         return clasificacion;
+    }
+    
+        public List<Clasificacion> findClasificaciones(ClasificacionGrupo cg) {
+        EntityManager em = getEntityManager();
+        List<Clasificacion> clasificaciones= null;
+        try {
+            String query = null;
+            Query q = null;
+            query = "SELECT c FROM Clasificacion  c WHERE c.clasificacionGrupoId =:clasificacionGrupo";
+            q = em.createQuery(query, Clasificacion.class);
+            q.setParameter("clasificacionGrupo", cg); 
+            clasificaciones =  q.getResultList();
+
+
+        } catch (Exception e) {
+            logger.debug("No encontro clasificaciones", e.getCause());
+        } finally {
+            em.close();
+
+        }
+        return clasificaciones;
     }
 
 

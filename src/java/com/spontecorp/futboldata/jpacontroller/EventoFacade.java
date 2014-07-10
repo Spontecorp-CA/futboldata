@@ -50,7 +50,7 @@ public class EventoFacade extends AbstractFacade<Evento> implements Serializable
         EntityManager em = getEntityManager();
         List<Evento> evento = null;
         try {
-            String query = "SELECT e FROM Evento e WHERE e.tipoEventoId =:tipoEvento AND c.status =:status";
+            String query = "SELECT e FROM Evento e WHERE e.tipoEventoId =:tipoEvento AND e.status =:status";
             Query q = em.createQuery(query, Evento.class);
             q.setParameter("tipoEvento",tipoEvento);
             q.setParameter("status", 1);

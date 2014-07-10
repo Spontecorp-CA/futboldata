@@ -165,6 +165,7 @@ public class CiudadBean implements Serializable {
     public String prepareCreate() {
         ciudad = new Ciudad();
         pais = new Pais();
+        recreateModel();
         return "/admin/localidad/ciudad/create.xhtml";
     }
 

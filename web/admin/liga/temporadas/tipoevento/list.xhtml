@@ -7,7 +7,7 @@
                 xmlns="http://www.w3.org/1999/xhtml" >
 
     <ui:define name="title">
-        Administración de TipoEventos de Partido
+        Administración de Tipos de Eventos de Partido
     </ui:define>
 
     <ui:define name="content">
@@ -16,14 +16,14 @@
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="createButton"
-                                         value="Crear TipoEvento del Partido" 
+                                         value="Crear Tipo de Eventos del Partido" 
                                          icon="ui-icon-plus"
                                          action="#{tipoEventoBean.prepareCreate}"
                                          update=":TipoEventoCreateForm" 
                                          oncomplete="PF('TipoEventoCreateDialog').show()"/>
                         <p:commandButton id="editButton" 
                                          icon="ui-icon-pencil" 
-                                         value="Editar TipoEvento del Partido"                                             
+                                         value="Editar Tipo Eventos del Partido"                                             
                                          actionListener="#{tipoEventoBean.prepareEdit}"
                                          update=":TipoEventoEditForm"
                                          oncomplete="PF('TipoEventoEditDialog').show()" 
@@ -51,7 +51,7 @@
                             update=":TipoEventoListForm:createButton 
                             :TipoEventoListForm:editButton"/>
 
-                    <p:column headerText="Nombre del TipoEvento">
+                    <p:column headerText="Nombre del Tipo Evento">
                         <h:outputText value="#{item.nombre}"/>
                     </p:column>
                     <p:column headerText="Status">

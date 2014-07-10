@@ -7,14 +7,14 @@
                 xmlns="http://www.w3.org/1999/xhtml">
 
     <p:dialog id="TipoEventoEditDlg" widgetVar="TipoEventoEditDialog" modal="true" 
-              resizable="false" appendTo="@(body)" header="Editar TipoEvento del Partido">
+              resizable="false" appendTo="@(body)" header="Editar Tipo Eventos del Partido">
         <h:form id="TipoEventoEditForm">
             <h:panelGroup id="display">
                 <h:panelGrid columns="2" rendered="#{tipoEventoBean.selected != null}">
                     <p:outputLabel value="* Nombre: " for="nombre" />
                     <p:inputText id="nombre" value="#{tipoEventoBean.selected.nombre}" 
-                                 title="Nombre del TipoEvento del Partido" required="true" 
-                                 requiredMessage="Debe colocar un nombre para el  TipoEvento del Partido"
+                                 title="Nombre del Tipo Evento del Partido" required="true" 
+                                 requiredMessage="Debe colocar un nombre para el  Tipo Evento del Partido"
                                  style="width: 240px"/>
 
                     <p:outputLabel value="Status: " for="status" />

@@ -77,7 +77,17 @@
                                              style="width: 150px">
                                 <f:selectItems value="#{statusPartidoBean.items}"/>
                             </p:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" >
+                            <h:outputLabel value="Penales de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                                           for="penalLocal"/>
+                            <h:outputLabel value="Penales de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
+                                           for="penalVisitante" />
 
+                            <p:spinner id="penalLocal" value="#{resultadoBean.partido.golesLocalPenalties}" 
+                                       min="0" max="20" />
+                            <p:spinner id="pennalVisitante" value="#{resultadoBean.partido.golesVisitantePenalties}" 
+                                       min="0" max="20" />
                         </h:panelGrid>
                     </p:tab>
 
@@ -317,21 +327,27 @@
                             </p:selectOneMenu>
 
                             <h:outputLabel value="Tipo Evento" />
-                            <p:selectOneMenu value="#{resultadoBean.tipoEvento}" >
+                            <p:selectOneMenu  id="tipoEvento" value="#{resultadoBean.tipoEvento}" >
+                                <f:selectItem itemLabel="-------------"  value="#{null}" />
                                 <f:selectItems value="#{tipoEventoBean.items}" />
+                                <p:ajax  event="valueChange" 
+                                         listener="#{resultadoBean.TipoEventoSelected(changeEvent)}"
+                                         update="evento" />
                             </p:selectOneMenu>
 
                             <h:outputLabel value="Evento" />
-                            <p:selectOneMenu value="#{resultadoBean.partidoEvento.eventoId}" >
-                                <f:selectItems value="#{eventoBean.items}" />
+                            <p:selectOneMenu id="evento" value="#{resultadoBean.partidoEvento.eventoId}" >
+                                <f:selectItem itemLabel="-------------"  value="#{null}" />
+                                <f:selectItems value="#{resultadoBean.comboEvento}" />
                             </p:selectOneMenu>
                             <h:outputLabel value="Minuto:" />
                             <p:spinner id="min" value="#{resultadoBean.partidoEvento.minuto}" min="0" max="150"  />
-                            <br/>
-                            <br/>
+                            <h:outputLabel id="dato" value="Dato:" />
+                            <h:inputText value="#{resultadoBean.partidoEvento.descripcion}" />
                             <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
                                              style="width: 150px" 
-                                             update="eventos ,min :growlAdmin , equipo ,jugador ,staff"/>
+                                             update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
+                                             tipoEvento ,dato"/>
                             <p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
                                              update="eventos :growlAdmin "
                                              style="width: 150px"
@@ -347,6 +363,9 @@
                             <p:column headerText="Evento" >
                                 <h:outputText value="#{partidoEvento.eventoId.nombre}"/>
                             </p:column>
+                            <p:column headerText="Tipo de Evento" >
+                                <h:outputText value="#{partidoEvento.eventoId.tipoEventoId.nombre}"/>
+                            </p:column>
                             <p:column headerText="Tiempo" >
                                 <h:outputText value="#{partidoEvento.minuto}" />
                             </p:column>
@@ -355,6 +374,9 @@
                             </p:column>
                             <p:column headerText="Staff" >
                                 <h:outputText value="#{partidoEvento.staffId.toString()}"/>
+                            </p:column>
+                            <p:column headerText="Dato" >
+                                <h:outputText value="#{partidoEvento.descripcion}"/>
                             </p:column>
                         </p:dataTable>
                     </p:tab>
