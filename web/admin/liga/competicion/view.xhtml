@@ -42,6 +42,8 @@
                         </h:panelGroup>
                         <h:outputLabel value="Status: " for="status"/>
                         <h:outputText id="status" value="#{ligaBean.selected.status == 1?'Activo':'Inactivo'}"/>
+                        <h:graphicImage id="Perfil" url="#{ligaBean.hostImagen}#{ligaBean.selected.logo}"
+                                        width="200"/>  
                     </p:panelGrid>
                     <p:commandButton value="Cancelar" onclick="LigaViewDialog.hide()"/>
                 </h:panelGroup>

@@ -19,6 +19,7 @@ import com.spontecorp.futboldata.utilities.Util;
 import com.spontecorp.futboldata.utilities.Util.PersistAction;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -28,6 +29,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
+import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -210,11 +212,11 @@ public class LigaBean implements Serializable {
         try {
             if (ligaController.findCompeticion(nombre) == null) {
                 result = false;
-            }    
+            }
         } catch (NoResultException e) {
             result = false;
         }
-        
+
         return result;
     }
 
@@ -320,11 +322,10 @@ public class LigaBean implements Serializable {
     public List<Competicion> getItemsAvailableSelectOne() {
         return ligaController.findAll();
     }
-    
-    
-    public String gotoLiga(){
-      selected = null;
-      return "/admin/liga/competicion/list?faces-redirect=true";
+
+    public String gotoLiga() {
+        selected = null;
+        return "/admin/liga/competicion/list?faces-redirect=true";
     }
 
     @FacesConverter(forClass = Competicion.class)
@@ -366,6 +367,21 @@ public class LigaBean implements Serializable {
                 return null;
             }
         }
-        
+
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+
+        long lDateTime = new Date().getTime();
+        System.out.println("Date() - Time in milliseconds: " + lDateTime);
+        String nombreArchivo = "competicion" + lDateTime;
+        Util.subirArchivo(event, "competicion/", nombreArchivo);
+        selected.setLogo(nombreArchivo);
+
+    }
+
+    public String getHostImagen() {
+        String host = Util.getHostImagen() + "competicion/";
+        return host;
     }
 }

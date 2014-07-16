@@ -86,6 +86,13 @@
                                 pattern="hh:mm a"
                                 timeOnly="true"
                                 style="width: 250px"/>
+                    <h:outputLabel value="Estado del Partido" />
+                    <p:selectOneMenu id="status" value="#{configBean.partido.statusPartidoId}"
+                                     required="true"
+                                     requiredMessage="Debe seleccionar el status"
+                                     style="width: 150px">
+                        <f:selectItems value="#{statusPartidoBean.items}"/>
+                    </p:selectOneMenu>
 
                 </h:panelGrid>
 

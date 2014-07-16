@@ -39,7 +39,7 @@ public class CategoriaFacade extends AbstractFacade<Categoria> implements Serial
             query.setParameter("nombre", nombre);
             categoria = (Categoria) query.getSingleResult();
         } catch (NoResultException e) {
-            logger.debug("Error al buscar Categoria ",e.getMessage());
+//            logger.debug("Error al buscar Categoria ",e.getMessage());
         } finally {
             em.close();
         }

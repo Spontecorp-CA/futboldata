@@ -3,12 +3,14 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
-                    
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
     <p:dialog id="ClubCreateDlg" widgetVar="ClubCreateDialog" modal="true"
-        resizable="false" appendTo="@(body)" header="Creación de Club">
+              resizable="false" appendTo="@(body)" header="Creación de Club">
         <h:form id="ClubCreateForm">
             <h:panelGroup id="display">
+                <p:panelGrid columns="2" >
                 <p:panelGrid columns="2" rendered="#{clubBean.selected != null}">
                     <h:outputLabel value="* Nombre:" for="nombre"/>
                     <p:inputText id="nombre" value="#{clubBean.selected.nombre}"
@@ -17,7 +19,7 @@
                     <h:outputLabel value="* Año de Fundación:" for="descripcion"/>
                     <p:inputMask id="descripcion" value="#{clubBean.selected.yearFundacion}"
                                  mask="9999"
-                                 
+
                                  requiredMessage="Debe Colocar el año de Fundación"
                                  style="width: 250px"/>
                     <h:outputLabel value="* País:" for="pais"/>
@@ -25,7 +27,7 @@
                                      value="#{clubBean.pais}"
                                      style="width: 250px"
                                      panelStyle="width:250px"
-                                     
+
                                      requiredMessage="Debe seleccionar un perfil">                       
                         <f:selectItems value="#{clubBean.paisAvailable}"/>
                         <p:ajax listener="#{clubBean.ciudadAvailable}" 
@@ -37,14 +39,14 @@
                                      value="#{clubBean.direccion.ciudadId}"
                                      style="width: 250px"
                                      panelStyle="width:250px"
-                                     
+
                                      requiredMessage="Debe seleccionar un perfil">                       
                         <f:selectItems value="#{clubBean.ciudades}"/>
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Dirección" for="direccion"/>
                     <p:inputText id="direccion" value="#{clubBean.direccion.direccion}"
-                                  requiredMessage="Debe colocar la Direccion"
+                                 requiredMessage="Debe colocar la Direccion"
                                  style="width: 250px"/>
 
                     <h:outputLabel value="Página Web" for="paginaW"/>
@@ -62,7 +64,7 @@
                             <p:column>
                                 <p:inputMask id="telefono" 
                                              value="#{clubBean.telefono.telefono}"
-                                             
+
                                              requiredMessage="Debe colocar un teléfono"
                                              style="width: 250px"
                                              mask="(9999) 999.9999"/>                                
@@ -127,6 +129,22 @@
                         <f:selectItem itemLabel="Inactivo" itemValue="0"/>
                     </p:selectOneMenu>
                 </p:panelGrid>
+                <p:panelGrid columns="2" >
+                <h:outputLabel value="Logo:" for="logo"/>
+                <p:fileUpload id="logo" 
+                              value="#{clubBean.selected.logo}"
+                              mode="advanced" dragDropSupport="false" 
+                              allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                              style="width: 250px"
+                              fileUploadListener="#{clubBean.handleFileUpload}"
+                              update="Perfil" >
+
+                </p:fileUpload>
+                &nbsp; 
+                <h:graphicImage id="Perfil" url="#{clubBean.hostImagen}#{clubBean.selected.logo}"
+                                width="200"/>  
+                </p:panelGrid>
+            </p:panelGrid>
                 <p:commandButton actionListener="#{clubBean.create}" value="Guardar" 
                                  update="display,:ClubListForm:clubs,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'ClubCreateDialog');"

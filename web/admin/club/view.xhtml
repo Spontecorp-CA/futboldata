@@ -4,8 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:p="http://primefaces.org/ui">
-          
+      xmlns:p="http://primefaces.org/ui">
+
     <ui:composition>
         <p:dialog id="ClubViewDlg" widgetVar="ClubViewDialog" 
                   modal="true" resizable="false" 
@@ -45,6 +45,8 @@
                         <h:outputText id="historia" value="#{clubBean.selected.historia}"/>
                         <h:outputLabel value="Status: " for="status"/>
                         <h:outputText id="status" value="#{clubBean.selected.status == 1?'Activo':'Inactivo'}"/>
+                        <h:graphicImage id="Perfil" url="#{clubBean.hostImagen}#{clubBean.selected.logo}"
+                                        width="200"/>   
                     </p:panelGrid>
                     <p:commandButton value="Cancelar" onclick="ClubViewDialog.hide()"/>
                 </h:panelGroup>

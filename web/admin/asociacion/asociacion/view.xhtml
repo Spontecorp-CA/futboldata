@@ -20,7 +20,7 @@
                         <h:panelGrid columns="2" >
                             <h:outputLabel value="Nombre de la Asociacion:" for="nombre"/>
                             <h:outputText id="nombre" value="#{asociacionBean.selected.nombre}" 
-                                         />
+                                          />
                             <h:outputLabel value="Pais:" for="pais"/>
                             <h:outputText id="pais" value="#{asociacionBean.pais}"
                                           style="width: 250px"/>                       
@@ -50,6 +50,9 @@
                                 <f:selectItem itemLabel="Activo" itemValue="1"/>
                                 <f:selectItem itemLabel="Inactivo" itemValue="0"/>
                             </p:outputLabel>
+                            <h:outputLabel value="Logo:" for="logo"/>
+                            <h:graphicImage id="Perfil" url="#{asociacionBean.hostImagen}#{asociacionBean.selected.logo}"
+                                            width="200"/>   
                         </h:panelGrid>
 
                         <h:panelGrid columns="2" styleClass="panelGridSpt">

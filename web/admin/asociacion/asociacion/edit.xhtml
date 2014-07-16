@@ -64,6 +64,19 @@
                                 <f:selectItem itemLabel="Activo" itemValue="1"/>
                                 <f:selectItem itemLabel="Inactivo" itemValue="0"/>
                             </p:selectOneMenu>
+                            <h:outputLabel value="Logo:" for="logo"/>
+                            <p:fileUpload id="logo" 
+                                          value="#{asociacionBean.selected.logo}"
+                                          mode="advanced" dragDropSupport="false" 
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                          style="width: 250px"
+                                          fileUploadListener="#{asociacionBean.handleFileUpload}"
+                                          update="Perfil" >
+
+                            </p:fileUpload>
+                            &nbsp; 
+                            <h:graphicImage id="Perfil" url="#{asociacionBean.hostImagen}#{asociacionBean.selected.logo}"
+                                            width="200"/>   
                         </h:panelGrid>
 
                         <h:panelGrid columns="2" styleClass="panelGridSpt">

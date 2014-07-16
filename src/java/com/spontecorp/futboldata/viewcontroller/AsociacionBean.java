@@ -21,12 +21,14 @@ import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -324,6 +326,21 @@ public class AsociacionBean implements Serializable {
         } else {
             logger.debug("No lo agrego a la lista de eliminar Telefono");
         }
+    }
+    
+    public void handleFileUpload(FileUploadEvent event) {
+
+        long lDateTime = new Date().getTime();
+        System.out.println("Date() - Time in milliseconds: " + lDateTime);
+        String nombreArchivo = "asociacion" + lDateTime;
+        Util.subirArchivo(event, "asociacion/", nombreArchivo);
+        asociacion.setLogo(nombreArchivo);
+
+    }
+
+    public String getHostImagen() {
+        String host = Util.getHostImagen() + "asociacion/";
+        return host;
     }
 
 }

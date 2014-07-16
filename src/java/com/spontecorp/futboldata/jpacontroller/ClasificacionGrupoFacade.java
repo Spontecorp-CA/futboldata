@@ -58,6 +58,7 @@ public class ClasificacionGrupoFacade extends AbstractFacade<ClasificacionGrupo>
     public void actulizar(ClasificacionGrupo clasificacionGrupo) {
         List<Clasificacion> clasificaciones;
         ClasificacionGrupo clasificacionTotal;
+        logger.debug("Se modifica el equipo "+ clasificacionGrupo.getEquipoId().getNombre());
         int jGanados = 0;
         int jJugados = 0;
         int jEmpatados = 0;
@@ -66,8 +67,9 @@ public class ClasificacionGrupoFacade extends AbstractFacade<ClasificacionGrupo>
         int golesContra = 0;
         int diferencia = 0;
         int puntos = 0;
-        clasificacionTotal = find(clasificacionGrupo.getId());
+        clasificacionTotal = clasificacionGrupo;
         if (clasificacionTotal.getStatus() == 0) {
+            logger.debug("Paso 1");
             clasificaciones = clasificacionFacade.findClasificaciones(clasificacionTotal);
             for (Clasificacion clasificacion : clasificaciones) {
                 jGanados += clasificacion.getJGanados();
@@ -79,6 +81,7 @@ public class ClasificacionGrupoFacade extends AbstractFacade<ClasificacionGrupo>
                 diferencia += clasificacion.getDiferencia();
                 puntos += clasificacion.getPuntos();
             }
+            logger.debug("Los Juegos perdidos "+jPerdidos);
             clasificacionTotal.setDiferencia(diferencia);
             clasificacionTotal.setGolesContra(golesContra);
             clasificacionTotal.setGolesFavor(golesFavor);

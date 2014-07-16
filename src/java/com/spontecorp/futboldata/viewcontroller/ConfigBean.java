@@ -638,6 +638,7 @@ public class ConfigBean implements Serializable {
         equiposEli = new ArrayList<Equipo>();
         equipos = new ArrayList<Equipo>();
         equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
+        categoriasT = null;
         for (EquipoEnGrupo equiG : grupo.getEquipoEnGrupoCollection()) {
             equipos.add(equiG.getEquipoId());
         }
@@ -906,7 +907,10 @@ public class ConfigBean implements Serializable {
     }
 
     public void prepareEditPartido() {
-        categoria = partido.getEquipoLocalId().getCategoriaId();
+        if (partido.getEquipoLocalId() != null) {
+            categoria = partido.getEquipoLocalId().getCategoriaId();
+        }
+
         categoriasT = null;
     }
 
@@ -940,20 +944,22 @@ public class ConfigBean implements Serializable {
             logger.error(e.toString());
         }
     }
-    public void getEquipoInLigaGrupo(ValueChangeListener changeListener){
+
+    public void getEquipoInLigaGrupo(ValueChangeListener changeListener) {
         equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, categoria);
 
     }
+
     public List<Equipo> getEquipoInLiga() {
-        
+
         if (partido != null) {
-            if (partido.getCategoriaId()!=null){
-            equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, partido.getCategoriaId());
-            return equipoInLiga;
+            if (partido.getCategoriaId() != null) {
+                equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, partido.getCategoriaId());
+                return equipoInLiga;
             }
-             return equipoInLiga;
+            return equipoInLiga;
         } else {
-            equipoInLiga= equipoInLigaFacade.getEquipoInLiga(liga); 
+            equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga);
             return equipoInLiga;
         }
 

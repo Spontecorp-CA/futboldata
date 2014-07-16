@@ -20,13 +20,14 @@ import com.spontecorp.futboldata.jpacontroller.TelefonoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -255,7 +256,7 @@ public class ClubBean implements Serializable {
 
     public Club prepareCreate() {
         club = new Club();
-        initializeEmbeddableKey();        
+        initializeEmbeddableKey();
         setEmbeddableKeys();
         return club;
     }
@@ -347,6 +348,21 @@ public class ClubBean implements Serializable {
             Util.addErrorMessage(e, "Error al editar la categoría");
             //return null;
         }
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+
+        long lDateTime = new Date().getTime();
+        System.out.println("Date() - Time in milliseconds: " + lDateTime);
+        String nombreArchivo = "club" + lDateTime;
+        Util.subirArchivo(event, "club/", nombreArchivo);
+        club.setLogo(nombreArchivo);
+
+    }
+
+    public String getHostImagen() {
+        String host = Util.getHostImagen() + "club/";
+        return host;
     }
 
 }
