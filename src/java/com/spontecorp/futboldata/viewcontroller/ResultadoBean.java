@@ -10,8 +10,10 @@ import com.spontecorp.futboldata.entity.ClasificacionGrupo;
 import com.spontecorp.futboldata.entity.Convocado;
 import com.spontecorp.futboldata.entity.Convocatoria;
 import com.spontecorp.futboldata.entity.Equipo;
+import com.spontecorp.futboldata.entity.EquipoEnGrupo;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.Evento;
+import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.entity.PartidoArbitro;
 import com.spontecorp.futboldata.entity.PartidoEvento;
@@ -21,6 +23,7 @@ import com.spontecorp.futboldata.jpacontroller.ClasificacionFacade;
 import com.spontecorp.futboldata.jpacontroller.ClasificacionGrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocadoFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocatoriasFacade;
+import com.spontecorp.futboldata.jpacontroller.EquipoEnGrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoHasJugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.EventoFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoArbitroFacade;
@@ -33,6 +36,7 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
+import jdk.nashorn.internal.parser.TokenType;
 import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +74,7 @@ public class ResultadoBean implements Serializable {
     private final PartidoEventoFacade partidoEventoFacade;
     private final ClasificacionFacade clasificacionFacade;
     private final ClasificacionGrupoFacade clasificacionGrupoFacade;
+    private final EquipoEnGrupoFacade equipoEnGrupoFacade;
     private final EventoFacade eventoFacade;
     private List<Evento> comboEvento;
     private List<Staff> staffs;
@@ -97,6 +102,7 @@ public class ResultadoBean implements Serializable {
         clasificacionFacade = new ClasificacionFacade();
         clasificacionGrupoFacade = new ClasificacionGrupoFacade();
         eventoFacade = new EventoFacade();
+        equipoEnGrupoFacade = new EquipoEnGrupoFacade();
     }
 
     /**
@@ -436,7 +442,13 @@ public class ResultadoBean implements Serializable {
     }
 
     private ClasificacionGrupo createClasificiacionGrupo(Equipo equipo) {
-        if (clasificacionGrupoFacade.findClasificacion(partido.getJornadaId().getGrupoId(), equipo) == null) {
+        
+        Grupo grupo;
+        grupo = equipoEnGrupoFacade.getGrupoxFasexEquipo(partido.getJornadaId().getGrupoId().getFaseId(), equipo);
+        if(grupo ==null){
+            logger.error("Debe ingresar el equipo "+equipo.getNombre()+" a un grupo");
+        }
+        if (clasificacionGrupoFacade.findClasificacion(grupo, equipo) == null) {
             clasificacionGrupo = new ClasificacionGrupo();
             clasificacionGrupo.setStatus(0);
             clasificacionGrupo.setEquipoId(equipo);

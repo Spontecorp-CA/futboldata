@@ -151,9 +151,6 @@ public class ConfigBean implements Serializable {
 
     public void setEquipos(List<Equipo> equipos) {
         this.equipos = equipos;
-        for (Equipo equi : equipos) {
-            logger.debug("Equipo en la lista:" + equi.getNombre());
-        }
     }
 
     public int getFaseTipo() {

@@ -4,10 +4,10 @@
  */
 package com.spontecorp.futboldata.jpacontroller;
 
-import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoEnGrupo;
-import com.spontecorp.futboldata.entity.Jugador;
+import com.spontecorp.futboldata.entity.Fase;
+import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.List;
@@ -71,27 +71,26 @@ public class EquipoEnGrupoFacade extends AbstractFacade<EquipoEnGrupo> implement
         }
         return equipoEnGrupo;
     }
-
-    public EquipoEnGrupo getEquipoEnGrupo(Equipo equipo, Grupo liga) {
-        EquipoEnGrupo equipoEnGrupo = null;
-
+    
+        public Grupo getGrupoxFasexEquipo(Fase fase , Equipo equipo) {
+        Grupo grupo = null;
         EntityManager em = getEntityManager();
-        try {
 
-            String query = "SELECT e FROM EquipoEnGrupo e WHERE  e.equipoId = :equipo "
-                    + "AND e.competicionId = :liga AND e.status =:status";
-            Query q = em.createQuery(query, EquipoEnGrupo.class);
+        try {
+            String query = "SELECT e.grupoId FROM EquipoEnGrupo e WHERE  e.grupoId.faseId = :fase "
+                    + " AND e.equipoId =:equipo "
+                    + "AND e.status = :status";
+            Query q = em.createQuery(query, Equipo.class);
+            q.setParameter("fase", fase);
             q.setParameter("equipo", equipo);
-            q.setParameter("liga", liga);
             q.setParameter("status", ACTIVO);
-            equipoEnGrupo = (EquipoEnGrupo) q.getSingleResult();
+            grupo = (Grupo) q.getSingleResult();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoEnGrupo: " + e.getLocalizedMessage());
-
         } finally {
             em.close();
         }
-        return equipoEnGrupo;
+        return grupo;
     }
 
     public void persist(Object object) {

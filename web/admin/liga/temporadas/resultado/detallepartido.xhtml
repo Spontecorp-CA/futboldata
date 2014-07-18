@@ -295,7 +295,7 @@
                             </p:dataTable>
                         </h:panelGrid>
                     </p:tab>
-                    <p:tab id="tab5" title="Eventos Partido">
+                    <p:tab id="tab5" title="Incidencias Partido">
                         <h:panelGrid columns="4"  >
 
                             <h:outputLabel value="Equipo:" />
@@ -326,7 +326,7 @@
                                 <f:selectItems value="#{resultadoBean.staffs}"   />
                             </p:selectOneMenu>
 
-                            <h:outputLabel value="Tipo Evento" />
+                            <h:outputLabel value="Tipo Informe" />
                             <p:selectOneMenu  id="tipoEvento" value="#{resultadoBean.tipoEvento}" >
                                 <f:selectItem itemLabel="-------------"  value="#{null}" />
                                 <f:selectItems value="#{tipoEventoBean.items}" />
@@ -335,7 +335,7 @@
                                          update="evento" />
                             </p:selectOneMenu>
 
-                            <h:outputLabel value="Evento" />
+                            <h:outputLabel value="Incidente" />
                             <p:selectOneMenu id="evento" value="#{resultadoBean.partidoEvento.eventoId}" >
                                 <f:selectItem itemLabel="-------------"  value="#{null}" />
                                 <f:selectItems value="#{resultadoBean.comboEvento}" />
