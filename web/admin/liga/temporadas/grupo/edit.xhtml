@@ -39,10 +39,12 @@
                     <br/>
                     <h:outputText value="Selecciona los Equipos del Grupo" />
                     <p:outputLabel value="Equipos en Grupo" />
-                    <p:selectManyMenu id="equipos" value="#{configBean.equipos}" 
+                    <p:selectManyMenu  id="equipos" value="#{configBean.equipos}"                                    
+                                       valueChangeListener="#{configBean.listenerGrupo(changeListener)}"
                                       showCheckbox="true" 
-                                      style="width: 200px"
+                                      style="width: 200px" 
                                       converter="equipo">
+                        
                         <f:selectItems value="#{configBean.equipoInLiga}"  />
                     </p:selectManyMenu>
 

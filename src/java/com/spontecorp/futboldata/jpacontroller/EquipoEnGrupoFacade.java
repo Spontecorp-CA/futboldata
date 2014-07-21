@@ -34,17 +34,15 @@ public class EquipoEnGrupoFacade extends AbstractFacade<EquipoEnGrupo> implement
         return Util.getEmf().createEntityManager();
     }
 
-    public List<EquipoEnGrupo> getListEquipoEnGrupo(Grupo liga) {
-        List<EquipoEnGrupo> equipoEnGrupo = null;
+    public List<Equipo> getListEquipoEnGrupo(Grupo grupo) {
+        List<Equipo> equipoEnGrupo = null;
         EntityManager em = getEntityManager();
 
         try {
-            String query = "SELECT e FROM EquipoEnGrupo e WHERE  e.competicionId = :liga "
-                    + "AND e.status = :status";
+            String query = "SELECT e.equipoId FROM EquipoEnGrupo e WHERE  e.grupoId = :grupo ";
             Query q = em.createQuery(query, EquipoEnGrupo.class);
-            q.setParameter("liga", liga);
-            q.setParameter("status", ACTIVO);
-            equipoEnGrupo = (List<EquipoEnGrupo>) q.getResultList();
+            q.setParameter("grupo",grupo);
+            equipoEnGrupo = (List<Equipo>) q.getResultList();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoEnGrupo: " + e.getLocalizedMessage());
         } finally {
@@ -53,17 +51,17 @@ public class EquipoEnGrupoFacade extends AbstractFacade<EquipoEnGrupo> implement
         return equipoEnGrupo;
     }
 
-    public List<Equipo> getEquipoEnGrupo(Grupo liga) {
-        List<Equipo> equipoEnGrupo = null;
+    public Equipo getEquipoEnGrupo(Grupo grupo ,Equipo equipo) {
+        Equipo equipoEnGrupo = null;
         EntityManager em = getEntityManager();
 
         try {
-            String query = "SELECT e.equipoId FROM EquipoEnGrupo e WHERE  e.competicionId = :liga "
-                    + "AND e.status = :status";
+            String query = "SELECT e.equipoId FROM EquipoEnGrupo e WHERE  e.grupoId = :grupo "
+                    + "And e.equipoId =:equipo";
             Query q = em.createQuery(query, Equipo.class);
-            q.setParameter("liga", liga);
-            q.setParameter("status", ACTIVO);
-            equipoEnGrupo = (List<Equipo>) q.getResultList();
+            q.setParameter("grupo", grupo);
+            q.setParameter("equipo", equipo);
+            equipoEnGrupo = (Equipo) q.getSingleResult();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoEnGrupo: " + e.getLocalizedMessage());
         } finally {
