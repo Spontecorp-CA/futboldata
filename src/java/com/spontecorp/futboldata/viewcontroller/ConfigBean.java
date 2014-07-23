@@ -32,8 +32,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.inject.Named;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,9 +153,6 @@ public class ConfigBean implements Serializable {
 
     public void setEquipos(List<Equipo> equipos) {
         this.equipos = equipos;
-        for (Equipo equi : equipos) {
-            logger.debug("Equipo en la lista:" + equi.getNombre());
-        }
     }
 
     public int getFaseTipo() {
@@ -639,9 +638,13 @@ public class ConfigBean implements Serializable {
         equipos = new ArrayList<Equipo>();
         equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
         categoriasT = null;
-        for (EquipoEnGrupo equiG : grupo.getEquipoEnGrupoCollection()) {
-            equipos.add(equiG.getEquipoId());
-        }
+        equipos = equipoEnGrupoFacade.getListEquipoEnGrupo(grupo);
+
+    }
+
+    public void listenerGrupo(ValueChangeListener changeListener) {
+
+        logger.debug("Se cambio un valor");
 
     }
 
@@ -649,20 +652,25 @@ public class ConfigBean implements Serializable {
         EquipoEnGrupo equipoEnGrupoTemp;
         logger.debug("Esta editando un Grupo");
 
-        for (EquipoEnGrupo equiG : grupo.getEquipoEnGrupoCollection()) {
-            equipoEnGrupoFacade.remove(equiG);
-        }
         for (Equipo equi : equipos) {
-            equipoEnGrupoTemp = new EquipoEnGrupo();
-            equipoEnGrupoTemp.setEquipoId(equi);
-            equipoEnGrupoTemp.setGrupoId(grupo);
-            equipoEnGrupo.add(equipoEnGrupoTemp);
+            if (equipoEnGrupoFacade.getEquipoEnGrupo(grupo, equi) == null) {
+
+                equipoEnGrupoTemp = new EquipoEnGrupo();
+                equipoEnGrupoTemp.setEquipoId(equi);
+                equipoEnGrupoTemp.setGrupoId(grupo);
+                equipoEnGrupo.add(equipoEnGrupoTemp);
+            } else {
+                ;
+            }
+        }
+        if(!equipoEnGrupo.isEmpty()){
+                    grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
         }
 
-        grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
         grupoFacade.edit(grupo);
         recreateModelGrupo();
         Util.addSuccessMessage("Se edito exitosamente el Grupo");
+
     }
 
     public void createGrupo() {
@@ -947,6 +955,11 @@ public class ConfigBean implements Serializable {
 
     public void getEquipoInLigaGrupo(ValueChangeListener changeListener) {
         equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, categoria);
+        logger.debug("Se imprima el equipoInLiga");
+        for (Equipo equi : equipoInLiga) {
+            logger.debug("Equipo " + equi.getNombre() + "  " + equi.getCategoriaId().getNombre());
+
+        }
 
     }
 

@@ -11,7 +11,7 @@
     </ui:define>
 
     <p:dialog id="GrupoCreateDlg" widgetVar="GrupoCreateDialog" modal="true"
-              resizable="false" appendTo="@(body)" header="Creación de Grupos">
+              resizable="false" appendTo="@(body)" header="Creación de Grupos" position="top">
         <h:form id="GrupoCreateForm">
 
             <p:fieldset style="width: 85%" legend="Crear Grupo">                
@@ -33,6 +33,7 @@
                                      converter="categoriaConverter">
                         <f:ajax event="valueChange" listener="#{configBean.getEquipoInLigaGrupo(changeListener)}"
                                 render="equipos"/>
+                        <f:selectItem itemLabel=" --- " itemValue="#{null}"/>
                         <f:selectItems value="#{configBean.categoriasT}"/>
 
                     </p:selectOneMenu>
@@ -40,8 +41,8 @@
                     <h:outputText value="Seleccione los Equipos del Grupo" />
                     <p:outputLabel value="Equipos en Grupo" />
                     <p:selectManyMenu id="equipos" value="#{configBean.equipos}"
-                                       showCheckbox="true"
-                                       style="width: 200px"  converter="equipo">
+                                      showCheckbox="true"
+                                      style="width: 200px"  converter="equipo">
                         <f:selectItems value="#{configBean.equipoInLiga}"  />
                     </p:selectManyMenu>
 
