@@ -58,8 +58,11 @@
     <class>com.spontecorp.futboldata.entity.TipoEvento</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
+      <!-- Conexión para pruebas-->  
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
-      <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
+      <!-- Conexión para balonazos-->
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data_balonazos?zeroDateTimeBehavior=convertToNull"/>-->
+<!--      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
       <property name="javax.persistence.jdbc.password" value="futbol"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.user" value="futbol"/>
