@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.jpacontroller;
 
+import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
@@ -160,6 +161,38 @@ public class PartidoFacade extends AbstractFacade<Partido> {
             partidos = q.getResultList();
         } catch (Exception e) {
             logger.error("Error recuperando los partidos de un grupo", e);
+        }
+        return partidos;
+    }
+    
+    public List<Partido> findPartidos(Jornada jornada, Categoria categoria) {
+        EntityManager em = getEntityManager();
+        List<Partido> partidos = null;
+        try {
+            String query = "SELECT p FROM Partido p WHERE p.jornadaId = :jornada "
+                    + "AND p.categoriaId = :categoria";
+            Query q = em.createQuery(query);
+            q.setParameter("jornada", jornada);
+            q.setParameter("categoria", categoria);
+            partidos = q.getResultList();
+        } catch (Exception e) {
+            logger.error("Error recuperando los partidos de una jornada y categoria", e);
+        }
+        return partidos;
+    }
+    
+    public List<Partido> findPartidos(Grupo grupo, Categoria categoria){
+        EntityManager em = getEntityManager();
+        List<Partido> partidos = null;
+        try {
+            String query = "SELECT p FROM Partido p WHERE p.jornadaId.grupoId = :grupo "
+                            + "AND p.categoriaId = categoria";
+            Query q = em.createQuery(query);
+            q.setParameter("grupo", grupo);
+            q.setParameter("categoria", categoria);
+            partidos = q.getResultList();
+        } catch (Exception e) {
+            logger.error("Error recuperando los partidos de un grupo y categoria", e);
         }
         return partidos;
     }

@@ -51,7 +51,6 @@ public class StaffBean implements Serializable {
     private Staff staff;
     private Pais pais;
     private SelectItem[] ciudades;
-  
 
     private Direccion direccion;
     private Persona persona;
@@ -59,8 +58,8 @@ public class StaffBean implements Serializable {
     private Email email;
     private RedSocial redSocial;
     private TipoRedSocial tipoRedSocial;
-    private List<Persona> items ;
-    
+    private List<Persona> items;
+
     private List<RedSocial> redes;
     private List<RedSocial> redesEliminar;
     private static final Logger logger = LoggerFactory.getLogger(StaffBean.class);
@@ -150,7 +149,7 @@ public class StaffBean implements Serializable {
     }
 
     public void recreateModel() {
-        persona = null; 
+        persona = null;
         redSocial = null;
         pais = null;
         staff = null;
@@ -158,13 +157,13 @@ public class StaffBean implements Serializable {
 
     }
 
-    public void prepareEdit() {       
+    public void prepareEdit() {
         redes = getRedSocials(persona);
-        if(persona.getDireccionId().getCiudadId()!= null){
-         pais = persona.getDireccionId().getCiudadId().getPaisId();
-            ciudadesAvalaible();   
-        }else{
-            pais = new Pais();            
+        if (persona.getDireccionId().getCiudadId() != null) {
+            pais = persona.getDireccionId().getCiudadId().getPaisId();
+            ciudadesAvalaible();
+        } else {
+            pais = new Pais();
         }
     }
 
@@ -175,23 +174,32 @@ public class StaffBean implements Serializable {
 
     public void create() {
         try {
-            if (controllerStaff.findStaffxDomentoId(persona.getDocumentoIdentidad()) != null) {
-                Util.addErrorMessage("El Staff ya se encuentra Registrado por el Documenta de "
-                        + "identificacion");
-            } else {
+            logger.debug("El documento de identidad trae: " + persona.getDocumentoIdentidad());
+            if (persona.getDocumentoIdentidad() == null || persona.getDocumentoIdentidad().equals(" ")
+                    || persona.getDocumentoIdentidad().equals("")) {
                 persona.setRedSocialCollection(redes);
                 persona.setDireccionId(direccion);
                 staff.setPersonaId(persona);
-                logger.debug("Esta Creando  un Staff");
                 controllerStaff.create(staff);
                 recreateModel();
-                Util.addSuccessMessage("Se creo exitosamente el Staff");
+                Util.addSuccessMessage("Staff creado satisfactoriamente");
+            } else {
+                if (controllerStaff.findStaffxDomentoId(persona.getDocumentoIdentidad()) != null) {
+                    Util.addErrorMessage("El Staff ya se encuentra Registrado por el Documenta de "
+                            + "identificación");
+                } else {
+                    persona.setRedSocialCollection(redes);
+                    persona.setDireccionId(direccion);
+                    staff.setPersonaId(persona);
+                    controllerStaff.create(staff);
+                    recreateModel();
+                    Util.addSuccessMessage("Staff creado satisfactoriamente");
+                }
             }
 
         } catch (Exception e) {
-            logger.debug("Error al crear Staff :", e.getMessage());
+            logger.error("Error al crear Staff: ", e);
         }
-//        return prepareCreate();
     }
 
     public void prepareCreate() {
@@ -303,7 +311,6 @@ public class StaffBean implements Serializable {
         this.persona = persona;
     }
 
-    
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }

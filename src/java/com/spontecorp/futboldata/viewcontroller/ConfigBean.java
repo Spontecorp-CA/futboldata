@@ -72,6 +72,7 @@ public class ConfigBean implements Serializable {
     private List<Grupo> grupos;
     private List<Grupo> filteredGrupos;
     private List<Temporada> filteredTemporada;
+    private List<Categoria> categoriaList;
     private List<Categoria> categoriaSource;
     private List<Categoria> categoriaTarget;
     private List<Categoria> categoriasT;
@@ -214,6 +215,17 @@ public class ConfigBean implements Serializable {
         this.temporadaActiva = temporadaActiva;
     }
 
+    public List<Categoria> getCategoriaList() {
+        if(categoriaList == null){
+            categoriaList = temporadaCategoriaFacade.getCategorias(temporada);
+        }
+        return categoriaList;
+    }
+
+    public void setCategoriaList(List<Categoria> categoriaList) {
+        this.categoriaList = categoriaList;
+    }
+
     public void activateTemporadaList() {
         activateFaseList();
         temporadaActiva = true;
@@ -268,7 +280,7 @@ public class ConfigBean implements Serializable {
 
     public void activatePartidosLlaveList() {
         jornada = null;
-        partidos = getPartidos(llave);
+        partidos = getPartidosXLlave();
         partidos = null;
         llaveActiva = false;
         partidoActivo = true;
@@ -397,14 +409,14 @@ public class ConfigBean implements Serializable {
 
     public void prepareEditTemporada() {
         categoriaSource = categoriaFacade.findAll();
-        categoriaTarget = gestCategorias(temporada);
+        categoriaTarget = getCategorias(temporada);
         categoriaSource.removeAll(categoriaTarget);
         categorias = null;
         listTemporadaCategoria = new ArrayList<TemporadaCategoria>();
 
     }
 
-    public List<Categoria> gestCategorias(Temporada temporada) {
+    public List<Categoria> getCategorias(Temporada temporada) {
         return temporadaCategoriaFacade.getCategorias(temporada);
     }
 
@@ -606,6 +618,11 @@ public class ConfigBean implements Serializable {
 
     private List<Grupo> getGruposXFase() {
         return grupoFacade.findGruposXFase(fase);
+    }
+    
+    private void recreateModelCategoria(){
+        categoria = null;
+        categoriaList = null;
     }
 
     private void recreateModelGrupo() {
@@ -835,13 +852,15 @@ public class ConfigBean implements Serializable {
      * Manejo de partidos
      */
     public List<Partido> getPartidos() {
-        if (jornada != null) {
-            partidos = partidoFacade.findPartidos(jornada);
-        } else if (llave != null) {
-            partidos = partidoFacade.findPartidos(llave);
-        } else if (partidos == null) {
-            partidos = partidoFacade.findAll();
-        }
+//        if(jornada != null && categoria != null){
+//            partidos = partidoFacade.findPartidos(jornada, categoria);
+//        } else if (jornada != null) {
+//            partidos = partidoFacade.findPartidos(jornada);
+//        } else if (llave != null) {
+//            partidos = partidoFacade.findPartidos(llave);
+//        } else if (partidos == null) {
+//            partidos = partidoFacade.findAll();
+//        }
         return partidos;
     }
 
@@ -863,9 +882,29 @@ public class ConfigBean implements Serializable {
         partidos = partidoFacade.findPartidos(jornada);
         return partidos;
     }
+    
+    public List<Partido> getPartidos(Jornada jornada, Categoria categoria){
+        partidos = partidoFacade.findPartidos(jornada, categoria);
+        return partidos;
+    }
+    
+    public List<Partido> getPartidos(Grupo grupo, Categoria categoria){
+        partidos = partidoFacade.findPartidos(grupo, categoria);
+        return partidos;
+    }
 
-    public List<Partido> getPartidos(Llave llave) {
+    public List<Partido> getPartidosXLlave() {
         partidos = partidoFacade.findPartidos(llave);
+        return partidos;
+    }
+    
+    public List<Partido> getPartidosXJornadaAndCategoria(){
+        logger.debug("llegó a buscar los partidos");
+        partidos = partidoFacade.findPartidos(jornada, categoria);
+        for(Partido game : partidos){
+            logger.debug("Local: " + game.getEquipoLocalId().getNombre() 
+                    + " Visitante: " + game.getEquipoLocalId().getNombre());
+        }
         return partidos;
     }
 
@@ -884,16 +923,22 @@ public class ConfigBean implements Serializable {
     public void faseSelected() {
 //        partidos = partidoFacade.findPartidos(fase);
         recreateModelGrupo();
-
         recreateModelLlave();
-
+        recreateModelCategoria();
     }
 
-    public List<Partido> grupoSelected() {
+    public void grupoSelected() {
 //        partidos = partidoFacade.findPartidos(grupo);
+//        recreateModelJornada();
+        recreateModelCategoria();
+        
+//        return partidos;
+    }
+    
+    public void categoriaSelected(){
+        recreateModelLlave();
         recreateModelJornada();
         getJornadas();
-        return partidos;
     }
 
     private void recreateModelPartido() {

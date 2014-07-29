@@ -30,7 +30,10 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{staffBean.staff.personaId.documentoIdentidad}"
-                                     style="width: 250px"/>
+                                     style="width: 250px"
+                                     validatorMessage="Sólo puede colocar números en el campo Documento Id">
+                            <f:validateRegex pattern="(^[0-9])?" />
+                        </p:inputText>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{staffBean.staff.personaId.sexo}">
                             <f:selectItem itemLabel="M" itemValue="M"/>

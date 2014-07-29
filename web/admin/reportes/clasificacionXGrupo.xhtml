@@ -26,7 +26,7 @@
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{ligaBean.items}" />
                         <p:ajax  event="valueChange" listener="#{reportesBean.ligaSelected}" 
-                                 update="temporadas, fases, grupos, jornadas"/>
+                                 update="temporadas, fases, grupos, categorias, jornadas"/>
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Temporadas: " for="temporadas" />
@@ -35,7 +35,7 @@
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{reportesBean.temporadas}" />
                         <p:ajax  event="valueChange" listener="#{reportesBean.temporadaSelected}" 
-                                 update="fases, grupos, jornadas"/>
+                                 update="fases, grupos, categorias, jornadas"/>
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Fase: " for="fases" />
@@ -43,7 +43,7 @@
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{reportesBean.fases}" />
                         <p:ajax  event="valueChange" listener="#{reportesBean.faseSelected}" 
-                                 update="jornadas, grupos"/>
+                                 update="categorias, jornadas, grupos"/>
                     </p:selectOneMenu>
 
                     <h:outputLabel value="Grupo: " for="grupos" />
@@ -51,15 +51,23 @@
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{reportesBean.grupos}" />
                         <p:ajax  event="valueChange" listener="#{reportesBean.grupoSelected}" 
-                                 update="jornadas"/>
+                                 update="categorias, jornadas"/>
                     </p:selectOneMenu>
 
+                    <h:outputLabel value="Categoria: " for="categorias" />
+                    <p:selectOneMenu id="categorias" value="#{reportesBean.categoria}" style="width: 200px" >
+                        <f:selectItem itemLabel="-------------" />
+                        <f:selectItems value="#{reportesBean.categorias}" />
+                        <p:ajax  event="valueChange" listener="#{reportesBean.categoriaSelected}" 
+                                 update="jornadas"/>
+                    </p:selectOneMenu>
+                    
                     <h:outputLabel value="Jornada: " for="jornadas" />
                     <p:selectOneMenu id="jornadas" value="#{reportesBean.jornada}" style="width: 200px" >
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{reportesBean.jornadas}" />
-<!--                        <p:ajax  event="valueChange" listener="#{configBean.getPartidos(configBean.getJornada())}" />-->
                     </p:selectOneMenu>
+                    
                     <p:commandButton value="Mostrar Clasificación" action="#{reportesBean.makeClasificaXGrupo}" 
                                      style="width: 100px" 
                                      update="clasificacion"/>
@@ -126,7 +134,7 @@
                         <h:outputText value="#{equipo.golDiferencia}"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{equipo.puntos}"/>
+                        <h:outputText value="#{equipo.puntos}" style="font-weight: bold"/>
                     </p:column>
                     <p:column>
                         <h:outputText value="#{equipo.jugadosLocal}"/>
@@ -150,7 +158,7 @@
                         <h:outputText value="#{equipo.golDiferenciaLocal}"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{equipo.puntosLocal}"/>
+                        <h:outputText value="#{equipo.puntosLocal}" style="font-weight: bold"/>
                     </p:column>
                     <p:column>
                         <h:outputText value="#{equipo.jugadosVisitante}"/>
@@ -174,7 +182,7 @@
                         <h:outputText value="#{equipo.golDiferenciaVisitante}"/>
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{equipo.puntosVisitante}"/>
+                        <h:outputText value="#{equipo.puntosVisitante}" style="font-weight: bold"/>
                     </p:column>
                 </p:dataTable>
             </p:fieldset>

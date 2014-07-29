@@ -35,7 +35,9 @@ public class TemporadaCategoriaFacade extends AbstractFacade<TemporadaCategoria>
         EntityManager em = getEntityManager();
         List<Categoria> categorias = null;
         try {
-            String query = "SELECT t.categoriaId FROM TemporadaCategoria t WHERE t.temporadaId = :temporada";
+            String query = "SELECT t.categoriaId FROM TemporadaCategoria t "
+                            + "WHERE t.temporadaId = :temporada "
+                            + "ORDER BY t.categoriaId";
             Query q = em.createQuery(query, Categoria.class);
             q.setParameter("temporada", temporada);
             categorias = (List<Categoria>) q.getResultList();

@@ -41,7 +41,7 @@ public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
         EntityManager em = getEntityManager();
         Staff staff = null;
         try {
-            String query = "SELECT * FROM Staff j WHERE j.personaId = :persona";
+            String query = "SELECT j FROM Staff j WHERE j.personaId = :persona";
             Query q = em.createQuery(query, Staff.class);
             q.setParameter("persona", p);
             staff = (Staff) q.getSingleResult();

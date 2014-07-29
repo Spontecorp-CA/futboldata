@@ -27,10 +27,10 @@
 
                 <h:panelGroup>
                     <p:panelGrid id="datagrid" columns="4" styleClass="datagrid" style="border:none;margin:0 auto;">
-                        <h:outputLabel value="N° Partido:" for="numero" style="width:500px;"/>
-                        <h:outputLabel value="Local:" for="local"/>
-                        <h:outputLabel value="Visitante:" for="visitante"/>
-                        <h:outputLabel value="Fecha:" for="fecha"/>
+                        <h:outputLabel value="N° Partido:" for="numero" style="width:500px; font-weight: bold;"/>
+                        <h:outputLabel value="Local:" for="local" style="font-weight: bold;"/>
+                        <h:outputLabel value="Visitante:" for="visitante" style="font-weight: bold;"/>
+                        <h:outputLabel value="Fecha:" for="fecha" style="font-weight: bold;"/>
 
                         <h:outputText id="numero" value="#{resultadoBean.partido.numero}"/>
                         <h:outputText id="local"  value="#{resultadoBean.partido.equipoLocalId.nombre}"/>
@@ -39,10 +39,10 @@
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputFormat>
 
-                        <h:outputLabel value="Hora:" for="hora"/>
-                        <h:outputLabel value="Ciudad/Lugar:" for="lugar"/>
-                        <h:outputLabel value ="Grupo: " for ="grupo" />
-                        <h:outputLabel value="Jornada:" for ="jornada"/>
+                        <h:outputLabel value="Hora:" for="hora" style="font-weight: bold;"/>
+                        <h:outputLabel value="Ciudad/Lugar:" for="lugar" style="font-weight: bold;"/>
+                        <h:outputLabel value ="Grupo: " for ="grupo" style="font-weight: bold;"/>
+                        <h:outputLabel value="Jornada:" for ="jornada" style="font-weight: bold;"/>
 
 
                         <h:outputFormat id="hora" value="#{resultadoBean.partido.horaInicio}" >

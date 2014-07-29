@@ -5,12 +5,14 @@
 
 package com.spontecorp.futboldata.reportes;
 
+import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Clasifica;
 import com.spontecorp.futboldata.entity.Clasificacion;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,18 +24,22 @@ import javax.persistence.Query;
  *
  * @author jgcastillo
  */
-public class ReportesDAO {
+public class ReportesDAO implements Serializable{
 
    
-    private Map<Equipo, Clasifica> clasificaXGrupoAndCategoria(Jornada jornada, Grupo grupo){
+    private Map<Equipo, Clasifica> clasificaXGrupoAndCategoria(Jornada jornada, 
+            Grupo grupo, Categoria categoria){
         EntityManager em = Util.getEmf().createEntityManager();
 
         String query = "Select cl FROM Clasificacion cl "
-                + "WHERE cl.jornadaId.id <= :jornada_id AND cl.jornadaId.grupoId.id = :grupo_id";
+                + "WHERE cl.jornadaId.id <= :jornada_id "
+                + "AND cl.jornadaId.grupoId = :grupo "
+                + "AND cl.partidoId.categoriaId = :categoria";
         
         Query q = em.createQuery(query, Clasificacion.class);
         q.setParameter("jornada_id", jornada.getId());
-        q.setParameter("grupo_id", grupo.getId());
+        q.setParameter("grupo", grupo);
+        q.setParameter("categoria", categoria);
         
         // EL resultado obtenido del query en la BD
         List<Clasificacion> lista = q.getResultList();
@@ -173,9 +179,10 @@ public class ReportesDAO {
 //        return clasificaArray;
 //    }
     
-    public List<Clasifica> clasificaXGrupoAndJornada(Jornada jornada, Grupo grupo) {
+    public List<Clasifica> clasificaXGrupoAndJornada(Jornada jornada, Grupo grupo, 
+            Categoria categoria) {
         List<Clasifica> clasificaList = new ArrayList<Clasifica>();
-        Map<Equipo,Clasifica> clasificaMap = clasificaXGrupoAndCategoria(jornada, grupo);
+        Map<Equipo,Clasifica> clasificaMap = clasificaXGrupoAndCategoria(jornada, grupo, categoria);
         for(Map.Entry<Equipo, Clasifica> clasificaEquipo : clasificaMap.entrySet()){
             clasificaList.add(clasificaEquipo.getValue());
         }

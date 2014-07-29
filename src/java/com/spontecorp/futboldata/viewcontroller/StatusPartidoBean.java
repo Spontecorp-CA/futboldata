@@ -83,9 +83,14 @@ public class StatusPartidoBean implements Serializable{
     public void create() {
         if (!existeNombreStatus(selected.getNombre())) {
             List<StatusPartido> statusEnBD = statusPartidoFacade.findAll();
-            int lastValue = statusEnBD.get(statusEnBD.size() - 1).getValue();
+            int lastValue = 0;
+            if(statusEnBD.size() > 0){
+                lastValue = statusEnBD.get(statusEnBD.size() - 1).getValue();                
+                selected.setValue(lastValue + 1);
+            } else {
+                selected.setValue(lastValue);
+            }
             selected.setStatus(Util.ACTIVO);
-            selected.setValue(lastValue + 1);
             persist(PersistAction.CREATE, "Status de Partido creado con éxito");
             if (!Util.isValidationFailed()) {
                 items = null;    // Invalidate list of items to trigger re-query.

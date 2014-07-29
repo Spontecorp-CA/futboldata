@@ -5,6 +5,7 @@
 
 package com.spontecorp.futboldata.reportes.view;
 
+import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Clasifica;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Equipo;
@@ -18,6 +19,7 @@ import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
 import com.spontecorp.futboldata.jpacontroller.FaseFacade;
 import com.spontecorp.futboldata.jpacontroller.GrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.JornadaFacade;
+import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.reportes.ReportesDAO;
 import java.io.Serializable;
@@ -42,17 +44,16 @@ public class ReportesBean implements Serializable{
     private Llave llave;
     private Jornada jornada;
     private Grupo grupo;
+    private Categoria categoria;
     private List<Clasifica> clasificacion;
     private final ReportesDAO dao;
-//    @ManagedProperty(value = "#{configBean}")
-//    private ConfigBean configBean;
-    private TemporadaCategoria temporadaCategoria;
-    
+
     private List<Competicion> ligas;
     private List<Temporada> temporadaList;
     private List<Fase> fases;
     private List<Grupo> grupos;
     private List<Jornada> jornadas;
+    private List<Categoria> categorias;
     private List<Equipo> equipos;
     
     private final CompeticionFacade ligaController;
@@ -60,6 +61,7 @@ public class ReportesBean implements Serializable{
     private final FaseFacade faseFacade;
     private final GrupoFacade grupoFacade;
     private final JornadaFacade jornadaFacade;
+    private final TemporadaCategoriaFacade temporadaCategoriaFacade;
     
     private static final Logger logger = LoggerFactory.getLogger(ReportesBean.class);
     
@@ -73,6 +75,7 @@ public class ReportesBean implements Serializable{
         this.faseFacade = new FaseFacade();
         this.grupoFacade = new GrupoFacade();
         this.jornadaFacade = new JornadaFacade();
+        this.temporadaCategoriaFacade = new TemporadaCategoriaFacade();
     }
 
     public Competicion getLiga() {
@@ -123,22 +126,20 @@ public class ReportesBean implements Serializable{
         this.grupo = grupo;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public List<Clasifica> getClasificacion() {
         return clasificacion;
     }
-
-//    public ConfigBean getConfigBean() {
-//        return configBean;
-//    }
-//
-//    public void setConfigBean(ConfigBean configBean) {
-//        this.configBean = configBean;
-//    }
     
     public void makeClasificaXGrupo(){
-        logger.debug("Llegó a hacer la clasificación");
-        clasificacion = dao.clasificaXGrupoAndJornada(jornada, grupo);
-        logger.debug("trajo una clasificación " + clasificacion);
+        clasificacion = dao.clasificaXGrupoAndJornada(jornada, grupo, categoria);
     }
     
     public List<Competicion> getItems() {
@@ -159,14 +160,12 @@ public class ReportesBean implements Serializable{
     public void faseSelected() {
         recreateModelGrupo();
     }
-    
-//    public List<Partido> grupoSelected() {
-//        recreateModelJornada();
-//        getJornadas();
-//        return partidos;
-//    }
-    
+
     public void grupoSelected(){
+        recreateModelCategoria();
+    }
+    
+    public void categoriaSelected(){
         recreateModelJornada();
     }
     
@@ -198,15 +197,16 @@ public class ReportesBean implements Serializable{
         return jornadas;
     }
     
+    public List<Categoria> getCategorias(){
+        if(categorias == null){
+            categorias = temporadaCategoriaFacade.getCategorias(temporada);
+        }
+        return categorias;
+    }
+    
     public void recreateModelTemporada() {
         temporada = null;
         temporadaList = null;
-        temporadaCategoria = null;
-
-//        categorias = null;
-//        listTemporadaCategoria = new ArrayList<TemporadaCategoria>();
-//        categoriaSource = new ArrayList<Categoria>();
-//        categoriaTarget = new ArrayList<Categoria>();
         recreateModelFase();
     }
     
@@ -219,15 +219,17 @@ public class ReportesBean implements Serializable{
     private void recreateModelGrupo() {
         grupo = null;
         grupos = null;
-//        equipos = new ArrayList<Equipo>();
-//        equipoEnGrupo = new ArrayList<EquipoEnGrupo>();
+        recreateModelCategoria();
+    }
+    
+    private void recreateModelCategoria(){
+        categoria = null;
+        categorias = null;
         recreateModelJornada();
     }
     
     private void recreateModelJornada() {
         jornada = null;
         jornadas = null;
-//        partidos = new ArrayList<Partido>();
-//        partido = null;
     }
 }
