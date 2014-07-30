@@ -76,8 +76,7 @@ public class ClasificacionGrupo implements Serializable {
     @JoinColumn(name = "grupo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Grupo grupoId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clasificacionGrupoId")
-    private Collection<Clasificacion> clasificacionCollection;
+    
 
     public ClasificacionGrupo() {
     }
@@ -188,15 +187,6 @@ public class ClasificacionGrupo implements Serializable {
 
     public void setGrupoId(Grupo grupoId) {
         this.grupoId = grupoId;
-    }
-
-    @XmlTransient
-    public Collection<Clasificacion> getClasificacionCollection() {
-        return clasificacionCollection;
-    }
-
-    public void setClasificacionCollection(Collection<Clasificacion> clasificacionCollection) {
-        this.clasificacionCollection = clasificacionCollection;
     }
 
     @Override

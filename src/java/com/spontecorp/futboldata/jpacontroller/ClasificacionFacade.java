@@ -36,21 +36,18 @@ public class ClasificacionFacade extends AbstractFacade<Clasificacion> {
         EntityManager em = getEntityManager();
         Clasificacion clasificacion = null;
         try {
-            String query = null;
-            Query q = null;
-            query = " SELECT c FROM Clasificacion  c WHERE  c.partidoId = :partido "
-                    + "AND c.equipoId =:equipo ";
-            q = em.createQuery(query, Clasificacion.class);
+            String query = "SELECT c FROM Clasificacion  c "
+                            + "WHERE c.partidoId = :partido "
+                            + "AND c.equipoId =:equipo ";
+            Query q = em.createQuery(query, Clasificacion.class);
             q.setParameter("partido", partido); 
             q.setParameter("equipo", equipo);
             clasificacion = (Clasificacion) q.getSingleResult();
 
-
         } catch (Exception e) {
-            logger.debug("No encontro clasificacions x jornada", e.getCause());
+            logger.debug("No encontro clasificaciones x jornada", e);
         } finally {
             em.close();
-
         }
         return clasificacion;
     }

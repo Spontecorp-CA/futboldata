@@ -37,11 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Grupo.findByNombre", query = "SELECT g FROM Grupo g WHERE g.nombre = :nombre"),
     @NamedQuery(name = "Grupo.findByStatus", query = "SELECT g FROM Grupo g WHERE g.status = :status")})
 public class Grupo implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
-    private Collection<ClasificacionGrupo> clasificacionGrupoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
-    private Collection<EquipoEnGrupo> equipoEnGrupoCollection;
-    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -57,6 +53,11 @@ public class Grupo implements Serializable {
     @JoinColumn(name = "fase_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Fase faseId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
+    private Collection<ClasificacionGrupo> clasificacionGrupoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
+    private Collection<EquipoEnGrupo> equipoEnGrupoCollection;
+    private static final long serialVersionUID = 1L;
 
     public Grupo() {
     }

@@ -35,6 +35,14 @@ public class Util implements Serializable {
     public static final int SUPERVISOR = 2;
     public static final int EDITOR = 3;
     public static final int CONSULTOR = 4;
+    
+    public static final int LOCAL = 1;
+    public static final int VISITANTE = 0;
+    
+    public static final int PUNTOS_GANADOR = 3;
+    public static final int PUNTOS_EMPATE = 1;
+    public static final int PUNTOS_PERDEDOR = 0;
+    
     public static final String rutaRelativa = "resources\\images\\";
     public static final Logger logger = LoggerFactory.getLogger(Util.class);
     

@@ -65,7 +65,7 @@
             </p:column>
             <p:column headerText="Categorias" >
                 <ui:repeat var="temporadaCategoria" 
-                           value="#{configBean.gestCategorias(temporada)}"
+                           value="#{configBean.getCategorias(temporada)}"
                            varStatus="status">
                                  #{temporadaCategoria.nombre}
                     <h:outputText rendered="#{!status.last}" value=","/>

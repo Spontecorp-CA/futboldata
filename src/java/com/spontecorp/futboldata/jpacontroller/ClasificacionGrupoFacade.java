@@ -55,7 +55,7 @@ public class ClasificacionGrupoFacade extends AbstractFacade<ClasificacionGrupo>
         return clasificacion;
     }
 
-    public void actulizar(ClasificacionGrupo clasificacionGrupo) {
+    public void actualizar(ClasificacionGrupo clasificacionGrupo) {
         List<Clasificacion> clasificaciones;
         ClasificacionGrupo clasificacionTotal;
         logger.debug("Se modifica el equipo "+ clasificacionGrupo.getEquipoId().getNombre());

@@ -376,29 +376,29 @@ public class ResultadoBean implements Serializable {
         partidoFacade.edit(partido);
         if (partido.getStatusPartidoId().getValue() != 0 && partido.getGolesEquipoVisitante() != null
                 && partido.getGolesEquipoLocal() != null) {
-            createClasificacionLocal();
-            createClasificacionVisitante();
-            clasificacionGrupoFacade.actulizar(createClasificiacionGrupo(partido.getEquipoLocalId()));
-            clasificacionGrupoFacade.actulizar(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
+            createUpdateClasificacionLocal();
+            createUpdateClasificacionVisitante();
+            clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoLocalId()));
+            clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
         }
-        Util.addSuccessMessage("Se edito con exito");
+        Util.addSuccessMessage("Se editó con éxito");
     }
 
-    private void createClasificacionLocal() {
+    private void createUpdateClasificacionLocal() {
         if (partido.getJornadaId() != null) {
 
             if (clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId()) == null) {
                 clasificacion = new Clasificacion();
                 clasificacion.setJornadaId(partido.getJornadaId());
                 clasificacion.setEquipoId(partido.getEquipoLocalId());
-                clasificacion.setIsLocal(1);
+                clasificacion.setIsLocal(Util.LOCAL);
                 clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
                 clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
                 clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
                 calcularPuntos(clasificacion);
                 clasificacion.setPartidoId(partido);
-                clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoLocalId()));
-                clasificacionFacade.edit(clasificacion);
+                //clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoLocalId()));
+                clasificacionFacade.create(clasificacion);
 
             } else {
                 clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId());
@@ -413,21 +413,21 @@ public class ResultadoBean implements Serializable {
         }
     }
 
-    private void createClasificacionVisitante() {
+    private void createUpdateClasificacionVisitante() {
         if (partido.getJornadaId() != null) {
 
             if (clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId()) == null) {
                 clasificacion = new Clasificacion();
                 clasificacion.setJornadaId(partido.getJornadaId());
                 clasificacion.setEquipoId(partido.getEquipoVisitanteId());
-                clasificacion.setIsLocal(0);
+                clasificacion.setPartidoId(partido);
                 clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
                 clasificacion.setGolesContra(partido.getGolesEquipoLocal());
+                clasificacion.setIsLocal(0);
                 clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-                calcularPuntos(clasificacion);
-                clasificacion.setPartidoId(partido);
-                clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
-                clasificacionFacade.edit(clasificacion);
+                calcularPuntos(clasificacion);                
+                //clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
+                clasificacionFacade.create(clasificacion);
             } else {
                 clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId());
                 clasificacion.setIsLocal(0);
@@ -462,25 +462,23 @@ public class ResultadoBean implements Serializable {
     }
 
     private void calcularPuntos(Clasificacion clasificacion) {
+        clasificacion.setJJugados(1);
         if (clasificacion.getDiferencia() == 0) {
-            clasificacion.setPuntos(1);
+            clasificacion.setPuntos(Util.PUNTOS_EMPATE);
             clasificacion.setJGanados(0);
             clasificacion.setJPerdidos(0);
             clasificacion.setJEmpatados(1);
-            clasificacion.setJJugados(1);
+            
         } else if (clasificacion.getDiferencia() < 0) {
-            clasificacion.setPuntos(0);
+            clasificacion.setPuntos(Util.PUNTOS_PERDEDOR);
             clasificacion.setJGanados(0);
             clasificacion.setJPerdidos(1);
             clasificacion.setJEmpatados(0);
-            clasificacion.setJJugados(1);
         } else {
-            clasificacion.setPuntos(3);
+            clasificacion.setPuntos(Util.PUNTOS_GANADOR);
             clasificacion.setJGanados(1);
             clasificacion.setJPerdidos(0);
             clasificacion.setJEmpatados(0);
-            clasificacion.setJJugados(1);
-
         }
     }
 

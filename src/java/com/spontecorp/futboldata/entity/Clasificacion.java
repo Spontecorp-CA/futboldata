@@ -39,14 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Clasificacion.findByPuntos", query = "SELECT c FROM Clasificacion c WHERE c.puntos = :puntos"),
     @NamedQuery(name = "Clasificacion.findByIsLocal", query = "SELECT c FROM Clasificacion c WHERE c.isLocal = :isLocal")})
 public class Clasificacion implements Serializable {
-    @Column(name = "status")
-    private Integer status;
-    @JoinColumn(name = "partido_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Partido partidoId;
-    @JoinColumn(name = "clasificacion_grupo_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private ClasificacionGrupo clasificacionGrupoId;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +70,11 @@ public class Clasificacion implements Serializable {
     @JoinColumn(name = "equipo_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Equipo equipoId;
+    @Column(name = "status")
+    private Integer status;
+    @JoinColumn(name = "partido_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Partido partidoId;
 
     public Clasificacion() {
     }
@@ -222,12 +220,4 @@ public class Clasificacion implements Serializable {
         this.partidoId = partidoId;
     }
 
-    public ClasificacionGrupo getClasificacionGrupoId() {
-        return clasificacionGrupoId;
-    }
-
-    public void setClasificacionGrupoId(ClasificacionGrupo clasificacionGrupoId) {
-        this.clasificacionGrupoId = clasificacionGrupoId;
-    }
-    
 }
