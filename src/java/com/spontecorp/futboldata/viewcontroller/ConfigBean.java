@@ -852,17 +852,16 @@ public class ConfigBean implements Serializable {
      * Manejo de partidos
      */
     public List<Partido> getPartidos() {
-//        if(jornada != null && categoria != null){
-//            partidos = partidoFacade.findPartidos(jornada, categoria);
-//        } else if (jornada != null) {
-//            partidos = partidoFacade.findPartidos(jornada);
-//        } else if (llave != null) {
-//            partidos = partidoFacade.findPartidos(llave);
-//        } else if (partidos == null) {
-//            partidos = partidoFacade.findAll();
-//        }
         if(partidos == null){
-            partidos = getPartidos(jornada);
+            if (jornada != null && categoria != null) {
+                partidos = partidoFacade.findPartidos(jornada, categoria);
+            } else if (jornada != null) {
+                partidos = partidoFacade.findPartidos(jornada);
+            } else if (llave != null) {
+                partidos = partidoFacade.findPartidos(llave);
+            } else if (partidos == null) {
+                partidos = partidoFacade.findAll();
+            }
         }
         return partidos;
     }

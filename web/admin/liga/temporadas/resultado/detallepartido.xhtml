@@ -33,8 +33,16 @@
                         <h:outputLabel value="Fecha:" for="fecha" style="font-weight: bold;"/>
 
                         <h:outputText id="numero" value="#{resultadoBean.partido.numero}"/>
-                        <h:outputText id="local"  value="#{resultadoBean.partido.equipoLocalId.nombre}"/>
-                        <h:outputText id="visitante" value="#{resultadoBean.partido.equipoVisitanteId.nombre}"/>
+                        <h:outputText id="local"  
+                                      value="#{resultadoBean.partido.equipoLocalId.nombre == null
+                                               ?resultadoBean.partido.equipoLocalText:
+                                               resultadoBean.partido.equipoLocalId.nombre}"/>
+                        
+                        <h:outputText id="visitante" 
+                                      value="#{resultadoBean.partido.equipoVisitanteId.nombre == null
+                                               ?resultadoBean.partido.equipoVisitanteText: 
+                                               resultadoBean.partido.equipoVisitanteId.nombre }"/>
+                        
                         <h:outputFormat id="fecha" value="#{resultadoBean.partido.fecha}" >
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputFormat>
@@ -61,34 +69,51 @@
                 <p:accordionPanel id="menu" activeIndex="#{resultadoBean.indexTab}">
                     <f:ajax event="tabChange"  listener="#{resultadoBean.onTabChange}"/>
                     <p:tab id="tab1" title="Resultados:">
-                        <h:panelGrid columns="3" style="width: auto" >
+                        <p:fieldset legend="Tiempo Reglamentario" >
+                            <h:panelGrid columns="3" style="width: auto" >
+                                <h:outputLabel value=" Goles de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                                               for="golesLocal"/>
+                                <h:outputText value=" Goles de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "/>
+                                <h:outputLabel value=" Status del Partido: "  for="status" />
 
-                            <h:outputLabel value=" Goles de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
-                                           for="golesLocal"/>
-                            <h:outputText value=" Goles de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "/>
-                            <h:outputLabel value=" Status del Partido: "  for="status" />
+                                <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
+                                <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" 
+                                           min="0" max="20" />
+                                <p:selectOneMenu id="status" value="#{resultadoBean.partido.statusPartidoId}"
+                                                 required="true"
+                                                 requiredMessage="Debe seleccionar el status"
+                                                 style="width: 150px">
+                                    <f:selectItems value="#{statusPartidoBean.items}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <p:fieldset legend="Prorroga" rendered="#{empty resultadoBean.partido.jornadaId}">
+                            <h:panelGrid columns="2"  title="Prorroga">
+                                <h:outputLabel value="Goles local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                                               for="golesPrgaLocal"/>
+                                <h:outputLabel value="Penales de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
+                                               for="golesPrgaVisitante" />
 
-                            <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
-                            <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" 
-                                       min="0" max="20" />
-                            <p:selectOneMenu id="status" value="#{resultadoBean.partido.statusPartidoId}"
-                                             required="true"
-                                             requiredMessage="Debe seleccionar el status"
-                                             style="width: 150px">
-                                <f:selectItems value="#{statusPartidoBean.items}"/>
-                            </p:selectOneMenu>
-                        </h:panelGrid>
-                        <h:panelGrid columns="2"  title="Ronda de Penales">
-                            <h:outputLabel value="Penales de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
-                                           for="penalLocal"/>
-                            <h:outputLabel value="Penales de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
-                                           for="penalVisitante" />
+                                <p:spinner id="golesPrgaLocal" value="#{resultadoBean.partido.golesLocalProrroga}" 
+                                           min="0" max="20" />
+                                <p:spinner id="golesPrgaVisitante" value="#{resultadoBean.partido.golesVisitanteProrroga}" 
+                                           min="0" max="20" />
+                            </h:panelGrid>
+                        </p:fieldset>
+                        <p:fieldset legend="Tanda de Penales" 
+                                    rendered="#{empty resultadoBean.partido.jornadaId}">
+                            <h:panelGrid columns="2"  title="Tanda de Penales">
+                                <h:outputLabel value="Penales de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                                               for="penalLocal"/>
+                                <h:outputLabel value="Penales de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
+                                               for="penalVisitante" />
 
-                            <p:spinner id="penalLocal" value="#{resultadoBean.partido.golesLocalPenalties}" 
-                                       min="0" max="20" />
-                            <p:spinner id="pennalVisitante" value="#{resultadoBean.partido.golesVisitantePenalties}" 
-                                       min="0" max="20" />
-                        </h:panelGrid>
+                                <p:spinner id="penalLocal" value="#{resultadoBean.partido.golesLocalPenalties}" 
+                                           min="0" max="20" />
+                                <p:spinner id="pennalVisitante" value="#{resultadoBean.partido.golesVisitantePenalties}" 
+                                           min="0" max="20" />
+                            </h:panelGrid>
+                        </p:fieldset>
                     </p:tab>
 
                     <p:tab id="tab2" title="Jugadores: #{resultadoBean.partido.equipoLocalId.nombre}" >  
@@ -358,7 +383,7 @@
                                              style="width: 140px"
                                              disabled="#{empty resultadoBean.eventoSelected.id}"/>
                         </h:panelGrid>
-                        
+
                         <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  
                                      var="partidoEvento" 
                                      selection="#{resultadoBean.eventoSelected}" 

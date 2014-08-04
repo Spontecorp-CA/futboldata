@@ -59,7 +59,8 @@
                     </p:selectOneMenu>
                     
                     <h:outputLabel value="Grupo: " for="grupos" />
-                    <p:selectOneMenu id="grupos" value="#{configBean.grupo}" style="width: 200px" >
+                    <p:selectOneMenu id="grupos" value="#{configBean.grupo}" style="width: 200px" 
+                                     disabled="#{configBean.fase.tipoFase == 0?false:true}">
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.grupos}" />
                         <p:ajax  event="valueChange" listener="#{configBean.grupoSelected}" 
@@ -75,7 +76,8 @@
                     </p:selectOneMenu>
                     
                     <h:outputLabel value="Llave: " for="llaves" />
-                    <p:selectOneMenu id="llaves" value="#{configBean.llave}" style="width: 200px" >
+                    <p:selectOneMenu id="llaves" value="#{configBean.llave}" style="width: 200px" 
+                                     disabled="#{configBean.fase.tipoFase == 0?true:false}">
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.llaves}" />
                         <p:ajax  event="valueChange" listener="#{configBean.getPartidosXLlave}" 
@@ -83,7 +85,8 @@
                     </p:selectOneMenu>
                     
                     <h:outputLabel value="Jornada: " for="jornadas" />
-                    <p:selectOneMenu id="jornadas" value="#{configBean.jornada}" style="width: 200px" >
+                    <p:selectOneMenu id="jornadas" value="#{configBean.jornada}" style="width: 200px" 
+                                     disabled="#{configBean.fase.tipoFase == 0?false:true}">
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{configBean.jornadas}" />
                         <p:ajax  event="valueChange" listener="#{configBean.getPartidosXJornadaAndCategoria}" 

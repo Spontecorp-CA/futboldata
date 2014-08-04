@@ -41,7 +41,7 @@ public class CiudadFacade extends AbstractFacade<Ciudad> implements Serializable
             q.setParameter("pais", pais);
             ciudad = (Ciudad) q.getSingleResult();
         } catch (Exception e) {
-            logger.debug("Error encontrando ciudad: " + e.getLocalizedMessage(), e);
+            logger.debug("Error encontrando ciudad: " + e.getLocalizedMessage());
         } finally {
             em.close();
         }

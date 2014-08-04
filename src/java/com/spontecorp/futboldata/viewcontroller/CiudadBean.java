@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -106,6 +107,7 @@ public class CiudadBean implements Serializable {
 
     private void recreateModel() {
         items = null;
+        itemsCiudad = null;
     }
 
     private void recreateModelCiudad() {
@@ -130,7 +132,7 @@ public class CiudadBean implements Serializable {
         return pais;
     }
     
-        public String create() {
+    public String create() {
         try {
             if (controllerCiudad.findCiudadxPais(ciudad.getCiudad(),ciudad.getPaisId())!=null) {
                 Util.addErrorMessage("Ciudad ya existente, coloque otra");

@@ -5,6 +5,7 @@
 
 package com.spontecorp.futboldata.entity;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
  * 
  * @author jgcastillo
  */
-public class Clasifica implements Comparable<Clasifica>{
+public class Clasifica implements Comparable<Clasifica>, Serializable{
     
     private int equipoId;
     private String equipo;
