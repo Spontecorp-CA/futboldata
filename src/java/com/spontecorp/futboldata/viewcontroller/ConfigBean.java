@@ -861,6 +861,9 @@ public class ConfigBean implements Serializable {
 //        } else if (partidos == null) {
 //            partidos = partidoFacade.findAll();
 //        }
+        if(partidos == null){
+            partidos = getPartidos(jornada);
+        }
         return partidos;
     }
 

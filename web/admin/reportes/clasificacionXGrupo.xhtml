@@ -22,7 +22,8 @@
                 </p:toolbar>
                 <h:panelGrid columns="6">
                     <h:outputLabel value="Ligas: " for="ligas" />
-                    <p:selectOneMenu id="ligas" value="#{reportesBean.liga}"  >
+                    <p:selectOneMenu id="ligas" value="#{reportesBean.liga}"
+                                     style="width: 200px">
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{ligaBean.items}" />
                         <p:ajax  event="valueChange" listener="#{reportesBean.ligaSelected}" 
@@ -71,12 +72,23 @@
                     <p:commandButton value="Mostrar Clasificación" action="#{reportesBean.makeClasificaXGrupo}" 
                                      style="width: 100px" 
                                      update="clasificacion"/>
+                    <p:ajaxStatus style="right:45%; left:45%">  
+                        <f:facet name="start">  
+                            <p:graphicImage library="images" name="ajaxloading.gif" 
+                                            style="margin-top: 10px; margin-bottom: 0px; margin-left: 0px;margin-right: 45%;
+                                            width: 200px;"/>
+                        </f:facet>  
+                        <f:facet name="complete">  
+                            <h:outputText value="" />  
+                        </f:facet>  
+                    </p:ajaxStatus>
                 </h:panelGrid>
 
                 <p:dataTable id="clasificacion" var="equipo" value="#{reportesBean.clasificacion}"
-                             emptyMessage="No se encontró una clasificación para ese criterio">
+                             emptyMessage="No se encontró una clasificación para ese criterio" rowIndexVar="linea">
                     <p:columnGroup type="header">
-                        <p:row>                            
+                        <p:row>
+                            <p:column rowspan="2" headerText="Pos" />
                             <p:column rowspan="2" headerText="Equipo"/>    
                             <p:column colspan="8" headerText="Total"/>
                             <p:column colspan="8" headerText="Local"/>
@@ -88,7 +100,7 @@
                             <p:column headerText="JE" />
                             <p:column headerText="JP" />
                             <p:column headerText="GF" />
-                            <p:column headerText="JC" />
+                            <p:column headerText="GC" />
                             <p:column headerText="Dif" />
                             <p:column headerText="Pts" />
                             <p:column headerText="JJ" />
@@ -96,7 +108,7 @@
                             <p:column headerText="JE" />
                             <p:column headerText="JP" />
                             <p:column headerText="GF" />
-                            <p:column headerText="JC" />
+                            <p:column headerText="GC" />
                             <p:column headerText="Dif" />
                             <p:column headerText="Pts" />
                             <p:column headerText="JJ" />
@@ -104,11 +116,14 @@
                             <p:column headerText="JE" />
                             <p:column headerText="JP" />
                             <p:column headerText="GF" />
-                            <p:column headerText="JC" />
+                            <p:column headerText="GC" />
                             <p:column headerText="Dif" />
                             <p:column headerText="Pts" />
                         </p:row>
                     </p:columnGroup>
+                    <p:column>
+                        <h:outputText value="#{linea + 1}"/>
+                    </p:column>
                     <p:column>
                         <h:outputText value="#{equipo.equipo}"/>
                     </p:column>
@@ -186,6 +201,7 @@
                     </p:column>
                 </p:dataTable>
             </p:fieldset>
+ 
         </h:form>
     </ui:define>
 

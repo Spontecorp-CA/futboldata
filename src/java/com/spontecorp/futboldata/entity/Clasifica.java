@@ -264,13 +264,21 @@ public class Clasifica implements Comparable<Clasifica>{
     @Override
     public int compareTo(Clasifica cla) {
         int result = 0;
-        if(this.getPuntos() < cla.getPuntos()){
+        if((this.getPuntos() - cla.getPuntos()) < 0){
             result = 1;
-        } else if(this.getPuntos() == cla.getPuntos()){
-            if(this.getGolFavor() < cla.getGolFavor()){
-                result = 1;
-            }
-        }else{
+        } else if((this.getPuntos() - cla.getPuntos()) > 0){
+            result = -1;
+        } else if((this.getGolDiferencia() - cla.getGolDiferencia()) < 0){
+            result = 1;
+        } else if ((this.getGolDiferencia() - cla.getGolDiferencia()) > 0) {
+            result = -1;
+        } else if ((this.getGolFavor() - cla.getGolFavor()) < 0) {
+            result = 1;
+        } else if ((this.getGolFavor() - cla.getGolFavor()) > 0) {
+            result = -1;
+        } else if ((this.getGolContra()- cla.getGolContra()) > 0) {
+            result = 1;
+        } else if ((this.getGolContra() - cla.getGolContra()) < 0) {
             result = -1;
         }
         return result;

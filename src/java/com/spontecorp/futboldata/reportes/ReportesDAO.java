@@ -142,43 +142,9 @@ public class ReportesDAO implements Serializable{
      *
      * @param jornada
      * @param grupo
+     * @param categoria
      * @return
      */
-//    public String[][] clasificaXGrupoAndJornada(Jornada jornada, Grupo grupo){
-//        Map<Equipo, Clasifica> clasificaMap = clasificaXGrupoAndCategoria(jornada, grupo);
-//        int i = 0;
-//        String[][] clasificaArray = new String[clasificaMap.size()][25];
-//        for (Map.Entry<Equipo, Clasifica> item : clasificaMap.entrySet()) {
-//            clasificaArray[i][0] = item.getValue().getEquipo();
-//            clasificaArray[i][1] = String.valueOf(item.getValue().getJugados());
-//            clasificaArray[i][2] = String.valueOf(item.getValue().getGanados());
-//            clasificaArray[i][3] = String.valueOf(item.getValue().getEmpatados());
-//            clasificaArray[i][4] = String.valueOf(item.getValue().getPerdidos());
-//            clasificaArray[i][5] = String.valueOf(item.getValue().getgFavor());
-//            clasificaArray[i][6] = String.valueOf(item.getValue().getgContra());
-//            clasificaArray[i][7] = String.valueOf(item.getValue().getgDiferencia());
-//            clasificaArray[i][8] = String.valueOf(item.getValue().getPuntos());
-//            clasificaArray[i][9] = String.valueOf(item.getValue().getJugadosLocal());
-//            clasificaArray[i][10] = String.valueOf(item.getValue().getGanadosLocal());
-//            clasificaArray[i][11] = String.valueOf(item.getValue().getEmpatadosLocal());
-//            clasificaArray[i][12] = String.valueOf(item.getValue().getPerdidosLocal());
-//            clasificaArray[i][13] = String.valueOf(item.getValue().getgFavorLocal());
-//            clasificaArray[i][14] = String.valueOf(item.getValue().getgContraLocal());
-//            clasificaArray[i][15] = String.valueOf(item.getValue().getgDiferenciaLocal());
-//            clasificaArray[i][16] = String.valueOf(item.getValue().getPuntosLocal());
-//            clasificaArray[i][17] = String.valueOf(item.getValue().getJugadosVisitante());
-//            clasificaArray[i][18] = String.valueOf(item.getValue().getGanadosVisitante());
-//            clasificaArray[i][19] = String.valueOf(item.getValue().getEmpatadosVisitante());
-//            clasificaArray[i][20] = String.valueOf(item.getValue().getPerdidosVisitante());
-//            clasificaArray[i][21] = String.valueOf(item.getValue().getgFavorVisitante());
-//            clasificaArray[i][22] = String.valueOf(item.getValue().getgContraVisitante());
-//            clasificaArray[i][23] = String.valueOf(item.getValue().getgDiferenciaVisitante());
-//            clasificaArray[i][24] = String.valueOf(item.getValue().getPuntosVisitante());
-//            i++;
-//        }
-//        return clasificaArray;
-//    }
-    
     public List<Clasifica> clasificaXGrupoAndJornada(Jornada jornada, Grupo grupo, 
             Categoria categoria) {
         List<Clasifica> clasificaList = new ArrayList<Clasifica>();

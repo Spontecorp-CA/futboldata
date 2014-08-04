@@ -4,7 +4,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"                
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                template="./WEB-INF/templates/mainTemplate.xhtml">
+                template="./WEB-INF/templates/mainTemplate.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
    
     <ui:define name="top"></ui:define>
 
@@ -30,7 +31,16 @@
                 </h:panelGrid>
             </p:panel>
             </h:panelGroup>
-        </h:form>  
+        </h:form>
+        <p:ajaxStatus style="right:45%; left:45%">  
+            <f:facet name="start">  
+                <h:graphicImage library="images" name="ajaxloading.gif" 
+                                style="margin-top: 10px; margin-bottom: 0px; margin-left: 40%;margin-right: 45%"/>
+            </f:facet>  
+            <f:facet name="complete">  
+                <h:outputText value="" />  
+            </f:facet>  
+        </p:ajaxStatus>
     </ui:define>
     
     <ui:define name="bottom">
