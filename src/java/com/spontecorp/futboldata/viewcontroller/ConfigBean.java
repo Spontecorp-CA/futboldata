@@ -946,6 +946,7 @@ public class ConfigBean implements Serializable {
     private void recreateModelPartido() {
         partido = null;
         partidos = null;
+        categoria = null;
     }
 
     public List<Partido> getFilteredPartidos() {

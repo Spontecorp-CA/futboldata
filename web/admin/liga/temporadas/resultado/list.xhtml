@@ -150,7 +150,7 @@
                         <h:outputText   value="#{partido.canchaId.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="Fecha">
+                    <p:column headerText="Fecha" sortBy="fecha">
                         <h:outputFormat   value="#{partido.fecha}" >
                             <f:convertDateTime pattern="EEE dd/MM/yyyy " />
                         </h:outputFormat>

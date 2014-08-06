@@ -387,7 +387,8 @@
                         <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  
                                      var="partidoEvento" 
                                      selection="#{resultadoBean.eventoSelected}" 
-                                     selectionMode="single" 
+                                     selectionMode="single"
+                                     filteredValue="#{resultadoBean.filteredEventos}"
                                      rowKey="#{partidoEvento}" >
                             <p:ajax event="rowSelect" update=":detalleForm:menu:editButtonE" />
                             <p:ajax event="rowUnselect" update=":detalleForm:menu:editButtonE" />
@@ -397,7 +398,7 @@
                             <p:column headerText="Tipo de Evento" >
                                 <h:outputText value="#{partidoEvento.eventoId.tipoEventoId.nombre}"/>
                             </p:column>
-                            <p:column headerText="Tiempo" >
+                            <p:column headerText="Tiempo" sortBy="minuto">
                                 <h:outputText value="#{partidoEvento.minuto}" />
                             </p:column>
                             <p:column headerText="Jugador " >

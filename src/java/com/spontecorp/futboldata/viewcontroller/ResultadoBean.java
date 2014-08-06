@@ -83,6 +83,7 @@ public class ResultadoBean implements Serializable {
     private List<Convocado> convocadoEquipoVisitante;
     private List<PartidoArbitro> partidoArbitros;
     private List<PartidoEvento> eventos;
+    private List<PartidoEvento> filteredEventos;
     private static final Logger logger = LoggerFactory.getLogger(ResultadoBean.class);
     private Clasificacion clasificacion;
 
@@ -553,6 +554,16 @@ public class ResultadoBean implements Serializable {
     public void setEventos(List<PartidoEvento> eventos) {
         this.eventos = eventos;
     }
+
+    public List<PartidoEvento> getFilteredEventos() {
+        return filteredEventos;
+    }
+
+    public void setFilteredEventos(List<PartidoEvento> filteredEventos) {
+        this.filteredEventos = filteredEventos;
+    }
+    
+    
 
     public void createEvento() {
         if (convocado != null) {
