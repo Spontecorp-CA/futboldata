@@ -64,24 +64,40 @@
                     </p:selectOneMenu>
                     
                     <h:outputLabel value="Jornada: " for="jornadas" />
-                    <p:selectOneMenu id="jornadas" value="#{reportesBean.jornada}" style="width: 200px" >
+                    <p:selectOneMenu id="jornadas" value="#{reportesBean.jornada}" style="width: 200px" 
+                                     required="true" 
+                                     requiredMessage="Debe seleccionar una jornada">
                         <f:selectItem itemLabel="-------------" />
                         <f:selectItems value="#{reportesBean.jornadas}" />
                     </p:selectOneMenu>
                     
-                    <p:commandButton value="Mostrar Clasificación" action="#{reportesBean.makeClasificaXGrupo}" 
+                    
+                </h:panelGrid>
+                <h:panelGrid columns="2" style="width: 85%">
+                    <p:commandButton value="Mostrar Clasificación" 
+                                     action="#{reportesBean.makeClasificaXGrupo}" 
                                      style="width: 100px" 
-                                     update="clasificacion"/>
-                    <p:ajaxStatus style="right:45%; left:45%">  
+                                     update="clasificacion ,:growlAdmin"/>
+                    <p:ajaxStatus style="right:45%; left:45%">
+                        <f:facet name="default">
+                            <h:outputText value="Intrucciones: Para obtener la clasificación en cada 
+                                          categoría, seleccione la categoría deseada. Si desea
+                                          obtener la clasificación general del club, deje el campo
+                                          Categoría sin seleccionar. Recuerde seleccionar la jornada." />
+                        </f:facet>
                         <f:facet name="start">  
                             <p:graphicImage library="images" name="ajaxloading.gif" 
                                             style="margin-top: 10px; margin-bottom: 0px; margin-left: 0px;margin-right: 45%;
                                             width: 200px;"/>
                         </f:facet>  
                         <f:facet name="complete">  
-                            <h:outputText value="" />  
+                            <h:outputText value="Intrucciones: Para obtener la clasificación en cada 
+                                          categoría, seleccione la categoría deseada. Si desea
+                                          obtener la clasificación general del club, deje el campo
+                                          Categoría sin seleccionar.  Recuerde seleccionar la jornada." />  
                         </f:facet>  
                     </p:ajaxStatus>
+                    <p:spacer/><p:spacer/>
                 </h:panelGrid>
 
                 <p:dataTable id="clasificacion" var="equipo" value="#{reportesBean.clasificacion}"
@@ -89,7 +105,7 @@
                     <p:columnGroup type="header">
                         <p:row>
                             <p:column rowspan="2" headerText="Pos" />
-                            <p:column rowspan="2" headerText="Equipo"/>    
+                            <p:column rowspan="2" headerText="#{reportesBean.categoria==null?'Club':'Equipo'}"/>    
                             <p:column colspan="8" headerText="Total"/>
                             <p:column colspan="8" headerText="Local"/>
                             <p:column colspan="8" headerText="Visitante"/>

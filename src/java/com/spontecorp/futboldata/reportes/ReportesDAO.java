@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.reportes;
 
 import com.spontecorp.futboldata.entity.Categoria;
@@ -25,45 +24,41 @@ import javax.persistence.Query;
  *
  * @author jgcastillo
  */
-public class ReportesDAO implements Serializable{
+public class ReportesDAO implements Serializable {
 
-    private List<Clasificacion> listClasificacion(Jornada jornada,Grupo grupo , Categoria categoria){
+    private List<Clasificacion> listClasificacion(Jornada jornada, Grupo grupo, Categoria categoria) {
         return null;
     }
-   
-   
-    private List<Clasificacion> listaClasificacion(Jornada jornada,Grupo grupo, Categoria categoria) {
-                EntityManager em = Util.getEmf().createEntityManager();
+
+    private List<Clasificacion> listaClasificacion(Jornada jornada, Grupo grupo, Categoria categoria) {
+        EntityManager em = Util.getEmf().createEntityManager();
 
         String query = "Select cl FROM Clasificacion cl "
                 + "WHERE cl.jornadaId.id <= :jornada_id "
                 + "AND cl.jornadaId.grupoId = :grupo ";
-                if(categoria !=null){
-                    query = query + "AND cl.partidoId.categoriaId = :categoria";
-                }
-               
-        
+        if (categoria != null) {
+            query = query + "AND cl.partidoId.categoriaId = :categoria";
+        }
+
         Query q = em.createQuery(query, Clasificacion.class);
         q.setParameter("jornada_id", jornada.getId());
-        if(categoria !=null){
+        if (categoria != null) {
             q.setParameter("categoria", categoria);
         }
         q.setParameter("grupo", grupo);
-        
-        
+
         // EL resultado obtenido del query en la BD
         List<Clasificacion> lista = q.getResultList();
         return lista;
     }
-    
-    private Map<Equipo, Clasifica> clasificaXGrupoAndCategoria(List<Clasificacion> lista){
 
+    private Map<Equipo, Clasifica> clasificaXGrupoAndCategoria(List<Clasificacion> lista) {
 
         Clasifica clasifica;
 
         // Crea el mapa temporal
         Map<Equipo, Clasifica> miMap = new HashMap<Equipo, Clasifica>();
-        
+
         // Se recorre la lista traida de la base de datos
         for (Clasificacion cla : lista) {
 
@@ -145,19 +140,18 @@ public class ReportesDAO implements Serializable{
         }
 
         // Se ordena el mapa para que presenta la clasificación deseada
-        Map<Equipo, Clasifica> sortedMap  = Clasifica.SortClasifica.sortByValue(miMap);
+        Map<Equipo, Clasifica> sortedMap = Clasifica.SortClasifica.sortByValue(miMap);
 
         return sortedMap;
     }
-    
-    private Map<Club, Clasifica> clasificaXGrupoAndClub(List<Clasificacion> lista){
 
+    private Map<Club, Clasifica> clasificaXGrupoAndClub(List<Clasificacion> lista) {
 
         Clasifica clasifica;
 
         // Crea el mapa temporal
         Map<Club, Clasifica> miMap = new HashMap<Club, Clasifica>();
-        
+
         // Se recorre la lista traida de la base de datos
         for (Clasificacion cla : lista) {
 
@@ -239,11 +233,11 @@ public class ReportesDAO implements Serializable{
         }
 
         // Se ordena el mapa para que presenta la clasificación deseada
-        Map<Club, Clasifica> sortedMap  = Clasifica.SortClasifica.sortByValue(miMap);
+        Map<Club, Clasifica> sortedMap = Clasifica.SortClasifica.sortByValue(miMap);
 
         return sortedMap;
     }
-    
+
     /**
      * Genera el reporte de la clasificación por Grupo en una Categoría, ya que
      * la Temporada está asociada a la Categoría, lo que hace falta es la
@@ -254,27 +248,27 @@ public class ReportesDAO implements Serializable{
      * @param categoria
      * @return
      */
-    public List<Clasifica> clasificaXGrupoAndJornada(Jornada jornada, Grupo grupo, 
+    public List<Clasifica> clasificaXGrupoAndJornada(Jornada jornada, Grupo grupo,
             Categoria categoria) {
         List<Clasificacion> clasificacions = listaClasificacion(jornada, grupo, categoria);
         List<Clasifica> clasificaList = new ArrayList<Clasifica>();
-        Map<Equipo,Clasifica> clasificaMap = clasificaXGrupoAndCategoria(clasificacions);
-        for(Map.Entry<Equipo, Clasifica> clasificaEquipo : clasificaMap.entrySet()){
+        Map<Equipo, Clasifica> clasificaMap = clasificaXGrupoAndCategoria(clasificacions);
+        for (Map.Entry<Equipo, Clasifica> clasificaEquipo : clasificaMap.entrySet()) {
             clasificaList.add(clasificaEquipo.getValue());
         }
-        
+
         return clasificaList;
     }
-    
-        public List<Clasifica> clasificaXGrupoAndClub(Jornada jornada, Grupo grupo, 
+
+    public List<Clasifica> clasificaXGrupoAndClub(Jornada jornada, Grupo grupo,
             Categoria categoria) {
         List<Clasificacion> clasificacions = listaClasificacion(jornada, grupo, categoria);
         List<Clasifica> clasificaList = new ArrayList<Clasifica>();
-        Map<Club,Clasifica> clasificaMap = clasificaXGrupoAndClub(clasificacions);
-        for(Map.Entry<Club, Clasifica> clasificaEquipo : clasificaMap.entrySet()){
+        Map<Club, Clasifica> clasificaMap = clasificaXGrupoAndClub(clasificacions);
+        for (Map.Entry<Club, Clasifica> clasificaEquipo : clasificaMap.entrySet()) {
             clasificaList.add(clasificaEquipo.getValue());
         }
-        
+
         return clasificaList;
     }
 }
