@@ -57,7 +57,7 @@
 
                     <h:outputLabel value="Categoria: " for="categorias" />
                     <p:selectOneMenu id="categorias" value="#{reportesBean.categoria}" style="width: 200px" >
-                        <f:selectItem itemLabel="-------------" />
+                        <f:selectItem itemLabel="-------------" value="#{null}"/>
                         <f:selectItems value="#{reportesBean.categorias}" />
                         <p:ajax  event="valueChange" listener="#{reportesBean.categoriaSelected}" 
                                  update="jornadas"/>

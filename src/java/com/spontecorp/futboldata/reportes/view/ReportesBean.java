@@ -140,7 +140,12 @@ public class ReportesBean implements Serializable{
     }
     
     public void makeClasificaXGrupo(){
-        clasificacion = dao.clasificaXGrupoAndJornada(jornada, grupo, categoria);
+        if(categoria!= null){
+                   clasificacion = dao.clasificaXGrupoAndJornada(jornada, grupo, categoria); 
+        }else{
+            clasificacion = dao.clasificaXGrupoAndClub(jornada, grupo, categoria);
+        }
+
     }
     
     public List<Competicion> getItems() {
