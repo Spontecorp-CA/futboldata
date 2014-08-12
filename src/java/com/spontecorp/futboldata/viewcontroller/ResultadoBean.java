@@ -441,32 +441,6 @@ public class ResultadoBean implements Serializable {
             clasificacionFacade.edit(clasificacion);
         }
 
-//        if (partido.getJornadaId() != null) {
-//
-//            if (clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId()) == null) {
-//                clasificacion = new Clasificacion();
-//                clasificacion.setJornadaId(partido.getJornadaId());
-//                clasificacion.setEquipoId(partido.getEquipoLocalId());
-//                clasificacion.setIsLocal(Util.LOCAL);
-//                clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
-//                clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
-//                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-//                calcularPuntos(clasificacion);
-//                clasificacion.setPartidoId(partido);
-//                //clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoLocalId()));
-//                clasificacionFacade.create(clasificacion);
-//
-//            } else {
-//                clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId());
-//                clasificacion.setIsLocal(1);
-//                clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
-//                clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
-//                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-//                calcularPuntos(clasificacion);
-//                clasificacionFacade.edit(clasificacion);
-//            }
-//
-//        }
     }
 
     private void createUpdateClasificacionVisitante() {
@@ -516,31 +490,6 @@ public class ResultadoBean implements Serializable {
             clasificacionFacade.edit(clasificacion);
         }
 
-//        if (partido.getJornadaId() != null) {
-//
-//            if (clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId()) == null) {
-//                clasificacion = new Clasificacion();
-//                clasificacion.setJornadaId(partido.getJornadaId());
-//                clasificacion.setEquipoId(partido.getEquipoVisitanteId());
-//                clasificacion.setPartidoId(partido);
-//                clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
-//                clasificacion.setGolesContra(partido.getGolesEquipoLocal());
-//                clasificacion.setIsLocal(0);
-//                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-//                calcularPuntos(clasificacion);
-//                //clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
-//                clasificacionFacade.create(clasificacion);
-//            } else {
-//                clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId());
-//                clasificacion.setIsLocal(0);
-//                clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
-//                clasificacion.setGolesContra(partido.getGolesEquipoLocal());
-//                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-//                calcularPuntos(clasificacion);
-//                clasificacionFacade.edit(clasificacion);
-//            }
-//
-//        }
     }
 
     private ClasificacionGrupo createClasificiacionGrupo(Equipo equipo) {
