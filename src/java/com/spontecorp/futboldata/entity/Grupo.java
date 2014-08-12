@@ -57,6 +57,9 @@ public class Grupo implements Serializable {
     private Collection<ClasificacionGrupo> clasificacionGrupoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
     private Collection<EquipoEnGrupo> equipoEnGrupoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "grupoId")
+    private Collection<Clasificacion> clasificacionCollection;
+    
     private static final long serialVersionUID = 1L;
 
     public Grupo() {
@@ -105,6 +108,14 @@ public class Grupo implements Serializable {
 
     public void setFaseId(Fase faseId) {
         this.faseId = faseId;
+    }
+
+    public Collection<Clasificacion> getClasificacionCollection() {
+        return clasificacionCollection;
+    }
+
+    public void setClasificacionCollection(Collection<Clasificacion> clasificacionCollection) {
+        this.clasificacionCollection = clasificacionCollection;
     }
 
     @Override

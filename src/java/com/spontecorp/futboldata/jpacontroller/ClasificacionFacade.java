@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-public class ClasificacionFacade extends AbstractFacade<Clasificacion> implements Serializable{
+public class ClasificacionFacade extends AbstractFacade<Clasificacion> implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(ClasificacionFacade.class);
 
@@ -33,15 +33,15 @@ public class ClasificacionFacade extends AbstractFacade<Clasificacion> implement
         return Util.getEmf().createEntityManager();
     }
 
-    public Clasificacion findClasificacion(Partido partido,Equipo equipo) {
+    public Clasificacion findClasificacion(Partido partido, Equipo equipo) {
         EntityManager em = getEntityManager();
         Clasificacion clasificacion = null;
         try {
             String query = "SELECT c FROM Clasificacion  c "
-                            + "WHERE c.partidoId = :partido "
-                            + "AND c.equipoId =:equipo ";
+                    + "WHERE c.partidoId = :partido "
+                    + "AND c.equipoId =:equipo ";
             Query q = em.createQuery(query, Clasificacion.class);
-            q.setParameter("partido", partido); 
+            q.setParameter("partido", partido);
             q.setParameter("equipo", equipo);
             clasificacion = (Clasificacion) q.getSingleResult();
 
@@ -53,17 +53,35 @@ public class ClasificacionFacade extends AbstractFacade<Clasificacion> implement
         return clasificacion;
     }
     
-        public List<Clasificacion> findClasificaciones(ClasificacionGrupo cg) {
+    public List<Clasificacion> findClasificacion(Partido partido){
         EntityManager em = getEntityManager();
-        List<Clasificacion> clasificaciones= null;
+        List<Clasificacion> clasificacion = null;
+        try {
+            String query = "SELECT c FROM Clasificacion  c "
+                    + "WHERE c.partidoId = :partido ";
+            Query q = em.createQuery(query, Clasificacion.class);
+            q.setParameter("partido", partido);
+            clasificacion = q.getResultList();
+
+        } catch (Exception e) {
+            logger.debug("No encontró clasificaciones para el partido " + partido.getEquipoLocalId().getNombre()
+                    + " - " + partido.getEquipoVisitanteId().getNombre(), e);
+        } finally {
+            em.close();
+        }
+        return clasificacion;
+    }
+
+    public List<Clasificacion> findClasificaciones(ClasificacionGrupo cg) {
+        EntityManager em = getEntityManager();
+        List<Clasificacion> clasificaciones = null;
         try {
             String query = null;
             Query q = null;
             query = "SELECT c FROM Clasificacion  c WHERE c.clasificacionGrupoId =:clasificacionGrupo";
             q = em.createQuery(query, Clasificacion.class);
-            q.setParameter("clasificacionGrupo", cg); 
-            clasificaciones =  q.getResultList();
-
+            q.setParameter("clasificacionGrupo", cg);
+            clasificaciones = q.getResultList();
 
         } catch (Exception e) {
             logger.debug("No encontro clasificaciones", e.getCause());
@@ -73,6 +91,5 @@ public class ClasificacionFacade extends AbstractFacade<Clasificacion> implement
         }
         return clasificaciones;
     }
-
 
 }
