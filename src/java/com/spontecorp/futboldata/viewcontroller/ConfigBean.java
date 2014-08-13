@@ -216,7 +216,7 @@ public class ConfigBean implements Serializable {
     }
 
     public List<Categoria> getCategoriaList() {
-        if(categoriaList == null){
+        if (categoriaList == null) {
             categoriaList = temporadaCategoriaFacade.getCategorias(temporada);
         }
         return categoriaList;
@@ -619,8 +619,8 @@ public class ConfigBean implements Serializable {
     private List<Grupo> getGruposXFase() {
         return grupoFacade.findGruposXFase(fase);
     }
-    
-    private void recreateModelCategoria(){
+
+    private void recreateModelCategoria() {
         categoria = null;
         categoriaList = null;
     }
@@ -676,15 +676,22 @@ public class ConfigBean implements Serializable {
                 equipoEnGrupoTemp.setEquipoId(equi);
                 equipoEnGrupoTemp.setGrupoId(grupo);
                 equipoEnGrupo.add(equipoEnGrupoTemp);
-            } else {
-                ;
             }
         }
-        if(!equipoEnGrupo.isEmpty()){
-                    grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
+        if (!equipoEnGrupo.isEmpty()) {
+            grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
         }
-
+        List<Equipo> listEliminar = equipoInLigaFacade.getEquipoInLiga(liga, partido.getCategoriaId());
+        listEliminar.removeAll(equipos);
+        for (Equipo eqg : listEliminar) {
+            EquipoEnGrupo eliEquipoEnGrupo = equipoEnGrupoFacade.getEquipoEnGrupoXEquipo(grupo, eqg);
+            if(eliEquipoEnGrupo != null){
+                equipoEnGrupoFacade.remove(eliEquipoEnGrupo);
+            }
+            
+        }
         grupoFacade.edit(grupo);
+
         recreateModelGrupo();
         Util.addSuccessMessage("Se edito exitosamente el Grupo");
 
@@ -852,7 +859,7 @@ public class ConfigBean implements Serializable {
      * Manejo de partidos
      */
     public List<Partido> getPartidos() {
-        if(partidos == null){
+        if (partidos == null) {
             if (jornada != null && categoria != null) {
                 partidos = partidoFacade.findPartidos(jornada, categoria);
             } else if (jornada != null) {
@@ -884,13 +891,13 @@ public class ConfigBean implements Serializable {
         partidos = partidoFacade.findPartidos(jornada);
         return partidos;
     }
-    
-    public List<Partido> getPartidos(Jornada jornada, Categoria categoria){
+
+    public List<Partido> getPartidos(Jornada jornada, Categoria categoria) {
         partidos = partidoFacade.findPartidos(jornada, categoria);
         return partidos;
     }
-    
-    public List<Partido> getPartidos(Grupo grupo, Categoria categoria){
+
+    public List<Partido> getPartidos(Grupo grupo, Categoria categoria) {
         partidos = partidoFacade.findPartidos(grupo, categoria);
         return partidos;
     }
@@ -899,12 +906,12 @@ public class ConfigBean implements Serializable {
         partidos = partidoFacade.findPartidos(llave);
         return partidos;
     }
-    
-    public List<Partido> getPartidosXJornadaAndCategoria(){
+
+    public List<Partido> getPartidosXJornadaAndCategoria() {
         logger.debug("llegó a buscar los partidos");
         partidos = partidoFacade.findPartidos(jornada, categoria);
-        for(Partido game : partidos){
-            logger.debug("Local: " + game.getEquipoLocalId().getNombre() 
+        for (Partido game : partidos) {
+            logger.debug("Local: " + game.getEquipoLocalId().getNombre()
                     + " Visitante: " + game.getEquipoLocalId().getNombre());
         }
         return partidos;
@@ -933,11 +940,11 @@ public class ConfigBean implements Serializable {
 //        partidos = partidoFacade.findPartidos(grupo);
 //        recreateModelJornada();
         recreateModelCategoria();
-        
+
 //        return partidos;
     }
-    
-    public void categoriaSelected(){
+
+    public void categoriaSelected() {
         recreateModelLlave();
         recreateModelJornada();
         getJornadas();
@@ -1004,11 +1011,6 @@ public class ConfigBean implements Serializable {
     public void getEquipoInLigaGrupo(ValueChangeListener changeListener) {
         equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, categoria);
         logger.debug("Se imprima el equipoInLiga");
-        for (Equipo equi : equipoInLiga) {
-            logger.debug("Equipo " + equi.getNombre() + "  " + equi.getCategoriaId().getNombre());
-
-        }
-
     }
 
     public List<Equipo> getEquipoInLiga() {

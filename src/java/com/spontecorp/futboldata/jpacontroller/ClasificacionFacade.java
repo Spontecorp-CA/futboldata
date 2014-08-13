@@ -46,7 +46,7 @@ public class ClasificacionFacade extends AbstractFacade<Clasificacion> implement
             clasificacion = (Clasificacion) q.getSingleResult();
 
         } catch (Exception e) {
-            logger.debug("No encontro clasificaciones x jornada", e);
+            logger.debug("No encontro clasificaciones x jornada");
         } finally {
             em.close();
         }
