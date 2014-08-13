@@ -1,76 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="FutbolDataPU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <class>com.spontecorp.futboldata.entity.User</class>
-    <class>com.spontecorp.futboldata.entity.Perfil</class>
-    <class>com.spontecorp.futboldata.entity.Categoria</class>
-    <class>com.spontecorp.futboldata.entity.Pais</class>
-    <class>com.spontecorp.futboldata.entity.Localidad</class>
-    <class>com.spontecorp.futboldata.entity.Asociacion</class>
-    <class>com.spontecorp.futboldata.entity.Persona</class>
-    <class>com.spontecorp.futboldata.entity.Direccion</class>
-    <class>com.spontecorp.futboldata.entity.Arbitro</class>
-    <class>com.spontecorp.futboldata.entity.RedSocial</class>
-    <class>com.spontecorp.futboldata.entity.Telefono</class>
-    <class>com.spontecorp.futboldata.entity.Email</class>
-    <class>com.spontecorp.futboldata.entity.TipoArbitro</class>
-    <class>com.spontecorp.futboldata.entity.Club</class>
-    <class>com.spontecorp.futboldata.entity.Posicion</class>
-    <class>com.spontecorp.futboldata.entity.Jugador</class>
-    <class>com.spontecorp.futboldata.entity.Equipo</class>
-    <class>com.spontecorp.futboldata.entity.Agente</class>
-    <class>com.spontecorp.futboldata.entity.Formacion</class>
-    <class>com.spontecorp.futboldata.entity.Competicion</class>
-    <class>com.spontecorp.futboldata.entity.Temporada</class>
-    <class>com.spontecorp.futboldata.entity.Evento</class>
-    <class>com.spontecorp.futboldata.entity.TemporadaCategoria</class>
-    <class>com.spontecorp.futboldata.entity.Llave</class>
-    <class>com.spontecorp.futboldata.entity.Cancha</class>
-    <class>com.spontecorp.futboldata.entity.Patrocinante</class>
-    <class>com.spontecorp.futboldata.entity.StatusPartido</class>
-    <class>com.spontecorp.futboldata.entity.ClubCancha</class>
-    <class>com.spontecorp.futboldata.entity.Contrato</class>
-    <class>com.spontecorp.futboldata.entity.Transferencia</class>
-    <class>com.spontecorp.futboldata.entity.Staff</class>
-    <class>com.spontecorp.futboldata.entity.Jornada</class>
-    <class>com.spontecorp.futboldata.entity.PartidoEvento</class>
-    <class>com.spontecorp.futboldata.entity.Partido</class>
-    <class>com.spontecorp.futboldata.entity.Clasificacion</class>
-    <class>com.spontecorp.futboldata.entity.Convocatoria</class>
-    <class>com.spontecorp.futboldata.entity.Premio</class>
-    <class>com.spontecorp.futboldata.entity.Titulo</class>
-    <class>com.spontecorp.futboldata.entity.Fase</class>
-    <class>com.spontecorp.futboldata.entity.EquipoCancha</class>
-    <class>com.spontecorp.futboldata.entity.Grupo</class>
-    <class>com.spontecorp.futboldata.entity.Ciudad</class>
-    <class>com.spontecorp.futboldata.entity.PartidoArbitro</class>
-    <class>com.spontecorp.futboldata.entity.Imagen</class>
-    <class>com.spontecorp.futboldata.entity.Audio</class>
-    <class>com.spontecorp.futboldata.entity.Cargo</class>
-    <class>com.spontecorp.futboldata.entity.Convocado</class>
-    <class>com.spontecorp.futboldata.entity.TipoRedSocial</class>
-    <class>com.spontecorp.futboldata.entity.EquipoHasJugador</class>
-    <class>com.spontecorp.futboldata.entity.Afiliacion</class>
-    <class>com.spontecorp.futboldata.entity.EquipoInLiga</class>
-    <class>com.spontecorp.futboldata.entity.EquipoEnGrupo</class>
-    <class>com.spontecorp.futboldata.entity.ClasificacionGrupo</class>
-    <class>com.spontecorp.futboldata.entity.TipoEvento</class>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-      <!-- Conexión para pruebas-->  
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
-      <!-- Conexión para databalonazos-->
-      <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data_balonazos?zeroDateTimeBehavior=convertToNull"/>-->        <property name="javax.persistence.jdbc.password" value="futbol"/>
-        <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-        <property name="javax.persistence.jdbc.user" value="futbol"/>
+    <persistence-unit name="FutbolDataPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>com.spontecorp.futboldata.entity.User</class>
+        <class>com.spontecorp.futboldata.entity.Perfil</class>
+        <class>com.spontecorp.futboldata.entity.Categoria</class>
+        <class>com.spontecorp.futboldata.entity.Pais</class>
+        <class>com.spontecorp.futboldata.entity.Localidad</class>
+        <class>com.spontecorp.futboldata.entity.Asociacion</class>
+        <class>com.spontecorp.futboldata.entity.Persona</class>
+        <class>com.spontecorp.futboldata.entity.Direccion</class>
+        <class>com.spontecorp.futboldata.entity.Arbitro</class>
+        <class>com.spontecorp.futboldata.entity.RedSocial</class>
+        <class>com.spontecorp.futboldata.entity.Telefono</class>
+        <class>com.spontecorp.futboldata.entity.Email</class>
+        <class>com.spontecorp.futboldata.entity.TipoArbitro</class>
+        <class>com.spontecorp.futboldata.entity.Club</class>
+        <class>com.spontecorp.futboldata.entity.Posicion</class>
+        <class>com.spontecorp.futboldata.entity.Jugador</class>
+        <class>com.spontecorp.futboldata.entity.Equipo</class>
+        <class>com.spontecorp.futboldata.entity.Agente</class>
+        <class>com.spontecorp.futboldata.entity.Formacion</class>
+        <class>com.spontecorp.futboldata.entity.Competicion</class>
+        <class>com.spontecorp.futboldata.entity.Temporada</class>
+        <class>com.spontecorp.futboldata.entity.Evento</class>
+        <class>com.spontecorp.futboldata.entity.TemporadaCategoria</class>
+        <class>com.spontecorp.futboldata.entity.Llave</class>
+        <class>com.spontecorp.futboldata.entity.Cancha</class>
+        <class>com.spontecorp.futboldata.entity.Patrocinante</class>
+        <class>com.spontecorp.futboldata.entity.StatusPartido</class>
+        <class>com.spontecorp.futboldata.entity.ClubCancha</class>
+        <class>com.spontecorp.futboldata.entity.Contrato</class>
+        <class>com.spontecorp.futboldata.entity.Transferencia</class>
+        <class>com.spontecorp.futboldata.entity.Staff</class>
+        <class>com.spontecorp.futboldata.entity.Jornada</class>
+        <class>com.spontecorp.futboldata.entity.PartidoEvento</class>
+        <class>com.spontecorp.futboldata.entity.Partido</class>
+        <class>com.spontecorp.futboldata.entity.Clasificacion</class>
+        <class>com.spontecorp.futboldata.entity.Convocatoria</class>
+        <class>com.spontecorp.futboldata.entity.Premio</class>
+        <class>com.spontecorp.futboldata.entity.Titulo</class>
+        <class>com.spontecorp.futboldata.entity.Fase</class>
+        <class>com.spontecorp.futboldata.entity.EquipoCancha</class>
+        <class>com.spontecorp.futboldata.entity.Grupo</class>
+        <class>com.spontecorp.futboldata.entity.Ciudad</class>
+        <class>com.spontecorp.futboldata.entity.PartidoArbitro</class>
+        <class>com.spontecorp.futboldata.entity.Imagen</class>
+        <class>com.spontecorp.futboldata.entity.Audio</class>
+        <class>com.spontecorp.futboldata.entity.Cargo</class>
+        <class>com.spontecorp.futboldata.entity.Convocado</class>
+        <class>com.spontecorp.futboldata.entity.TipoRedSocial</class>
+        <class>com.spontecorp.futboldata.entity.EquipoHasJugador</class>
+        <class>com.spontecorp.futboldata.entity.Afiliacion</class>
+        <class>com.spontecorp.futboldata.entity.EquipoInLiga</class>
+        <class>com.spontecorp.futboldata.entity.EquipoEnGrupo</class>
+        <class>com.spontecorp.futboldata.entity.ClasificacionGrupo</class>
+        <class>com.spontecorp.futboldata.entity.TipoEvento</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <!-- Conexión para pruebas-->  
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
+            <!-- Conexión para databalonazos-->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data_balonazos?zeroDateTimeBehavior=convertToNull"/>-->        
+            <property name="javax.persistence.jdbc.password" value="futbol"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="futbol"/>
         
         
-        <!-- Conexión local -->
-      <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
-<!--      <property name="javax.persistence.jdbc.password" value="root"/>
-      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.user" value="root"/>-->
-    </properties>
-  </persistence-unit>
+            <!-- Conexión local -->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>-->
+            <!--      <property name="javax.persistence.jdbc.password" value="root"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>-->
+        </properties>
+    </persistence-unit>
 </persistence>
