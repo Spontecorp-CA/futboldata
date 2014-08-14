@@ -20,6 +20,8 @@ import com.spontecorp.futboldata.jpacontroller.JornadaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.reportes.ReportesDAO;
+import com.spontecorp.futboldata.reportes.template.ClasificacionesReport;
+import com.spontecorp.futboldata.reportes.template.Templates;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -37,6 +39,12 @@ import javax.inject.Named;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
+import net.sf.dynamicreports.report.constant.PageOrientation;
+import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.constant.SplitType;
+import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -270,10 +278,18 @@ public class ReportesBean implements Serializable {
     }
 
     public void PDF(ActionEvent actionEvent) throws IOException {
-        init();
+        //init();
         HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         ServletOutputStream outputStream;
         try {
+            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
+            List<String> subTitulos = new ArrayList<String>();
+            subTitulos.add(temporada.getNombre());
+            subTitulos.add("Jornada n°: "+jornada.getNumero().toString());
+            subTitulos.add("Categoria: "+categoria.getNombre());
+            JasperReportBuilder builder = clasificacionesReport.crearReporte(clasificacion,liga.getNombre(),subTitulos);
+            builder.setPageFormat(PageType.A4, PageOrientation.LANDSCAPE);
+            jasperPrint = builder.toJasperPrint();
             String filePath1 = FacesContext.getCurrentInstance().getExternalContext().getRealPath("") + File.separator + "sample_report.pdf";
             JasperExportManager.exportReportToPdfFile(jasperPrint, filePath1);
 
@@ -287,6 +303,8 @@ public class ReportesBean implements Serializable {
         } catch (IOException ex) {
             java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JRException ex) {
+            java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DRException ex) {
             java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
