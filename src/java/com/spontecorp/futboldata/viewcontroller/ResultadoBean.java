@@ -377,8 +377,8 @@ public class ResultadoBean implements Serializable {
                 && partido.getGolesEquipoLocal() != null && partido.getLlaveId() == null) {
             createUpdateClasificacionLocal();
             createUpdateClasificacionVisitante();
-            clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoLocalId()));
-            clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
+            //clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoLocalId()));
+           // clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
         }
         Util.addSuccessMessage("Se editó con éxito");
     }

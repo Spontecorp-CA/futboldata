@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExampleTemplate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="af562f28-f981-441a-ab2e-f854e941e554">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="equipo" class="java.lang.String"/>
+	<group name="Group1">
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement x="0" y="0" width="100" height="30" uuid="9d82fd41-0b7f-4328-8a93-d17f8f7f3012"/>
+					<textFieldExpression><![CDATA["GroupField"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band height="801" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</background>
+	<title>
+		<band height="101" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="0" width="248" height="45" forecolor="#FF0080" uuid="ce026382-5377-48c9-8fa1-1be9c23c0f1e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Gill Sans MT" size="34" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[My Template Title]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" forecolor="#8000FF" uuid="ec979262-6cb0-41a0-80a5-2089ab1bd11b"/>
+				<box leftPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#400040"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#400040"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#400040"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#400040"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Label]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="46" y="0" width="100" height="20" uuid="14ed8c5b-b21a-467a-9b2a-02e67e267dcc"/>
+				<text><![CDATA[equipo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="39" splitType="Stretch">
+			<textField>
+				<reportElement x="46" y="19" width="100" height="20" uuid="6d2824d0-f9ce-4fa0-aa8b-e5c943d02bdd"/>
+				<textFieldExpression><![CDATA[$F{equipo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="554" height="1" uuid="dd715d4c-d289-4a48-bd81-d1723a3061b3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="38" splitType="Stretch">
+			<textField>
+				<reportElement x="212" y="0" width="130" height="38" forecolor="#408080" uuid="e6d35f04-f35b-4b55-930c-0f52eb5f78e4"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
