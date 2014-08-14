@@ -7,6 +7,7 @@ package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -75,6 +76,9 @@ public class Clasificacion implements Serializable {
     @JoinColumn(name = "partido_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Partido partidoId;
+    @JoinColumn(name = "grupo_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Grupo grupoId;
 
     public Clasificacion() {
     }
@@ -218,6 +222,14 @@ public class Clasificacion implements Serializable {
 
     public void setPartidoId(Partido partidoId) {
         this.partidoId = partidoId;
+    }
+
+    public Grupo getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(Grupo grupoId) {
+        this.grupoId = grupoId;
     }
 
 }

@@ -76,12 +76,11 @@ public class EquipoEnGrupoFacade extends AbstractFacade<EquipoEnGrupo> implement
 
         try {
             String query = "SELECT e.grupoId FROM EquipoEnGrupo e WHERE  e.grupoId.faseId = :fase "
-                    + " AND e.equipoId =:equipo "
-                    + "AND e.status = :status";
+                    + " AND e.equipoId =:equipo ";
             Query q = em.createQuery(query, Equipo.class);
             q.setParameter("fase", fase);
             q.setParameter("equipo", equipo);
-            q.setParameter("status", ACTIVO);
+
             grupo = (Grupo) q.getSingleResult();
         } catch (Exception e) {
             logger.debug("Error encontrando EquipoEnGrupo: " + e.getLocalizedMessage());

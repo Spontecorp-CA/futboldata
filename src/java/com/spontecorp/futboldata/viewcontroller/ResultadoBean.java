@@ -12,7 +12,9 @@ import com.spontecorp.futboldata.entity.Convocatoria;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.Evento;
+import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
+import com.spontecorp.futboldata.entity.Jornada;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.entity.PartidoArbitro;
 import com.spontecorp.futboldata.entity.PartidoEvento;
@@ -25,6 +27,7 @@ import com.spontecorp.futboldata.jpacontroller.ConvocatoriasFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoEnGrupoFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoHasJugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.EventoFacade;
+import com.spontecorp.futboldata.jpacontroller.JornadaFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoArbitroFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoEventoFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
@@ -63,6 +66,7 @@ public class ResultadoBean implements Serializable {
     private PartidoEvento partidoEvento;
     private TipoEvento tipoEvento;
     private ClasificacionGrupo clasificacionGrupo;
+
     private final PartidoFacade partidoFacade;
     private final ConvocatoriasFacade convocatoriaFacade;
     private final ConvocadoFacade convocadoFacade;
@@ -74,6 +78,8 @@ public class ResultadoBean implements Serializable {
     private final ClasificacionGrupoFacade clasificacionGrupoFacade;
     private final EquipoEnGrupoFacade equipoEnGrupoFacade;
     private final EventoFacade eventoFacade;
+    private final JornadaFacade jornadaFacade;
+
     private List<Evento> comboEvento;
     private List<Staff> staffs;
     private List<Convocado> convocados;
@@ -102,6 +108,7 @@ public class ResultadoBean implements Serializable {
         clasificacionGrupoFacade = new ClasificacionGrupoFacade();
         eventoFacade = new EventoFacade();
         equipoEnGrupoFacade = new EquipoEnGrupoFacade();
+        jornadaFacade = new JornadaFacade();
     }
 
     /**
@@ -373,79 +380,124 @@ public class ResultadoBean implements Serializable {
      */
     public void guardar() {
         partidoFacade.edit(partido);
-        if (partido.getStatusPartidoId().getValue() != 0 && partido.getGolesEquipoVisitante() != null
-                && partido.getGolesEquipoLocal() != null && partido.getLlaveId() == null) {
+        if (partido.getStatusPartidoId().getValue() != 0
+                && partido.getGolesEquipoVisitante() != null
+                && partido.getGolesEquipoLocal() != null
+                && partido.getLlaveId() == null) {
             createUpdateClasificacionLocal();
             createUpdateClasificacionVisitante();
             //clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoLocalId()));
-           // clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
+            //clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
         }
-        Util.addSuccessMessage("Se editó con éxito");
+        Util.addSuccessMessage("Se guardaron los datos del partido con éxito");
     }
 
     private void createUpdateClasificacionLocal() {
-        if (partido.getJornadaId() != null) {
 
-            if (clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId()) == null) {
-                clasificacion = new Clasificacion();
-                clasificacion.setJornadaId(partido.getJornadaId());
-                clasificacion.setEquipoId(partido.getEquipoLocalId());
-                clasificacion.setIsLocal(Util.LOCAL);
-                clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
-                clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
-                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-                calcularPuntos(clasificacion);
-                clasificacion.setPartidoId(partido);
-                //clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoLocalId()));
-                clasificacionFacade.create(clasificacion);
-
+        Grupo grupoDelPartido = partido.getJornadaId().getGrupoId();
+        logger.debug("el grupo del partido es: " + grupoDelPartido.getNombre());
+        Fase faseTemp = partido.getJornadaId().getGrupoId().getFaseId();
+        logger.debug("la fase es: " + faseTemp.getNombre());
+        Grupo grupoDelEquipo = equipoEnGrupoFacade.getGrupoxFasexEquipo(faseTemp, partido.getEquipoLocalId());
+        logger.debug("EL grupo del equipo es: " + grupoDelEquipo);
+        Jornada jornada;
+        if (!grupoDelPartido.equals(grupoDelEquipo)) {
+            // chequear que la jornada no exista!!!
+            Jornada oldJornada = jornadaFacade.findJornadaxGrupo(grupoDelEquipo, partido.getJornadaId().getNumero());
+            if (oldJornada == null) {
+                jornada = new Jornada();
+                jornada.setNumero(partido.getJornadaId().getNumero());
+                jornada.setStatus(partido.getJornadaId().getStatus());
+                jornada.setAlias(partido.getJornadaId().getAlias());
+                jornada.setGrupoId(grupoDelEquipo);
+                jornadaFacade.create(jornada);
             } else {
-                clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId());
-                clasificacion.setIsLocal(1);
-                clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
-                clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
-                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-                calcularPuntos(clasificacion);
-                clasificacionFacade.edit(clasificacion);
+                jornada = oldJornada;
             }
-
+        } else {
+            jornada = partido.getJornadaId();
         }
+        if (clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId()) == null) {
+            clasificacion = new Clasificacion();
+            logger.debug("la jornada a crear es: " + jornada);
+            clasificacion.setJornadaId(jornada);
+            clasificacion.setEquipoId(partido.getEquipoLocalId());
+            clasificacion.setIsLocal(Util.LOCAL);
+            clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
+            clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
+            clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
+            calcularPuntos(clasificacion);
+            clasificacion.setPartidoId(partido);
+            clasificacion.setGrupoId(grupoDelEquipo);
+            clasificacionFacade.create(clasificacion);
+
+        } else {
+            clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId());
+            clasificacion.setIsLocal(1);
+            clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
+            clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
+            clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
+            calcularPuntos(clasificacion);
+            clasificacionFacade.edit(clasificacion);
+        }
+
     }
 
     private void createUpdateClasificacionVisitante() {
-        if (partido.getJornadaId() != null) {
-
-            if (clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId()) == null) {
-                clasificacion = new Clasificacion();
-                clasificacion.setJornadaId(partido.getJornadaId());
-                clasificacion.setEquipoId(partido.getEquipoVisitanteId());
-                clasificacion.setPartidoId(partido);
-                clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
-                clasificacion.setGolesContra(partido.getGolesEquipoLocal());
-                clasificacion.setIsLocal(0);
-                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-                calcularPuntos(clasificacion);                
-                //clasificacion.setClasificacionGrupoId(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
-                clasificacionFacade.create(clasificacion);
+        Grupo grupoDelPartido = partido.getJornadaId().getGrupoId();
+        logger.debug("el grupo del partido es (visitante): " + grupoDelPartido.getNombre());
+        Fase faseTemp = partido.getJornadaId().getGrupoId().getFaseId();
+        logger.debug("la fase (visiatante) es: " + faseTemp.getNombre());
+        Grupo grupoDelEquipo = equipoEnGrupoFacade.getGrupoxFasexEquipo(faseTemp, partido.getEquipoVisitanteId());
+        logger.debug("EL grupo del equipo (visitante) es: " + grupoDelEquipo);
+        Jornada jornada;
+        if (!grupoDelPartido.equals(grupoDelEquipo)) {
+            Jornada oldJornada = jornadaFacade.findJornadaxGrupo(grupoDelEquipo, partido.getJornadaId().getNumero());
+            if (oldJornada == null) {
+                jornada = new Jornada();
+                jornada.setNumero(partido.getJornadaId().getNumero());
+                jornada.setStatus(partido.getJornadaId().getStatus());
+                jornada.setAlias(partido.getJornadaId().getAlias());
+                jornada.setGrupoId(grupoDelEquipo);
+                jornadaFacade.create(jornada);
             } else {
-                clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId());
-                clasificacion.setIsLocal(0);
-                clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
-                clasificacion.setGolesContra(partido.getGolesEquipoLocal());
-                clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
-                calcularPuntos(clasificacion);
-                clasificacionFacade.edit(clasificacion);
+                jornada = oldJornada;
             }
-
+        } else {
+            jornada = partido.getJornadaId();
         }
+        if (clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId()) == null) {
+            clasificacion = new Clasificacion();
+            logger.debug("la jornada (del visitante) a crear es: " + jornada);
+            clasificacion.setJornadaId(jornada);
+            clasificacion.setEquipoId(partido.getEquipoVisitanteId());
+            clasificacion.setIsLocal(Util.VISITANTE);
+            clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
+            clasificacion.setGolesContra(partido.getGolesEquipoLocal());
+            clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
+            calcularPuntos(clasificacion);
+            clasificacion.setPartidoId(partido);
+            clasificacion.setGrupoId(grupoDelEquipo);
+            clasificacionFacade.create(clasificacion);
+
+        } else {
+            clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId());
+            clasificacion.setIsLocal(1);
+            clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
+            clasificacion.setGolesContra(partido.getGolesEquipoLocal());
+            clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
+            calcularPuntos(clasificacion);
+            clasificacionFacade.edit(clasificacion);
+        }
+
     }
 
     private ClasificacionGrupo createClasificiacionGrupo(Equipo equipo) {
-        
+
         Grupo grupo;
         grupo = equipoEnGrupoFacade.getGrupoxFasexEquipo(partido.getJornadaId().getGrupoId().getFaseId(), equipo);
-        if(grupo ==null){
-            logger.error("Debe ingresar el equipo "+equipo.getNombre()+" a un grupo");
+        if (grupo == null) {
+            logger.error("Debe ingresar el equipo " + equipo.getNombre() + " a un grupo");
         }
         if (clasificacionGrupoFacade.findClasificacion(grupo, equipo) == null) {
             clasificacionGrupo = new ClasificacionGrupo();
@@ -467,7 +519,7 @@ public class ResultadoBean implements Serializable {
             clasificacion.setJGanados(0);
             clasificacion.setJPerdidos(0);
             clasificacion.setJEmpatados(1);
-            
+
         } else if (clasificacion.getDiferencia() < 0) {
             clasificacion.setPuntos(Util.PUNTOS_PERDEDOR);
             clasificacion.setJGanados(0);
@@ -562,8 +614,6 @@ public class ResultadoBean implements Serializable {
     public void setFilteredEventos(List<PartidoEvento> filteredEventos) {
         this.filteredEventos = filteredEventos;
     }
-    
-    
 
     public void createEvento() {
         if (convocado != null) {
