@@ -433,7 +433,7 @@ public class ResultadoBean implements Serializable {
 
         } else {
             clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoLocalId());
-            clasificacion.setIsLocal(1);
+            clasificacion.setIsLocal(Util.LOCAL);
             clasificacion.setGolesFavor(partido.getGolesEquipoLocal());
             clasificacion.setGolesContra(partido.getGolesEquipoVisitante());
             clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());
@@ -482,7 +482,7 @@ public class ResultadoBean implements Serializable {
 
         } else {
             clasificacion = clasificacionFacade.findClasificacion(partido, partido.getEquipoVisitanteId());
-            clasificacion.setIsLocal(1);
+            clasificacion.setIsLocal(Util.VISITANTE);
             clasificacion.setGolesFavor(partido.getGolesEquipoVisitante());
             clasificacion.setGolesContra(partido.getGolesEquipoLocal());
             clasificacion.setDiferencia(clasificacion.getGolesFavor() - clasificacion.getGolesContra());

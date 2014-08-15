@@ -62,6 +62,8 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
             <!-- Conexión para databalonazos-->
             <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data_balonazos?zeroDateTimeBehavior=convertToNull"/>-->        
+            
+            <!-- DAtos comunes a pruebas y databalonazos -->
             <property name="javax.persistence.jdbc.password" value="futbol"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="futbol"/>
