@@ -7,14 +7,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,22 +41,20 @@ public class Util implements Serializable {
     public static final int SUPERVISOR = 2;
     public static final int EDITOR = 3;
     public static final int CONSULTOR = 4;
-    
+
     public static final int LOCAL = 1;
     public static final int VISITANTE = 0;
-    
+
     public static final int PUNTOS_GANADOR = 3;
     public static final int PUNTOS_EMPATE = 1;
     public static final int PUNTOS_PERDEDOR = 0;
-    
+
     public static final String rutaRelativa = "resources\\images\\";
     public static final Logger logger = LoggerFactory.getLogger(Util.class);
-    
+
     //status del partido
-    
     // dirección de imagenes para máquinas de sponte03 y sponte07
     //public static final String STORAGE_ROOT = "C:/Program Files/Apache Software Foundation/Apache Tomcat 7.0.41/webapps/imagenes/";
-    
     // dirección de imagenes para máquinas de sponte08 y producción
     public static final String STORAGE_ROOT = "C:/Servidores/apache-tomcat-7.0.41/webapps/imagenes/";
     private static String hostImagen;
@@ -60,6 +64,27 @@ public class Util implements Serializable {
                 getCurrentInstance().
                 getExternalContext().
                 getSession(false);
+    }
+
+    public static void exportarPDF(JasperPrint jasperPrint) {
+
+        HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        ServletOutputStream outputStream;
+        try {
+            outputStream = httpServletResponse.getOutputStream();
+      
+        httpServletResponse.reset();
+        httpServletResponse.setDateHeader("Expires", 0);
+        httpServletResponse.setHeader("Content-Type", "application/pdf");
+        httpServletResponse.addHeader("Content-Disposition", "inline; filename=\"" + "reporte.pdf" + "\"");
+            try {
+                JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+            } catch (JRException ex) {
+                java.util.logging.Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static String getHostImagen() {
@@ -167,6 +192,7 @@ public class Util implements Serializable {
     }
 
     public static enum PersistAction {
+
         CREATE,
         DELETE,
         UPDATE

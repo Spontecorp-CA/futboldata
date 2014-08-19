@@ -22,6 +22,7 @@ import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.reportes.ReportesDAO;
 import com.spontecorp.futboldata.reportes.template.ClasificacionesReport;
 import com.spontecorp.futboldata.reportes.template.Templates;
+import com.spontecorp.futboldata.utilities.Util;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -266,45 +267,26 @@ public class ReportesBean implements Serializable {
         jornadas = null;
     }
 
-    public void init() {
-        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(clasificacion);
-        try {
-            jasperPrint = JasperFillManager.fillReport("C:\\Users\\sponte03.SPONTECORP\\Documents\\Felix_Angulo\\futboldata\\src\\java\\com\\spontecorp\\futboldata\\reportes\\printed\\exampletemplate.jasper",
-                    new HashMap(), beanCollectionDataSource);
 
-        } catch (JRException ex) {
-            java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+    public void createPDF(ActionEvent actionEvent) throws IOException {
 
-    public void PDF(ActionEvent actionEvent) throws IOException {
-        //init();
-        HttpServletResponse httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-        ServletOutputStream outputStream;
+
         try {
             ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
             List<String> subTitulos = new ArrayList<String>();
             subTitulos.add(temporada.getNombre());
+
             subTitulos.add("Jornada n°: "+jornada.getNumero().toString());
-            subTitulos.add("Categoria: "+categoria.getNombre());
+            if(categoria != null){
+                         subTitulos.add("Categoria: "+categoria.getNombre());  
+            }
             JasperReportBuilder builder = clasificacionesReport.crearReporte(clasificacion,liga.getNombre(),subTitulos);
-            builder.setPageFormat(PageType.A4, PageOrientation.LANDSCAPE);
+            builder.setPageFormat(PageType.LETTER, PageOrientation.LANDSCAPE);
             jasperPrint = builder.toJasperPrint();
-            String filePath1 = FacesContext.getCurrentInstance().getExternalContext().getRealPath("") + File.separator + "sample_report.pdf";
-            JasperExportManager.exportReportToPdfFile(jasperPrint, filePath1);
+            Util.exportarPDF(jasperPrint);
 
-            outputStream = httpServletResponse.getOutputStream();
-            httpServletResponse.reset();
-            httpServletResponse.setDateHeader("Expires", 0);
-            httpServletResponse.setHeader("Content-Type", "application/pdf");
-            httpServletResponse.addHeader("Content-Disposition", "inline; filename=\"" + "reporte.pdf" + "\"");
-            JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
 
-        } catch (IOException ex) {
-            java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (JRException ex) {
-            java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (DRException ex) {
+        }  catch (DRException ex) {
             java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 

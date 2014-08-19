@@ -20,6 +20,8 @@
  */
 package com.spontecorp.futboldata.reportes.template;
 
+import com.spontecorp.futboldata.utilities.Util;
+import com.sun.faces.facelets.util.Path;
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 import java.awt.Color;
@@ -113,13 +115,14 @@ public class Templates {
 
         currencyType = new CurrencyType();
 
-        HyperLinkBuilder link = hyperLink("http://www.dynamicreports.org");
+        HyperLinkBuilder link = hyperLink("http://www.spontecorp.com/");
         dynamicReportsComponent
                 = cmp.horizontalList(
-                        //		  	cmp.image(Templates.class.getResource("images/dynamicreports.png")).setFixedDimension(60, 60),
+                        cmp.image(Templates.class.getResourceAsStream("/resources/images/logo_FutbolData.png")).setFixedDimension(60, 60),
+//		  	cmp.image(Templates.class.getResource("images/dynamicreports.png")).setFixedDimension(60, 60),
                         cmp.verticalList(
                                 cmp.text("Futbol Data").setStyle(bold22CenteredStyle).setHorizontalAlignment(HorizontalAlignment.LEFT),
-                                cmp.text("http://www.dynamicreports.org").setStyle(italicStyle).setHyperLink(link))).setFixedWidth(300);
+                                cmp.text("http://www.spontecorp.com/").setStyle(italicStyle).setHyperLink(link))).setFixedWidth(300);
 
         footerComponent = cmp.pageXofY()
                 .setStyle(
