@@ -166,6 +166,9 @@
                     </p:column>
 
                 </p:dataTable>
+                <h:commandLink value="Expotar a Pdf" 
+                               action="#{configBean.createPDF(actionEvent)}"
+                               target="_blank"/>
             </p:fieldset>
         </h:form>
         <ui:include src="./../partido/edit.xhtml"/>

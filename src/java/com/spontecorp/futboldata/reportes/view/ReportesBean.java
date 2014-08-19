@@ -269,10 +269,8 @@ public class ReportesBean implements Serializable {
 
 
     public void createPDF(ActionEvent actionEvent) throws IOException {
-
-
         try {
-            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
+//            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
             List<String> subTitulos = new ArrayList<String>();
             subTitulos.add(temporada.getNombre());
 
@@ -280,7 +278,7 @@ public class ReportesBean implements Serializable {
             if(categoria != null){
                          subTitulos.add("Categoria: "+categoria.getNombre());  
             }
-            JasperReportBuilder builder = clasificacionesReport.crearReporte(clasificacion,liga.getNombre(),subTitulos);
+            JasperReportBuilder builder = ClasificacionesReport.crearReporte(clasificacion,liga.getNombre(),subTitulos);
             builder.setPageFormat(PageType.LETTER, PageOrientation.LANDSCAPE);
             jasperPrint = builder.toJasperPrint();
             Util.exportarPDF(jasperPrint);

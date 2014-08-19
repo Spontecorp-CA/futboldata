@@ -1,4 +1,4 @@
-/*
+ /*
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
@@ -8,7 +8,6 @@ import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.EquipoEnGrupo;
-import com.spontecorp.futboldata.entity.EquipoInLiga;
 import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
@@ -27,15 +26,23 @@ import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.StatusPartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
+import com.spontecorp.futboldata.reportes.template.PartidosReport;
+import com.spontecorp.futboldata.reportes.view.ReportesBean;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.inject.Named;
-import org.primefaces.event.SelectEvent;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.constant.PageOrientation;
+import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +51,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
+
+
 @Named("configBean")
 @SessionScoped
 public class ConfigBean implements Serializable {
@@ -216,7 +225,7 @@ public class ConfigBean implements Serializable {
     }
 
     public List<Categoria> getCategoriaList() {
-        if(categoriaList == null){
+        if (categoriaList == null) {
             categoriaList = temporadaCategoriaFacade.getCategorias(temporada);
         }
         return categoriaList;
@@ -619,8 +628,8 @@ public class ConfigBean implements Serializable {
     private List<Grupo> getGruposXFase() {
         return grupoFacade.findGruposXFase(fase);
     }
-    
-    private void recreateModelCategoria(){
+
+    private void recreateModelCategoria() {
         categoria = null;
         categoriaList = null;
     }
@@ -680,8 +689,8 @@ public class ConfigBean implements Serializable {
                 ;
             }
         }
-        if(!equipoEnGrupo.isEmpty()){
-                    grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
+        if (!equipoEnGrupo.isEmpty()) {
+            grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
         }
 
         grupoFacade.edit(grupo);
@@ -852,7 +861,7 @@ public class ConfigBean implements Serializable {
      * Manejo de partidos
      */
     public List<Partido> getPartidos() {
-        if(partidos == null){
+        if (partidos == null) {
             if (jornada != null && categoria != null) {
                 partidos = partidoFacade.findPartidos(jornada, categoria);
             } else if (jornada != null) {
@@ -884,13 +893,13 @@ public class ConfigBean implements Serializable {
         partidos = partidoFacade.findPartidos(jornada);
         return partidos;
     }
-    
-    public List<Partido> getPartidos(Jornada jornada, Categoria categoria){
+
+    public List<Partido> getPartidos(Jornada jornada, Categoria categoria) {
         partidos = partidoFacade.findPartidos(jornada, categoria);
         return partidos;
     }
-    
-    public List<Partido> getPartidos(Grupo grupo, Categoria categoria){
+
+    public List<Partido> getPartidos(Grupo grupo, Categoria categoria) {
         partidos = partidoFacade.findPartidos(grupo, categoria);
         return partidos;
     }
@@ -899,12 +908,12 @@ public class ConfigBean implements Serializable {
         partidos = partidoFacade.findPartidos(llave);
         return partidos;
     }
-    
-    public List<Partido> getPartidosXJornadaAndCategoria(){
+
+    public List<Partido> getPartidosXJornadaAndCategoria() {
         logger.debug("llegó a buscar los partidos");
         partidos = partidoFacade.findPartidos(jornada, categoria);
-        for(Partido game : partidos){
-            logger.debug("Local: " + game.getEquipoLocalId().getNombre() 
+        for (Partido game : partidos) {
+            logger.debug("Local: " + game.getEquipoLocalId().getNombre()
                     + " Visitante: " + game.getEquipoLocalId().getNombre());
         }
         return partidos;
@@ -933,11 +942,11 @@ public class ConfigBean implements Serializable {
 //        partidos = partidoFacade.findPartidos(grupo);
 //        recreateModelJornada();
         recreateModelCategoria();
-        
+
 //        return partidos;
     }
-    
-    public void categoriaSelected(){
+
+    public void categoriaSelected() {
         recreateModelLlave();
         recreateModelJornada();
         getJornadas();
@@ -1023,7 +1032,36 @@ public class ConfigBean implements Serializable {
             equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga);
             return equipoInLiga;
         }
+    }
 
+    public void createPDF(ActionEvent actionEvent) throws IOException {
+        try {
+//            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
+            List<String> subTitulos = new ArrayList<String>();
+            subTitulos.add(temporada.getNombre());
+            if (fase != null) {
+                subTitulos.add("Fase :" + fase.getNombre());
+            }
+            if (grupo != null) {
+                subTitulos.add("Grupo :" + grupo.getNombre());
+            }
+            if (jornada != null) {
+                subTitulos.add("Jornada n°: " + jornada.getNumero().toString());
+            }
+
+            if (categoria != null) {
+                subTitulos.add("Categoria: " + categoria.getNombre());
+            }
+            JasperReportBuilder builder = PartidosReport.crearReporte(partidos, liga.getNombre(), subTitulos);
+            builder.setPageFormat(PageType.LETTER, PageOrientation.LANDSCAPE);
+            JasperPrint jasperPrint = builder.toJasperPrint();
+            Util.exportarPDF(jasperPrint);
+
+        } catch (DRException ex) {
+            java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+        }
     }
 
 }

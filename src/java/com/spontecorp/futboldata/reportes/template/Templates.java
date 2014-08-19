@@ -95,7 +95,7 @@ public class Templates {
                 .setHeadingStyle(0, stl.style(rootStyle).bold());
 
         reportTemplate = template()
-                .setLocale(Locale.ENGLISH)
+                .setLocale(Locale.getDefault())
                 .setColumnStyle(columnStyle)
                 .setColumnTitleStyle(columnTitleStyle)
                 .setGroupStyle(groupStyle)

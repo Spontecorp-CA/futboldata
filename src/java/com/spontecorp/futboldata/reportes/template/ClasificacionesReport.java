@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
 
 /**
@@ -18,7 +17,7 @@ import net.sf.dynamicreports.report.exception.DRException;
  */
 public class ClasificacionesReport {
 
-    public JasperReportBuilder crearReporte(Collection<?> collection, String titulo,List<String> subTitulos)  {
+    public static JasperReportBuilder crearReporte(Collection<?> collection, String titulo,List<String> subTitulos)  {
         DynamicReport dr = crearReporteDinamico();
         dr.setSubTitles(subTitulos);
 
@@ -32,7 +31,7 @@ public class ClasificacionesReport {
         return builder;
     }
 
-    public DynamicReport crearReporteDinamico() {
+    public static DynamicReport crearReporteDinamico() {
         DynamicReport report = new DynamicReport();
 
         report.setTitle("Clasificaciones");
