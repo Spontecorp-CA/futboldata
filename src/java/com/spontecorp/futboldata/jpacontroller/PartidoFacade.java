@@ -186,7 +186,7 @@ public class PartidoFacade extends AbstractFacade<Partido> {
         List<Partido> partidos = null;
         try {
             String query = "SELECT p FROM Partido p WHERE p.jornadaId.grupoId = :grupo "
-                            + "AND p.categoriaId = categoria";
+                            + "AND p.categoriaId = :categoria";
             Query q = em.createQuery(query);
             q.setParameter("grupo", grupo);
             q.setParameter("categoria", categoria);

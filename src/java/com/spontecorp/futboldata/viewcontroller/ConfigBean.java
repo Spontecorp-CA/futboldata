@@ -51,8 +51,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-
-
 @Named("configBean")
 @SessionScoped
 public class ConfigBean implements Serializable {
@@ -632,6 +630,7 @@ public class ConfigBean implements Serializable {
     private void recreateModelCategoria() {
         categoria = null;
         categoriaList = null;
+        recreateModelJornada();
     }
 
     private void recreateModelGrupo() {
@@ -694,10 +693,10 @@ public class ConfigBean implements Serializable {
         listEliminar.removeAll(equipos);
         for (Equipo eqg : listEliminar) {
             EquipoEnGrupo eliEquipoEnGrupo = equipoEnGrupoFacade.getEquipoEnGrupoXEquipo(grupo, eqg);
-            if(eliEquipoEnGrupo != null){
+            if (eliEquipoEnGrupo != null) {
                 equipoEnGrupoFacade.remove(eliEquipoEnGrupo);
             }
-            
+
         }
         grupoFacade.edit(grupo);
 
@@ -883,6 +882,12 @@ public class ConfigBean implements Serializable {
     }
 
     public void mostrarPartidos() {
+        if (jornada != null) {
+            return;
+        }
+        if (grupo != null && categoria != null) {
+            partidos = getPartidos(grupo, categoria);
+        }
         if (grupo != null) {
             partidos = partidoFacade.findPartidos(grupo);
         } else if (fase != null) {
@@ -1036,11 +1041,13 @@ public class ConfigBean implements Serializable {
         }
     }
 
-    public void createPDF(ActionEvent actionEvent) throws IOException {
+    public void createPDF(ActionEvent actionEvent)  {
         try {
 //            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
             List<String> subTitulos = new ArrayList<String>();
-            subTitulos.add(temporada.getNombre());
+            if (temporada != null) {
+                subTitulos.add(temporada.getNombre());
+            }
             if (fase != null) {
                 subTitulos.add("Fase :" + fase.getNombre());
             }
