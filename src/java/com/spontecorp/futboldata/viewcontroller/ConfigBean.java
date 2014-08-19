@@ -685,15 +685,22 @@ public class ConfigBean implements Serializable {
                 equipoEnGrupoTemp.setEquipoId(equi);
                 equipoEnGrupoTemp.setGrupoId(grupo);
                 equipoEnGrupo.add(equipoEnGrupoTemp);
-            } else {
-                ;
             }
         }
         if (!equipoEnGrupo.isEmpty()) {
             grupo.setEquipoEnGrupoCollection(equipoEnGrupo);
         }
-
+        List<Equipo> listEliminar = equipoInLigaFacade.getEquipoInLiga(liga, partido.getCategoriaId());
+        listEliminar.removeAll(equipos);
+        for (Equipo eqg : listEliminar) {
+            EquipoEnGrupo eliEquipoEnGrupo = equipoEnGrupoFacade.getEquipoEnGrupoXEquipo(grupo, eqg);
+            if(eliEquipoEnGrupo != null){
+                equipoEnGrupoFacade.remove(eliEquipoEnGrupo);
+            }
+            
+        }
         grupoFacade.edit(grupo);
+
         recreateModelGrupo();
         Util.addSuccessMessage("Se edito exitosamente el Grupo");
 
@@ -1013,11 +1020,6 @@ public class ConfigBean implements Serializable {
     public void getEquipoInLigaGrupo(ValueChangeListener changeListener) {
         equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, categoria);
         logger.debug("Se imprima el equipoInLiga");
-        for (Equipo equi : equipoInLiga) {
-            logger.debug("Equipo " + equi.getNombre() + "  " + equi.getCategoriaId().getNombre());
-
-        }
-
     }
 
     public List<Equipo> getEquipoInLiga() {
