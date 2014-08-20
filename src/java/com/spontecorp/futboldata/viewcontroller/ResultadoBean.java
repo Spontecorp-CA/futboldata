@@ -57,6 +57,7 @@ public class ResultadoBean implements Serializable {
     private Partido partido;
     private Convocado convocado;
     private Convocado convocadoLocal;
+    private Convocado convocadoVisitante;
     private Arbitro arbitro;
     private Convocatoria convocatoriaVisitante;
     private Convocatoria convocatoriaLocal;
@@ -130,12 +131,16 @@ public class ResultadoBean implements Serializable {
             editConvocado(convocatoriaVisitante, convocadoEquipoVisitante);
         }
         recreateModel();
+        convocatoriaLocal = getConvocatoriaLocal();
+        convocatoriaVisitante = getConvocatoriaVisitante();
+        convocadoEquipoVisitante = getConvocadoEquipoVisitante();
+        convocadoEquipoLocal = getConvocadoEquipoLocal();
+
     }
 
     public void removeConvocado(Convocado convocado) {
         if (convocado.getConvocatoriaId() == convocatoriaLocal) {
             convocadoFacade.remove(convocado);
-
             Util.addErrorMessage("Se elimino exitosamente");
         } else {
             convocadoEquipoVisitante.remove(convocado);
@@ -143,6 +148,10 @@ public class ResultadoBean implements Serializable {
             Util.addErrorMessage("Se elimino exitosamente");
         }
         recreateModel();
+        convocatoriaLocal = getConvocatoriaLocal();
+        convocatoriaVisitante = getConvocatoriaVisitante();
+        convocadoEquipoVisitante = getConvocadoEquipoVisitante();
+        convocadoEquipoLocal = getConvocadoEquipoLocal();
     }
 
     public List<Convocado> getConvocados() {
@@ -274,6 +283,16 @@ public class ResultadoBean implements Serializable {
     public void setEquipoHasJugador(EquipoHasJugador equipoHasJugador) {
         this.equipoHasJugador = equipoHasJugador;
     }
+
+    public Convocado getConvocadoVisitante() {
+        return convocadoVisitante;
+    }
+
+    public void setConvocadoVisitante(Convocado convocadoVisitante) {
+        this.convocadoVisitante = convocadoVisitante;
+    }
+    
+    
 
     /**
      * ******************************************

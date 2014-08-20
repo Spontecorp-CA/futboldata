@@ -43,7 +43,8 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton actionListener="#{resultadoBean.editConvocado}" value="Guardar" 
-                                 update=":detalleForm ,:growlAdmin" 
+                                 update=":detalleForm:menu:convocadosV , :detalleForm:menu:convocados 
+                                 ,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'ConvocadoEditDialog');"/>
                 <p:commandButton value="Cancelar" onclick="ConvocadoEditDialog.hide()"/>
             </p:fieldset>

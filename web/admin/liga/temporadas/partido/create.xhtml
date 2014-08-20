@@ -33,7 +33,7 @@
                                  rendered="#{not empty configBean.llave.nombre}"
                                  style="width: 250px"/>
                     <h:outputLabel value="#Partido" />
-                    <p:spinner value="#{configBean.partido.numero}" min="0" max="100" />
+                    <p:spinner value="#{configBean.partido.numero}" min="0" max="100000000000" />
                     <h:outputLabel value="Categoria:"/>
                     <p:selectOneMenu id="categoria" value="#{configBean.partido.categoriaId}"
                                      style="width: 250px"

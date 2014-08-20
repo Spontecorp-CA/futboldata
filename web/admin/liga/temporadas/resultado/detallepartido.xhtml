@@ -37,12 +37,12 @@
                                       value="#{resultadoBean.partido.equipoLocalId.nombre == null
                                                ?resultadoBean.partido.equipoLocalText:
                                                resultadoBean.partido.equipoLocalId.nombre}"/>
-                        
+
                         <h:outputText id="visitante" 
                                       value="#{resultadoBean.partido.equipoVisitanteId.nombre == null
                                                ?resultadoBean.partido.equipoVisitanteText: 
                                                resultadoBean.partido.equipoVisitanteId.nombre }"/>
-                        
+
                         <h:outputFormat id="fecha" value="#{resultadoBean.partido.fecha}" >
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </h:outputFormat>
@@ -220,7 +220,7 @@
                                              value="#{resultadoBean.convocadoEquipoVisitante}"
                                              var="convocado" 
                                              rowKey="#{convocado}"
-                                             selection="#{resultadoBean.convocado}" style="width: auto"
+                                             selection="#{resultadoBean.convocadoVisitante}" style="width: auto"
                                              scrollHeight="300" scrollable="true" 
                                              selectionMode="single">
                                     <f:facet name="header">
@@ -241,9 +241,9 @@
                                     <f:facet name="footer">
                                         <p:commandButton id="deleteButtonV"   icon="ui-icon-ok" 
                                                          value="Sacar" 
-                                                         update="convocadosV"
-                                                         disabled="#{empty resultadoBean.convocado.convocatoriaId}"
-                                                         action="#{resultadoBean.removeConvocado(resultadoBean.convocado)}" />
+                                                         action="#{resultadoBean.removeConvocado(resultadoBean.convocadoVisitante)}"
+                                                         update=":detalleForm:menu ,:growlAdmin"
+                                                         disabled= "#{empty resultadoBean.convocadoVisitante.convocatoriaId}" />
                                     </f:facet>
                                 </p:dataTable>
 
