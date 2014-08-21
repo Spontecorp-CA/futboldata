@@ -193,7 +193,7 @@ public class ResultadoBean implements Serializable {
         this.convocadoLocal = convocadoLocal;
     }
 
-    public Convocatoria getConvocatoriaLocal() {
+     public Convocatoria getConvocatoriaLocal() {
         if (convocatoriaLocal == null) {
             convocatoriaLocal = convocatoriaFacade.getConvocatoria(partido, partido.getEquipoLocalId());
             if (convocatoriaLocal == null) {

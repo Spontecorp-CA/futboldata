@@ -65,7 +65,7 @@ public class ConvocatoriasFacade extends AbstractFacade<Convocatoria> implements
             q.setParameter("equipo", equipo);
             q.setParameter("partido", partido);
 
-            convocatoria = (Convocatoria) q.getSingleResult();
+            convocatoria = (Convocatoria) q.getResultList().get(0);
         } catch (Exception e) {
             logger.debug("Error encontrando Convocatoria: " + e.getLocalizedMessage());
 

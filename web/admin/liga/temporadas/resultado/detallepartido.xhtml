@@ -371,7 +371,7 @@
                             <h:outputLabel value="Minuto:" />
                             <p:spinner id="min" value="#{resultadoBean.partidoEvento.minuto}" min="0" max="150"  
                                        style="width: 140px"/>
-                            <h:outputLabel id="dato" value="Dato:"
+                            <h:outputLabel id="dato" value="Nota:"
                                            style="width: 140px"/>
                             <h:inputText value="#{resultadoBean.partidoEvento.descripcion}" />
                             <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
@@ -392,22 +392,22 @@
                                      rowKey="#{partidoEvento}" >
                             <p:ajax event="rowSelect" update=":detalleForm:menu:editButtonE" />
                             <p:ajax event="rowUnselect" update=":detalleForm:menu:editButtonE" />
-                            <p:column headerText="Evento" >
+                            <p:column headerText="Incidente" >
                                 <h:outputText value="#{partidoEvento.eventoId.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Tipo de Evento" >
-                                <h:outputText value="#{partidoEvento.eventoId.tipoEventoId.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Tiempo" sortBy="minuto">
-                                <h:outputText value="#{partidoEvento.minuto}" />
-                            </p:column>
+                            </p:column>                           
                             <p:column headerText="Jugador " >
                                 <h:outputText value="#{partidoEvento.jugador1Id.personaId}"/>
+                            </p:column>
+                            <p:column headerText="Minuto" sortBy="minuto">
+                                <h:outputText value="#{partidoEvento.minuto}" />
+                            </p:column>
+                            <p:column headerText="Tipo de Informe" >
+                                <h:outputText value="#{partidoEvento.eventoId.tipoEventoId.nombre}"/>
                             </p:column>
                             <p:column headerText="Staff" >
                                 <h:outputText value="#{partidoEvento.staffId.toString()}"/>
                             </p:column>
-                            <p:column headerText="Dato" >
+                            <p:column headerText="Nota" >
                                 <h:outputText value="#{partidoEvento.descripcion}"/>
                             </p:column>
                         </p:dataTable>

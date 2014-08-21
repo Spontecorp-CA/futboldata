@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.exception.DRException;
 
 /**
@@ -28,12 +29,14 @@ public class ClasificacionesReport {
         } catch (DRException ex) {
             Logger.getLogger(ClasificacionesReport.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        builder.addColumnHeader(DynamicReports.cmp.text("Felix"));
         return builder;
     }
 
     public static DynamicReport crearReporteDinamico() {
         DynamicReport report = new DynamicReport();
-
+        
         report.setTitle("Clasificaciones");
         report.addColumn(new DynamicColumn("Equipo", "equipo", "string"));
         report.addColumn(new DynamicColumn("JJ", "jugados", "integer"));
