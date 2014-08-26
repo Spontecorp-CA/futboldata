@@ -5,6 +5,42 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
+   
+    <script type="text/javascript">
+        var currentMarker = null;
+
+        function handlePointClick(event) {
+            
+            if (currentMarker === null) {
+
+                currentMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())
+                });
+                PF('map').addOverlay(currentMarker);
+
+                document.getElementById('CanchaCreateForm:longitud').value = event.latLng.lat();
+
+                document.getElementById('CanchaCreateForm:latitud').value = event.latLng.lng();
+            }else{
+                cancel();
+            }
+        }
+
+        function markerAddComplete() {
+
+            var title = document.getElementById('title');
+            currentMarker.setTitle(title.value);
+            title.value = "";
+
+            currentMarker = null;
+            PF('dlg').hide();
+        }
+
+        function cancel() {
+            currentMarker.setMap(null);
+            currentMarker = null;
+        }
+    </script>  
 
     <p:dialog id="CanchaCreateDlg" widgetVar="CanchaCreateDialog" modal="true"
               resizable="false" appendTo="@(body)" header="Creación de Cancha">
@@ -99,6 +135,8 @@
                                              title="Longitud"
                                              style="width: 75px">
                                 </p:inputText>
+                                <h:inputHidden id="lat" value="#{canchaBean.lat}" />
+                                <h:inputHidden id="lng" value="#{canchaBean.lng}" />
                             </h:panelGrid>
 
                         </h:panelGrid>
@@ -111,7 +149,12 @@
                                  update="display,:CanchaListForm:canchas,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'CanchaCreateDialog');"/>
                 <p:commandButton value="Cancelar" onclick="CanchaCreateDialog.hide()"/>
+                <p:gmap id="gmap"
+                        center="10.4683917,-66.8903658" zoom="13" type="HYBRID" 
+                        style="width:600px;height:400px"
+                        onPointClick="handlePointClick(event);" widgetVar="map"
+                        model="#{canchaBean.emptyModel}"/>
             </h:panelGroup>
-        </h:form>
+        </h:form> 
     </p:dialog>
 </ui:composition>

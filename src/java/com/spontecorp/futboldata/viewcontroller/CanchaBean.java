@@ -9,8 +9,8 @@ import com.spontecorp.futboldata.entity.Direccion;
 import com.spontecorp.futboldata.entity.Email;
 import com.spontecorp.futboldata.entity.Pais;
 import com.spontecorp.futboldata.entity.Telefono;
-import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.CanchaFacade;
+import com.spontecorp.futboldata.jpacontroller.CiudadFacade;
 import com.spontecorp.futboldata.jpacontroller.DireccionFacade;
 import com.spontecorp.futboldata.jpacontroller.EmailFacade;
 import com.spontecorp.futboldata.jpacontroller.PaisFacade;
@@ -29,6 +29,9 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +44,9 @@ import org.slf4j.LoggerFactory;
 public class CanchaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private String title;
+    private double lat;
+    private double lng;
 
     private List<Cancha> items = null;
     private List<Cancha> filteredCanchas = null;
@@ -63,6 +69,7 @@ public class CanchaBean implements Serializable {
     private final TelefonoFacade telefonoFacade;
     private final CiudadFacade ciudadFacade;
     private final PaisFacade paisFacade;
+    private MapModel emptyModel;
 
     private static final Logger logger = LoggerFactory.getLogger(CanchaBean.class);
 
@@ -73,6 +80,39 @@ public class CanchaBean implements Serializable {
         this.telefonoFacade = new TelefonoFacade();
         this.ciudadFacade = new CiudadFacade();
         this.paisFacade = new PaisFacade();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    
+    public MapModel getEmptyModel() {
+        return emptyModel;
+    }
+
+    public void setEmptyModel(MapModel emptyModel) {
+        this.emptyModel = emptyModel;
     }
 
     public Cancha getSelected() {
@@ -153,7 +193,7 @@ public class CanchaBean implements Serializable {
     }
 
     public boolean isCoordenadasAvailable() {
-        
+
         coordenadasAvailable = false;
         if (selected != null) {
             if ((selected.getCoordenadaLat() != null && selected.getCoordenadaLong() != null)
@@ -343,6 +383,14 @@ public class CanchaBean implements Serializable {
         return canchaFacade.findAll();
     }
 
+    public void addMarker() {
+        Marker marker = new Marker(new LatLng(lat, lng), title);
+        emptyModel.addOverlay(marker);
+
+        Util.addSuccessMessage("Marker Added" + "Lat:" + lat + ", Lng:" + lng);
+    
+    }
+
     @FacesConverter(forClass = Cancha.class)
     public static class CanchaControllerConverter implements Converter {
 
@@ -383,5 +431,5 @@ public class CanchaBean implements Serializable {
             }
         }
 
-    }
+    } 
 }
