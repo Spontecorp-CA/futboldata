@@ -11,6 +11,7 @@ import java.util.Map;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
+import static net.sf.dynamicreports.report.builder.DynamicReports.grid;
 import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.sbt;
@@ -23,6 +24,7 @@ import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.definition.datatype.DRIDataType;
 import net.sf.dynamicreports.report.exception.DRException;
 import org.apache.velocity.Template;
+import org.eclipse.jdt.internal.core.JavaModelManager;
 
 /**
  *
@@ -50,7 +52,7 @@ public class ReporteDinamico {
         
         List<DynamicColumn> columns = dynamicReport.getColumns();
         Map<String, TextColumnBuilder> drColumns = new HashMap<String, TextColumnBuilder>();
-
+        
         for (DynamicColumn column : columns) {
             TextColumnBuilder drColumn = col.column(column.getTitle(), column.getName(), (DRIDataType) type.detectType(column.getType()));
             if (column.getPattern() != null) {

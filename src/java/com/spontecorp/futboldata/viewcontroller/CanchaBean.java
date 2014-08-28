@@ -28,6 +28,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.apache.commons.lang.math.NumberUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -246,6 +247,8 @@ public class CanchaBean implements Serializable {
         emails = getEmails(selected.getDireccionId());
         email = new Email();
         ciudadAvailable(pais);
+        lat = NumberUtils.toDouble(selected.getCoordenadaLat());
+        lng = NumberUtils.toDouble(selected.getCoordenadaLong());
     }
 
     public void create() {

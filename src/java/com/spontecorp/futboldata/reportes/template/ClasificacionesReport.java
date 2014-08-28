@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.builder.DynamicReports;
+import static net.sf.dynamicreports.report.builder.DynamicReports.grid;
+import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
+import net.sf.dynamicreports.report.builder.grid.ColumnTitleGroupBuilder;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
 
 /**
@@ -30,7 +33,10 @@ public class ClasificacionesReport {
             Logger.getLogger(ClasificacionesReport.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        builder.addColumnHeader(DynamicReports.cmp.text("Felix"));
+         StyleBuilder textStyle = stl.style(Templates.columnStyle)
+                                  .setBorder(stl.pen1Point());
+         builder.setColumnStyle(textStyle);
+          ColumnTitleGroupBuilder titleGroup2 = grid.titleGroup("Equipo Local");
         return builder;
     }
 

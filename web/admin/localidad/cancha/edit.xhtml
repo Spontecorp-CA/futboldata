@@ -5,6 +5,33 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns="http://www.w3.org/1999/xhtml">
+        <script type="text/javascript">
+        var currentMarker = null;
+
+        function handlePointClick(event) {           
+            if (currentMarker === null) {
+                currentMarker = new google.maps.Marker({
+                    position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())});
+                PF('map').addOverlay(currentMarker);
+                document.getElementById('CanchaEditForm:longitud').value = event.latLng.lat();
+                document.getElementById('CanchaEditForm:latitud').value = event.latLng.lng();
+            }else{
+                cancel();
+            }
+        }
+
+        function markerAddComplete() {
+            var title = document.getElementById('title');
+            currentMarker.setTitle(title.value);
+            title.value = "";
+            currentMarker = null;
+            PF('dlg').hide();
+        }
+        function cancel() {
+            currentMarker.setMap(null);
+            currentMarker = null;
+        }
+    </script>  
 
     <p:dialog id="CanchaEditDlg" widgetVar="CanchaEditDialog" modal="true"
               resizable="false" appendTo="@(body)" header="Edición de Cancha">
@@ -111,6 +138,12 @@
                                  update="display,:CanchaListForm:canchas,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'CanchaEditDialog');"/>
                 <p:commandButton value="Cancelar" onclick="CanchaEditDialog.hide()"/>
+                <p:gmap id="gmap"
+                        center="#{canchaBean.selected.coordenadaLat},#{canchaBean.selected.coordenadaLong}"
+                        zoom="13" type="HYBRID" 
+                        style="width:600px;height:400px"
+                        onPointClick="handlePointClick(event);" widgetVar="map"
+                        model="#{canchaBean.emptyModel}"/>
             </h:panelGroup>
         </h:form>
     </p:dialog>
