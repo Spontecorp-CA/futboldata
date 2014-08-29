@@ -11,18 +11,30 @@
         <h:form id="EventoCreateForm">
             <h:panelGroup id="display">
                 <h:panelGrid columns="2" rendered="#{eventoBean.selected != null}">
-                    <p:outputLabel value="* Nombre: " for="nombre" />
+                    <h:outputLabel value="Nombre: " for="nombre" />
                     <p:inputText id="nombre" value="#{eventoBean.selected.nombre}" 
                                  title="Nombre del Evento del Partido" required="true" 
                                  requiredMessage="Debe colocar un nombre para el Evento del Partido"
                                  style="width: 240px"/>
-                    <p:selectOneMenu value="#{eventoBean.selected.tipoEventoId}" 
+                    
+                    <h:outputLabel value="Tipo evento: " for="tipoEvento"/>
+                    <p:selectOneMenu id="tipoEvento"
+                                     value="#{eventoBean.selected.tipoEventoId}" 
                                      required="true">
                         <f:selectItems value="#{tipoEventoBean.items}" />
                     </p:selectOneMenu>
-                    <p:outputLabel value="* Descipcion: " for="descripcion" />
+                    
+                    <h:outputLabel value="Formato del Valor:" for="formatoNumero"/>
+                    <p:selectOneMenu id="formatoNumero"
+                                     value="#{eventoBean.selected.tipoValor}"
+                                     required="true">
+                        <f:selectItem itemLabel="Numérico natural" itemValue="0"/>
+                        <f:selectItem itemLabel="Valor Porcentual (%)" itemValue="1"/>
+                    </p:selectOneMenu>
+                    
+                    <h:outputLabel value="Descripción: " for="descripcion" />
                     <p:inputTextarea id="descripcion" value="#{eventoBean.selected.descripcion}" 
-                                     title="Descripcion del Evento del Partido" 
+                                     title="Descripción del Evento del Partido" 
                                      style="width: 240px"/>
                 </h:panelGrid>
             </h:panelGroup>

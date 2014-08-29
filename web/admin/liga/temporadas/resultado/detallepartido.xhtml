@@ -9,7 +9,7 @@
 
     <ui:define name="content" >
         <h:form id="detalleForm">
-            <p:fieldset style="width: 85%" legend="Lista de Partidos" >
+            <p:fieldset style="width: 85%" legend="Resultados de Partido" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="saveButton" icon="ui-icon-plus"  
@@ -68,350 +68,31 @@
                 </h:panelGroup>                
                 <p:accordionPanel id="menu" activeIndex="#{resultadoBean.indexTab}">
                     <f:ajax event="tabChange"  listener="#{resultadoBean.onTabChange}"/>
+
                     <p:tab id="tab1" title="Resultados:">
-                        <p:fieldset legend="Tiempo Reglamentario" >
-                            <h:panelGrid columns="3" style="width: auto" >
-                                <h:outputLabel value=" Goles de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
-                                               for="golesLocal"/>
-                                <h:outputText value=" Goles de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "/>
-                                <h:outputLabel value=" Status del Partido: "  for="status" />
-
-                                <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
-                                <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" 
-                                           min="0" max="20" />
-                                <p:selectOneMenu id="status" value="#{resultadoBean.partido.statusPartidoId}"
-                                                 required="true"
-                                                 requiredMessage="Debe seleccionar el status"
-                                                 style="width: 150px">
-                                    <f:selectItems value="#{statusPartidoBean.items}"/>
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                        </p:fieldset>
-                        <p:fieldset legend="Prorroga" rendered="#{empty resultadoBean.partido.jornadaId}">
-                            <h:panelGrid columns="2"  title="Prorroga">
-                                <h:outputLabel value="Goles local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
-                                               for="golesPrgaLocal"/>
-                                <h:outputLabel value="Goles de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
-                                               for="golesPrgaVisitante" />
-
-                                <p:spinner id="golesPrgaLocal" value="#{resultadoBean.partido.golesLocalProrroga}" 
-                                           min="0" max="20" />
-                                <p:spinner id="golesPrgaVisitante" value="#{resultadoBean.partido.golesVisitanteProrroga}" 
-                                           min="0" max="20" />
-                            </h:panelGrid>
-                        </p:fieldset>
-                        <p:fieldset legend="Tanda de Penales" 
-                                    rendered="#{empty resultadoBean.partido.jornadaId}">
-                            <h:panelGrid columns="2"  title="Tanda de Penales">
-                                <h:outputLabel value="Penales de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
-                                               for="penalLocal"/>
-                                <h:outputLabel value="Penales de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
-                                               for="penalVisitante" />
-
-                                <p:spinner id="penalLocal" value="#{resultadoBean.partido.golesLocalPenalties}" 
-                                           min="0" max="20" />
-                                <p:spinner id="pennalVisitante" value="#{resultadoBean.partido.golesVisitantePenalties}" 
-                                           min="0" max="20" />
-                            </h:panelGrid>
-                        </p:fieldset>
+                        <ui:include src="tabs/resultadosTab.xhtml" />
                     </p:tab>
 
                     <p:tab id="tab2" title="Jugadores: #{resultadoBean.partido.equipoLocalId.nombre}" >  
-                        <h1>
-                            <p:panelGrid columns="2" style="width:auto" >
-                                <p:dataTable  id="jugadores"
-                                              value="#{resultadoBean.jugadorEquipoLocal}"
-                                              var="equipoHasJugador" 
-                                              rowKey="#{equipoHasJugador.id}"
-                                              rowIndexVar="equipoHasJugador.id"
-                                              selection="#{resultadoBean.equipoHasJugador}" style="width:auto"
-                                              scrollHeight="300" scrollable="true" 
-                                              selectionMode="single">
-                                    <f:facet name="header">
-                                        Jugadores (Equipo Local)
-                                    </f:facet>
-                                    <f:ajax event="rowSelect" render="addButton" />
-                                    <f:ajax event="rowUnselect" render="addButton" />
-                                    <p:column headerText="Nombre:">
-                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
-                                    </p:column>
-                                    <p:column headerText="Apellido:">
-                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
-                                    </p:column>   
-                                    <f:facet name="footer">
-                                        <p:commandButton id="addButton" process="jugadores"  icon="ui-icon-ok" 
-                                                         value="Agregar" 
-                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaLocal)}"
-                                                         update=":ConvocadoEditDlg"
-                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
-                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
-                                    </f:facet>
-                                </p:dataTable>
-
-                                <p:dataTable id="convocados"
-                                             value="#{resultadoBean.convocadoEquipoLocal}"
-                                             var="convocado" 
-                                             rowKey="#{convocado}"
-                                             selection="#{resultadoBean.convocadoLocal}" style="width: auto"
-                                             scrollHeight="300" scrollable="true" 
-                                             selectionMode="single">
-                                    <f:facet name="header">
-                                        Convocados (Equipo Local)
-                                    </f:facet>
-                                    <f:ajax event="rowSelect" render="deleteButton" />
-                                    <f:ajax event="rowUnselect" render="deleteButton" />
-                                    <p:column headerText="Nombre:">
-                                        <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
-                                    </p:column>
-                                    <p:column headerText="Apellido:">
-                                        <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
-                                    </p:column>    
-                                    <p:column headerText="Posicion :">
-                                        <h:outputText value="#{convocado.titular == 1 ? '(T)': '(S)'}"/>
-
-                                        <h:outputText value="#{convocado.posicionId.nombre}"/>
-                                    </p:column>    
-                                    <f:facet name="footer">
-                                        <p:commandButton id="deleteButton"   icon="ui-icon-ok" 
-                                                         value="Sacar" 
-                                                         action="#{resultadoBean.removeConvocado(resultadoBean.convocadoLocal)}"
-                                                         update=":detalleForm:menu ,:growlAdmin"
-                                                         disabled="#{empty resultadoBean.convocadoLocal.convocatoriaId}">
-                                        </p:commandButton>
-                                    </f:facet>
-                                </p:dataTable>
-
-                            </p:panelGrid>
-                        </h1> 
+                        <ui:include src="tabs/jugadoresLocalTab.xhtml" />
                     </p:tab>
+
                     <p:tab id="tab3" title="Jugadores: #{resultadoBean.partido.equipoVisitanteId.nombre}" >
-                        <h1>
-                            <p:panelGrid columns="2" style="width:auto" >
-                                <p:dataTable  id="jugadoresV"
-                                              value="#{resultadoBean.jugadorEquipoVisitante}"
-                                              var="equipoHasJugador" 
-                                              rowKey="#{equipoHasJugador.id}"
-                                              rowIndexVar="equipoHasJugador.id"
-                                              selection="#{resultadoBean.equipoHasJugador}" style="width:auto"
-                                              scrollHeight="300" scrollable="true" 
-                                              selectionMode="single">
-                                    <f:facet name="header">
-                                        Jugadores (Equipo Visitante)
-                                    </f:facet>
-                                    <f:ajax event="rowSelect" render="addButtonV" />
-                                    <f:ajax event="rowUnselect" render="addButtonV" />
-                                    <p:column headerText="Nombre:">
-                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
-                                    </p:column>
-                                    <p:column headerText="Apellido:">
-                                        <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
-                                    </p:column>   
-                                    <f:facet name="footer">
-                                        <p:commandButton id="addButtonV" process="jugadoresV"  icon="ui-icon-ok" 
-                                                         value="Agregar" 
-                                                         actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaVisitante)}"
-                                                         update=":ConvocadoEditDlg"
-                                                         disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
-                                                         oncomplete="PF('ConvocadoEditDialog').show()" />
-                                    </f:facet>
-                                </p:dataTable>
-
-                                <p:dataTable id="convocadosV"
-                                             value="#{resultadoBean.convocadoEquipoVisitante}"
-                                             var="convocado" 
-                                             rowKey="#{convocado}"
-                                             selection="#{resultadoBean.convocadoVisitante}" style="width: auto"
-                                             scrollHeight="300" scrollable="true" 
-                                             selectionMode="single">
-                                    <f:facet name="header">
-                                        Convocados (Equipo Visitante)
-                                    </f:facet>
-                                    <f:ajax event="rowSelect" render="deleteButtonV" />
-                                    <f:ajax event="rowUnselect" render="deleteButtonV" />
-                                    <p:column headerText="Nombre:">
-                                        <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
-                                    </p:column>
-                                    <p:column headerText="Apellido:">
-                                        <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
-                                    </p:column>   
-                                    <p:column headerText="Posicion :">
-                                        <h:outputText value="#{convocado.titular == 1 ? '(T)': '(S)'}"/>
-                                        <h:outputText value="#{convocado.posicionId.nombre}"/>
-                                    </p:column>    
-                                    <f:facet name="footer">
-                                        <p:commandButton id="deleteButtonV"   icon="ui-icon-ok" 
-                                                         value="Sacar" 
-                                                         action="#{resultadoBean.removeConvocado(resultadoBean.convocadoVisitante)}"
-                                                         update=":detalleForm:menu ,:growlAdmin"
-                                                         disabled= "#{empty resultadoBean.convocadoVisitante.convocatoriaId}" />
-                                    </f:facet>
-                                </p:dataTable>
-
-                            </p:panelGrid>
-                        </h1> 
-
-
+                        <ui:include src="tabs/jugadoresVisitanteTab.xhtml"/>
                     </p:tab>
+
                     <p:tab id="tab4" title="Arbitros" >
-                        <h:panelGrid columns="2" style="width:auto" >
-
-                            <p:dataTable  id="arbitros"
-                                          value="#{arbitroBean.items}"
-                                          var="arbitro" 
-                                          rowKey="#{arbitro.id}"
-                                          rowIndexVar="arbitro.id"
-                                          selection="#{resultadoBean.arbitro}" style="width:auto"
-                                          scrollHeight="300" scrollable="true" 
-                                          selectionMode="single">
-                                <f:facet name="header">
-                                    Arbitros
-                                </f:facet>
-                                <f:ajax event="rowSelect" render="addButtonA" />
-                                <f:ajax event="rowUnselect" render="addButtonA" />
-                                <p:column headerText="Nombre:">
-                                    <h:outputText value="#{arbitro.personaId.nombre}"/>
-                                </p:column>
-                                <p:column headerText="Apellido:">
-                                    <h:outputText value="#{arbitro.personaId.apellido}"/>
-                                </p:column>   
-                                <p:column headerText="Asociacion:">
-                                    <h:outputText value="#{arbitro.asociacionId.nombre}"/>
-                                </p:column> 
-                                <f:facet name="footer">
-                                    <p:commandButton id="addButtonA" process="arbitros"  icon="ui-icon-ok" 
-                                                     value="Agregar" 
-                                                     actionListener="#{resultadoBean.preEditArbitro}"
-                                                     update=":ArbitroEditDlg"
-                                                     disabled="#{empty resultadoBean.arbitro.personaId}"
-                                                     oncomplete="PF('ArbitroEditDialog').show()" />
-                                </f:facet>
-                            </p:dataTable>
-                            <p:dataTable  id="arbitrosConvocados"
-                                          value="#{resultadoBean.partidoArbitros}"
-                                          var="partidoArbitro" 
-                                          rowKey="#{partidoArbitro.arbitroId}"
-                                          selection="#{resultadoBean.partidoArbitro}" style="width:auto"
-                                          scrollHeight="300" scrollable="true" 
-                                          selectionMode="single">
-                                <f:facet name="header">
-                                    Arbitros
-                                </f:facet>
-                                <f:ajax event="rowSelect" render="deleteButtonArbitro" />
-                                <f:ajax event="rowUnselect" render="deleteButtonArbitro" />
-                                <p:column headerText="Nombre:">
-                                    <h:outputText value="#{partidoArbitro.arbitroId.personaId.nombre}"/>
-                                </p:column>
-                                <p:column headerText="Apellido:">
-                                    <h:outputText value="#{partidoArbitro.arbitroId.personaId.apellido}"/>
-                                </p:column> 
-                                <p:column headerText="Tipo:">
-                                    <h:outputText value="#{partidoArbitro.tipoArbitroId.nombre}"/>
-                                </p:column> 
-                                <p:column headerText="Asociacion:">
-                                    <h:outputText value="#{partidoArbitro.arbitroId.asociacionId.nombre}"/>
-                                </p:column> 
-                                <f:facet name="footer">
-                                    <p:commandButton id="deleteButtonArbitro" process="arbitrosConvocados"  icon="ui-icon-ok" 
-                                                     value="Sacar" 
-                                                     action="#{resultadoBean.removeArbitro()}"
-                                                     update="arbitrosConvocados , :growlAdmin"                                                     
-                                                     disabled="#{empty resultadoBean.partidoArbitro.arbitroId}"/>
-                                </f:facet>
-                            </p:dataTable>
-                        </h:panelGrid>
+                        <ui:include src="tabs/arbitrosTab.xhtml"/>
                     </p:tab>
-                    <p:tab id="tab5" title="Incidencias Partido">
-                        <h:panelGrid columns="4"  >
 
-                            <h:outputLabel value="Equipo:" />
-                            <p:selectOneMenu id="equipo" value="#{resultadoBean.equipo}" 
-                                             converter="equipo"
-                                             style="width: 140px">
-
-                                <f:selectItem itemLabel="-----------" />
-                                <f:selectItem itemValue="#{resultadoBean.partido.equipoLocalId}" 
-                                              itemLabel="#{resultadoBean.partido.equipoLocalId}" />                                              />
-
-                                <f:selectItem itemValue="#{resultadoBean.partido.equipoVisitanteId}" 
-                                              itemLabel="#{resultadoBean.partido.equipoVisitanteId}"/>
-                                <p:ajax  event="valueChange" 
-                                         listener="#{resultadoBean.equipoSelected()}"
-                                         update="jugador staff " />
-                            </p:selectOneMenu>
-
-
-                            <h:outputLabel value="Jugador:" style="text-align: right;"/>
-                            <p:selectOneMenu id="jugador" value="#{resultadoBean.convocado}" 
-                                             style="width: 140px;">
-                                <f:selectItem itemLabel="-------------"   />
-                                <f:selectItems value="#{resultadoBean.convocados}"/>
-                            </p:selectOneMenu>
-
-                            <h:outputLabel value="Staff:" />
-                            <p:selectOneMenu id="staff" value="#{resultadoBean.staff}" style="width: 140px">
-                                <f:selectItem itemLabel="-------------"   />
-                                <f:selectItems value="#{resultadoBean.staffs}"   />
-                            </p:selectOneMenu>
-
-                            <h:outputLabel value="Tipo Informe:" />
-                            <p:selectOneMenu  id="tipoEvento" value="#{resultadoBean.tipoEvento}" 
-                                              style="width: 140px;">
-                                <f:selectItem itemLabel="-------------"  value="#{null}" />
-                                <f:selectItems value="#{tipoEventoBean.items}" />
-                                <p:ajax  event="valueChange" 
-                                         listener="#{resultadoBean.TipoEventoSelected(changeEvent)}"
-                                         update="evento" />
-                            </p:selectOneMenu>
-
-                            <h:outputLabel value="Incidente:" />
-                            <p:selectOneMenu id="evento" value="#{resultadoBean.partidoEvento.eventoId}" style="width: 140px">
-                                <f:selectItem itemLabel="-------------"  value="#{null}" />
-                                <f:selectItems value="#{resultadoBean.comboEvento}" />
-                            </p:selectOneMenu>
-                            <h:outputLabel value="Minuto:" />
-                            <p:spinner id="min" value="#{resultadoBean.partidoEvento.minuto}" min="0" max="150"  
-                                       style="width: 140px"/>
-                            <h:outputLabel id="dato" value="Nota:"
-                                           style="width: 140px"/>
-                            <h:inputText value="#{resultadoBean.partidoEvento.descripcion}" />
-                            <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
-                                             style="width: 140px" 
-                                             update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
-                                             tipoEvento ,dato"/>
-                            <p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
-                                             update="eventos :growlAdmin "
-                                             style="width: 140px"
-                                             disabled="#{empty resultadoBean.eventoSelected.id}"/>
-                        </h:panelGrid>
-
-                        <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  
-                                     var="partidoEvento" 
-                                     selection="#{resultadoBean.eventoSelected}" 
-                                     selectionMode="single"
-                                     filteredValue="#{resultadoBean.filteredEventos}"
-                                     rowKey="#{partidoEvento}" >
-                            <p:ajax event="rowSelect" update=":detalleForm:menu:editButtonE" />
-                            <p:ajax event="rowUnselect" update=":detalleForm:menu:editButtonE" />
-                            <p:column headerText="Incidente" >
-                                <h:outputText value="#{partidoEvento.eventoId.nombre}"/>
-                            </p:column>                           
-                            <p:column headerText="Jugador " >
-                                <h:outputText value="#{partidoEvento.jugador1Id.personaId}"/>
-                            </p:column>
-                            <p:column headerText="Minuto" sortBy="minuto">
-                                <h:outputText value="#{partidoEvento.minuto}" />
-                            </p:column>
-                            <p:column headerText="Tipo de Informe" >
-                                <h:outputText value="#{partidoEvento.eventoId.tipoEventoId.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Staff" >
-                                <h:outputText value="#{partidoEvento.staffId.toString()}"/>
-                            </p:column>
-                            <p:column headerText="Nota" >
-                                <h:outputText value="#{partidoEvento.descripcion}"/>
-                            </p:column>
-                        </p:dataTable>
+                    <p:tab id="tab5" title="Incidencias Partido-Jugador">
+                        <ui:include src="tabs/incidenciasJugadorTab.xhtml"/>
                     </p:tab>
+
+                    <p:tab id="tab6" title="Incidencias Partido-Equipo">
+                        <ui:include src="tabs/incidenciasEquipoTab.xhtml"/>
+                    </p:tab>
+
                 </p:accordionPanel>
             </p:fieldset>
         </h:form>

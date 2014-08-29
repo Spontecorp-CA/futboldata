@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <p:fieldset legend="Tiempo Reglamentario" >
+        <h:panelGrid columns="3" style="width: auto" >
+            <h:outputLabel value=" Goles de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                           for="golesLocal"/>
+            <h:outputText value=" Goles de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "/>
+            <h:outputLabel value=" Status del Partido: "  for="status" />
+
+            <p:spinner id="golesLocal" value="#{resultadoBean.partido.golesEquipoLocal}" min="0" max="20" />
+            <p:spinner id="golesVisitante" value="#{resultadoBean.partido.golesEquipoVisitante}" 
+                       min="0" max="20" />
+            <p:selectOneMenu id="status" value="#{resultadoBean.partido.statusPartidoId}"
+                             required="true"
+                             requiredMessage="Debe seleccionar el status"
+                             style="width: 150px">
+                <f:selectItems value="#{statusPartidoBean.items}"/>
+            </p:selectOneMenu>
+        </h:panelGrid>
+    </p:fieldset>
+    <p:fieldset legend="Prorroga" rendered="#{empty resultadoBean.partido.jornadaId}">
+        <h:panelGrid columns="2"  title="Prorroga">
+            <h:outputLabel value="Goles local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                           for="golesPrgaLocal"/>
+            <h:outputLabel value="Goles de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
+                           for="golesPrgaVisitante" />
+
+            <p:spinner id="golesPrgaLocal" value="#{resultadoBean.partido.golesLocalProrroga}" 
+                       min="0" max="20" />
+            <p:spinner id="golesPrgaVisitante" value="#{resultadoBean.partido.golesVisitanteProrroga}" 
+                       min="0" max="20" />
+        </h:panelGrid>
+    </p:fieldset>
+    <p:fieldset legend="Tanda de Penales" 
+                rendered="#{empty resultadoBean.partido.jornadaId}">
+        <h:panelGrid columns="2"  title="Tanda de Penales">
+            <h:outputLabel value="Penales de local(#{resultadoBean.partido.equipoLocalId.nombre}): " 
+                           for="penalLocal"/>
+            <h:outputLabel value="Penales de visitante(#{resultadoBean.partido.equipoVisitanteId.nombre}): "
+                           for="penalVisitante" />
+
+            <p:spinner id="penalLocal" value="#{resultadoBean.partido.golesLocalPenalties}" 
+                       min="0" max="20" />
+            <p:spinner id="pennalVisitante" value="#{resultadoBean.partido.golesVisitantePenalties}" 
+                       min="0" max="20" />
+        </h:panelGrid>
+    </p:fieldset> 
+</ui:composition>
+

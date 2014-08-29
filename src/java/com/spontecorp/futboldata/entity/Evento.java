@@ -38,11 +38,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id"),
     @NamedQuery(name = "Evento.findByNombre", query = "SELECT e FROM Evento e WHERE e.nombre = :nombre")})
 public class Evento implements Serializable {
-    @JoinColumn(name = "tipo_evento_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TipoEvento tipoEventoId;
-    @Column(name = "status")
-    private Integer status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
+    private Collection<PartidoEventoEquipo> partidoEventoEquipoCollection;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +56,13 @@ public class Evento implements Serializable {
     @Size(max = 65535)
     @Column(name = "descripcion")
     private String descripcion;
+    @Column(name = "tipo_valor")
+    private Integer tipoValor;
+    @JoinColumn(name = "tipo_evento_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TipoEvento tipoEventoId;
+    @Column(name = "status")
+    private Integer status;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private Collection<PartidoEvento> partidoEventoCollection;
 
@@ -106,6 +111,30 @@ public class Evento implements Serializable {
         this.partidoEventoCollection = partidoEventoCollection;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public TipoEvento getTipoEventoId() {
+        return tipoEventoId;
+    }
+
+    public void setTipoEventoId(TipoEvento tipoEventoId) {
+        this.tipoEventoId = tipoEventoId;
+    }
+
+    public Integer getTipoValor() {
+        return tipoValor;
+    }
+
+    public void setTipoValor(Integer tipoValor) {
+        this.tipoValor = tipoValor;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,20 +160,12 @@ public class Evento implements Serializable {
         return nombre;
     }
 
-    public Integer getStatus() {
-        return status;
+    @XmlTransient
+    public Collection<PartidoEventoEquipo> getPartidoEventoEquipoCollection() {
+        return partidoEventoEquipoCollection;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setPartidoEventoEquipoCollection(Collection<PartidoEventoEquipo> partidoEventoEquipoCollection) {
+        this.partidoEventoEquipoCollection = partidoEventoEquipoCollection;
     }
-
-    public TipoEvento getTipoEventoId() {
-        return tipoEventoId;
-    }
-
-    public void setTipoEventoId(TipoEvento tipoEventoId) {
-        this.tipoEventoId = tipoEventoId;
-    }
-    
 }

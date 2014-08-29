@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h3>
+        <p:panelGrid columns="2" style="width:auto" >
+            <p:dataTable  id="jugadoresV"
+                          value="#{resultadoBean.jugadorEquipoVisitante}"
+                          var="equipoHasJugador" 
+                          rowKey="#{equipoHasJugador.id}"
+                          rowIndexVar="equipoHasJugador.id"
+                          selection="#{resultadoBean.equipoHasJugador}" style="width:auto"
+                          scrollHeight="300" scrollable="true" 
+                          selectionMode="single">
+                <f:facet name="header">
+                    Jugadores (Equipo Visitante)
+                </f:facet>
+                <f:ajax event="rowSelect" render="addButtonV" />
+                <f:ajax event="rowUnselect" render="addButtonV" />
+                <p:column headerText="Nombre:">
+                    <h:outputText value="#{equipoHasJugador.jugadorId.personaId.nombre}"/>
+                </p:column>
+                <p:column headerText="Apellido:">
+                    <h:outputText value="#{equipoHasJugador.jugadorId.personaId.apellido}"/>
+                </p:column>   
+                <f:facet name="footer">
+                    <p:commandButton id="addButtonV" process="jugadoresV"  icon="ui-icon-ok" 
+                                     value="Agregar" 
+                                     actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaVisitante)}"
+                                     update=":ConvocadoEditDlg"
+                                     disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
+                                     oncomplete="PF('ConvocadoEditDialog').show()" />
+                </f:facet>
+            </p:dataTable>
+
+            <p:dataTable id="convocadosV"
+                         value="#{resultadoBean.convocadoEquipoVisitante}"
+                         var="convocado" 
+                         rowKey="#{convocado}"
+                         selection="#{resultadoBean.convocadoVisitante}" style="width: auto"
+                         scrollHeight="300" scrollable="true" 
+                         selectionMode="single">
+                <f:facet name="header">
+                    Convocados (Equipo Visitante)
+                </f:facet>
+                <f:ajax event="rowSelect" render="deleteButtonV" />
+                <f:ajax event="rowUnselect" render="deleteButtonV" />
+                <p:column headerText="Nombre:">
+                    <h:outputText value="#{convocado.jugadorId.personaId.nombre}"/>
+                </p:column>
+                <p:column headerText="Apellido:">
+                    <h:outputText value="#{convocado.jugadorId.personaId.apellido}"/>
+                </p:column>   
+                <p:column headerText="Posicion :">
+                    <h:outputText value="#{convocado.titular == 1 ? '(T)': '(S)'}"/>
+                    <h:outputText value="#{convocado.posicionId.nombre}"/>
+                </p:column>    
+                <f:facet name="footer">
+                    <p:commandButton id="deleteButtonV"   icon="ui-icon-ok" 
+                                     value="Sacar" 
+                                     action="#{resultadoBean.removeConvocado(resultadoBean.convocadoVisitante)}"
+                                     update=":detalleForm:menu ,:growlAdmin"
+                                     disabled= "#{empty resultadoBean.convocadoVisitante.convocatoriaId}" />
+                </f:facet>
+            </p:dataTable>
+
+        </p:panelGrid>
+    </h3> 
+</ui:composition>

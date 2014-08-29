@@ -49,6 +49,13 @@ public class Util implements Serializable {
     public static final int PUNTOS_EMPATE = 1;
     public static final int PUNTOS_PERDEDOR = 0;
 
+    public static final int TIPO_ESTADISTICA_ARBITRAL = 1;
+    public static final int TIPO_ESTADISTICA_JUGADOR = 2;
+    public static final int TIPO_ESTADISTICA_EQUIPO = 3;
+
+    public static final int TIPO_EVENTO_NUMERICO = 0;
+    public static final int TIPO_EVENTO_PORCENTUAL = 1;
+
     public static final String rutaRelativa = "resources\\images\\";
     public static final Logger logger = LoggerFactory.getLogger(Util.class);
 
@@ -72,11 +79,11 @@ public class Util implements Serializable {
         ServletOutputStream outputStream;
         try {
             outputStream = httpServletResponse.getOutputStream();
-      
-        httpServletResponse.reset();
-        httpServletResponse.setDateHeader("Expires", 0);
-        httpServletResponse.setHeader("Content-Type", "application/pdf");
-        httpServletResponse.addHeader("Content-Disposition", "inline; filename=\"" + "reporte.pdf" + "\"");
+
+            httpServletResponse.reset();
+            httpServletResponse.setDateHeader("Expires", 0);
+            httpServletResponse.setHeader("Content-Type", "application/pdf");
+            httpServletResponse.addHeader("Content-Disposition", "inline; filename=\"" + "reporte.pdf" + "\"");
             try {
                 JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
             } catch (JRException ex) {
