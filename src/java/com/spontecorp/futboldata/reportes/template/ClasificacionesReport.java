@@ -49,29 +49,35 @@ public class ClasificacionesReport {
         report.setTitle("Clasificaciones");
 
         listColumns.add(new DynamicColumn("Equipo", "equipo", "string"));
-        listColumns.add(new DynamicColumn("JJ", "jugados", "integer"));
-        listColumns.add(new DynamicColumn("JG", "ganados", "integer"));
-        listColumns.add(new DynamicColumn("JE", "empatados", "integer"));
-        listColumns.add(new DynamicColumn("JP", "perdidos", "integer"));
-        listColumns.add(new DynamicColumn("GF", "golFavor", "integer"));
-        listColumns.add(new DynamicColumn("GC", "golContra", "integer"));
-        listColumns.add(new DynamicColumn("Dif", "golDiferencia", "integer"));
-        listColumns.add(new DynamicColumn("PTS", "puntos", "integer"));
-
-        DynamicColumnTitle columnTitle = new DynamicColumnTitle("Total");
+        DynamicColumnTitle columnTitle = new DynamicColumnTitle("");
         columnTitle.setDynamicColumns(listColumns);
-        report.addColumnsTitulo(columnTitle);    
+        report.addColumnsTitulo(columnTitle);
         totalColumns.addAll(listColumns);
         listColumns = new ArrayList<DynamicColumn>();
 
-        listColumns.add(new DynamicColumn("JJ", "jugadosLocal", "integer"));
-        listColumns.add(new DynamicColumn("JG", "ganadosLocal", "integer"));
-        listColumns.add(new DynamicColumn("JE", "empatadosLocal", "integer"));
-        listColumns.add(new DynamicColumn("JP", "perdidosLocal", "integer"));
-        listColumns.add(new DynamicColumn("GF", "golFavorLocal", "integer"));
-        listColumns.add(new DynamicColumn("GC", "golContraLocal", "integer"));
-        listColumns.add(new DynamicColumn("Dif", "golDiferenciaLocal", "integer"));
-        listColumns.add(new DynamicColumn("PTS", "puntosLocal", "integer"));
+        listColumns.add(new DynamicColumn("JJ", "jugados", "integer",2));
+        listColumns.add(new DynamicColumn("JG", "ganados", "integer",2));
+        listColumns.add(new DynamicColumn("JE", "empatados", "integer",2));
+        listColumns.add(new DynamicColumn("JP", "perdidos", "integer",2));
+        listColumns.add(new DynamicColumn("GF", "golFavor", "integer",2));
+        listColumns.add(new DynamicColumn("GC", "golContra", "integer",2));
+        listColumns.add(new DynamicColumn("Dif", "golDiferencia", "integer",2));
+        listColumns.add(new DynamicColumn("PTS", "puntos", "integer",3));
+
+        columnTitle = new DynamicColumnTitle("Total");
+        columnTitle.setDynamicColumns(listColumns);
+        report.addColumnsTitulo(columnTitle);
+        totalColumns.addAll(listColumns);
+        listColumns = new ArrayList<DynamicColumn>();
+
+        listColumns.add(new DynamicColumn("JJ", "jugadosLocal", "integer",2));
+        listColumns.add(new DynamicColumn("JG", "ganadosLocal", "integer",2));
+        listColumns.add(new DynamicColumn("JE", "empatadosLocal", "integer",2));
+        listColumns.add(new DynamicColumn("JP", "perdidosLocal", "integer",2));
+        listColumns.add(new DynamicColumn("GF", "golFavorLocal", "integer",2));
+        listColumns.add(new DynamicColumn("GC", "golContraLocal", "integer",2));
+        listColumns.add(new DynamicColumn("Dif", "golDiferenciaLocal", "integer",2));
+        listColumns.add(new DynamicColumn("PTS", "puntosLocal", "integer",3));
 
         DynamicColumnTitle columnTitle2 = new DynamicColumnTitle("Local");
         columnTitle2.setDynamicColumns(listColumns);
@@ -79,14 +85,14 @@ public class ClasificacionesReport {
         totalColumns.addAll(listColumns);
         listColumns = new ArrayList<DynamicColumn>();
 
-        listColumns.add(new DynamicColumn("JJ", "jugadosVisitante", "integer"));
-        listColumns.add(new DynamicColumn("JG", "ganadosVisitante", "integer"));
-        listColumns.add(new DynamicColumn("JE", "empatadosVisitante", "integer"));
-        listColumns.add(new DynamicColumn("JP", "perdidosVisitante", "integer"));
-        listColumns.add(new DynamicColumn("GF", "golFavorVisitante", "integer"));
-        listColumns.add(new DynamicColumn("GC", "golContraVisitante", "integer"));
-        listColumns.add(new DynamicColumn("Dif", "golDiferenciaVisitante", "integer"));
-        listColumns.add(new DynamicColumn("PTS", "puntosVisitante", "integer"));
+        listColumns.add(new DynamicColumn("JJ", "jugadosVisitante", "integer",2));
+        listColumns.add(new DynamicColumn("JG", "ganadosVisitante", "integer",2));
+        listColumns.add(new DynamicColumn("JE", "empatadosVisitante", "integer",2));
+        listColumns.add(new DynamicColumn("JP", "perdidosVisitante", "integer",2));
+        listColumns.add(new DynamicColumn("GF", "golFavorVisitante", "integer",2));
+        listColumns.add(new DynamicColumn("GC", "golContraVisitante", "integer",2));
+        listColumns.add(new DynamicColumn("Dif", "golDiferenciaVisitante", "integer",2));
+        listColumns.add(new DynamicColumn("PTS", "puntosVisitante", "integer",3));
 
         DynamicColumnTitle columnTitle3 = new DynamicColumnTitle("Visitante");
         columnTitle3.setDynamicColumns(listColumns);
@@ -94,7 +100,7 @@ public class ClasificacionesReport {
         totalColumns.addAll(listColumns);
 
         report.setColumns(totalColumns);
-        report.addGroup("equipo");
+//        report.addGroup("equipo");
 
 //        DynamicColumn column = new DynamicColumn("Order date", "orderdate", "date");
 //        column.setHorizontalAlignment(HorizontalAlignment.CENTER);

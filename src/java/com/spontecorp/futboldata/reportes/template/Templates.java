@@ -67,7 +67,7 @@ public class Templates {
         boldCenteredStyle = stl.style(boldStyle)
                 .setAlignment(HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE);
         bold12CenteredStyle = stl.style(boldCenteredStyle)
-                .setFontSize(11);
+                .setFontSize(10);
         bold18CenteredStyle = stl.style(boldCenteredStyle)
                 .setFontSize(18);
         bold22CenteredStyle = stl.style(boldCenteredStyle)
