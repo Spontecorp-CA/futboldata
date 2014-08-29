@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
+import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
 
 /**
@@ -29,6 +31,9 @@ public class PartidosReport {
         } catch (DRException ex) {
             Logger.getLogger(PartidosReport.class.getName()).log(Level.SEVERE, null, ex);
         }
+        StyleBuilder textStyle = stl.style(Templates.columnStyle)
+                .setBorder(stl.pen1Point());
+        builder.setColumnStyle(textStyle);
         return builder;
     }
 
@@ -37,8 +42,8 @@ public class PartidosReport {
 
         report.setTitle("Partidos");
         report.addColumn(new DynamicColumn("Equipo Local", "equipoLocalId.nombre", "string"));
-        report.addColumn(new DynamicColumn("GL", "golesEquipoLocal", "integer"));
-        report.addColumn(new DynamicColumn("GV", "golesEquipoVisitante", "integer"));
+        report.addColumn(new DynamicColumn("GL", "golesEquipoLocal", "integer", 2));
+        report.addColumn(new DynamicColumn("GV", "golesEquipoVisitante", "integer", 2));
         report.addColumn(new DynamicColumn("Equipo Visitante", "equipoVisitanteId.nombre", "string"));
         report.addColumn(new DynamicColumn("Categoria", "categoriaId.nombre", "string"));
         report.addColumn(new DynamicColumn("Ciudad", "canchaId.direccionId.ciudadId.ciudad", "string"));

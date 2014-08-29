@@ -85,6 +85,9 @@ public class ReporteDinamico {
                 if (column.getPattern() != null) {
                     drColumn.setPattern(column.getPattern());
                 }
+                 if(column.getFixedColumns() != 0){
+                        drColumn.setFixedColumns(column.getFixedColumns());
+                    }
                 if (column.getHorizontalAlignment() != null) {
                     drColumn.setHorizontalAlignment(column.getHorizontalAlignment());
                 }
