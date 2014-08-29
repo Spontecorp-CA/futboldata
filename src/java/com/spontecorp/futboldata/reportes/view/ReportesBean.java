@@ -73,6 +73,7 @@ public class ReportesBean implements Serializable {
     private List<Clasifica> clasificacion;
     private final ReportesDAO dao;
     private JasperPrint jasperPrint;
+    private boolean showGrupoClasificacion;
 
     private List<Competicion> ligas;
     private List<Temporada> temporadaList;
@@ -166,6 +167,7 @@ public class ReportesBean implements Serializable {
         return clasificacion;
     }
 
+//    private boolean showGrupoClasificacion;
     public void makeClasificaXGrupo() {
         if (categoria != null) {
             clasificacion = dao.clasificaXGrupoAndJornada(jornada, grupo, categoria);
@@ -267,24 +269,22 @@ public class ReportesBean implements Serializable {
         jornadas = null;
     }
 
-
     public void createPDF(ActionEvent actionEvent) throws IOException {
         try {
 //            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
             List<String> subTitulos = new ArrayList<String>();
             subTitulos.add(temporada.getNombre());
 
-            subTitulos.add("Jornada n°: "+jornada.getNumero().toString());
-            if(categoria != null){
-                         subTitulos.add("Categoria: "+categoria.getNombre());  
+            subTitulos.add("Jornada n°: " + jornada.getNumero().toString());
+            if (categoria != null) {
+                subTitulos.add("Categoria: " + categoria.getNombre());
             }
-            JasperReportBuilder builder = ClasificacionesReport.crearReporte(clasificacion,liga.getNombre(),subTitulos);
+            JasperReportBuilder builder = ClasificacionesReport.crearReporte(clasificacion, liga.getNombre(), subTitulos);
             builder.setPageFormat(PageType.LETTER, PageOrientation.LANDSCAPE);
             jasperPrint = builder.toJasperPrint();
             Util.exportarPDF(jasperPrint);
 
-
-        }  catch (DRException ex) {
+        } catch (DRException ex) {
             java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
@@ -293,5 +293,24 @@ public class ReportesBean implements Serializable {
 
     public StreamedContent getFile() {
         return file;
+    }
+
+    public boolean isShowGrupoClasificacion() {
+        return showGrupoClasificacion;
+    }
+
+    public String gotoClasificacionPage(int page) {
+        String pageReturn = "/admin/reportes/clasificaciones.xhtml?faces-redirect=true";
+        switch (page) {
+            case 0:
+                showGrupoClasificacion = true;
+                break;
+            case 1:
+                showGrupoClasificacion = false;
+                categoria = null;
+                break;
+        }
+        clasificacion = null;
+        return pageReturn;
     }
 }
