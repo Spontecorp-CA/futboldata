@@ -435,9 +435,7 @@ public class ConfigBean implements Serializable {
 
             } else {
 
-                logger.debug("Esta Creando  un Temporada");
                 for (Categoria cat : categorias.getTarget()) {
-                    logger.debug("Lo que en CategoriaTarget" + cat.toString());
                     temporadaCategoria = new TemporadaCategoria();
                     temporadaCategoria.setCategoriaId(cat);
                     temporadaCategoria.setTemporadaId(temporada);
@@ -458,7 +456,6 @@ public class ConfigBean implements Serializable {
     }
 
     public void editTemporada() {
-        logger.debug("Esta editando un Temporada");
         List<Categoria> getTarget = categorias.getTarget();
         List<Categoria> getSource = categorias.getSource();
         getTarget.removeAll(categoriaTarget);
@@ -588,7 +585,6 @@ public class ConfigBean implements Serializable {
     }
 
     public void editFase() {
-        logger.debug("Esta editando un Fase");
         faseFacade.edit(fase);
         recreateModelFase();
         Util.addSuccessMessage("Se edito exitosamente el Fase");
@@ -675,7 +671,6 @@ public class ConfigBean implements Serializable {
 
     public void editGrupo() {
         EquipoEnGrupo equipoEnGrupoTemp;
-        logger.debug("Esta editando un Grupo");
 
         for (Equipo equi : equipos) {
             if (equipoEnGrupoFacade.getEquipoEnGrupo(grupo, equi) == null) {
@@ -706,7 +701,6 @@ public class ConfigBean implements Serializable {
     }
 
     public void createGrupo() {
-        logger.debug("hola hola hola ");
         EquipoEnGrupo equipoEnGrupoTemp;
         try {
             if (grupoFacade.findGrupoXFase(fase, grupo.getNombre()) != null) {
@@ -774,7 +768,6 @@ public class ConfigBean implements Serializable {
     }
 
     public void editJornada() {
-        logger.debug("Esta editando la Jornada");
         jornadaFacade.edit(jornada);
         recreateModelJornada();
         Util.addSuccessMessage("Se edito exitosamente la Jornada");
@@ -840,7 +833,6 @@ public class ConfigBean implements Serializable {
     }
 
     public void editLlave() {
-        logger.debug("Esta editando la Llave");
         llaveFacade.edit(llave);
         recreateModelGrupo();
         Util.addSuccessMessage("Se edito exitosamente la Llave");
@@ -922,12 +914,7 @@ public class ConfigBean implements Serializable {
     }
 
     public List<Partido> getPartidosXJornadaAndCategoria() {
-        logger.debug("llegó a buscar los partidos");
         partidos = partidoFacade.findPartidos(jornada, categoria);
-        for (Partido game : partidos) {
-            logger.debug("Local: " + game.getEquipoLocalId().getNombre()
-                    + " Visitante: " + game.getEquipoLocalId().getNombre());
-        }
         return partidos;
     }
 
@@ -1024,7 +1011,6 @@ public class ConfigBean implements Serializable {
 
     public void getEquipoInLigaGrupo(ValueChangeListener changeListener) {
         equipoInLiga = equipoInLigaFacade.getEquipoInLiga(liga, categoria);
-        logger.debug("Se imprima el equipoInLiga");
     }
 
     public List<Equipo> getEquipoInLiga() {

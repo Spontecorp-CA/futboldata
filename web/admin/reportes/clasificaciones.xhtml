@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Clasificación
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="clasificaForm">
+            <p:fieldset style="width: 85%" 
+                        legend="#{reportesBean.showGrupoClasificacion == true?'Clasificaciones de Grupos': 'Clasificaciones de General de Clubes'}" >
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <ui:include src="selectorClasificacion.xhtml"/>
+                <h:panelGrid columns="2" style="width: 85%">
+                    <p:commandButton value="Mostrar Clasificación" 
+                                     action="#{reportesBean.makeClasificaXGrupo}" 
+                                     style="width: 100px" 
+                                     update="clasificacion ,:growlAdmin"/>
+                    <p:ajaxStatus style="right:45%; left:45%">
+                        <f:facet name="default">
+                            <h:outputText value="" />
+                        </f:facet>
+                        <f:facet name="start">  
+                            <p:graphicImage library="images" name="ajaxloading.gif" 
+                                            style="margin-top: 10px; margin-bottom: 0px; margin-left: 0px;margin-right: 45%;
+                                            width: 200px;"/>
+                        </f:facet>  
+                        <f:facet name="complete">  
+                            <h:outputText value="" />  
+                        </f:facet>  
+                    </p:ajaxStatus>
+                    <p:spacer/><p:spacer/>
+                </h:panelGrid>
+
+                <p:panelGrid columns="1" style="width: auto" >
+                <p:dataTable id="clasificacion" var="equipo" value="#{reportesBean.clasificacion}"
+                             emptyMessage="No se encontró una clasificación para ese criterio" rowIndexVar="linea"
+                             style="width: min-content">
+<!--                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="Pos" />
+                            <p:column rowspan="2" headerText="#{reportesBean.categoria==null?'Club':'Equipo'}"/>    
+                            <p:column colspan="8" headerText="Total"/>
+                            <p:column colspan="8" headerText="Local"/>
+                            <p:column colspan="8" headerText="Visitante"/>
+                        </p:row>-->
+<!--                        <p:row>
+                            <p:column headerText="JJ" />
+                            <p:column headerText="JG" />
+                            <p:column headerText="JE" />
+                            <p:column headerText="JP" />
+                            <p:column headerText="GF" />
+                            <p:column headerText="GC" />
+                            <p:column headerText="Dif"/>
+                            <p:column headerText="Pts" />
+                            <p:column headerText="JJ" />
+                            <p:column headerText="JG" />
+                            <p:column headerText="JE" />
+                            <p:column headerText="JP" />
+                            <p:column headerText="GF" />
+                            <p:column headerText="GC" />
+                            <p:column headerText="Dif" />
+                            <p:column headerText="Pts" />
+                            <p:column headerText="JJ" />
+                            <p:column headerText="JG" />
+                            <p:column headerText="JE" />
+                            <p:column headerText="JP" />
+                            <p:column headerText="GF" />
+                            <p:column headerText="GC" />
+                            <p:column headerText="Dif" />
+                            <p:column headerText="Pts" />
+                        </p:row>-->
+                    <!--</p:columnGroup>-->
+                    
+                    <p:column headerText="#">
+                        <h:outputText value="#{linea + 1}"/>
+                    </p:column>
+                    <p:column headerText="Equipo">
+                        <h:outputText value="#{equipo.equipo}"/>
+                    </p:column>
+                    <p:column headerText="JJ">
+                        <h:outputText value="#{equipo.jugados}"/>
+                    </p:column>
+                    <p:column headerText="JG" sortBy="#{equipo.ganados}">
+                        <h:outputText value="#{equipo.ganados}" />
+                    </p:column>
+                    <p:column headerText="JE" sortBy="#{equipo.empatados}">
+                        <h:outputText value="#{equipo.empatados}"/>
+                    </p:column>
+                    <p:column headerText="JP" sortBy="#{equipo.perdidos}">
+                        <h:outputText value="#{equipo.perdidos}"/>
+                    </p:column>
+                    <p:column headerText="GF" sortBy="#{equipo.golFavor}">
+                        <h:outputText value="#{equipo.golFavor}"/>
+                    </p:column>
+                    <p:column headerText="GC" sortBy="#{equipo.golContra}">
+                        <h:outputText value="#{equipo.golContra}"/>
+                    </p:column>
+                    <p:column headerText="Dif" sortBy="#{equipo.golDiferencia}">
+                        <h:outputText value="#{equipo.golDiferencia}"/>
+                    </p:column>
+                    <p:column headerText="Pts" sortBy="#{equipo.puntos}">
+                        <h:outputText value="#{equipo.puntos}" style="font-weight: bold"/>
+                    </p:column>
+                    <p:column headerText="JJ">
+                        <h:outputText value="#{equipo.jugadosLocal}"/>
+                    </p:column>
+                    <p:column headerText="JG" sortBy="#{equipo.ganadosLocal}">
+                        <h:outputText value="#{equipo.ganadosLocal}" />
+                    </p:column>
+                    <p:column headerText="JE" sortBy="#{equipo.empatadosLocal}">
+                        <h:outputText value="#{equipo.empatadosLocal}"/>
+                    </p:column>
+                    <p:column headerText="JP" sortBy="#{equipo.perdidosLocal}">
+                        <h:outputText value="#{equipo.perdidosLocal}"/>
+                    </p:column>
+                    <p:column headerText="GF" sortBy="#{equipo.golFavorLocal}">
+                        <h:outputText value="#{equipo.golFavorLocal}"/>
+                    </p:column>
+                    <p:column headerText="GC" sortBy="#{equipo.golContraLocal}">
+                        <h:outputText value="#{equipo.golContraLocal}"/>
+                    </p:column>
+                    <p:column headerText="Dif" sortBy="#{equipo.golDiferenciaLocal}">
+                        <h:outputText value="#{equipo.golDiferenciaLocal}"/>
+                    </p:column>
+                    <p:column headerText="Pts" sortBy="#{equipo.puntosLocal}">
+                        <h:outputText value="#{equipo.puntosLocal}" style="font-weight: bold"/>
+                    </p:column>
+                    <p:column headerText="JJ">
+                        <h:outputText value="#{equipo.jugadosVisitante}"/>
+                    </p:column>
+                    <p:column headerText="JG" sortBy="#{equipo.ganadosVisitante}">
+                        <h:outputText value="#{equipo.ganadosVisitante}" />
+                    </p:column>
+                    <p:column headerText="JE" sortBy="#{equipo.empatadosVisitante}">
+                        <h:outputText value="#{equipo.empatadosVisitante}"/>
+                    </p:column>
+                    <p:column headerText="JP" sortBy="#{equipo.perdidosVisitante}">
+                        <h:outputText value="#{equipo.perdidosVisitante}"/>
+                    </p:column>
+                    <p:column headerText="GF" sortBy="#{equipo.golFavorVisitante}">
+                        <h:outputText value="#{equipo.golFavorVisitante}"/>
+                    </p:column>
+                    <p:column headerText="GC" sortBy="#{equipo.golContraVisitante}">
+                        <h:outputText value="#{equipo.golContraVisitante}"/>
+                    </p:column>
+                    <p:column headerText="Dif" sortBy="#{equipo.golDiferenciaVisitante}">
+                        <h:outputText value="#{equipo.golDiferenciaVisitante}"/>
+                    </p:column>
+                    <p:column headerText="Pts" sortBy="#{equipo.puntosVisitante}">
+                        <h:outputText value="#{equipo.puntosVisitante}" style="font-weight: bold"/>
+                    </p:column>
+                    
+                    
+                </p:dataTable>
+                </p:panelGrid>
+                <h:commandLink value="exportar a PDF" action="#{reportesBean.createPDF(actionEvent)}" 
+                               target="_blank" />
+            </p:fieldset>
+ 
+        </h:form>
+    </ui:define>
+
+</ui:composition>

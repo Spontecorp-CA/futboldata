@@ -64,7 +64,9 @@
 
                     <p:submenu label="Clasificaciones">
                         <p:menuitem value="Clasificaciones de Grupos" icon="ui-icon-tag"
-                                    action="/admin/reportes/clasificacionXGrupo.xhtml?faces-redirect=true"/>
+                                    action="#{reportesBean.gotoClasificacionPage(0)}"/>
+                        <p:menuitem value="Clasificaciones de Clubes" icon="ui-icon-tag"
+                                    action="#{reportesBean.gotoClasificacionPage(1)}"/>
                     </p:submenu>
 
                     <p:submenu label="Staff">                    
