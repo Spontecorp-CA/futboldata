@@ -74,7 +74,7 @@ public class ClasificacionesReport {
         listColumns.add(new DynamicColumn("PTS", "puntosLocal", "integer"));
 
         DynamicColumnTitle columnTitle2 = new DynamicColumnTitle("Local");
-        columnTitle.setDynamicColumns(listColumns);
+        columnTitle2.setDynamicColumns(listColumns);
         report.addColumnsTitulo(columnTitle2);
         totalColumns.addAll(listColumns);
         listColumns = new ArrayList<DynamicColumn>();
@@ -88,8 +88,8 @@ public class ClasificacionesReport {
         listColumns.add(new DynamicColumn("Dif", "golDiferenciaVisitante", "integer"));
         listColumns.add(new DynamicColumn("PTS", "puntosVisitante", "integer"));
 
-        DynamicColumnTitle columnTitle3 = new DynamicColumnTitle("Local");
-        columnTitle.setDynamicColumns(listColumns);
+        DynamicColumnTitle columnTitle3 = new DynamicColumnTitle("Visitante");
+        columnTitle3.setDynamicColumns(listColumns);
         report.addColumnsTitulo(columnTitle3);
         totalColumns.addAll(listColumns);
 
@@ -106,8 +106,7 @@ public class ClasificacionesReport {
 //        report.addGroup("state");
 //        report.addSubtotal("quantity");
 //        report.addSubtotal("unitprice");
-        report.setShowPageNumber(
-                true);
+        report.setShowPageNumber(true);
         return report;
     }
 
