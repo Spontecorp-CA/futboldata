@@ -33,13 +33,25 @@ public class DynamicReport {
     private List<String> groups;
     private List<String> subtotals;
     private List<String> subTitles;
+    private List<DynamicColumnTitle> columnTitles;
     private boolean showPageNumber;
 
     public DynamicReport() {
         columns = new ArrayList<DynamicColumn>();
         groups = new ArrayList<String>();
         subtotals = new ArrayList<String>();
+        columnTitles = new ArrayList<DynamicColumnTitle>();
     }
+
+    public List<DynamicColumnTitle> getColumnTitles() {
+        return columnTitles;
+    }
+
+    public void setColumnTitles(List<DynamicColumnTitle> columnTitles) {
+        this.columnTitles = columnTitles;
+    }
+    
+    
 
     public String getTitle() {
         return title;
@@ -73,6 +85,9 @@ public class DynamicReport {
         this.groups.add(column);
     }
 
+    public void addColumnsTitulo(DynamicColumnTitle columnTitle){
+        this.columnTitles.add(columnTitle);
+    }
     public List<String> getSubtotals() {
         return subtotals;
     }
@@ -96,6 +111,7 @@ public class DynamicReport {
     public List<String> getSubTitles() {
         return subTitles;
     }
+    
 
     public void setSubTitles(List<String> subTitles) {
         this.subTitles = subTitles;

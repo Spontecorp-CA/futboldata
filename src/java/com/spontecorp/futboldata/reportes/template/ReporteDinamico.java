@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.reportes.template;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -19,12 +20,11 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.component.PageXofYBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
+import net.sf.dynamicreports.report.builder.grid.ColumnTitleGroupBuilder;
 import net.sf.dynamicreports.report.builder.group.ColumnGroupBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.definition.datatype.DRIDataType;
 import net.sf.dynamicreports.report.exception.DRException;
-import org.apache.velocity.Template;
-import org.eclipse.jdt.internal.core.JavaModelManager;
 
 /**
  *
@@ -40,29 +40,54 @@ public class ReporteDinamico {
         report
                 .setTemplate(Templates.reportTemplate)
                 .title(Templates.createTitleComponent(titulo));
-       
-
 
         DynamicReport dynamicReport = dynamicR;
-        
-         for (String dyString : (dynamicReport.getSubTitles())) {
-                report.addTitle(cmp.text(dyString).setStyle(Templates.bold12CenteredStyle)
-                .setHorizontalAlignment(HorizontalAlignment.CENTER));                   
-            }
-        
+
+        for (String dyString : (dynamicReport.getSubTitles())) {
+            report.addTitle(cmp.text(dyString).setStyle(Templates.bold12CenteredStyle)
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER));
+        }
+
         List<DynamicColumn> columns = dynamicReport.getColumns();
         Map<String, TextColumnBuilder> drColumns = new HashMap<String, TextColumnBuilder>();
-        
-        for (DynamicColumn column : columns) {
-            TextColumnBuilder drColumn = col.column(column.getTitle(), column.getName(), (DRIDataType) type.detectType(column.getType()));
-            if (column.getPattern() != null) {
-                drColumn.setPattern(column.getPattern());
+
+        List<DynamicColumnTitle> columnTitles = dynamicR.getColumnTitles();
+        if (!columnTitles.isEmpty()) {
+            List<ColumnTitleGroupBuilder> columnTitleGroup = new ArrayList<ColumnTitleGroupBuilder>();
+
+            for (DynamicColumnTitle title : columnTitles) {
+                ColumnTitleGroupBuilder titleGroup = grid.titleGroup(title.getTitulo());
+                for (DynamicColumn column : title.getDynamicColumns()) {
+                    TextColumnBuilder drColumn = col.column(column.getTitle(), column.getName(), (DRIDataType) type.detectType(column.getType()));
+                    if (column.getPattern() != null) {
+                        drColumn.setPattern(column.getPattern());
+                    }
+                    if (column.getHorizontalAlignment() != null) {
+                        drColumn.setHorizontalAlignment(column.getHorizontalAlignment());
+                    }
+                    drColumns.put(column.getName(), drColumn);
+                    report.columns(drColumn);
+
+                    titleGroup.add(drColumn);
+                }
+                columnTitleGroup.add(titleGroup);
             }
-            if (column.getHorizontalAlignment() != null) {
-                drColumn.setHorizontalAlignment(column.getHorizontalAlignment());
+
+            ColumnTitleGroupBuilder[] array = new ColumnTitleGroupBuilder[columnTitleGroup.size()];
+            columnTitleGroup.toArray(array);
+            report.columnGrid(array);
+        } else {
+            for (DynamicColumn column : columns) {
+                TextColumnBuilder drColumn = col.column(column.getTitle(), column.getName(), (DRIDataType) type.detectType(column.getType()));
+                if (column.getPattern() != null) {
+                    drColumn.setPattern(column.getPattern());
+                }
+                if (column.getHorizontalAlignment() != null) {
+                    drColumn.setHorizontalAlignment(column.getHorizontalAlignment());
+                }
+                drColumns.put(column.getName(), drColumn);
+                report.columns(drColumn);
             }
-            drColumns.put(column.getName(), drColumn);
-            report.columns(drColumn);
         }
 
         for (String group : dynamicReport.getGroups()) {
