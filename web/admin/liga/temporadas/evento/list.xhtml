@@ -60,6 +60,9 @@
                     <p:column headerText="Tipo Evento">
                         <h:outputText value="#{item.tipoEventoId.nombre}"/>
                     </p:column>
+                    <p:column headerText="Formato Valor">
+                        <h:outputText value="#{item.tipoValor == 0 ? 'Numérico(99)' : 'Porcentual(%)'}"/>
+                    </p:column>
                     <p:column headerText="Status">
                         <h:outputText value="#{item.status == 1 ? 'Activo': 'Inactivo'}"/>
                     </p:column>

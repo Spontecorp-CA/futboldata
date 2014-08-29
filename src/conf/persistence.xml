@@ -56,6 +56,7 @@
     <class>com.spontecorp.futboldata.entity.EquipoEnGrupo</class>
     <class>com.spontecorp.futboldata.entity.ClasificacionGrupo</class>
     <class>com.spontecorp.futboldata.entity.TipoEvento</class>
+    <class>com.spontecorp.futboldata.entity.PartidoEventoEquipo</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!-- Conexión para pruebas-->

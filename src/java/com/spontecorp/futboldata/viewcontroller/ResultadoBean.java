@@ -18,6 +18,7 @@ import com.spontecorp.futboldata.entity.Jornada;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.entity.PartidoArbitro;
 import com.spontecorp.futboldata.entity.PartidoEvento;
+import com.spontecorp.futboldata.entity.PartidoEventoEquipo;
 import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.entity.TipoEvento;
 import com.spontecorp.futboldata.jpacontroller.ClasificacionFacade;
@@ -29,6 +30,7 @@ import com.spontecorp.futboldata.jpacontroller.EquipoHasJugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.EventoFacade;
 import com.spontecorp.futboldata.jpacontroller.JornadaFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoArbitroFacade;
+import com.spontecorp.futboldata.jpacontroller.PartidoEventoEquipoFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoEventoFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.StaffFacade;
@@ -36,6 +38,7 @@ import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
 import org.primefaces.event.TabChangeEvent;
@@ -65,8 +68,12 @@ public class ResultadoBean implements Serializable {
     private PartidoArbitro partidoArbitro;
     private EquipoHasJugador equipoHasJugador;
     private PartidoEvento partidoEvento;
+    private PartidoEventoEquipo equipoEvento;
     private TipoEvento tipoEvento;
+    private int tipoCantidadEvento;
     private ClasificacionGrupo clasificacionGrupo;
+    
+    private double cant_percent;
 
     private final PartidoFacade partidoFacade;
     private final ConvocatoriasFacade convocatoriaFacade;
@@ -80,8 +87,11 @@ public class ResultadoBean implements Serializable {
     private final EquipoEnGrupoFacade equipoEnGrupoFacade;
     private final EventoFacade eventoFacade;
     private final JornadaFacade jornadaFacade;
+    private final PartidoEventoEquipoFacade eventoEquipoFacade;
 
     private List<Evento> comboEvento;
+    private List<Evento> comboEventoEquipo;
+    //private List<> // reparar esto
     private List<Staff> staffs;
     private List<Convocado> convocados;
     private List<EquipoHasJugador> jugadorEquipoLocal;
@@ -90,6 +100,7 @@ public class ResultadoBean implements Serializable {
     private List<Convocado> convocadoEquipoVisitante;
     private List<PartidoArbitro> partidoArbitros;
     private List<PartidoEvento> eventos;
+    private List<PartidoEventoEquipo> eventosEquipo;
     private List<PartidoEvento> filteredEventos;
     private static final Logger logger = LoggerFactory.getLogger(ResultadoBean.class);
     private Clasificacion clasificacion;
@@ -101,6 +112,7 @@ public class ResultadoBean implements Serializable {
         partidoFacade = new PartidoFacade();
         convocatoriaFacade = new ConvocatoriasFacade();
         convocadoFacade = new ConvocadoFacade();
+        eventoEquipoFacade = new PartidoEventoEquipoFacade();
         equipoHasJugadorFacade = new EquipoHasJugadorFacade();
         partidoArbitroFacade = new PartidoArbitroFacade();
         staffFacade = new StaffFacade();
@@ -110,6 +122,14 @@ public class ResultadoBean implements Serializable {
         eventoFacade = new EventoFacade();
         equipoEnGrupoFacade = new EquipoEnGrupoFacade();
         jornadaFacade = new JornadaFacade();
+    }
+
+    public double getCant_percent() {
+        return cant_percent;
+    }
+
+    public void setCant_percent(double cant_percent) {
+        this.cant_percent = cant_percent;
     }
 
     /**
@@ -193,7 +213,7 @@ public class ResultadoBean implements Serializable {
         this.convocadoLocal = convocadoLocal;
     }
 
-     public Convocatoria getConvocatoriaLocal() {
+    public Convocatoria getConvocatoriaLocal() {
         if (convocatoriaLocal == null) {
             convocatoriaLocal = convocatoriaFacade.getConvocatoria(partido, partido.getEquipoLocalId());
             if (convocatoriaLocal == null) {
@@ -291,8 +311,6 @@ public class ResultadoBean implements Serializable {
     public void setConvocadoVisitante(Convocado convocadoVisitante) {
         this.convocadoVisitante = convocadoVisitante;
     }
-    
-    
 
     /**
      * ******************************************
@@ -394,6 +412,37 @@ public class ResultadoBean implements Serializable {
         this.staffs = staffs;
     }
 
+    public PartidoEventoEquipo getEquipoEvento() {
+        if (equipoEvento == null) {
+            equipoEvento = new PartidoEventoEquipo();
+            equipoEvento.setPorcentaje(0.0);
+        }
+        return equipoEvento;
+    }
+
+    public void setEquipoEvento(PartidoEventoEquipo equipoEvento) {
+        this.equipoEvento = equipoEvento;
+    }
+
+    public int getTipoCantidadEvento() {
+        return tipoCantidadEvento;
+    }
+
+    public void setTipoCantidadEvento(int tipoCantidadEvento) {
+        this.tipoCantidadEvento = tipoCantidadEvento;
+    }
+
+    public List<PartidoEventoEquipo> getEventosEquipo() {
+        if (eventosEquipo == null) {
+            eventosEquipo = eventoEquipoFacade.findEventoEquipo(partido);
+        }
+        return eventosEquipo;
+    }
+
+    public void setEventosEquipo(List<PartidoEventoEquipo> eventosEquipo) {
+        this.eventosEquipo = eventosEquipo;
+    }
+
     /**
      * *********************partido *************************
      */
@@ -405,8 +454,6 @@ public class ResultadoBean implements Serializable {
                 && partido.getLlaveId() == null) {
             createUpdateClasificacionLocal();
             createUpdateClasificacionVisitante();
-            //clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoLocalId()));
-            //clasificacionGrupoFacade.actualizar(createClasificiacionGrupo(partido.getEquipoVisitanteId()));
         }
         Util.addSuccessMessage("Se guardaron los datos del partido con éxito");
     }
@@ -595,6 +642,9 @@ public class ResultadoBean implements Serializable {
                 if (event.getTab().getId().equals("tab5")) {
                     indexTab = 4;
                 }
+                if (event.getTab().getId().equals("tab6")) {
+                    indexTab = 5;
+                }
             }
 
         } catch (NullPointerException e) {
@@ -645,7 +695,6 @@ public class ResultadoBean implements Serializable {
         eventos.add(partidoEvento);
         recreateModelEvento();
         Util.addSuccessMessage("Se creo el evento");
-
     }
 
     public void recreateModelEvento() {
@@ -685,6 +734,10 @@ public class ResultadoBean implements Serializable {
         return tipoEvento;
     }
 
+    public void setTipoEvento(TipoEvento tipoEvento) {
+        this.tipoEvento = tipoEvento;
+    }
+
     public List<Evento> getComboEvento() {
         if (comboEvento == null) {
             comboEvento = eventoFacade.findAll();
@@ -696,8 +749,17 @@ public class ResultadoBean implements Serializable {
         this.comboEvento = comboEvento;
     }
 
-    public void setTipoEvento(TipoEvento tipoEvento) {
-        this.tipoEvento = tipoEvento;
+    public List<Evento> getComboEventoEquipo() {
+        comboEventoEquipo = null;
+        tipoEvento = new TipoEvento(Util.TIPO_ESTADISTICA_EQUIPO);
+        if (comboEventoEquipo == null) {
+            comboEventoEquipo = eventoFacade.findEvento(tipoEvento);
+        }
+        return comboEventoEquipo;
+    }
+
+    public void setComboEventoEquipo(List<Evento> comboEventoEquipo) {
+        this.comboEventoEquipo = comboEventoEquipo;
     }
 
     public PartidoEvento getEventoSelected() {
@@ -714,5 +776,30 @@ public class ResultadoBean implements Serializable {
         } else {
             comboEvento = eventoFacade.findEvento(tipoEvento);
         }
+    }
+
+    public void guardarEventoPartido(ActionEvent event) {
+        equipoEvento.setPartidoId(partido);
+        
+        if(equipoEvento.getEventoId().getTipoValor() == 0){
+            equipoEvento.setCantidad((int) cant_percent);
+        } else if (equipoEvento.getEventoId().getTipoValor() == 1) {
+            equipoEvento.setPorcentaje(cant_percent / 100);
+        }
+        
+        eventoEquipoFacade.create(equipoEvento);
+        recreateModelEventoEquipo();
+        Util.addSuccessMessage("Se creó con éxito el evento");
+    }
+
+    public List<PartidoEventoEquipo> findEventosPartido() {
+        return null;
+    }
+
+    private void recreateModelEventoEquipo() {
+        equipoEvento = null;
+        equipo = null;
+        tipoEvento = null;
+        comboEventoEquipo = null;
     }
 }
