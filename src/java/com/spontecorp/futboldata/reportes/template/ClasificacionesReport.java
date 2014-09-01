@@ -37,7 +37,6 @@ public class ClasificacionesReport {
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
         builder.setColumnStyle(textStyle);
-        ColumnTitleGroupBuilder titleGroup2 = grid.titleGroup("Equipo Local");
         return builder;
     }
 
@@ -47,7 +46,7 @@ public class ClasificacionesReport {
         List<DynamicColumn> totalColumns = new ArrayList<DynamicColumn>();
 
         report.setTitle("Clasificaciones");
-
+        report.setShowRowNumber(true);
         listColumns.add(new DynamicColumn("Equipo", "equipo", "string"));
         DynamicColumnTitle columnTitle = new DynamicColumnTitle("");
         columnTitle.setDynamicColumns(listColumns);

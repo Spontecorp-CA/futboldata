@@ -52,8 +52,14 @@ public class ReporteDinamico {
         Map<String, TextColumnBuilder> drColumns = new HashMap<String, TextColumnBuilder>();
 
         List<DynamicColumnTitle> columnTitles = dynamicR.getColumnTitles();
+        List<ColumnTitleGroupBuilder> columnTitleGroup = new ArrayList<ColumnTitleGroupBuilder>();
+        if (dynamicR.isShowRowNumber()) {
+            TextColumnBuilder builder = col.columnRowNumberColumn("No");
+            report.columnGrid(builder);
+
+        }
+
         if (!columnTitles.isEmpty()) {
-            List<ColumnTitleGroupBuilder> columnTitleGroup = new ArrayList<ColumnTitleGroupBuilder>();
 
             for (DynamicColumnTitle title : columnTitles) {
                 ColumnTitleGroupBuilder titleGroup = grid.titleGroup(title.getTitulo());
@@ -62,7 +68,7 @@ public class ReporteDinamico {
                     if (column.getPattern() != null) {
                         drColumn.setPattern(column.getPattern());
                     }
-                    if(column.getFixedColumns() != 0){
+                    if (column.getFixedColumns() != 0) {
                         drColumn.setFixedColumns(column.getFixedColumns());
                     }
                     if (column.getHorizontalAlignment() != null) {
@@ -85,9 +91,9 @@ public class ReporteDinamico {
                 if (column.getPattern() != null) {
                     drColumn.setPattern(column.getPattern());
                 }
-                 if(column.getFixedColumns() != 0){
-                        drColumn.setFixedColumns(column.getFixedColumns());
-                    }
+                if (column.getFixedColumns() != 0) {
+                    drColumn.setFixedColumns(column.getFixedColumns());
+                }
                 if (column.getHorizontalAlignment() != null) {
                     drColumn.setHorizontalAlignment(column.getHorizontalAlignment());
                 }
