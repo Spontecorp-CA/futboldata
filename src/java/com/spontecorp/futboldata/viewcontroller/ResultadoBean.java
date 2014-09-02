@@ -620,7 +620,8 @@ public class ResultadoBean implements Serializable {
         jugadorEquipoLocal = null;
         convocadoEquipoLocal = null;
         jugadorEquipoVisitante = null;
-        convocadoEquipoVisitante = null;
+        convocadoEquipoVisitante = null; 
+        eventosEquipo = null;
 
     }
 
