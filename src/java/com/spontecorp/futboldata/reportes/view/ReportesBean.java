@@ -21,36 +21,20 @@ import com.spontecorp.futboldata.jpacontroller.TemporadaCategoriaFacade;
 import com.spontecorp.futboldata.jpacontroller.TemporadaFacade;
 import com.spontecorp.futboldata.reportes.ReportesDAO;
 import com.spontecorp.futboldata.reportes.template.ClasificacionesReport;
-import com.spontecorp.futboldata.reportes.template.Templates;
 import com.spontecorp.futboldata.utilities.Util;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.model.ArrayDataModel;
-import javax.faces.model.DataModel;
-import javax.faces.view.facelets.FaceletContext;
 import javax.inject.Named;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.builder.style.ReportStyleBuilder;
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
-import net.sf.dynamicreports.report.constant.SplitType;
 import net.sf.dynamicreports.report.exception.DRException;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +58,9 @@ public class ReportesBean implements Serializable {
     private final ReportesDAO dao;
     private JasperPrint jasperPrint;
     private boolean showGrupoClasificacion;
+    private boolean showGrupo;
+    private boolean showFase;
+    private boolean showJornada;
 
     private List<Competicion> ligas;
     private List<Temporada> temporadaList;
@@ -169,11 +156,16 @@ public class ReportesBean implements Serializable {
 
 //    private boolean showGrupoClasificacion;
     public void makeClasificaXGrupo() {
-        if (categoria != null) {
+        if (categoria != null && grupo != null && jornada != null) {
             clasificacion = dao.clasificaXGrupoAndJornada(jornada, grupo, categoria);
-        } else {
+        }else if(temporada != null && categoria !=null && fase == null){
+            clasificacion = dao.clasificaXTemporadaAndEquipo(temporada, categoria);
+        }else if(jornada != null && grupo != null && categoria != null && categoria == null){
             clasificacion = dao.clasificaXGrupoAndClub(jornada, grupo, categoria);
+        }else if (fase != null && categoria != null && grupo == null){
+            clasificacion = dao.clasificaXFaseAndEquipo(fase, categoria);
         }
+            
 
     }
 
@@ -299,15 +291,45 @@ public class ReportesBean implements Serializable {
         return showGrupoClasificacion;
     }
 
+    public boolean isShowGrupo() {
+        return showGrupo;
+    }
+
+    public boolean isShowFase() {
+        return showFase;
+    }
+
+    public boolean isShowJornada() {
+        return showJornada;
+    }
+
     public String gotoClasificacionPage(int page) {
         String pageReturn = "/admin/reportes/clasificaciones.xhtml?faces-redirect=true";
         switch (page) {
             case 0:
                 showGrupoClasificacion = true;
+                showFase = true;
+                showGrupo = true;
+                showJornada = true;
                 break;
             case 1:
                 showGrupoClasificacion = false;
+                showFase = true;
+                showGrupo = true;
+                showJornada = true;
                 categoria = null;
+                break;
+            case 2:
+                showGrupoClasificacion = true;
+                showFase = true;
+                showGrupo = false;
+                showJornada = false;
+                break;
+            case 3:
+                showGrupoClasificacion = true;
+                showFase = false;
+                showGrupo = false;
+                showJornada = false;
                 break;
         }
         clasificacion = null;

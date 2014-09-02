@@ -35,6 +35,7 @@ public class DynamicReport {
     private List<String> subTitles;
     private List<DynamicColumnTitle> columnTitles;
     private boolean showPageNumber;
+    private boolean showRowNumber;
 
     public DynamicReport() {
         columns = new ArrayList<DynamicColumn>();
@@ -49,6 +50,14 @@ public class DynamicReport {
 
     public void setColumnTitles(List<DynamicColumnTitle> columnTitles) {
         this.columnTitles = columnTitles;
+    }
+
+    public boolean isShowRowNumber() {
+        return showRowNumber;
+    }
+
+    public void setShowRowNumber(boolean showRowNumber) {
+        this.showRowNumber = showRowNumber;
     }
     
     

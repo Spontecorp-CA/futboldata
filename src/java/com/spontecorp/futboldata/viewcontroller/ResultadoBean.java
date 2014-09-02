@@ -620,7 +620,8 @@ public class ResultadoBean implements Serializable {
         jugadorEquipoLocal = null;
         convocadoEquipoLocal = null;
         jugadorEquipoVisitante = null;
-        convocadoEquipoVisitante = null;
+        convocadoEquipoVisitante = null; 
+        eventosEquipo = null;
 
     }
 
@@ -778,6 +779,7 @@ public class ResultadoBean implements Serializable {
         }
     }
 
+/*********Partido Evento Equipo**********/
     public void guardarEventoPartido(ActionEvent event) {
         equipoEvento.setPartidoId(partido);
         
@@ -793,7 +795,10 @@ public class ResultadoBean implements Serializable {
     }
 
     public List<PartidoEventoEquipo> findEventosPartido() {
-        return null;
+        if(eventosEquipo == null){
+                   eventosEquipo = eventoEquipoFacade.findEventoEquipo(partido); 
+        }
+        return eventosEquipo;
     }
 
     private void recreateModelEventoEquipo() {
@@ -801,5 +806,6 @@ public class ResultadoBean implements Serializable {
         equipo = null;
         tipoEvento = null;
         comboEventoEquipo = null;
+        eventosEquipo = null;
     }
 }

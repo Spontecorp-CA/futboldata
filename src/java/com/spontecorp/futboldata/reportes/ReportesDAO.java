@@ -9,8 +9,10 @@ import com.spontecorp.futboldata.entity.Clasifica;
 import com.spontecorp.futboldata.entity.Clasificacion;
 import com.spontecorp.futboldata.entity.Club;
 import com.spontecorp.futboldata.entity.Equipo;
+import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
+import com.spontecorp.futboldata.entity.Temporada;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,8 +28,30 @@ import javax.persistence.Query;
  */
 public class ReportesDAO implements Serializable {
 
-    private List<Clasificacion> listClasificacion(Jornada jornada, Grupo grupo, Categoria categoria) {
-        return null;
+    private List<Clasificacion> listaClasificacion(Temporada temporada, Categoria categoria) {
+        EntityManager em = Util.getEmf().createEntityManager();
+        System.out.println(temporada.getNombre());
+        System.out.println(categoria.getNombre());
+        String query = "Select cl From Clasificacion cl "
+                + "WHERE cl.partidoId.categoriaId = :categoria "
+                + "AND cl.jornadaId.grupoId.faseId.temporadaId = :temporada";
+        Query q = em.createQuery(query, Clasificacion.class);
+        q.setParameter("categoria", categoria);
+        q.setParameter("temporada", temporada);
+        List<Clasificacion> lista = q.getResultList();
+        return lista;
+    }
+
+    private List<Clasificacion> listaClasificacion(Fase fase, Categoria categoria) {
+        EntityManager em = Util.getEmf().createEntityManager();
+        String query = "Select cl FROM Clasificacion cl "
+                + "WHERE cl.partidoId.categoriaId = :categoria "
+                + "AND cl.jornadaId.grupoId.faseId = :fase";
+        Query q = em.createQuery(query, Clasificacion.class);
+        q.setParameter("categoria", categoria);
+        q.setParameter("fase", fase);
+        List<Clasificacion> lista = q.getResultList();
+        return lista;
     }
 
     private List<Clasificacion> listaClasificacion(Jornada jornada, Grupo grupo, Categoria categoria) {
@@ -269,6 +293,26 @@ public class ReportesDAO implements Serializable {
             clasificaList.add(clasificaEquipo.getValue());
         }
 
+        return clasificaList;
+    }
+
+    public List<Clasifica> clasificaXFaseAndEquipo(Fase fase, Categoria categoria) {
+        List<Clasificacion> clasificacions = listaClasificacion(fase, categoria);
+        List<Clasifica> clasificaList = new ArrayList<Clasifica>();
+        Map<Equipo, Clasifica> clasificaMap = clasificaXGrupoAndCategoria(clasificacions);
+        for (Map.Entry<Equipo, Clasifica> clasificaEquipo : clasificaMap.entrySet()) {
+            clasificaList.add(clasificaEquipo.getValue());
+        }
+        return clasificaList;
+    }
+
+    public List<Clasifica> clasificaXTemporadaAndEquipo(Temporada temporada, Categoria categoria) {
+        List<Clasificacion> clasificacions = listaClasificacion(temporada, categoria);
+        List<Clasifica> clasificaList = new ArrayList<Clasifica>();
+        Map<Equipo, Clasifica> clasificaMap = clasificaXGrupoAndCategoria(clasificacions);
+        for (Map.Entry<Equipo, Clasifica> clasificaEquipo : clasificaMap.entrySet()) {
+            clasificaList.add(clasificaEquipo.getValue());
+        }
         return clasificaList;
     }
 }
