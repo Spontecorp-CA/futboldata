@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -19,6 +21,7 @@ import javax.persistence.Query;
  */
 public class PartidoEventoEquipoFacade extends AbstractFacade<PartidoEventoEquipo> implements Serializable{
 
+    static final Logger logger =   LoggerFactory.getLogger(PartidoEventoEquipo.class);
     public PartidoEventoEquipoFacade() {
         super(PartidoEventoEquipo.class);
     }
@@ -29,9 +32,22 @@ public class PartidoEventoEquipoFacade extends AbstractFacade<PartidoEventoEquip
     }
     
     public List<PartidoEventoEquipo> findEventoEquipo(Partido partido){
-        String query = "SELECT pee FROM PartidoEventoEquipo WHERE pee.partidoId = :partido";
-        Query q = getEntityManager().createQuery(query, PartidoEventoEquipo.class);
-        q.setParameter("partido", partido);
-        return q.getResultList();
+        EntityManager em = getEntityManager();
+        List<PartidoEventoEquipo> partidoEventos = null;
+
+        try {
+            String q = "SELECT p FROM PartidoEventoEquipo p WHERE p.partidoId = :partido";
+            Query query = em.createQuery(q, PartidoEventoEquipo.class);
+            query.setParameter("partido", partido);
+            partidoEventos = query.getResultList();
+            return partidoEventos;
+
+        } catch (Exception e) {
+            logger.debug("Problemas al buscar la partidoEventoxPartido: ", e.getMessage());
+        } finally {
+            em.close();
+        }
+        return partidoEventos;
+    
     }
 }

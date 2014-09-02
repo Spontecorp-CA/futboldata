@@ -5,14 +5,14 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+
     <h:panelGrid columns="2" styleClass="top-aligned-columns">
         <h:panelGrid columns="4">
             <h:outputLabel value="Equipo:" for="equipoSelectedIncident"/>
             <h:outputLabel value="Incidencia:" for="equipoIncident" style="text-align: center"/>
             <h:outputLabel value="Valor:" for="eventQuantity" style="text-align: center"/>
             <spacer/>
-            
+
             <p:selectOneMenu id="equipoSelectedIncident" value="#{resultadoBean.equipoEvento.equipoId}" 
                              converter="equipo"
                              style="width: 140px">
@@ -27,19 +27,19 @@
                          listener="#{resultadoBean.equipoSelected()}"
                          update="evento" />
             </p:selectOneMenu>
-            
+
             <p:selectOneMenu id="equipoIncident" value="#{resultadoBean.equipoEvento.eventoId}" style="width: 140px">
                 <f:selectItem itemLabel="-------------"  value="#{null}" />
                 <f:selectItems value="#{resultadoBean.comboEventoEquipo}" />
                 <p:ajax event="valueChange" update="eventQuantity, eventQuantityLabel" />
             </p:selectOneMenu>
-            
+
             <p:inputText id="eventQuantity" value="#{resultadoBean.cant_percent}"/>
-            
+
             <h:outputLabel id="eventQuantityLabel"
                            value="#{(resultadoBean.equipoEvento.eventoId.tipoValor == 0 ||
                                     resultadoBean.equipoEvento.eventoId.tipoValor == null)?'':'%'}" />
-            
+
             <p:commandButton value="Guardar" actionListener="#{resultadoBean.guardarEventoPartido}"
                              style="width: 100px" 
                              update=" :growlAdmin , equipoIncident ,
@@ -51,23 +51,43 @@
         </h:panelGrid>
 
     </h:panelGrid>
-    
+
     <h:panelGroup>
-        
+        <p:dataTable id="eventosEquipo" value="#{resultadoBean.findEventosPartido()}"
+                     var="eventoEquipo" 
+                     rowKey="#{eventoEquipo}" >
+
+            <p:column headerText="Evento" >
+                <h:outputText value="#{eventoEquipo.eventoId.nombre}"/>
+            </p:column>
+
+            <p:column headerText="Equipo" >
+                <h:outputText value="#{eventoEquipo.equipoId.nombre}"/>
+            </p:column>
+            <p:column headerText="Cantidad" >
+                <h:outputText value="#{eventoEquipo.cantidad}"/>
+            </p:column>
+            <p:column headerText="Porcentaje" >
+                <h:outputText value="#{eventoEquipo.porcentaje*100}%"/>
+            </p:column>
+
+
+        </p:dataTable>
+
     </h:panelGroup>
-    
-    
+
+
     <h:panelGrid columns="7"  >
 
-        
+
 <!--                            <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
-                         style="width: 140px" 
-                         update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
-                         tipoEvento ,dato"/>
-        <p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
-                         update="eventos :growlAdmin "
-                         style="width: 140px"
-                         disabled="#{empty resultadoBean.eventoSelected.id}"/>-->
+                 style="width: 140px" 
+                 update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
+                 tipoEvento ,dato"/>
+<p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
+                 update="eventos :growlAdmin "
+                 style="width: 140px"
+                 disabled="#{empty resultadoBean.eventoSelected.id}"/>-->
     </h:panelGrid>
 
 <!--                        <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  

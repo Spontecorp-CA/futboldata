@@ -24,23 +24,28 @@
                      update="fases, grupos, categorias, jornadas"/>
         </p:selectOneMenu>
 
-        <h:outputLabel value="Fase: " for="fases" />
-        <p:selectOneMenu id="fases" value="#{reportesBean.fase}" style="width: 200px" >
+        <h:outputLabel value="Fase: " for="fases"
+                       rendered="#{reportesBean.showFase}"/>
+        <p:selectOneMenu id="fases" value="#{reportesBean.fase}" style="width: 200px"
+                         rendered="#{reportesBean.showFase}">
             <f:selectItem itemLabel="-------------" />
             <f:selectItems value="#{reportesBean.fases}" />
             <p:ajax  event="valueChange" listener="#{reportesBean.faseSelected}" 
                      update="categorias, jornadas, grupos"/>
         </p:selectOneMenu>
 
-        <h:outputLabel value="Grupo: " for="grupos" />
-        <p:selectOneMenu id="grupos" value="#{reportesBean.grupo}" style="width: 200px" >
+        <h:outputLabel value="Grupo: " for="grupos"
+                       rendered="#{reportesBean.showGrupo}"/>
+        <p:selectOneMenu id="grupos" value="#{reportesBean.grupo}" style="width: 200px"
+                         rendered="#{reportesBean.showGrupo}">
             <f:selectItem itemLabel="-------------" />
             <f:selectItems value="#{reportesBean.grupos}" />
             <p:ajax  event="valueChange" listener="#{reportesBean.grupoSelected}" 
                      update="categorias, jornadas"/>
         </p:selectOneMenu>
 
-        <h:outputLabel value="Categoria: " for="categorias" rendered="#{reportesBean.showGrupoClasificacion}"/>
+        <h:outputLabel value="Categoria: " for="categorias" 
+                       rendered="#{reportesBean.showGrupoClasificacion}"/>
         <p:selectOneMenu id="categorias" value="#{reportesBean.categoria}" style="width: 200px" 
                          rendered="#{reportesBean.showGrupoClasificacion}">
             <f:selectItem itemLabel="-------------" value="#{null}"/>
@@ -49,10 +54,12 @@
                      update="jornadas"/>
         </p:selectOneMenu>
 
-        <h:outputLabel value="Jornada: " for="jornadas" />
+        <h:outputLabel value="Jornada: " for="jornadas" 
+                       rendered="#{reportesBean.showJornada}"/>
         <p:selectOneMenu id="jornadas" value="#{reportesBean.jornada}" style="width: 200px" 
                          required="true" 
-                         requiredMessage="Debe seleccionar una jornada">
+                         requiredMessage="Debe seleccionar una jornada"
+                         rendered="#{reportesBean.showJornada}">
             <f:selectItem itemLabel="-------------" />
             <f:selectItems value="#{reportesBean.jornadas}" />
         </p:selectOneMenu>
