@@ -14,7 +14,7 @@
     <ui:define name="content">
         <h:form id="clasificaForm">
             <p:fieldset style="width: 95%" 
-                        legend="#{reportesBean.showGrupoClasificacion == true?'Clasificaciones de Grupos': 'Clasificaciones de General de Clubes'}" >
+                        legend="#{reportesBean.tituloPagina}" >
                 <p:toolbar>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
@@ -49,22 +49,22 @@
                              style="width: min-content"
                              scrollable="true">
                     
-                        <p:columnGroup type="header">
+<!--                        <p:columnGroup type="header">
                             <p:row>
                             <p:column colspan="10" headerText="Total"/>
                             <p:column colspan="8" headerText="Local"/>
                             <p:column colspan="8" headerText="Visitante"/>
-                            </p:row>
+                            </p:row>-->
                         
                     
-<!--                    <p:columnGroup type="header">
+                    <p:columnGroup type="header">
                         <p:row>
                             <p:column rowspan="2" headerText="Pos" />
                             <p:column rowspan="2" headerText="#{reportesBean.categoria==null?'Club':'Equipo'}"/>    
                             <p:column colspan="8" headerText="Total"/>
                             <p:column colspan="8" headerText="Local"/>
                             <p:column colspan="8" headerText="Visitante"/>
-                        </p:row>-->
+                        </p:row>
                         <p:row>
                             <p:column headerText="Pos"/>
                             <p:column headerText="Equipo"/>
@@ -94,7 +94,7 @@
                             <p:column headerText="Pts" />
                         </p:row>
                         </p:columnGroup>
-<!--                    <p:column headerText="#">
+                    <p:column headerText="#">
                         <h:outputText value="#{linea + 1}"/>
                     </p:column>
                     <p:column headerText="Equipo" style="width: 100px">
@@ -171,9 +171,9 @@
                     </p:column>
                     <p:column headerText="Pts" sortBy="#{equipo.puntosVisitante}">
                         <h:outputText value="#{equipo.puntosVisitante}" style="font-weight: bold"/>
-                    </p:column>-->
+                    </p:column>
 
-                    <p:column>
+<!--                    <p:column>
                         <h:outputText value="#{linea + 1}"/>
                     </p:column>
                     <p:column headerText="Equipo" style="width: 100px">
@@ -250,7 +250,7 @@
                     </p:column>
                     <p:column>
                         <h:outputText value="#{equipo.puntosVisitante}" style="font-weight: bold"/>
-                    </p:column>
+                    </p:column>-->
 
 
                 </p:dataTable>

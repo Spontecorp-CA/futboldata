@@ -61,6 +61,7 @@ public class ReportesBean implements Serializable {
     private boolean showGrupo;
     private boolean showFase;
     private boolean showJornada;
+    private String tituloPagina;
 
     private List<Competicion> ligas;
     private List<Temporada> temporadaList;
@@ -153,6 +154,10 @@ public class ReportesBean implements Serializable {
     public List<Clasifica> getClasificacion() {
         return clasificacion;
     }
+    
+    public String getTituloPagina(){
+        return tituloPagina;
+    }
 
 //    private boolean showGrupoClasificacion;
     public void makeClasificaXGrupo() {
@@ -160,7 +165,7 @@ public class ReportesBean implements Serializable {
             clasificacion = dao.clasificaXGrupoAndJornada(jornada, grupo, categoria);
         }else if(temporada != null && categoria !=null && fase == null){
             clasificacion = dao.clasificaXTemporadaAndEquipo(temporada, categoria);
-        }else if(jornada != null && grupo != null && categoria != null && categoria == null){
+        }else if(jornada != null && grupo != null && categoria == null){
             clasificacion = dao.clasificaXGrupoAndClub(jornada, grupo, categoria);
         }else if (fase != null && categoria != null && grupo == null){
             clasificacion = dao.clasificaXFaseAndEquipo(fase, categoria);
@@ -311,6 +316,7 @@ public class ReportesBean implements Serializable {
                 showFase = true;
                 showGrupo = true;
                 showJornada = true;
+                tituloPagina = "Clasificaciones de Grupos";
                 break;
             case 1:
                 showGrupoClasificacion = false;
@@ -318,21 +324,25 @@ public class ReportesBean implements Serializable {
                 showGrupo = true;
                 showJornada = true;
                 categoria = null;
+                tituloPagina = "Clasificaciones de Clubes";
                 break;
             case 2:
                 showGrupoClasificacion = true;
                 showFase = true;
                 showGrupo = false;
                 showJornada = false;
+                tituloPagina = "Ranking de Grupos";
                 break;
             case 3:
                 showGrupoClasificacion = true;
                 showFase = false;
                 showGrupo = false;
                 showJornada = false;
+                tituloPagina = "Tabla Acumulada";
                 break;
         }
         clasificacion = null;
+        recreateModelTemporada();
         return pageReturn;
     }
 }
