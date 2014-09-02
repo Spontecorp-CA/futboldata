@@ -16,21 +16,22 @@
     </h:head>
 
     <h:body>
-        
+
         <p:growl id="growlAdmin" life="3000" />
-        
+
         <p:layout fullPage="true">
             <p:layoutUnit id="top" position="north" size="120">
-                    <!--ui:insert name="top">Top</ui:insert-->
-                    <h:graphicImage id="bannerTop" name="banner_new.png" 
-                                    library="images" styleClass="centerImage"/>
+                <!--ui:insert name="top">Top</ui:insert-->
+                <h:graphicImage id="bannerTop" name="banner_new.png" 
+                                library="images" styleClass="centerImage"/>
             </p:layoutUnit> 
 
-<!--            <p:layoutUnit position="south" size="100">
-                Aqui va el pie de página
-            </p:layoutUnit>-->
+            <!--            <p:layoutUnit position="south" size="100">
+                            Aqui va el pie de página
+                        </p:layoutUnit>-->
 
-            <p:layoutUnit position="west" size="220" resizable="true">
+            <p:layoutUnit position="west" size="220" resizable="true" 
+                          collapsible="true" header="Menú">
                 <ui:include src="./snippets/menu.xhtml"/>
             </p:layoutUnit>
 
