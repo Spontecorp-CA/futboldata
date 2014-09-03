@@ -13,8 +13,8 @@
 
     <ui:define name="content">
         <h:form id="clasificaForm">
-            <p:fieldset style="width: 85%" 
-                        legend="#{reportesBean.showGrupoClasificacion == true?'Clasificaciones de Grupos': 'Clasificaciones de General de Clubes'}" >
+            <p:fieldset style="width: 95%" 
+                        legend="#{reportesBean.tituloPagina}" >
                 <p:toolbar>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
@@ -46,19 +46,31 @@
                 <p:panelGrid columns="1" style="width: auto" >
                 <p:dataTable id="clasificacion" var="equipo" value="#{reportesBean.clasificacion}"
                              emptyMessage="No se encontró una clasificación para ese criterio" rowIndexVar="linea"
-                             style="width: min-content">
-<!--                    <p:columnGroup type="header">
+                             style="width: min-content"
+                             scrollable="true">
+                    
+<!--                        <p:columnGroup type="header">
+                            <p:row>
+                            <p:column colspan="10" headerText="Total"/>
+                            <p:column colspan="8" headerText="Local"/>
+                            <p:column colspan="8" headerText="Visitante"/>
+                            </p:row>-->
+                        
+                    
+                    <p:columnGroup type="header">
                         <p:row>
                             <p:column rowspan="2" headerText="Pos" />
                             <p:column rowspan="2" headerText="#{reportesBean.categoria==null?'Club':'Equipo'}"/>    
                             <p:column colspan="8" headerText="Total"/>
                             <p:column colspan="8" headerText="Local"/>
                             <p:column colspan="8" headerText="Visitante"/>
-                        </p:row>-->
-<!--                        <p:row>
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="Pos"/>
+                            <p:column headerText="Equipo"/>
                             <p:column headerText="JJ" />
-                            <p:column headerText="JG" />
-                            <p:column headerText="JE" />
+                            <p:column headerText="JG" sortBy="#{equipo.ganados}"/>
+                            <p:column headerText="JE" sortBy="#{equipo.empatados}" />
                             <p:column headerText="JP" />
                             <p:column headerText="GF" />
                             <p:column headerText="GC" />
@@ -80,13 +92,12 @@
                             <p:column headerText="GC" />
                             <p:column headerText="Dif" />
                             <p:column headerText="Pts" />
-                        </p:row>-->
-                    <!--</p:columnGroup>-->
-                    
+                        </p:row>
+                        </p:columnGroup>
                     <p:column headerText="#">
                         <h:outputText value="#{linea + 1}"/>
                     </p:column>
-                    <p:column headerText="Equipo">
+                    <p:column headerText="Equipo" style="width: 100px">
                         <h:outputText value="#{equipo.equipo}"/>
                     </p:column>
                     <p:column headerText="JJ">
@@ -161,8 +172,87 @@
                     <p:column headerText="Pts" sortBy="#{equipo.puntosVisitante}">
                         <h:outputText value="#{equipo.puntosVisitante}" style="font-weight: bold"/>
                     </p:column>
-                    
-                    
+
+<!--                    <p:column>
+                        <h:outputText value="#{linea + 1}"/>
+                    </p:column>
+                    <p:column headerText="Equipo" style="width: 100px">
+                        <h:outputText value="#{equipo.equipo}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.jugados}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.ganados}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.empatados}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.perdidos}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golFavor}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golContra}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golDiferencia}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.puntos}" style="font-weight: bold"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.jugadosLocal}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.ganadosLocal}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.empatadosLocal}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.perdidosLocal}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golFavorLocal}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golContraLocal}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golDiferenciaLocal}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.puntosLocal}" style="font-weight: bold"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.jugadosVisitante}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.ganadosVisitante}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.empatadosVisitante}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.perdidosVisitante}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golFavorVisitante}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golContraVisitante}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.golDiferenciaVisitante}"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{equipo.puntosVisitante}" style="font-weight: bold"/>
+                    </p:column>-->
+
+
                 </p:dataTable>
                 </p:panelGrid>
                 <h:commandLink value="exportar a PDF" action="#{reportesBean.createPDF(actionEvent)}" 
