@@ -836,7 +836,7 @@ public class ResultadoBean implements Serializable {
 
     public List<TablaEventoEquipo> getTablaEventos() {
         if (tablaEventos == null) {
-            tablaEventos = new ArrayList<>();
+            tablaEventos = new ArrayList<TablaEventoEquipo>();
             List<PartidoEventoEquipo> listTemporalEventos = new ArrayList<PartidoEventoEquipo>();
             tablaEventoEquipo = new TablaEventoEquipo();
             for (PartidoEventoEquipo eventoExterno : findEventosPartido()) {
