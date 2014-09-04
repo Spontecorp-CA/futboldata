@@ -271,8 +271,9 @@ public class ReportesBean implements Serializable {
 //            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
             List<String> subTitulos = new ArrayList<String>();
             subTitulos.add(temporada.getNombre());
-
-            subTitulos.add("Jornada n°: " + jornada.getNumero().toString());
+            if (jornada != null){
+                            subTitulos.add("Jornada n°: " + jornada.getNumero().toString());
+            }
             if (categoria != null) {
                 subTitulos.add("Categoria: " + categoria.getNombre());
             }
