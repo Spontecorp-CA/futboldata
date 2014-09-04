@@ -44,79 +44,54 @@
                              style="width: 100px" 
                              update=" :growlAdmin , equipoIncident ,
                              eventQuantity, eventQuantityLabel ,eventosEquipo "/>
-            <p:commandButton value="Eliminar" disabled="true"
+            <p:commandButton id="deleteEventoEquipo"
+                             value="Eliminar" 
+                             disabled="#{empty resultadoBean.tablaEventoEquipo.evento}"
+                             actionListener="#{resultadoBean.eliminarEventoPartido}"
                              style="width: 100px" 
-                             update=" :growlAdmin , equipoIncident ,
+                             update=" :growlAdmin, eventosEquipo , equipoIncident ,
                              eventQuantity, eventQuantityLabel"/>
         </h:panelGrid>
 
     </h:panelGrid>
 
     <h:panelGroup>
-        <p:dataTable id="eventosEquipo" value="#{resultadoBean.findEventosPartido()}"
-                     var="eventoEquipo" 
-                     rowKey="#{eventoEquipo}" >
+        <p:dataTable id="eventosEquipo" value="#{resultadoBean.tablaEventos}"
+                     var="tablaEventoEquipo" 
+                     selectionMode="single"
+                     selection="#{resultadoBean.tablaEventoEquipo}"
+                     rowKey="#{tablaEventoEquipo}" >
+            <f:ajax event="rowSelect" render=":detalleForm:menu:deleteEventoEquipo" />
+            <f:ajax event="rowUnselect" render=":detalleForm:menu:deleteEventoEquipo" />
+
 
             <p:column headerText="Evento" >
-                <h:outputText value="#{eventoEquipo.eventoId.nombre}"/>
+                <h:outputText value="#{tablaEventoEquipo.evento.nombre}"/>
             </p:column>
 
-            <p:column headerText="Equipo" >
-                <h:outputText value="#{eventoEquipo.equipoId.nombre}"/>
+            <p:column headerText="Equipo Local" >
+                <h:outputText value="#{tablaEventoEquipo.equipoLocal.equipoId.nombre}"/>
             </p:column>
-            <p:column headerText="Cantidad" >
-                <h:outputText value="#{eventoEquipo.cantidad}"/>
-            </p:column>
-            <p:column headerText="Porcentaje" >
-                <h:outputText value="#{eventoEquipo.porcentaje*100}%"/>
-            </p:column>
+            <p:column headerText="Valor" >
+                <h:outputText value="#{tablaEventoEquipo.equipoLocal.cantidad}"
+                              rendered="#{tablaEventoEquipo.equipoLocal.cantidad != 0}"/>
+                <h:outputText value="#{tablaEventoEquipo.equipoLocal.porcentaje*100}%" 
+                              rendered="#{tablaEventoEquipo.equipoLocal.porcentaje != 0}"/>
 
+            </p:column>
+            <p:column headerText="Valor" >
+                <h:outputText value="#{tablaEventoEquipo.equipoVisitante.cantidad}"
+                              rendered="#{tablaEventoEquipo.equipoVisitante.cantidad != 0}"/>
+                <h:outputText value="#{tablaEventoEquipo.equipoVisitante.porcentaje*100}%" 
+                              rendered="#{tablaEventoEquipo.equipoVisitante.porcentaje != 0}"/>
+
+            </p:column>
+            <p:column headerText="Equipo Visitante">
+                <h:outputText value="#{tablaEventoEquipo.equipoVisitante.equipoId.nombre}" />
+            </p:column>
 
         </p:dataTable>
 
     </h:panelGroup>
-
-
-    <h:panelGrid columns="7"  >
-
-
-<!--                            <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
-                 style="width: 140px" 
-                 update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
-                 tipoEvento ,dato"/>
-<p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
-                 update="eventos :growlAdmin "
-                 style="width: 140px"
-                 disabled="#{empty resultadoBean.eventoSelected.id}"/>-->
-    </h:panelGrid>
-
-<!--                        <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  
-                                     var="partidoEvento" 
-                                     selection="#{resultadoBean.eventoSelected}" 
-                                     selectionMode="single"
-                                     filteredValue="#{resultadoBean.filteredEventos}"
-                                     rowKey="#{partidoEvento}" >
-                            <p:ajax event="rowSelect" update=":detalleForm:menu:editButtonE" />
-                            <p:ajax event="rowUnselect" update=":detalleForm:menu:editButtonE" />
-                            <p:column headerText="Evento" >
-                                <h:outputText value="#{partidoEvento.eventoId.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Tipo de Evento" >
-                                <h:outputText value="#{partidoEvento.eventoId.tipoEventoId.nombre}"/>
-                            </p:column>
-                            <p:column headerText="Tiempo" sortBy="minuto">
-                                <h:outputText value="#{partidoEvento.minuto}" />
-                            </p:column>
-                            <p:column headerText="Jugador " >
-                                <h:outputText value="#{partidoEvento.jugador1Id.personaId}"/>
-                            </p:column>
-                            <p:column headerText="Staff" >
-                                <h:outputText value="#{partidoEvento.staffId.toString()}"/>
-                            </p:column>
-                            <p:column headerText="Dato" >
-                                <h:outputText value="#{partidoEvento.descripcion}"/>
-                            </p:column>
-                        </p:dataTable>-->
-
 </ui:composition>
 

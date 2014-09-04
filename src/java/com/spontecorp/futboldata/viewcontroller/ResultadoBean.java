@@ -36,6 +36,7 @@ import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.StaffFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
@@ -68,11 +69,12 @@ public class ResultadoBean implements Serializable {
     private PartidoArbitro partidoArbitro;
     private EquipoHasJugador equipoHasJugador;
     private PartidoEvento partidoEvento;
+    private PartidoEventoEquipo eventoEquipo;
     private PartidoEventoEquipo equipoEvento;
     private TipoEvento tipoEvento;
     private int tipoCantidadEvento;
     private ClasificacionGrupo clasificacionGrupo;
-    
+
     private double cant_percent;
 
     private final PartidoFacade partidoFacade;
@@ -104,6 +106,39 @@ public class ResultadoBean implements Serializable {
     private List<PartidoEvento> filteredEventos;
     private static final Logger logger = LoggerFactory.getLogger(ResultadoBean.class);
     private Clasificacion clasificacion;
+
+    public class TablaEventoEquipo {
+
+        public Evento evento;
+        public PartidoEventoEquipo equipoLocal;
+        public PartidoEventoEquipo equipoVisitante;
+
+        public Evento getEvento() {
+            return evento;
+        }
+
+        public void setEvento(Evento evento) {
+            this.evento = evento;
+        }
+
+        public PartidoEventoEquipo getEquipoLocal() {
+            return equipoLocal;
+        }
+
+        public void setEquipoLocal(PartidoEventoEquipo equipoLocal) {
+            this.equipoLocal = equipoLocal;
+        }
+
+        public PartidoEventoEquipo getEquipoVisitante() {
+            return equipoVisitante;
+        }
+
+        public void setEquipoVisitante(PartidoEventoEquipo equipoVisitante) {
+            this.equipoVisitante = equipoVisitante;
+        }
+    }
+    private TablaEventoEquipo tablaEventoEquipo;
+    private List<TablaEventoEquipo> tablaEventos;
 
     /**
      * Creates a new instance of ResultadoBean
@@ -620,8 +655,9 @@ public class ResultadoBean implements Serializable {
         jugadorEquipoLocal = null;
         convocadoEquipoLocal = null;
         jugadorEquipoVisitante = null;
-        convocadoEquipoVisitante = null; 
+        convocadoEquipoVisitante = null;
         eventosEquipo = null;
+        tablaEventos = null;
 
     }
 
@@ -779,24 +815,110 @@ public class ResultadoBean implements Serializable {
         }
     }
 
-/*********Partido Evento Equipo**********/
-    public void guardarEventoPartido(ActionEvent event) {
-        equipoEvento.setPartidoId(partido);
-        
-        if(equipoEvento.getEventoId().getTipoValor() == 0){
-            equipoEvento.setCantidad((int) cant_percent);
-        } else if (equipoEvento.getEventoId().getTipoValor() == 1) {
-            equipoEvento.setPorcentaje(cant_percent / 100);
+    /**
+     * *******Partido Evento Equipo*********
+     */
+    public PartidoEventoEquipo getEventoEquipo() {
+        return eventoEquipo;
+    }
+
+    public void setEventoEquipo(PartidoEventoEquipo eventoEquipo) {
+        this.eventoEquipo = eventoEquipo;
+    }
+
+    public TablaEventoEquipo getTablaEventoEquipo() {
+        return tablaEventoEquipo;
+    }
+
+    public void setTablaEventoEquipo(TablaEventoEquipo tablaEventoEquipo) {
+        this.tablaEventoEquipo = tablaEventoEquipo;
+    }
+
+    public List<TablaEventoEquipo> getTablaEventos() {
+        if (tablaEventos == null) {
+            tablaEventos = new ArrayList<TablaEventoEquipo>();
+            List<PartidoEventoEquipo> listTemporalEventos = new ArrayList<PartidoEventoEquipo>();
+            tablaEventoEquipo = new TablaEventoEquipo();
+            for (PartidoEventoEquipo eventoExterno : findEventosPartido()) {
+                for (PartidoEventoEquipo eventoInterno : findEventosPartido()) {
+                    if (eventoExterno.getEventoId() == eventoInterno.getEventoId()
+                            && !eventoExterno.equals(eventoInterno)) {
+                        if (eventoExterno.getEquipoId().equals(partido.getEquipoLocalId())) {
+                            tablaEventoEquipo = new TablaEventoEquipo();
+                            tablaEventoEquipo.equipoLocal = eventoExterno;
+                            tablaEventoEquipo.equipoVisitante = eventoInterno;
+                            listTemporalEventos.add(eventoExterno);
+                            listTemporalEventos.add(eventoInterno);
+                            tablaEventoEquipo.evento = eventoExterno.getEventoId();
+                        }
+//                       else if ((eventoInterno.getEquipoId().equals(partido.getEquipoLocalId()))) {
+//                            tablaEventoEquipo = new TablaEventoEquipo();
+//                            tablaEventoEquipo.equipoLocal = eventoInterno;
+//                            tablaEventoEquipo.equipoVisitante = eventoExterno;
+//                            listTemporalEventos.add(eventoExterno);
+//                            listTemporalEventos.add(eventoInterno);
+//                            tablaEventoEquipo.evento = eventoExterno.getEventoId();
+//                        }
+                        if (!tablaEventos.contains(tablaEventoEquipo)) {
+                            tablaEventos.add(tablaEventoEquipo);
+                        }
+                    }
+                }
+            }
+            for (PartidoEventoEquipo partidoEventoEquipo : getEventosEquipo()) {
+                if (!listTemporalEventos.contains(partidoEventoEquipo)) {
+                    if (partido.getEquipoLocalId().equals(partidoEventoEquipo.getEquipoId())) {
+                        tablaEventoEquipo = new TablaEventoEquipo();
+                        tablaEventoEquipo.equipoLocal = partidoEventoEquipo;
+                        tablaEventoEquipo.equipoVisitante = new PartidoEventoEquipo();
+                        tablaEventoEquipo.evento = partidoEventoEquipo.getEventoId();
+                        tablaEventos.add(tablaEventoEquipo);
+                    } else {
+                        tablaEventoEquipo = new TablaEventoEquipo();
+                        tablaEventoEquipo.equipoVisitante = partidoEventoEquipo;
+                        tablaEventoEquipo.equipoLocal = new PartidoEventoEquipo();
+                        tablaEventoEquipo.evento = partidoEventoEquipo.getEventoId();
+                        tablaEventos.add(tablaEventoEquipo);
+                    }
+                }
+
+            }
         }
-        
-        eventoEquipoFacade.create(equipoEvento);
+        return tablaEventos;
+    }
+
+    public void guardarEventoPartido(ActionEvent event) {
+
+        if (eventoEquipoFacade.findEventoEquipo(partido, equipoEvento.getEquipoId(), equipoEvento.getEventoId()) == null) {
+            equipoEvento.setPartidoId(partido);
+            if (equipoEvento.getEventoId().getTipoValor() == 0) {
+                equipoEvento.setCantidad((int) cant_percent);
+            } else if (equipoEvento.getEventoId().getTipoValor() == 1) {
+                equipoEvento.setPorcentaje(cant_percent / 100);
+            }
+            eventoEquipoFacade.create(equipoEvento);
+            recreateModelEventoEquipo();
+            Util.addSuccessMessage("Se creó con éxito el evento");
+        } else {
+            Util.addErrorMessage("Ya el Evento del Equipo esta Creado");
+        }
+
+    }
+
+    public void eliminarEventoPartido() {
+        if (tablaEventoEquipo.getEquipoLocal().getEventoId() != null) {
+            eventoEquipoFacade.remove(tablaEventoEquipo.getEquipoLocal());
+        }
+        if (tablaEventoEquipo.getEquipoVisitante().getEventoId() != null) {
+            eventoEquipoFacade.remove(tablaEventoEquipo.getEquipoVisitante());
+        }
         recreateModelEventoEquipo();
-        Util.addSuccessMessage("Se creó con éxito el evento");
+        Util.addSuccessMessage("Se elimino el Evento con Exito");
     }
 
     public List<PartidoEventoEquipo> findEventosPartido() {
-        if(eventosEquipo == null){
-                   eventosEquipo = eventoEquipoFacade.findEventoEquipo(partido); 
+        if (eventosEquipo == null) {
+            eventosEquipo = eventoEquipoFacade.findEventoEquipo(partido);
         }
         return eventosEquipo;
     }
@@ -807,5 +929,6 @@ public class ResultadoBean implements Serializable {
         tipoEvento = null;
         comboEventoEquipo = null;
         eventosEquipo = null;
+        tablaEventos = null;
     }
 }
