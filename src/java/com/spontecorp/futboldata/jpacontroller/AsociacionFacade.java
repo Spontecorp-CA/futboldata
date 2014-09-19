@@ -7,7 +7,9 @@ package com.spontecorp.futboldata.jpacontroller;
 import com.spontecorp.futboldata.entity.Asociacion;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,4 +46,26 @@ public class AsociacionFacade extends AbstractFacade<Asociacion> implements Seri
         return asociacion;
 
     }
+    
+        public List<Asociacion> findAll(int organizacion) {
+        List<Asociacion> asociacions = null;
+        EntityManager em = getEntityManager();
+        if (organizacion != 1) {
+
+            try {
+                String q = "SELECT a FROM Asociacion a WHERE a.organizacionId =:organizacion";
+                Query query = em.createQuery(q, Asociacion.class);
+                query.setParameter("organizacion", organizacion);
+                asociacions = query.getResultList();
+            } catch (NoResultException e) {
+                logger.debug("Problema al buscar asociacion", e.getMessage());
+            } finally {
+                em.close();
+            }
+        } else {
+               asociacions = findAll();
+        }
+        return asociacions;
+    }
+
 }

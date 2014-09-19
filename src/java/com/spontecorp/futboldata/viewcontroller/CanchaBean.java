@@ -73,8 +73,10 @@ public class CanchaBean implements Serializable {
     private MapModel emptyModel;
 
     private static final Logger logger = LoggerFactory.getLogger(CanchaBean.class);
+    private final LoginBean bean;
 
     public CanchaBean() {
+        bean = (LoginBean) Util.findBean("loginBean");
         this.canchaFacade = new CanchaFacade();
         this.direccionFacade = new DireccionFacade();
         this.emailFacade = new EmailFacade();
@@ -107,7 +109,6 @@ public class CanchaBean implements Serializable {
         this.lng = lng;
     }
 
-    
     public MapModel getEmptyModel() {
         return emptyModel;
     }
@@ -170,7 +171,7 @@ public class CanchaBean implements Serializable {
 
     public List<Cancha> getItems() {
         if (items == null) {
-            items = canchaFacade.findAll();
+            items = canchaFacade.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
@@ -234,6 +235,7 @@ public class CanchaBean implements Serializable {
     public Cancha prepareCreate() {
         selected = new Cancha();
         initializeEmbeddableKey();
+        selected.setOrganizacionId(bean.getCurrent().getOrganizacionId().getId());
         return selected;
     }
 
@@ -247,8 +249,13 @@ public class CanchaBean implements Serializable {
         emails = getEmails(selected.getDireccionId());
         email = new Email();
         ciudadAvailable(pais);
-        lat = NumberUtils.toDouble(selected.getCoordenadaLat());
-        lng = NumberUtils.toDouble(selected.getCoordenadaLong());
+        if (selected.getCoordenadaLat().isEmpty() || selected.getCoordenadaLong().isEmpty()) {
+            selected.setCoordenadaLat("10.4909493");
+            selected.setCoordenadaLong("-66.8043497");
+
+        }
+//        lat = NumberUtils.toDouble(selected.getCoordenadaLat());
+//        lng = NumberUtils.toDouble(selected.getCoordenadaLong());
     }
 
     public void create() {
@@ -391,7 +398,7 @@ public class CanchaBean implements Serializable {
         emptyModel.addOverlay(marker);
 
         Util.addSuccessMessage("Marker Added" + "Lat:" + lat + ", Lng:" + lng);
-    
+
     }
 
     @FacesConverter(forClass = Cancha.class)
@@ -434,5 +441,5 @@ public class CanchaBean implements Serializable {
             }
         }
 
-    } 
+    }
 }

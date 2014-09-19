@@ -43,6 +43,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cancha.findByCoordenadaLong", query = "SELECT c FROM Cancha c WHERE c.coordenadaLong = :coordenadaLong"),
     @NamedQuery(name = "Cancha.findByCoordenadaLat", query = "SELECT c FROM Cancha c WHERE c.coordenadaLat = :coordenadaLat")})
 public class Cancha implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -228,6 +230,14 @@ public class Cancha implements Serializable {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
     }
     
 }

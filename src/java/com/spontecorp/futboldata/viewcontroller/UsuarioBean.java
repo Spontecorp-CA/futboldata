@@ -16,6 +16,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactoryUtils;
 
 /**
  *
@@ -31,7 +32,7 @@ public class UsuarioBean implements Serializable {
 //    private DataModel items = null;
     private List<User> items = null;
     private User selected;
-
+    private LoginBean bean;
     //private final UserJpaExt controllerUser;
     private final UserFacade controllerUser;
     private final PerfilFacade controllerPerfil;
@@ -41,6 +42,7 @@ public class UsuarioBean implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(UsuarioBean.class);
 
     public UsuarioBean() {
+        bean = (LoginBean) Util.findBean("loginBean");
         controllerUser = new UserFacade();
         controllerPerfil = new PerfilFacade();
         //contextPath = FacesContext.getCurrentInstance().getExternalContext().getContextName();
@@ -49,14 +51,15 @@ public class UsuarioBean implements Serializable {
     public User getSelected() {
         return selected;
     }
-    
-    public void setSelected(User selected){
+
+    public void setSelected(User selected) {
         this.selected = selected;
     }
 
-    public List<User> getItems(){
-        if(items == null){
-            items = controllerUser.findAll();
+    public List<User> getItems() {
+         bean = (LoginBean) Util.findBean("loginBean");
+        if (items == null) {
+            items = controllerUser.findUser(bean.getCurrent().getOrganizacionId().getId());
         }
         return items;
     }
@@ -72,6 +75,7 @@ public class UsuarioBean implements Serializable {
     }
 
     public String gotoAdminPage() {
+
         recreateModel();
         return "/admin/usuarios/list?faces-redirect=true";
     }
@@ -80,8 +84,9 @@ public class UsuarioBean implements Serializable {
         return "/admin/adminPage?faces-redirect=true";
     }
 
-    public User prepareCreate(){
+    public User prepareCreate() {
         selected = new User();
+        selected.setOrganizacionId(bean.getCurrent().getOrganizacionId());
         return selected;
     }
 
@@ -103,10 +108,10 @@ public class UsuarioBean implements Serializable {
             //return null;
         }
     }
-    
-    public void edit(){
+
+    public void edit() {
         try {
-            if(controllerUser.findUsuario(selected.getUsuario()) == null ){
+            if (controllerUser.findUsuario(selected.getUsuario()) == null) {
                 Util.addErrorMessage("Usuario no existente");
             } else {
                 controllerUser.edit(selected);
@@ -118,8 +123,8 @@ public class UsuarioBean implements Serializable {
             Util.addErrorMessage(e, "Error al editar el usuario");
         }
     }
-    
-    public void changePassword(){
+
+    public void changePassword() {
         try {
             if (controllerUser.findUsuario(selected.getUsuario()) == null) {
                 Util.addErrorMessage("Usuario no existente");
@@ -134,13 +139,13 @@ public class UsuarioBean implements Serializable {
             Util.addErrorMessage(e, "Error cambiando el password");
         }
     }
-    
-    public String preparePasswordChange(){
+
+    public String preparePasswordChange() {
 //        selected = (User) getItems().getRowData();
 //        changingPassword = true;
         return "edit";
     }
-            
+
     public SelectItem[] getPerfilesAvailable() {
         return Util.getSelectItems(controllerPerfil.findAll());
     }

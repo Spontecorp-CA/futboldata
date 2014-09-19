@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Evento.findById", query = "SELECT e FROM Evento e WHERE e.id = :id"),
     @NamedQuery(name = "Evento.findByNombre", query = "SELECT e FROM Evento e WHERE e.nombre = :nombre")})
 public class Evento implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventoId")
     private Collection<PartidoEventoEquipo> partidoEventoEquipoCollection;
     
@@ -167,5 +169,13 @@ public class Evento implements Serializable {
 
     public void setPartidoEventoEquipoCollection(Collection<PartidoEventoEquipo> partidoEventoEquipoCollection) {
         this.partidoEventoEquipoCollection = partidoEventoEquipoCollection;
+    }
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
     }
 }

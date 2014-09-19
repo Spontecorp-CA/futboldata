@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Arbitro.findById", query = "SELECT a FROM Arbitro a WHERE a.id = :id"),
     @NamedQuery(name = "Arbitro.findByStatus", query = "SELECT a FROM Arbitro a WHERE a.status = :status")})
 public class Arbitro implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -154,5 +156,13 @@ public class Arbitro implements Serializable {
     public String toString() {
         return personaId.getApellido() + " " +personaId.getNombre();
     }
-    
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
+    }
+
 }

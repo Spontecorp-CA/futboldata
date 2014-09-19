@@ -4,8 +4,8 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
-import com.spontecorp.futboldata.entity.TipoEvento;
-import com.spontecorp.futboldata.jpacontroller.TipoEventoFacade;
+import com.spontecorp.futboldata.entity.Organizacion;
+import com.spontecorp.futboldata.jpacontroller.OrganizacionFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import com.spontecorp.futboldata.utilities.Util.PersistAction;
 import java.io.Serializable;
@@ -24,45 +24,45 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-@Named("tipoEventoBean")
+@Named("organizacionBean")
 @SessionScoped
-public class TipoEventoBean implements Serializable {
+public class OrganizacionBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private TipoEvento selected;
-    private List<TipoEvento> items;
-    private List<TipoEvento> filteredEvento = null;
+    private Organizacion selected;
+    private List<Organizacion> items;
+    private List<Organizacion> filteredEvento = null;
 
-    private final TipoEventoFacade tipoEventoFacade;
+    private final OrganizacionFacade organizacionFacade;
 
-    private static final Logger logger = LoggerFactory.getLogger(TipoEventoBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrganizacionBean.class);
     private final LoginBean bean;
 
-    public TipoEventoBean() {
-        tipoEventoFacade = new TipoEventoFacade();
+    public OrganizacionBean() {
+        organizacionFacade = new OrganizacionFacade();
         bean = (LoginBean) Util.findBean("loginBean");
     }
 
-    public TipoEvento getSelected() {
+    public Organizacion getSelected() {
         return selected;
     }
 
-    public void setSelected(TipoEvento selected) {
+    public void setSelected(Organizacion selected) {
         this.selected = selected;
     }
 
-    public List<TipoEvento> getFilteredEvento() {
+    public List<Organizacion> getFilteredEvento() {
         return filteredEvento;
     }
 
-    public void setFilteredEvento(List<TipoEvento> filteredEvento) {
+    public void setFilteredEvento(List<Organizacion> filteredEvento) {
         this.filteredEvento = filteredEvento;
     }
 
-    public List<TipoEvento> getItems() {
+    public List<Organizacion> getItems() {
         if (items == null) {
-            items = tipoEventoFacade.findAll(bean.getIdOrganizacion());
+            items = organizacionFacade.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
@@ -71,8 +71,8 @@ public class TipoEventoBean implements Serializable {
         return "adminPage";
     }
 
-    public TipoEvento prepareCreate() {
-        selected = new TipoEvento();
+    public Organizacion prepareCreate() {
+        selected = new Organizacion();
         initializeEmbeddableKey();
         return selected;
     }
@@ -95,7 +95,7 @@ public class TipoEventoBean implements Serializable {
     private boolean existeNombreStatus(String nombre) {
         boolean result = true;
         try {
-            if (tipoEventoFacade.findEvento(nombre, bean.getIdOrganizacion()) == null) {
+            if (organizacionFacade.findEvento(nombre) == null) {
                 result = false;
             }
         } catch (NoResultException e) {
@@ -123,9 +123,9 @@ public class TipoEventoBean implements Serializable {
             try {
                 setEmbeddableKeys();
                 if (persistAction == PersistAction.CREATE) {
-                    tipoEventoFacade.create(selected);
+                    organizacionFacade.create(selected);
                 } else if (persistAction == PersistAction.UPDATE) {
-                    tipoEventoFacade.edit(selected);
+                    organizacionFacade.edit(selected);
                 }
                 Util.addSuccessMessage(successMessage);
                 selected = null;
@@ -136,19 +136,19 @@ public class TipoEventoBean implements Serializable {
         }
     }
 
-    public TipoEvento getEvento(java.lang.Integer id) {
-        return tipoEventoFacade.find(id);
+    public Organizacion getEvento(java.lang.Integer id) {
+        return organizacionFacade.find(id);
     }
 
-    public List<TipoEvento> getItemsAvailableSelectMany() {
-        return tipoEventoFacade.findAll(bean.getIdOrganizacion());
+    public List<Organizacion> getItemsAvailableSelectMany() {
+        return organizacionFacade.findAll(bean.getIdOrganizacion());
     }
 
-    public List<TipoEvento> getItemsAvailableSelectOne() {
-        return tipoEventoFacade.findAll(bean.getIdOrganizacion());
+    public List<Organizacion> getItemsAvailableSelectOne() {
+        return organizacionFacade.findAll(bean.getIdOrganizacion());
     }
 
-    @FacesConverter(forClass = TipoEvento.class)
+    @FacesConverter(forClass = Organizacion.class)
     public static class EventoControllerConverter implements Converter {
 
         @Override
@@ -156,8 +156,8 @@ public class TipoEventoBean implements Serializable {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            TipoEventoBean controller = (TipoEventoBean) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "tipoEventoBean");
+            OrganizacionBean controller = (OrganizacionBean) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "organizacionBean");
             return controller.getEvento(getKey(value));
         }
 
@@ -178,12 +178,12 @@ public class TipoEventoBean implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof TipoEvento) {
-                TipoEvento o = (TipoEvento) object;
+            if (object instanceof Organizacion) {
+                Organizacion o = (Organizacion) object;
                 return getStringKey(o.getId());
             } else {
-                logger.error("object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), TipoEvento.class.getName()});
-                //java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), TipoEvento.class.getName()});
+                logger.error("object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Organizacion.class.getName()});
+                //java.util.logging.Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "object {0} is of type {1}; expected type: {2}", new Object[]{object, object.getClass().getName(), Organizacion.class.getName()});
                 return null;
             }
         }

@@ -49,12 +49,14 @@ public class EquipoInLigaBean implements Serializable {
     private Equipo equipo;
     private EquipoInLiga equipoInLiga;
     private List<Competicion> filteredLigas;
+    private final LoginBean bean;
 
     public EquipoInLigaBean() {
         controllerEquipoInLiga = new EquipoInLigaFacade();
         controllerEquipo = new EquipoFacade();
         controllerCompeticion = new CompeticionFacade();
         controllerLiga = new CompeticionFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public EquipoInLiga getEquipoInLiga() {
@@ -71,14 +73,14 @@ public class EquipoInLigaBean implements Serializable {
 
     public List<Competicion> getItemsLiga() {
         if (itemsLiga == null) {
-            itemsLiga = controllerLiga.findAll();
+            itemsLiga = controllerLiga.findAll(bean.getIdOrganizacion());
         }
         return itemsLiga;
     }
 
     public List<Equipo> getItemsEquipo() {
         if (itemsEquipo == null) {
-            itemsEquipo = controllerEquipo.findAll();
+            itemsEquipo = controllerEquipo.findAll(bean.getIdOrganizacion());
         }
         return itemsEquipo;
     }
@@ -159,7 +161,7 @@ public class EquipoInLigaBean implements Serializable {
 
     public List<Competicion> getItemCompeticion() {
         if (itemsCompeticion == null) {
-            itemsCompeticion = controllerCompeticion.findAll();
+            itemsCompeticion = controllerCompeticion.findAll(bean.getIdOrganizacion());
         }
         return itemsCompeticion;
     }
@@ -178,7 +180,6 @@ public class EquipoInLigaBean implements Serializable {
 //    protected void initializeEmbeddableKey() {
 //        liga = new Competicion();
 //    }
-
     public void recreateModel() {
         equipoInLiga = new EquipoInLiga();
         items = null;

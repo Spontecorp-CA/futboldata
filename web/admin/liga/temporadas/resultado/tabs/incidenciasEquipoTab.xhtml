@@ -9,9 +9,9 @@
     <h:panelGrid columns="2" styleClass="top-aligned-columns">
         <h:panelGrid columns="4">
             <h:outputLabel value="Equipo:" for="equipoSelectedIncident"/>
+            <h:outputLabel value="Tipo Informe:" for="equipoTipoEvento" />
             <h:outputLabel value="Incidencia:" for="equipoIncident" style="text-align: center"/>
             <h:outputLabel value="Valor:" for="eventQuantity" style="text-align: center"/>
-            <spacer/>
 
             <p:selectOneMenu id="equipoSelectedIncident" value="#{resultadoBean.equipoEvento.equipoId}" 
                              converter="equipo"
@@ -24,13 +24,22 @@
                 <f:selectItem itemValue="#{resultadoBean.partido.equipoVisitanteId}" 
                               itemLabel="#{resultadoBean.partido.equipoVisitanteId}"/>
                 <p:ajax  event="valueChange" 
-                         listener="#{resultadoBean.equipoSelected()}"
                          update="evento" />
             </p:selectOneMenu>
 
+           
+            <p:selectOneMenu  id="equipoTipoEvento" value="#{resultadoBean.tipoEvento}" 
+                              style="width: 140px;">
+                <f:selectItem itemLabel="-------------"  value="#{null}" />
+                <f:selectItems value="#{tipoEventoBean.items}" />
+                <p:ajax  event="valueChange" 
+                         listener="#{resultadoBean.TipoEventoSelected(changeEvent)}"
+                         update="equipoIncident" />
+            </p:selectOneMenu>
+            
             <p:selectOneMenu id="equipoIncident" value="#{resultadoBean.equipoEvento.eventoId}" style="width: 140px">
                 <f:selectItem itemLabel="-------------"  value="#{null}" />
-                <f:selectItems value="#{resultadoBean.comboEventoEquipo}" />
+                <f:selectItems value="#{resultadoBean.comboEvento}" />
                 <p:ajax event="valueChange" update="eventQuantity, eventQuantityLabel" />
             </p:selectOneMenu>
 

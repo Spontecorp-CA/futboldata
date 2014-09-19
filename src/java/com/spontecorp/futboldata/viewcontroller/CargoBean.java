@@ -35,9 +35,11 @@ public class CargoBean implements Serializable {
 
     private final CargoFacade cargoFacade;
     private static final Logger logger = LoggerFactory.getLogger(CargoBean.class);
+    private final LoginBean bean;
 
     public CargoBean() {
         cargoFacade = new CargoFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Cargo getSelected() {
@@ -66,7 +68,7 @@ public class CargoBean implements Serializable {
 
     public List<Cargo> getItems() {
         if (items == null) {
-            items = cargoFacade.findAll();
+            items = cargoFacade.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
@@ -77,17 +79,18 @@ public class CargoBean implements Serializable {
 
     public Cargo prepareCreate() {
         selected = new Cargo();
+        selected.setOrganizacionId(bean.getIdOrganizacion());
         return selected;
     }
 
     public void prepareEdit() {
-        temporal = (Cargo) cargoFacade.findCargo(selected.getNombre());
+        temporal = (Cargo) cargoFacade.findCargo(selected.getNombre(),bean.getIdOrganizacion());
         temporal.setNombre(selected.getNombre());
         temporal.setStatus(selected.getStatus());
     }
 
     public void create() {
-        temporal = (Cargo) cargoFacade.findCargo(selected.getNombre());
+        temporal = (Cargo) cargoFacade.findCargo(selected.getNombre(),bean.getIdOrganizacion());
         if (temporal == null) {
             persist(Util.PersistAction.CREATE, "Posición creada con éxito");
             items = null;
@@ -105,17 +108,17 @@ public class CargoBean implements Serializable {
     }
 
     public void edit() {
-        
-            cargoFacade.edit(selected);
-            Util.addSuccessMessage("Se edito exitosamente el Cargo");
-            items = null;
-        
+
+        cargoFacade.edit(selected);
+        Util.addSuccessMessage("Se edito exitosamente el Cargo");
+        items = null;
+
     }
 
     private boolean existeNombreCargo(String nombre) {
         boolean result = true;
         try {
-            Cargo pos = (Cargo) cargoFacade.findCargo(nombre);
+            Cargo pos = (Cargo) cargoFacade.findCargo(nombre,bean.getIdOrganizacion());
             if (pos != null && !pos.getNombre().equals(temporal.getNombre())) {
                 result = false;
             }

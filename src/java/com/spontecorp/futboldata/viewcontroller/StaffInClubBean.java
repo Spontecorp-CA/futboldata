@@ -14,6 +14,7 @@ import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.jpacontroller.CargoFacade;
 import com.spontecorp.futboldata.jpacontroller.ClubFacade;
 import com.spontecorp.futboldata.jpacontroller.StaffFacade;
+import com.spontecorp.futboldata.utilities.Util;
 import static com.spontecorp.futboldata.utilities.Util.ACTIVO;
 import static com.spontecorp.futboldata.utilities.Util.INACTIVO;
 import java.io.Serializable;
@@ -40,6 +41,7 @@ public class StaffInClubBean implements Serializable {
     private final StaffFacade controllerStaff;
     private final ClubFacade controllerClub;
     private final CargoFacade controllerCargo;
+    private final LoginBean bean;
 
     public void prepareEdit() {
         staff = new Staff();
@@ -51,6 +53,7 @@ public class StaffInClubBean implements Serializable {
         controllerClub = new ClubFacade();
         controllerStaff = new StaffFacade();
         controllerCargo = new CargoFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public void delete() {
@@ -170,7 +173,7 @@ public class StaffInClubBean implements Serializable {
     }
 
     public List<Persona> getStaffListAll() {
-        staffListAll = controllerStaff.findDistinctStaffList();
+        staffListAll = controllerStaff.findDistinctStaffList(bean.getIdOrganizacion());
         return staffListAll;
     }
 

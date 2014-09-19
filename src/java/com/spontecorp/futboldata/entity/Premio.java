@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,6 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Premio.findByNombre", query = "SELECT p FROM Premio p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Premio.findByFecha", query = "SELECT p FROM Premio p WHERE p.fecha = :fecha")})
 public class Premio implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "premio")
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -165,5 +171,15 @@ public class Premio implements Serializable {
     public String toString() {
         return nombre;
     }
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
+    }
+
+
     
 }

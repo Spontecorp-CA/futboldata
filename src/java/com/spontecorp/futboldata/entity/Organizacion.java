@@ -8,7 +8,6 @@ package com.spontecorp.futboldata.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,15 +26,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sponte03
  */
 @Entity
-@Table(name = "tipo_evento")
+@Table(name = "organizacion")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TipoEvento.findAll", query = "SELECT t FROM TipoEvento t"),
-    @NamedQuery(name = "TipoEvento.findById", query = "SELECT t FROM TipoEvento t WHERE t.id = :id"),
-    @NamedQuery(name = "TipoEvento.findByNombre", query = "SELECT t FROM TipoEvento t WHERE t.nombre = :nombre")})
-public class TipoEvento implements Serializable {
-    @Column(name = "organizacion_id")
-    private Integer organizacionId;
+    @NamedQuery(name = "Organizacion.findAll", query = "SELECT o FROM Organizacion o"),
+    @NamedQuery(name = "Organizacion.findById", query = "SELECT o FROM Organizacion o WHERE o.id = :id"),
+    @NamedQuery(name = "Organizacion.findByNombre", query = "SELECT o FROM Organizacion o WHERE o.nombre = :nombre")})
+public class Organizacion implements Serializable {
     @Column(name = "status")
     private Integer status;
     private static final long serialVersionUID = 1L;
@@ -47,13 +44,13 @@ public class TipoEvento implements Serializable {
     @Size(max = 45)
     @Column(name = "nombre")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoEventoId")
-    private Collection<Evento> eventoCollection;
+    @OneToMany(mappedBy = "organizacionId")
+    private Collection<User> userCollection;
 
-    public TipoEvento() {
+    public Organizacion() {
     }
 
-    public TipoEvento(Integer id) {
+    public Organizacion(Integer id) {
         this.id = id;
     }
 
@@ -74,12 +71,12 @@ public class TipoEvento implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Evento> getEventoCollection() {
-        return eventoCollection;
+    public Collection<User> getUserCollection() {
+        return userCollection;
     }
 
-    public void setEventoCollection(Collection<Evento> eventoCollection) {
-        this.eventoCollection = eventoCollection;
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
     }
 
     @Override
@@ -92,10 +89,10 @@ public class TipoEvento implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TipoEvento)) {
+        if (!(object instanceof Organizacion)) {
             return false;
         }
-        TipoEvento other = (TipoEvento) object;
+        Organizacion other = (Organizacion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -113,14 +110,6 @@ public class TipoEvento implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Integer getOrganizacionId() {
-        return organizacionId;
-    }
-
-    public void setOrganizacionId(Integer organizacionId) {
-        this.organizacionId = organizacionId;
     }
     
 }

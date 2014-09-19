@@ -48,11 +48,13 @@ public class EquipoBean implements Serializable {
     private final EquipoFacade controllerEquipo;
 
     private static final Logger logger = LoggerFactory.getLogger(EquipoBean.class);
+    private final LoginBean bean;
 
     public EquipoBean() {
         controllerEquipo = new EquipoFacade();
         controllerCategoria = new CategoriaFacade();
         controllerClub = new ClubFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Equipo getSelected() {
@@ -81,7 +83,7 @@ public class EquipoBean implements Serializable {
 
     public List<Equipo> getItems() {
         if (items == null) {
-            items = controllerEquipo.findAll();
+            items = controllerEquipo.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
@@ -108,6 +110,7 @@ public class EquipoBean implements Serializable {
         selected = new Equipo();
         selected.setLogo("vacio");
         initializeEmbeddableKey();
+        selected.setOrganizacionId(bean.getIdOrganizacion());
         return selected;
     }
 
@@ -124,21 +127,20 @@ public class EquipoBean implements Serializable {
     }
 
     public SelectItem[] getClubAvailable() {
-        return Util.getSelectItems(controllerClub.findAll());
+        return Util.getSelectItems(controllerClub.findAll(bean.getIdOrganizacion()));
     }
 
 //    public SelectItem[] getCategoriaAvailable() {
 //        return Util.getSelectItems(controllerCategoria.findAll());
 //    }
-    
-    public List<Categoria> getCategoriaAvailable(){
-        return controllerCategoria.findAll();
+    public List<Categoria> getCategoriaAvailable() {
+        return controllerCategoria.findAll(bean.getIdOrganizacion());
     }
 
     public Equipo getEquipo(java.lang.Integer id) {
         return controllerEquipo.find(id);
     }
-    
+
     public void create() {
         try {
             if ((selected.getId() != null) && (controllerEquipo.find(selected.getId()) != null)) {
@@ -174,7 +176,7 @@ public class EquipoBean implements Serializable {
     }
 
     private SelectItem[] createClubOptions() {
-        List<Club> listClubes = controllerClub.findAll();
+        List<Club> listClubes = controllerClub.findAll(bean.getIdOrganizacion());
         SelectItem[] options = new SelectItem[listClubes.size() + 1];
         int i = 1;
         for (Club club : listClubes) {
@@ -200,12 +202,12 @@ public class EquipoBean implements Serializable {
         return host;
     }
 
-    @FacesConverter(forClass = Equipo.class,value = "equipo")
+    @FacesConverter(forClass = Equipo.class, value = "equipo")
     public static class EquipoControllerConverter implements Converter {
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0 || getKey(value)== null) {
+            if (value == null || value.length() == 0 || getKey(value) == null) {
                 return null;
             }
             EquipoBean controller = (EquipoBean) facesContext.getApplication().getELResolver().
@@ -216,10 +218,10 @@ public class EquipoBean implements Serializable {
         java.lang.Integer getKey(String value) {
             java.lang.Integer key;
             try {
-                            key = Integer.valueOf(value);
+                key = Integer.valueOf(value);
             } catch (NumberFormatException e) {
                 logger.error("No es compatible el String para trasformar el equipo");
-            return null;
+                return null;
             }
 
             return key;

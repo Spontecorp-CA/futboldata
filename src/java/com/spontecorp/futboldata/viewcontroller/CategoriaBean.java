@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Categoria;
@@ -27,21 +26,22 @@ import org.slf4j.LoggerFactory;
  */
 @Named("categoriaBean")
 @SessionScoped
-public class CategoriaBean implements Serializable{
-    
+public class CategoriaBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     private List<Categoria> items = null;
     private List<Categoria> filteredCategorias = null;
     private Categoria selected;
 
-
     private final CategoriaFacade categoriaFacade;
 
     private static final Logger logger = LoggerFactory.getLogger(CategoriaBean.class);
+    private final LoginBean bean;
 
     public CategoriaBean() {
         this.categoriaFacade = new CategoriaFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Categoria getSelected() {
@@ -54,7 +54,7 @@ public class CategoriaBean implements Serializable{
 
     public List<Categoria> getItems() {
         if (items == null) {
-            items = categoriaFacade.findAll();
+            items = categoriaFacade.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
@@ -74,6 +74,7 @@ public class CategoriaBean implements Serializable{
     public Categoria prepareCreate() {
         selected = new Categoria();
         initializeEmbeddableKey();
+        selected.setOrganizacionId(bean.getIdOrganizacion());
         return selected;
     }
 
@@ -95,7 +96,7 @@ public class CategoriaBean implements Serializable{
     private boolean existeNombreCategoria(String nombre) {
         boolean result = true;
         try {
-            if (categoriaFacade.findCategoria(nombre) == null) {
+            if (categoriaFacade.findCategoria(nombre,bean.getIdOrganizacion()) == null) {
                 result = false;
             }
         } catch (NoResultException e) {
@@ -143,13 +144,13 @@ public class CategoriaBean implements Serializable{
     }
 
     public List<Categoria> getItemsAvailableSelectMany() {
-        return categoriaFacade.findAll();
+        return categoriaFacade.findAll(bean.getIdOrganizacion());
     }
 
     public List<Categoria> getItemsAvailableSelectOne() {
-        return categoriaFacade.findAll();
+        return categoriaFacade.findAll(bean.getIdOrganizacion());
     }
-    
+
     @FacesConverter(forClass = Categoria.class)
     public static class CategoriaControllerConverter implements Converter {
 

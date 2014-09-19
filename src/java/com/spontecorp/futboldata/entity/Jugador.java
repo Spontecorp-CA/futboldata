@@ -41,6 +41,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Jugador.findByPeso", query = "SELECT j FROM Jugador j WHERE j.peso = :peso"),
     @NamedQuery(name = "Jugador.findByStatus", query = "SELECT j FROM Jugador j WHERE j.status = :status")})
 public class Jugador implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
     @JoinColumn(name = "categoria_id", referencedColumnName = "id")
     @ManyToOne
     private Categoria categoriaId;
@@ -275,6 +277,14 @@ public class Jugador implements Serializable {
 
     public void setCategoriaId(Categoria categoriaId) {
         this.categoriaId = categoriaId;
+    }
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
     }
     
 }

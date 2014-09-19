@@ -4,6 +4,7 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
+import com.spontecorp.futboldata.entity.Organizacion;
 import com.spontecorp.futboldata.entity.Perfil;
 import com.spontecorp.futboldata.entity.User;
 import com.spontecorp.futboldata.utilities.SecurePassword;
@@ -28,6 +29,7 @@ public class LoginBean implements Serializable {
     private String username;
     private String password;
     private User current;
+    private Organizacion organizacion;
     private boolean isAdmin;
     private boolean isSupervisor;
     private boolean isEditor;
@@ -43,6 +45,16 @@ public class LoginBean implements Serializable {
     public String getUsername() {
         return username;
     }
+
+    public Organizacion getOrganizacion() {
+        return organizacion;
+    }
+
+    public void setOrganizacion(Organizacion organizacion) {
+        this.organizacion = organizacion;
+    }
+    
+    
 
     public void setUsername(String username) {
         this.username = username;
@@ -76,6 +88,10 @@ public class LoginBean implements Serializable {
         return isConsultor;
     }
 
+    public int getIdOrganizacion(){
+        return organizacion.getId();
+    }
+    
     public static Logger getLogger() {
         return logger;
     }
@@ -90,7 +106,8 @@ public class LoginBean implements Serializable {
             session.setAttribute("username", username);
             //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", username);
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", username);
-            Perfil perfil = current.getPerfilId();
+            Perfil perfil = current.getPerfilId(); 
+            organizacion = current.getOrganizacionId();
             switch (perfil.getId()) {
                 case Util.ADMINISTRATOR:
                     isAdmin = true;

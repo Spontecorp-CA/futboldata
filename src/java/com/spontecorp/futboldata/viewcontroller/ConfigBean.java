@@ -110,8 +110,10 @@ public class ConfigBean implements Serializable {
     private final EquipoEnGrupoFacade equipoEnGrupoFacade;
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigBean.class);
+    private final LoginBean bean;
 
     public ConfigBean() {
+
         this.temporadaFacade = new TemporadaFacade();
         this.faseFacade = new FaseFacade();
         this.llaveFacade = new LlaveFacade();
@@ -130,6 +132,7 @@ public class ConfigBean implements Serializable {
         categorias = null;
         inicializeMenu();
         faseTipo = -1;
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public String returnAdminPage() {
@@ -385,7 +388,7 @@ public class ConfigBean implements Serializable {
 
     public void prepareCreateTemporada() {
         temporada = new Temporada();
-        categoriaSource = categoriaFacade.findAll();
+        categoriaSource = categoriaFacade.findAll(bean.getIdOrganizacion());
 
         categorias = null;
 
@@ -415,7 +418,7 @@ public class ConfigBean implements Serializable {
     }
 
     public void prepareEditTemporada() {
-        categoriaSource = categoriaFacade.findAll();
+        categoriaSource = categoriaFacade.findAll(bean.getIdOrganizacion());
         categoriaTarget = getCategorias(temporada);
         categoriaSource.removeAll(categoriaTarget);
         categorias = null;
@@ -867,7 +870,7 @@ public class ConfigBean implements Serializable {
             } else if (llave != null) {
                 partidos = partidoFacade.findPartidos(llave);
             } else if (partidos == null) {
-                partidos = partidoFacade.findAll();
+                partidos = partidoFacade.findAll(bean.getIdOrganizacion());
             }
         }
         return partidos;
@@ -1027,7 +1030,7 @@ public class ConfigBean implements Serializable {
         }
     }
 
-    public void createPDF(ActionEvent actionEvent)  {
+    public void createPDF(ActionEvent actionEvent) {
         try {
 //            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
             List<String> subTitulos = new ArrayList<String>();
@@ -1058,5 +1061,6 @@ public class ConfigBean implements Serializable {
 
         }
     }
+  
 
 }

@@ -106,6 +106,7 @@ public class ResultadoBean implements Serializable {
     private List<PartidoEvento> filteredEventos;
     private static final Logger logger = LoggerFactory.getLogger(ResultadoBean.class);
     private Clasificacion clasificacion;
+    private LoginBean bean;
 
     public class TablaEventoEquipo {
 
@@ -114,6 +115,7 @@ public class ResultadoBean implements Serializable {
         public PartidoEventoEquipo equipoVisitante;
 
         public Evento getEvento() {
+
             return evento;
         }
 
@@ -157,6 +159,7 @@ public class ResultadoBean implements Serializable {
         eventoFacade = new EventoFacade();
         equipoEnGrupoFacade = new EquipoEnGrupoFacade();
         jornadaFacade = new JornadaFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public double getCant_percent() {
@@ -777,7 +780,7 @@ public class ResultadoBean implements Serializable {
 
     public List<Evento> getComboEvento() {
         if (comboEvento == null) {
-            comboEvento = eventoFacade.findAll();
+            comboEvento = eventoFacade.findAll(bean.getIdOrganizacion());
         }
         return comboEvento;
     }
@@ -788,7 +791,6 @@ public class ResultadoBean implements Serializable {
 
     public List<Evento> getComboEventoEquipo() {
         comboEventoEquipo = null;
-        tipoEvento = new TipoEvento(Util.TIPO_ESTADISTICA_EQUIPO);
         if (comboEventoEquipo == null) {
             comboEventoEquipo = eventoFacade.findEvento(tipoEvento);
         }
@@ -809,7 +811,7 @@ public class ResultadoBean implements Serializable {
 
     public void TipoEventoSelected(ValueChangeEvent changeEvent) {
         if (tipoEvento == null) {
-            comboEvento = eventoFacade.findAll();
+            comboEvento = eventoFacade.findAll(bean.getIdOrganizacion());
         } else {
             comboEvento = eventoFacade.findEvento(tipoEvento);
         }

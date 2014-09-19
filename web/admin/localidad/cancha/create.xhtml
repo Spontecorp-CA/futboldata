@@ -9,13 +9,13 @@
     <script type="text/javascript">
         var currentMarker = null;
 
-        function handlePointClick(event) {  
-            if (currentMarker === null) {  
-                document.getElementById('CanchaCreateForm:longitud').value = event.latLng.lat();
-                document.getElementById('CanchaCreateForm:latitud').value = event.latLng.lng();    
-            currentMarker = new google.maps.Marker({
+        function handlePointClick1(event) {           
+            if (currentMarker === null) {
+                currentMarker = new google.maps.Marker({
                     position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())});
                 PF('map').addOverlay(currentMarker);
+                document.getElementById('CanchaCreateForm:longitud').value = event.latLng.lat();
+                document.getElementById('CanchaCreateForm:latitud').value = event.latLng.lng();
             }else{
                 cancel();
             }
@@ -28,7 +28,6 @@
             currentMarker = null;
             PF('dlg').hide();
         }
-
         function cancel() {
             currentMarker.setMap(null);
             currentMarker = null;
@@ -128,8 +127,6 @@
                                              title="Longitud"
                                              style="width: 75px">
                                 </p:inputText>
-                                <h:inputHidden id="lat" value="#{canchaBean.lat}" />
-                                <h:inputHidden id="lng" value="#{canchaBean.lng}" />
                             </h:panelGrid>
 
                         </h:panelGrid>
@@ -145,7 +142,7 @@
                 <p:gmap id="gmap"
                         center="10.4683917,-66.8903658" zoom="13" type="HYBRID" 
                         style="width:600px;height:400px"
-                        onPointClick="handlePointClick(event);" widgetVar="map"
+                        onPointClick="handlePointClick1(event);" widgetVar="map"
                         model="#{canchaBean.emptyModel}"/>
             </h:panelGroup>
         </h:form> 

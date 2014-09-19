@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns="http://www.w3.org/1999/xhtml">
+    
+    <ui:composition template="./../../../WEB-INF/templates/adminTemplate.xhtml">
+
+        <ui:define name="title">
+            Administración de Usuarios
+        </ui:define>
+
+        <ui:define name="content">
+            <h:form id="UserListForm">
+
+                <p:fieldset style="width: 85%" legend="Lista de Usuarios">
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+
+                            <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                             value="Editar Usuario" 
+                                             update=":UserEditForm" 
+                                             oncomplete="PF('UserEditDialog').show()" 
+                                             disabled="#{empty usuarioBean.selected}"/>
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton value="Administración" action="#{usuarioBean.returnAdminPage}"
+                                             immediate="true"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <br />
+                    <p:dataTable id="usuarios" var="item" 
+                                 value="#{usuarioBean.items}"
+                                 rowKey="#{item.id}"
+                                 selectionMode="single" 
+                                 selection="#{usuarioBean.selected}" 
+                                 paginator="true" rows="10"  
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+                                 rowsPerPageTemplate="5,10,15">
+
+                        <p:ajax event="rowSelect" update=" :UserListForm:editButton "/>
+                        <p:ajax event="rowUnselect" update=" :UserListForm:editButton "/>
+
+                        <p:column headerText="Apellido">
+                            <h:outputText value="#{item.apellido}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{item.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Usuario">
+                            <h:outputText value="#{item.usuario}"/>
+                        </p:column>
+                        <p:column headerText="Perfil">
+                            <h:outputText value="#{item.perfilId.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Organizacion" >
+                            <h:outputText value="#{item.organizacionId.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{item.status == 0?'INACTIVO':'ACTIVO'}"/>
+                        </p:column>                        
+                    </p:dataTable>
+                </p:fieldset>
+            </h:form>
+            <ui:include src="edit.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+</html>

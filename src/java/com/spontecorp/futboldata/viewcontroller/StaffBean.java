@@ -64,6 +64,7 @@ public class StaffBean implements Serializable {
     private List<RedSocial> redesEliminar;
     private static final Logger logger = LoggerFactory.getLogger(StaffBean.class);
     private final PersonaFacade controllerPersona;
+    private final LoginBean bean;
 
     public StaffBean() {
         controllerStaff = new StaffFacade();
@@ -74,6 +75,7 @@ public class StaffBean implements Serializable {
         tipoRedSocialController = new TipoRedSocialFacade();
         controllerCargo = new CargoFacade();
         controllerPersona = new PersonaFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Staff getSelected() {
@@ -110,7 +112,7 @@ public class StaffBean implements Serializable {
     }
 
     public SelectItem[] getAsociacionesAvalaible() {
-        return Util.getSelectItems(controllerAsociacion.findAll());
+        return Util.getSelectItems(controllerAsociacion.findAll(bean.getIdOrganizacion()));
     }
 
     public SelectItem[] getPaisesAvalaible() {
@@ -212,6 +214,7 @@ public class StaffBean implements Serializable {
         ciudades = null;
         redes = new ArrayList<RedSocial>();
         pais = null;
+        staff.setOrganizacionId(bean.getIdOrganizacion());
 //        return "list?faces-redirect=true";
     }
 
@@ -298,7 +301,7 @@ public class StaffBean implements Serializable {
 
     public List<Persona> getItems() {
         if (items == null) {
-            items = controllerStaff.findDistinctStaffList();
+            items = controllerStaff.findDistinctStaffList(bean.getIdOrganizacion());
         }
         return items;
     }

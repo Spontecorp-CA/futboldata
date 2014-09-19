@@ -65,6 +65,7 @@ public class JugadorBean implements Serializable {
     private final TipoRedSocialFacade tipoRedSocialController;
 
     private static final Logger logger = LoggerFactory.getLogger(Jugador.class);
+    private final LoginBean bean;
 
     public JugadorBean() {
         controllerJugador = new JugadorFacade();
@@ -73,6 +74,7 @@ public class JugadorBean implements Serializable {
         posicionFacade = new PosicionFacade();
         controllerRedSocial = new RedSocialFacade();
         tipoRedSocialController = new TipoRedSocialFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Jugador getSelected() {
@@ -132,24 +134,17 @@ public class JugadorBean implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerJugador.findAll());
+            items = new ListDataModel(controllerJugador.findAll(bean.getIdOrganizacion()));
         }
         return items;
     }
 
     public void prepareCreate() {
-////        redSocial = new RedSocial();
-//
-////        direccion = new Direccion();
-////        persona = new Persona();
-//        persona.setFoto("vacio");
-//        persona.setDireccionId(direccion);
-//        jugador.setPersonaId(persona);
-//        ciudades = null;
-//        redes = new ArrayList<RedSocial>();
+
         jugador = new Jugador();
         initializeEmbeddableKey();
-//        return "list?faces-redirect=true";
+        jugador.setOrganizacionId(bean.getIdOrganizacion());
+
     }
 
     protected void setEmbeddableKeys() {

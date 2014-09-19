@@ -65,6 +65,7 @@ public class LigaBean implements Serializable {
     private final PaisFacade paisFacade;
 
     private static final Logger logger = LoggerFactory.getLogger(LigaBean.class);
+    private final LoginBean bean;
 
     public LigaBean() {
         this.ligaController = new CompeticionFacade();
@@ -73,6 +74,7 @@ public class LigaBean implements Serializable {
         this.telefonoFacade = new TelefonoFacade();
         this.ciudadFacade = new CiudadFacade();
         this.paisFacade = new PaisFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Competicion getSelected() {
@@ -129,7 +131,7 @@ public class LigaBean implements Serializable {
 
     public List<Competicion> getItems() {
         if (items == null) {
-            items = ligaController.findAll();
+            items = ligaController.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
@@ -181,6 +183,7 @@ public class LigaBean implements Serializable {
     public Competicion prepareCreate() {
         selected = new Competicion();
         initializeEmbeddableKey();
+        selected.setOrganizacionId(bean.getIdOrganizacion());
         return selected;
     }
 
@@ -210,7 +213,7 @@ public class LigaBean implements Serializable {
     private boolean existeNombreLiga(String nombre) {
         boolean result = true;
         try {
-            if (ligaController.findCompeticion(nombre) == null) {
+            if (ligaController.findCompeticion(nombre,bean.getIdOrganizacion()) == null) {
                 result = false;
             }
         } catch (NoResultException e) {
@@ -316,11 +319,11 @@ public class LigaBean implements Serializable {
     }
 
     public List<Competicion> getItemsAvailableSelectMany() {
-        return ligaController.findAll();
+        return ligaController.findAll(bean.getIdOrganizacion());
     }
 
     public List<Competicion> getItemsAvailableSelectOne() {
-        return ligaController.findAll();
+        return ligaController.findAll(bean.getIdOrganizacion());
     }
 
     public String gotoLiga() {

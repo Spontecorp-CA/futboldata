@@ -8,6 +8,7 @@ package com.spontecorp.futboldata.jpacontroller;
 import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Llave;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-public class LlaveFacade extends AbstractFacade<Llave>{
+public class LlaveFacade extends AbstractFacade<Llave> implements Serializable{
 
     public LlaveFacade() {
         super(Llave.class);

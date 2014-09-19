@@ -65,6 +65,7 @@ public class ArbitroBean implements Serializable {
     private final TipoRedSocialFacade tipoRedSocialController;
 
     private static final Logger logger = LoggerFactory.getLogger(ArbitroBean.class);
+    private final LoginBean bean;
 
     public ArbitroBean() {
         controllerArbitro = new ArbitroFacade();
@@ -73,6 +74,7 @@ public class ArbitroBean implements Serializable {
         controllerCiudad = new CiudadFacade();
         controllerRedSocial = new RedSocialFacade();
         tipoRedSocialController = new TipoRedSocialFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Arbitro getSelected() {
@@ -92,6 +94,7 @@ public class ArbitroBean implements Serializable {
     public void prepareCreate() {
         arbitro = new Arbitro();
         initializeEmbeddableKey();
+        arbitro.setOrganizacionId(bean.getIdOrganizacion());
     }
 
     protected void initializeEmbeddableKey() {
@@ -126,7 +129,7 @@ public class ArbitroBean implements Serializable {
     }
 
     public SelectItem[] getAsociacionesAvalaible() {
-        return Util.getSelectItems(controllerAsociacion.findAll());
+        return Util.getSelectItems(controllerAsociacion.findAll(bean.getIdOrganizacion()));
     }
 
     public SelectItem[] getPaisesAvalaible() {
@@ -168,7 +171,7 @@ public class ArbitroBean implements Serializable {
 
     public List<Arbitro> getItems() {
         if (items == null) {
-            items = controllerArbitro.findAll();
+            items = controllerArbitro.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
@@ -181,14 +184,14 @@ public class ArbitroBean implements Serializable {
 //
 //            } else {
 
-                persona.setRedSocialCollection(redes);
-                persona.setDireccionId(direccion);
-                arbitro.setPersonaId(persona);
-                arbitro.setAsociacionId(asociacion);
-                logger.debug("Esta Creando  un Arbitro");
-                controllerArbitro.create(arbitro);
-                recreateModel();
-                Util.addSuccessMessage("Se creo exitosamente el Jugador");
+            persona.setRedSocialCollection(redes);
+            persona.setDireccionId(direccion);
+            arbitro.setPersonaId(persona);
+            arbitro.setAsociacionId(asociacion);
+            logger.debug("Esta Creando  un Arbitro");
+            controllerArbitro.create(arbitro);
+            recreateModel();
+            Util.addSuccessMessage("Se creo exitosamente el Jugador");
 //
 //            }
 

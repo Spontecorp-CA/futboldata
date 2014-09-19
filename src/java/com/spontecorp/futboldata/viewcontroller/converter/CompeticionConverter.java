@@ -2,6 +2,8 @@ package com.spontecorp.futboldata.viewcontroller.converter;
 
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
+import com.spontecorp.futboldata.utilities.Util;
+import com.spontecorp.futboldata.viewcontroller.LoginBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -12,23 +14,25 @@ import javax.faces.convert.FacesConverter;
  * @author jgcastillo
  */
 @FacesConverter(forClass = Competicion.class)
-public class CompeticionConverter implements Converter{
+public class CompeticionConverter implements Converter {
 
     private CompeticionFacade controller = null;
-    
-    private CompeticionFacade getController(){
-        if(controller == null){
+
+
+    private CompeticionFacade getController() {
+        if (controller == null) {
             controller = new CompeticionFacade();
         }
         return controller;
     }
-    
+
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         if (value == null || value.length() == 0) {
             return null;
-        }        
-        return getController().findCompeticion(value);
+        }   
+        LoginBean bean = (LoginBean) Util.findBean("loginBean");
+        return getController().findCompeticion(value,bean.getIdOrganizacion());
     }
 
     @Override
@@ -36,12 +40,12 @@ public class CompeticionConverter implements Converter{
         if (value == null) {
             return null;
         }
-        if(value instanceof Competicion){
+        if (value instanceof Competicion) {
             return value.toString();
         } else {
             throw new IllegalArgumentException("El objecto " + value + " es de tipo " + value.getClass().getName() + "; se espera: " + Competicion.class.getName());
         }
-        
+
     }
-    
+
 }

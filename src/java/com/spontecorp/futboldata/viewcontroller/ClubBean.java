@@ -64,6 +64,7 @@ public class ClubBean implements Serializable {
     private final StaffFacade controllerStaff;
 
     private final EmailFacade controllerEmail;
+    private final LoginBean bean;
 
     public ClubBean() {
         controllerClub = new ClubFacade();
@@ -73,6 +74,7 @@ public class ClubBean implements Serializable {
         controllerTelefono = new TelefonoFacade();
         controllerEmail = new EmailFacade();
         controllerStaff = new StaffFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public List<Email> getEmails() {
@@ -96,6 +98,7 @@ public class ClubBean implements Serializable {
             club = new Club();
             initializeEmbeddableKey();
             setEmbeddableKeys();
+            club.setOrganizacionId(bean.getIdOrganizacion());
         }
         return club;
     }
@@ -195,13 +198,13 @@ public class ClubBean implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerClub.findAll());
+            items = new ListDataModel(controllerClub.findAll(bean.getIdOrganizacion()));
         }
         return items;
     }
 
     public List<Club> getClubes() {
-        return controllerClub.findAll();
+        return controllerClub.findAll(bean.getIdOrganizacion());
     }
 
     public void cargarTelefono() {
@@ -258,6 +261,7 @@ public class ClubBean implements Serializable {
         club = new Club();
         initializeEmbeddableKey();
         setEmbeddableKeys();
+        club.setOrganizacionId(bean.getIdOrganizacion());
         return club;
     }
 
@@ -283,7 +287,7 @@ public class ClubBean implements Serializable {
 
     public void create() {
         try {
-            if (controllerClub.findClub(club.getNombre()) != null) {
+            if (controllerClub.findClub(club.getNombre(),bean.getIdOrganizacion()) != null) {
                 Util.addErrorMessage("Club ya existente, coloque otro");
                 //return null;
             } else {

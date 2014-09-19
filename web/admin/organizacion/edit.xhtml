@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <p:dialog id="OrganizacionEditDlg" widgetVar="OrganizacionEditDialog" modal="true" 
+              resizable="false" appendTo="@(body)" header="Editar Organizacion">
+        <h:form id="OrganizacionEditForm">
+            <h:panelGroup id="display">
+                <h:panelGrid columns="2" rendered="#{organizacionBean.selected != null}">
+                    <p:outputLabel value="* Nombre: " for="nombre" />
+                    <p:inputText id="nombre" value="#{organizacionBean.selected.nombre}" 
+                                 title="Nombre del Tipo Evento del Partido" required="true" 
+                                 requiredMessage="Debe colocar un nombre para la Organizacion"
+                                 style="width: 240px"/>
+
+                    <p:outputLabel value="Status: " for="status" />
+                    <p:selectOneMenu id="status" value="#{organizacionBean.selected.status}"
+                                     converter= "javax.faces.Integer"
+                                     style="width: 240px">
+                        <f:selectItem itemLabel="Activo" itemValue="1"/>
+                        <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:commandButton actionListener="#{organizacionBean.edit}" 
+                                 value="OK" update="display,:OrganizacionListForm:items,:growlAdmin" 
+                                 oncomplete="handleSubmit(args, 'OrganizacionEditDialog');"/>
+                <p:commandButton value="Cancelar" onclick="OrganizacionEditDialog.hide()"/>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+</ui:composition>
+

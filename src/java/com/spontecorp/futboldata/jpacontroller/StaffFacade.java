@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author sponte07
  */
-public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
+public class StaffFacade extends AbstractFacade<Staff> implements Serializable {
 
     private static final PersonaFacade controllerPersona = new PersonaFacade();
     private static final Logger logger = LoggerFactory.getLogger(StaffFacade.class);
@@ -78,8 +78,8 @@ public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
         }
         return staffList;
     }
-    
-        public List<Staff> findStaffListByEquipo(Equipo equipo) {
+
+    public List<Staff> findStaffListByEquipo(Equipo equipo) {
         List<Staff> staffList = null;
         EntityManager em = getEntityManager();
         try {
@@ -96,16 +96,17 @@ public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
         }
         return staffList;
     }
-            public List<Staff> findStaffListByAsociacion(Asociacion asociacion) {
+
+    public List<Staff> findStaffListByAsociacion(Asociacion asociacion) {
         List<Staff> staffList = null;
         EntityManager em = getEntityManager();
         try {
-            String query = "SELECT j FROM Staff j WHERE j.asociacionId = :asociacion AND j.status= 1";
+            String query = "SELECT a FROM asociacion a WHERE a.asociacionId = :asociacion AND j.status= 1";
             Query q = em.createQuery(query);
             q.setParameter("asociacion", asociacion);
             staffList = q.getResultList();
         } catch (NoResultException e) {
-            logger.debug("Error al buscar lista de staff por asociacion findStaffListByasociacion" , e.getMessage());
+            logger.debug("Error al buscar lista de staff por staff findStaffListBystaff", e.getMessage());
         } catch (Exception e) {
             logger.debug("Ha ocurrido un error: " + e);
         } finally {
@@ -113,7 +114,8 @@ public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
         }
         return staffList;
     }
-                public List<Staff> findStaffListByCompeticion(Competicion competicion) {
+
+    public List<Staff> findStaffListByCompeticion(Competicion competicion) {
         List<Staff> staffList = null;
         EntityManager em = getEntityManager();
         try {
@@ -131,20 +133,27 @@ public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
         return staffList;
     }
 
-    public List<Persona> findDistinctStaffList() {
+    public List<Persona> findDistinctStaffList(int organizacion) {
         List<Persona> staffList = null;
         EntityManager em = getEntityManager();
         try {
             String query = "select distinct p from Persona p, Staff s where s.personaId = p ";
-            Query q = em.createQuery(query);
-            staffList = q.getResultList();
-            if (!staffList.isEmpty()) {
-                for (int i = 0; i < staffList.size(); i++) {
-                    for (int h = 1; h < staffList.size() ; h++) {
-
-                    }
-                }
+            if (organizacion != 1) {
+                query = query + "AND s.organizacionId =:organizacion";
             }
+            Query q = em.createQuery(query);
+            if (organizacion != 1) {
+                q.setParameter("organizacion", organizacion);
+            }
+
+            staffList = q.getResultList();
+//            if (!staffList.isEmpty()) {
+//                for (int i = 0; i < staffList.size(); i++) {
+//                    for (int h = 1; h < staffList.size(); h++) {
+//
+//                    }
+//                }
+//            }
         } catch (NoResultException e) {
             logger.debug("Error al buscar lista de staff por club findStaffListByClub ", e.getMessage());
         } catch (Exception e) {
@@ -153,5 +162,26 @@ public class StaffFacade extends AbstractFacade<Staff> implements Serializable{
             em.close();
         }
         return staffList;
+    }
+
+    public List<Staff> findAll(int organizacion) {
+        List<Staff> staffs = null;
+        EntityManager em = getEntityManager();
+        if (organizacion != 1) {
+
+            try {
+                String q = "SELECT s FROM Staff s WHERE s.organizacionId =:organizacion";
+                Query query = em.createQuery(q, Staff.class);
+                query.setParameter("organizacion", organizacion);
+                staffs = query.getResultList();
+            } catch (NoResultException e) {
+                logger.debug("Problema al buscar staff", e.getMessage());
+            } finally {
+                em.close();
+            }
+        } else {
+            staffs = findAll();
+        }
+        return staffs;
     }
 }

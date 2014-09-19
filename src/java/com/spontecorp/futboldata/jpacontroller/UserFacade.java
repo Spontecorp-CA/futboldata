@@ -2,11 +2,11 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.jpacontroller;
 
 import com.spontecorp.futboldata.entity.User;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -17,10 +17,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-public class UserFacade extends AbstractFacade<User>{
+public class UserFacade extends AbstractFacade<User> implements Serializable{
 
     private static final Logger logger = LoggerFactory.getLogger(UserFacade.class);
-    
+
     public UserFacade() {
         super(User.class);
     }
@@ -29,7 +29,22 @@ public class UserFacade extends AbstractFacade<User>{
     protected EntityManager getEntityManager() {
         return Util.getEmf().createEntityManager();
     }
- 
+
+    public List<User> findUser(int organizacion) {
+        if (organizacion == 1) {
+            return findAll();
+        } else {
+            List<User> users = null;
+            EntityManager em = getEntityManager();
+            String query = "SELECT u FROM User u "
+                    + "WHERE  u.organizacionId.id = :organizacion";
+            Query q = em.createQuery(query, User.class);
+            q.setParameter("organizacion", organizacion);
+            users = q.getResultList();
+            return users;
+        }
+    }
+
     public User findUsuario(String user) {
         EntityManager em = getEntityManager();
         User usuario = null;
@@ -56,5 +71,5 @@ public class UserFacade extends AbstractFacade<User>{
             em.close();
         }
     }
-    
+
 }

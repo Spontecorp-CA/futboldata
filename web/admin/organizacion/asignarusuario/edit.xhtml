@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:composition>
+        <p:dialog id="UserEditDlg" widgetVar="UserEditDialog" modal="true" 
+                  resizable="false" appendTo="@(body)" header="Asignar Organizacion">
+            <h:form id="UserEditForm">
+                <h:panelGroup id="display">
+                    <h:panelGrid columns="2" rendered="#{usuarioBean.selected != null}">
+                        <h:outputLabel value="* Nombre:" for="nombre"/>
+                        <p:inputText id="nombre" value="#{usuarioBean.selected.nombre}"
+                                     required="true" requiredMessage="Debe colocar un nombre"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="* Apellido:" for="apellido"/>
+                        <p:inputText id="apellido" value="#{usuarioBean.selected.apellido}"
+                                     required="true" requiredMessage="Debe colocar un apellido"
+                                     style="width: 250px"/>
+                        <p:outputLabel value="Organizacion:" />
+                        <p:selectOneMenu value="#{usuarioBean.selected.organizacionId}">
+                            <f:selectItems value="#{organizacionBean.items}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel value="* Usuario:" for="usuario"/>
+                        <p:inputText id="usuario" value="#{usuarioBean.selected.usuario}"
+                                     required="true" requiredMessage="Debe colocar un usuario"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="* Perfil:" for="perfil"/>
+                        <p:selectOneMenu id="perfil" value="#{usuarioBean.selected.perfilId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px"
+                                         required="true"
+                                         requiredMessage="Debe seleccionar un perfil">                       
+                            <f:selectItems value="#{usuarioBean.perfilesAvailable}"/>
+                        </p:selectOneMenu>
+
+                    </h:panelGrid>
+                    <p:commandButton actionListener="#{usuarioBean.edit}" 
+                                     value="OK" update="display,:UserListForm:usuarios,:growlAdmin" 
+                                     oncomplete="handleSubmit(args, 'UserEditDialog');"/>
+<!--                                     ajax="false"/>-->
+                    <p:commandButton value="Cancelar" onclick="UserEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

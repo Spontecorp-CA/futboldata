@@ -8,6 +8,7 @@ import com.spontecorp.futboldata.entity.Clasifica;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -19,7 +20,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-public class ClasificacionesFacade {
+public class ClasificacionesFacade implements Serializable{
 
     private static final Logger logger = LoggerFactory.getLogger(ClasificacionesFacade.class);
 

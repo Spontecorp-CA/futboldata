@@ -46,8 +46,9 @@ public class EquipoHasJugadorBean implements Serializable {
     private Jugador jugador;
     private Equipo equipo;
     private EquipoHasJugador equipoHasJugador;
-
+    private LoginBean bean;
     public EquipoHasJugadorBean() {
+        bean = (LoginBean) Util.findBean("loginBean");
         controllerEquipoHasJugador = new EquipoHasJugadorFacade();
         controllerEquipo = new EquipoFacade();
         controllerJugador = new JugadorFacade();
@@ -66,7 +67,7 @@ public class EquipoHasJugadorBean implements Serializable {
     public void setEquipoHasJugador(EquipoHasJugador equipoHasJugador) {
         this.equipoHasJugador = equipoHasJugador;
     }
-    
+
     public List<Jugador> getFilteredJugador() {
         return filteredJugador;
     }
@@ -124,14 +125,14 @@ public class EquipoHasJugadorBean implements Serializable {
 
     public List<Jugador> getItemJugador() {
         if (itemsJugador == null) {
-            itemsJugador = controllerJugador.findAll();
+            itemsJugador = controllerJugador.findAll(bean.getIdOrganizacion());
         }
         return itemsJugador;
     }
 
     public List<Equipo> getItemEquipo() {
         if (itemsEquipo == null) {
-            itemsEquipo = controllerEquipo.findAll();
+            itemsEquipo = controllerEquipo.findAll(bean.getIdOrganizacion());
         }
         return itemsEquipo;
     }
@@ -163,26 +164,26 @@ public class EquipoHasJugadorBean implements Serializable {
     }
 
     public String create() {
-      
+
         if (controllerEquipoHasJugador.getEquipoHasJugador(equipo, jugador) == null) {
-            
-           try {
-            equipoHasJugador.setJugadorId(this.jugador);
-            logger.debug("Nombre del jugador " + jugador.getPersonaId().getNombre());
-            equipoHasJugador.setEquipoId(this.equipo);
-            logger.debug("Nombre del Equipo " + equipo.getNombre());
-            logger.debug("Esta Creando  un EquipoHasJugador");
-            equipoHasJugador.setStatus(ACTIVO);
-            controllerEquipoHasJugador.create(equipoHasJugador);
-            recreateModel();
-            Util.addSuccessMessage("Se Agrego Exitosamente el Jugador");
-        } catch (Exception e) {
-            logger.debug("Error al crear EquipoHasJugador :", e);
+
+            try {
+                equipoHasJugador.setJugadorId(this.jugador);
+                logger.debug("Nombre del jugador " + jugador.getPersonaId().getNombre());
+                equipoHasJugador.setEquipoId(this.equipo);
+                logger.debug("Nombre del Equipo " + equipo.getNombre());
+                logger.debug("Esta Creando  un EquipoHasJugador");
+                equipoHasJugador.setStatus(ACTIVO);
+                controllerEquipoHasJugador.create(equipoHasJugador);
+                recreateModel();
+                Util.addSuccessMessage("Se Agrego Exitosamente el Jugador");
+            } catch (Exception e) {
+                logger.debug("Error al crear EquipoHasJugador :", e);
+            }
+
+        } else {
+            Util.addErrorMessage("El Jugador ya esta en el equipo, Seleccion otro");
         }
-        
-        }else{
-            Util.addErrorMessage("El Jugador ya esta en el equipo, Seleccion otro");         
-        }                      
         return prepareCreate();
     }
 
@@ -195,19 +196,21 @@ public class EquipoHasJugadorBean implements Serializable {
         Util.addSuccessMessage("Se edito exitosamente el EquipoHasJugador");
         return prepareCreate();
     }
-   public String delete() {
-       try {
-           equipoHasJugador.setStatus(INACTIVO);
-           controllerEquipoHasJugador.edit(equipoHasJugador);
-           equipoHasJugador = null;
-                  Util.addSuccessMessage("Se elimino exitosamente");
-       } catch (Exception e) {
-           logger.debug("Error al eliminar la entidad EquipoHasJugador : ",e.getMessage());
-           Util.addErrorMessage("Error al eliminar al Jugador del Equipo");
-       }
 
-       return prepareCreate();
-   }
+    public String delete() {
+        try {
+            equipoHasJugador.setStatus(INACTIVO);
+            controllerEquipoHasJugador.edit(equipoHasJugador);
+            equipoHasJugador = null;
+            Util.addSuccessMessage("Se elimino exitosamente");
+        } catch (Exception e) {
+            logger.debug("Error al eliminar la entidad EquipoHasJugador : ", e.getMessage());
+            Util.addErrorMessage("Error al eliminar al Jugador del Equipo");
+        }
+
+        return prepareCreate();
+    }
+
     public String getHostImagen() {
         String host = Util.getHostImagen() + "jugador/";
         return host;

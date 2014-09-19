@@ -40,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Competicion.findByNombre", query = "SELECT c FROM Competicion c WHERE c.nombre = :nombre"),
     @NamedQuery(name = "Competicion.findByStatus", query = "SELECT c FROM Competicion c WHERE c.status = :status")})
 public class Competicion implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
     @Lob
     @Size(max = 65535)
     @Column(name = "logo")
@@ -236,6 +238,14 @@ public class Competicion implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
     }
     
 }

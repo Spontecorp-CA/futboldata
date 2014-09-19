@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cargo.findById", query = "SELECT c FROM Cargo c WHERE c.id = :id"),
     @NamedQuery(name = "Cargo.findByNombre", query = "SELECT c FROM Cargo c WHERE c.nombre = :nombre")})
 public class Cargo implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
     @Basic(optional = false)
     @NotNull
     @Column(name = "status")
@@ -113,6 +115,14 @@ public class Cargo implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
     }
     
 }

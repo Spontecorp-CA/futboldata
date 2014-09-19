@@ -42,6 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Club.findByYearFundacion", query = "SELECT c FROM Club c WHERE c.yearFundacion = :yearFundacion"),
     @NamedQuery(name = "Club.findByStatus", query = "SELECT c FROM Club c WHERE c.status = :status")})
 public class Club implements Serializable {
+    @Column(name = "organizacion_id")
+    private Integer organizacionId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -253,5 +255,12 @@ public class Club implements Serializable {
     public String toString() {
         return nombre;
     }
-    
+
+    public Integer getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Integer organizacionId) {
+        this.organizacionId = organizacionId;
+    }  
 }

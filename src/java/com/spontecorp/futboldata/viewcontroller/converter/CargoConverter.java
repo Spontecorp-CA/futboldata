@@ -6,6 +6,8 @@ package com.spontecorp.futboldata.viewcontroller.converter;
 
 import com.spontecorp.futboldata.entity.Cargo;
 import com.spontecorp.futboldata.jpacontroller.CargoFacade;
+import com.spontecorp.futboldata.utilities.Util;
+import com.spontecorp.futboldata.viewcontroller.LoginBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -29,10 +31,11 @@ public class CargoConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        LoginBean bean = (LoginBean) Util.findBean("loginBean");
         if (value == null || value.length() == 0) {
             return null;
         }
-        return getController().findCargo(value);
+        return getController().findCargo(value,bean.getIdOrganizacion());
     }
 
     @Override

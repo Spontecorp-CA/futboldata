@@ -13,8 +13,10 @@ import com.spontecorp.futboldata.entity.Llave;
 import com.spontecorp.futboldata.entity.Partido;
 import com.spontecorp.futboldata.entity.Temporada;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-public class PartidoFacade extends AbstractFacade<Partido> {
+public class PartidoFacade extends AbstractFacade<Partido> implements Serializable{
 
     private static final Logger logger = LoggerFactory.getLogger(PartidoFacade.class);
 
@@ -193,6 +195,27 @@ public class PartidoFacade extends AbstractFacade<Partido> {
             partidos = q.getResultList();
         } catch (Exception e) {
             logger.error("Error recuperando los partidos de un grupo y categoria", e);
+        }
+        return partidos;
+    }
+    
+    public List<Partido> findAll(int organizacion) {
+        List<Partido> partidos = null;
+        EntityManager em = getEntityManager();
+        if (organizacion != 1) {
+
+            try {
+                String q = "SELECT p FROM Partido p WHERE p.organizacionId =:organizacion";
+                Query query = em.createQuery(q, Partido.class);
+                query.setParameter("organizacion", organizacion);
+                partidos = query.getResultList();
+            } catch (NoResultException e) {
+                logger.debug("Problema al buscar partidos", e.getMessage());
+            } finally {
+                em.close();
+            }
+        } else {
+            partidos = findAll();
         }
         return partidos;
     }

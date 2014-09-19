@@ -62,6 +62,7 @@ public class AsociacionBean implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(Asociacion.class);
     private Telefono telefono;
+    private final LoginBean bean;
 
     public AsociacionBean() {
         controllerAsociacion = new AsociacionFacade();
@@ -69,6 +70,7 @@ public class AsociacionBean implements Serializable {
         controllerCiudad = new CiudadFacade();
         controllerTelefono = new TelefonoFacade();
         controllerEmail = new EmailFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Asociacion getSelected() {
@@ -162,19 +164,20 @@ public class AsociacionBean implements Serializable {
 
     public DataModel getItems() {
         if (items == null) {
-            items = new ListDataModel(controllerAsociacion.findAll());
+            items = new ListDataModel(controllerAsociacion.findAll(bean.getIdOrganizacion()));
         }
         return items;
     }
 
     public void prepareCreate() {
         asociacion = null;
-        
+
     }
 
     public List<Asociacion> getItemsAvailableSelectOne() {
-        return controllerAsociacion.findAll();
+        return controllerAsociacion.findAll(bean.getIdOrganizacion());
     }
+
     protected void setEmbeddableKeys() {
 
         asociacion.setDireccionId(direccion);
@@ -272,7 +275,7 @@ public class AsociacionBean implements Serializable {
         }
         asociacion.getDireccionId().setEmailCollection(emails);
         asociacion.getDireccionId().setTelefonoCollection(telefonos);
-        
+
         logger.debug("Esta editando un Asociacion");
         controllerAsociacion.edit(asociacion);
 
@@ -291,6 +294,7 @@ public class AsociacionBean implements Serializable {
         if (asociacion == null) {
             asociacion = new Asociacion();
             initializeEmbeddableKey();
+            asociacion.setOrganizacionId(bean.getIdOrganizacion());
         }
         return asociacion;
     }
@@ -327,7 +331,7 @@ public class AsociacionBean implements Serializable {
             logger.debug("No lo agrego a la lista de eliminar Telefono");
         }
     }
-    
+
     public void handleFileUpload(FileUploadEvent event) {
 
         long lDateTime = new Date().getTime();

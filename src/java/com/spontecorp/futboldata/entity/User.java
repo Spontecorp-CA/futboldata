@@ -39,6 +39,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByTelefono", query = "SELECT u FROM User u WHERE u.telefono = :telefono"),
     @NamedQuery(name = "User.findByStatus", query = "SELECT u FROM User u WHERE u.status = :status")})
 public class User implements Serializable {
+    @JoinColumn(name = "organizacion_id", referencedColumnName = "id")
+    @ManyToOne
+    private Organizacion organizacionId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -197,6 +200,14 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return usuario;
+    }
+
+    public Organizacion getOrganizacionId() {
+        return organizacionId;
+    }
+
+    public void setOrganizacionId(Organizacion organizacionId) {
+        this.organizacionId = organizacionId;
     }
     
 }

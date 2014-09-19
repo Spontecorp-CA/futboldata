@@ -2,7 +2,6 @@
  * Derechos Reservados Spontecorp, C.A. 2014
  * 
  */
-
 package com.spontecorp.futboldata.viewcontroller;
 
 import com.spontecorp.futboldata.entity.Evento;
@@ -10,7 +9,6 @@ import com.spontecorp.futboldata.jpacontroller.EventoFacade;
 import com.spontecorp.futboldata.utilities.Util;
 import com.spontecorp.futboldata.utilities.Util.PersistAction;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -28,20 +26,22 @@ import org.slf4j.LoggerFactory;
  */
 @Named("eventoBean")
 @SessionScoped
-public class EventoBean implements Serializable{
-    
+public class EventoBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     private Evento selected;
     private List<Evento> items;
     private List<Evento> filteredEvento = null;
-    
+
     private final EventoFacade eventoFacade;
-            
+
     private static final Logger logger = LoggerFactory.getLogger(EventoBean.class);
+    private final LoginBean bean;
 
     public EventoBean() {
         eventoFacade = new EventoFacade();
+        bean = (LoginBean) Util.findBean("loginBean");
     }
 
     public Evento getSelected() {
@@ -61,12 +61,12 @@ public class EventoBean implements Serializable{
     }
 
     public List<Evento> getItems() {
-        if(items == null){
-            items = eventoFacade.findAll();
+        if (items == null) {
+            items = eventoFacade.findAll(bean.getIdOrganizacion());
         }
         return items;
     }
-    
+
     public String returnAdminPage() {
         return "adminPage";
     }
@@ -74,6 +74,7 @@ public class EventoBean implements Serializable{
     public Evento prepareCreate() {
         selected = new Evento();
         initializeEmbeddableKey();
+        selected.setOrganizacionId(bean.getIdOrganizacion());
         return selected;
     }
 
@@ -95,7 +96,7 @@ public class EventoBean implements Serializable{
     private boolean existeNombreStatus(String nombre) {
         boolean result = true;
         try {
-            if (eventoFacade.findEvento(nombre) == null) {
+            if (eventoFacade.findEvento(nombre , bean.getIdOrganizacion()) == null) {
                 result = false;
             }
         } catch (NoResultException e) {
@@ -141,13 +142,12 @@ public class EventoBean implements Serializable{
     }
 
     public List<Evento> getItemsAvailableSelectMany() {
-        return eventoFacade.findAll();
+        return eventoFacade.findAll(bean.getIdOrganizacion());
     }
 
     public List<Evento> getItemsAvailableSelectOne() {
-        return eventoFacade.findAll();
+        return eventoFacade.findAll(bean.getIdOrganizacion());
     }
-
 
     @FacesConverter(forClass = Evento.class)
     public static class EventoControllerConverter implements Converter {
