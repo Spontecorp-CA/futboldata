@@ -7,7 +7,6 @@ package com.spontecorp.futboldata.jpacontroller;
 import com.spontecorp.futboldata.entity.Cancha;
 import com.spontecorp.futboldata.utilities.Util;
 import static com.spontecorp.futboldata.utilities.Util.logger;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.IDDV;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
