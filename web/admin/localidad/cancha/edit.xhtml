@@ -13,8 +13,8 @@
                 currentMarker = new google.maps.Marker({
                     position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())});
                 PF('map').addOverlay(currentMarker);
-                document.getElementById('CanchaEditForm:longitud').value = event.latLng.lat();
-                document.getElementById('CanchaEditForm:latitud').value = event.latLng.lng();
+                document.getElementById('CanchaEditForm:longitud').value = event.latLng.lng();
+                document.getElementById('CanchaEditForm:latitud').value = event.latLng.lat();
             }else{
                 cancel();
             }
@@ -140,7 +140,7 @@
                 <p:commandButton value="Cancelar" onclick="CanchaEditDialog.hide()"/>
                 <p:gmap id="gmap"
                         center="#{canchaBean.selected.coordenadaLat},#{canchaBean.selected.coordenadaLong}"
-                        zoom="13" type="HYBRID" 
+                        zoom="15" type="HYBRID" 
                         style="width:600px;height:400px"
                         onPointClick="handlePointClick(event);" widgetVar="map"
                         model="#{canchaBean.emptyModel}"
