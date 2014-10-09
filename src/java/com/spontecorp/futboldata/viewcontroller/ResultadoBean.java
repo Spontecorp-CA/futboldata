@@ -697,6 +697,8 @@ public class ResultadoBean implements Serializable {
     public PartidoEvento getPartidoEvento() {
         if (partidoEvento == null) {
             partidoEvento = new PartidoEvento();
+            partidoEvento.setMinuto(0);
+            partidoEvento.setCantidad(0);
         }
         return partidoEvento;
     }
