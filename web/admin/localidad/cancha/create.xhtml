@@ -14,8 +14,8 @@
                 currentMarker = new google.maps.Marker({
                     position: new google.maps.LatLng(event.latLng.lat(), event.latLng.lng())});
                 PF('map').addOverlay(currentMarker);
-                document.getElementById('CanchaCreateForm:longitud').value = event.latLng.lat();
-                document.getElementById('CanchaCreateForm:latitud').value = event.latLng.lng();
+                document.getElementById('CanchaCreateForm:longitud').value = event.latLng.lng();
+                document.getElementById('CanchaCreateForm:latitud').value = event.latLng.lat();
             }else{
                 cancel();
             }

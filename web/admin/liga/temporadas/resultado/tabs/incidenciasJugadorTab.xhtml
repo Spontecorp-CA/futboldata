@@ -40,7 +40,7 @@
 
         <h:outputLabel value="Tipo Informe:" />
         <p:selectOneMenu  id="tipoEvento" value="#{resultadoBean.tipoEvento}" 
-                          style="width: 140px;" required="true">
+                          style="width: 140px;" >
             <f:selectItem itemLabel="-------------"  value="#{null}" />
             <f:selectItems value="#{tipoEventoBean.items}" />
             <p:ajax  event="valueChange" 
