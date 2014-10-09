@@ -6,7 +6,7 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:panelGrid columns="4"  >
+    <h:panelGrid columns="6"  >
 
         <h:outputLabel value="Equipo:" />
         <p:selectOneMenu id="equipo" value="#{resultadoBean.equipo}" 
@@ -40,7 +40,7 @@
 
         <h:outputLabel value="Tipo Informe:" />
         <p:selectOneMenu  id="tipoEvento" value="#{resultadoBean.tipoEvento}" 
-                          style="width: 140px;">
+                          style="width: 140px;" required="true">
             <f:selectItem itemLabel="-------------"  value="#{null}" />
             <f:selectItems value="#{tipoEventoBean.items}" />
             <p:ajax  event="valueChange" 
@@ -49,16 +49,29 @@
         </p:selectOneMenu>
 
         <h:outputLabel value="Incidente:" />
-        <p:selectOneMenu id="evento" value="#{resultadoBean.partidoEvento.eventoId}" style="width: 140px">
+        <p:selectOneMenu id="evento" value="#{resultadoBean.partidoEvento.eventoId}" 
+                         style="width: 140px">
             <f:selectItem itemLabel="-------------"  value="#{null}" />
             <f:selectItems value="#{resultadoBean.comboEvento}" />
         </p:selectOneMenu>
         <h:outputLabel value="Minuto:" />
         <p:spinner id="min" value="#{resultadoBean.partidoEvento.minuto}" min="0" max="150"  
-                   style="width: 140px"/>
+                   style="width: 140px"
+                   disabled="#{resultadoBean.partidoEvento.cantidad!=0}" >
+            <f:ajax event="valueChange" render="cantidad" />
+        </p:spinner>
+
+        <h:outputLabel value="Cantidad" />
+        <p:spinner id="cantidad" value="#{resultadoBean.partidoEvento.cantidad}" min="0" max="150"  
+                   style="width: 140px"
+                   disabled="#{resultadoBean.partidoEvento.minuto!=0}" >
+                   <f:ajax event="valueChange" render="min" />
+        </p:spinner>
         <h:outputLabel id="dato" value="Dato:"
                        style="width: 140px"/>
         <h:inputText value="#{resultadoBean.partidoEvento.descripcion}" />
+    </h:panelGrid> 
+    <h:panelGrid columns="2" >
         <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
                          style="width: 140px" 
                          update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
@@ -88,6 +101,10 @@
         </p:column>
         <p:column headerText="Jugador " >
             <h:outputText value="#{partidoEvento.jugador1Id.personaId}"/>
+        </p:column>
+
+        <p:column headerText="Cantidad " >
+            <h:outputText value="#{partidoEvento.cantidad}"/>
         </p:column>
         <p:column headerText="Staff" >
             <h:outputText value="#{partidoEvento.staffId.toString()}"/>

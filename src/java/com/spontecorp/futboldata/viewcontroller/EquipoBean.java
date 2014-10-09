@@ -220,7 +220,7 @@ public class EquipoBean implements Serializable {
             try {
                 key = Integer.valueOf(value);
             } catch (NumberFormatException e) {
-                logger.error("No es compatible el String para trasformar el equipo");
+//                logger.error("No es compatible el String para trasformar el equipo");
                 return null;
             }
 
