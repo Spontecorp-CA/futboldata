@@ -67,6 +67,11 @@ public class TipoEventoBean implements Serializable {
         return items;
     }
 
+    public List<TipoEvento> getItemsT(char tipoQueAplica) {
+            items = tipoEventoFacade.findAll(bean.getIdOrganizacion(),tipoQueAplica);       
+        return items;
+    }
+
     public String returnAdminPage() {
         return "adminPage";
     }

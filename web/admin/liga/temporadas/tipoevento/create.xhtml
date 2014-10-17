@@ -3,7 +3,8 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <p:dialog id="TipoEventoCreateDlg" widgetVar="TipoEventoCreateDialog" modal="true"
               resizable="false" appendTo="@(body)" header="Creación de Tipo de Eventos del Partido">
@@ -15,6 +16,11 @@
                                  title="Nombre del Tipo Evento del Partido" required="true" 
                                  requiredMessage="Debe colocar un nombre para el Tipo Evento del Partido"
                                  style="width: 240px"/>
+                    <p:outputLabel value="A quien se le aplique el Informe" />
+                    <p:selectOneRadio value="#{tipoEventoBean.selected.tipoQueAplica}" >
+                        <f:selectItem itemLabel="Jugador" itemValue="J" />
+                        <f:selectItem itemLabel="Equipo" itemValue="E" />
+                    </p:selectOneRadio>
                 </h:panelGrid>
             </h:panelGroup>
             <p:commandButton actionListener="#{tipoEventoBean.create}" value="Guardar" 

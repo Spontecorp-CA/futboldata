@@ -16,6 +16,11 @@
                                  title="Nombre del Tipo Evento del Partido" required="true" 
                                  requiredMessage="Debe colocar un nombre para el  Tipo Evento del Partido"
                                  style="width: 240px"/>
+                    <p:outputLabel value="A quien se le aplique el Informe: " />
+                    <p:selectOneRadio value="#{tipoEventoBean.selected.tipoQueAplica}" >
+                        <f:selectItem itemLabel="Jugador" itemValue="J" />
+                        <f:selectItem itemLabel="Equipo" itemValue="E" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel value="Status: " for="status" />
                     <p:selectOneMenu id="status" value="#{tipoEventoBean.selected.status}"

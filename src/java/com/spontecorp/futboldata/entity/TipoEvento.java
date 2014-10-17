@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TipoEvento.findById", query = "SELECT t FROM TipoEvento t WHERE t.id = :id"),
     @NamedQuery(name = "TipoEvento.findByNombre", query = "SELECT t FROM TipoEvento t WHERE t.nombre = :nombre")})
 public class TipoEvento implements Serializable {
+    @Column(name = "tipo_que_aplica")
+    private Character tipoQueAplica;
     @Column(name = "organizacion_id")
     private Integer organizacionId;
     @Column(name = "status")
@@ -121,6 +123,14 @@ public class TipoEvento implements Serializable {
 
     public void setOrganizacionId(Integer organizacionId) {
         this.organizacionId = organizacionId;
+    }
+
+    public Character getTipoQueAplica() {
+        return tipoQueAplica;
+    }
+
+    public void setTipoQueAplica(Character tipoQueAplica) {
+        this.tipoQueAplica = tipoQueAplica;
     }
     
 }

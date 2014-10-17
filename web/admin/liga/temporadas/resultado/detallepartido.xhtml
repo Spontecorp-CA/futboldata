@@ -92,8 +92,17 @@
                     <p:tab id="tab6" title="Incidencias Partido-Equipo">
                         <ui:include src="tabs/incidenciasEquipoTab.xhtml"/>
                     </p:tab>
+                    <p:tab id="tab7" title="Observaciones Arbitro" >
+                        <h:panelGrid columns="1" >
 
-                </p:accordionPanel>
+
+                            <p:outputLabel value="Observaciones" />
+                            <p:inputTextarea autoResize="true" style="width: 600px" 
+                                             value="#{resultadoBean.partido.observaciones}" />                    
+                        </h:panelGrid>
+                    </p:tab>
+                </p:accordionPanel>                 
+
             </p:fieldset>
         </h:form>
         <ui:include src="addConvocado.xhtml" />

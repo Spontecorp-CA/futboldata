@@ -746,6 +746,8 @@ public class ResultadoBean implements Serializable {
         equipo = null;
         tipoEvento = null;
         comboEvento = null;
+        partidoEvento.setCantidad(0);
+        partidoEvento.setMinuto(0);
     }
 
     public void equipoSelected() {

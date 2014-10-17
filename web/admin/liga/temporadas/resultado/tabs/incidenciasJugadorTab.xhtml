@@ -42,7 +42,7 @@
         <p:selectOneMenu  id="tipoEvento" value="#{resultadoBean.tipoEvento}" 
                           style="width: 140px;" >
             <f:selectItem itemLabel="-------------"  value="#{null}" />
-            <f:selectItems value="#{tipoEventoBean.items}" />
+            <f:selectItems value="#{tipoEventoBean.getItemsT('J')}" />
             <p:ajax  event="valueChange" 
                      listener="#{resultadoBean.TipoEventoSelected(changeEvent)}"
                      update="evento" />
@@ -75,7 +75,7 @@
         <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
                          style="width: 140px" 
                          update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
-                         tipoEvento ,dato"/>
+                         tipoEvento ,dato ,cantidad "/>
         <p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
                          update="eventos :growlAdmin "
                          style="width: 140px"

@@ -36,9 +36,9 @@ public class TipoEventoFacade extends AbstractFacade<TipoEvento> implements Seri
         TipoEvento tipoEvento = null;
         try {
             String query = "SELECT t FROM TipoEvento t "
-                    + "WHERE t.nombre =:nombre  ";
-                      if (organizacion != 1) {
-                query = query  + "AND t.organizacionId =:organizacion";
+                    + "WHERE t.nombre =:nombre ";
+            if (organizacion != 1) {
+                query = query + "AND t.organizacionId =:organizacion";
             }
             Query q = em.createQuery(query, TipoEvento.class);
             q.setParameter("nombre", nombre);
@@ -87,6 +87,26 @@ public class TipoEventoFacade extends AbstractFacade<TipoEvento> implements Seri
         } else {
             tipoEventos = findAll();
         }
+        return tipoEventos;
+    }
+
+    public List<TipoEvento> findAll(int organizacion, char tipoQueAplica) {
+        List<TipoEvento> tipoEventos = null;
+        EntityManager em = getEntityManager();
+            try {
+                String q = "SELECT t FROM TipoEvento t "
+                        + "WHERE t.organizacionId =:organizacion "
+                        + "AND t.tipoQueAplica =:tipoQueAplica";
+                Query query = em.createQuery(q, TipoEvento.class);
+                query.setParameter("organizacion", organizacion);
+                query.setParameter("tipoQueAplica", tipoQueAplica);
+                tipoEventos = query.getResultList();
+            } catch (NoResultException e) {
+                logger.debug("Problema al buscar tipoEvento", e.getMessage());
+            } finally {
+                em.close();
+            }
+
         return tipoEventos;
     }
 }

@@ -31,7 +31,7 @@
             <p:selectOneMenu  id="equipoTipoEvento" value="#{resultadoBean.tipoEvento}" 
                               style="width: 140px;">
                 <f:selectItem itemLabel="-------------"  value="#{null}" />
-                <f:selectItems value="#{tipoEventoBean.items}" />
+                <f:selectItems value="#{tipoEventoBean.getItemsT('E')}" />
                 <p:ajax  event="valueChange" 
                          listener="#{resultadoBean.TipoEventoSelected(changeEvent)}"
                          update="equipoIncident" />
