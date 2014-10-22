@@ -99,6 +99,10 @@ ul,li {
 .ui-datatable, .ui-datatable-odd{
     background: #c2dfef;
 }
+
+.welcome_user{
+    font-weight: bold;
+}
 /*.ui-widget-content , .ui-panelgrid  {
     border: none;
 }*/
