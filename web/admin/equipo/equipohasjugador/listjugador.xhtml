@@ -31,12 +31,14 @@
                                          actionListener="#{equipoHasJugadorBean.prepareEdit}"
                                          update=":JugadorEditForm" 
                                          oncomplete="PF('JugadorEditDialog').show()" 
-                                         disabled="#{empty equipoHasJugadorBean.equipo.nombre}"/>
+                                         disabled="#{empty equipoHasJugadorBean.equipo.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="deleteButton" icon="ui-icon-pencil" 
                                          value="Desvincular Jugador" 
                                          oncomplete="PF('JugadorDeleteDialog').show()"
                                          update=":JugadorDeleteForm"
-                                         disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}">
+                                         disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}"
+                                         rendered="#{!loginBean.isConsultor}">
                         </p:commandButton>
 
                         <p:commandButton id="equipoButton" icon="ui-icon-pencil" 

@@ -14,13 +14,15 @@
                                  value="Crear Llave" 
                                  actionListener="#{configBean.prepareCreateLlave}"
                                  update=":LlaveCreateForm"
-                                 oncomplete="PF('LlaveCreateDialog').show()"/>
+                                 oncomplete="PF('LlaveCreateDialog').show()"
+                                 rendered="#{!loginBean.isConsultor}"/>
                 <p:commandButton id="editButtonLlave" icon="ui-icon-pencil" 
                                  value="Editar Llave" 
                                  actionListener="#{configBean.prepareEditLlave}"   
                                  update=":LlaveEditForm"                                        
                                  oncomplete="PF('LlaveEditDialog').show()" 
-                                 disabled="#{empty configBean.llave.nombre}"/>
+                                 disabled="#{empty configBean.llave.nombre}"
+                                 rendered="#{!loginBean.isConsultor}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"

@@ -20,13 +20,15 @@
                                          value="Crear Arbitro" 
                                          actionListener="#{arbitroBean.prepareCreate}" 
                                          update=":ArbitroCreateForm" 
-                                         oncomplete="PF('ArbitroCreateDialog').show()"/>
+                                         oncomplete="PF('ArbitroCreateDialog').show()"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                          value="Editar Arbitro" 
                                          actionListener="#{arbitroBean.prepareEdit}"
                                          update=":ArbitroEditForm" 
                                          oncomplete="PF('ArbitroEditDialog').show()" 
-                                         disabled="#{empty arbitroBean.arbitro.personaId.nombre}"/>
+                                         disabled="#{empty arbitroBean.arbitro.personaId.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="viewButton" icon="ui-icon-search" 
                                          value="Ver Arbitro" 
                                          actionListener="#{arbitroBean.prepareEdit}"

@@ -20,14 +20,16 @@
                                          icon="ui-icon-plus"
                                          action="#{statusPartidoBean.prepareCreate}"
                                          update=":StatusPartidoCreateForm" 
-                                         oncomplete="PF('StatusPartidoCreateDialog').show()"/>
+                                         oncomplete="PF('StatusPartidoCreateDialog').show()"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="editButton" 
                                          icon="ui-icon-pencil" 
                                          value="Editar Status de Partido"                                             
                                          actionListener="#{statusPartidoBean.prepareEdit}"
                                          update=":StatusPartidoEditForm"
                                          oncomplete="PF('StatusPartidoEditDialog').show()" 
-                                         disabled="#{empty statusPartidoBean.selected.nombre}"/>
+                                         disabled="#{empty statusPartidoBean.selected.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{statusPartidoBean.returnAdminPage}"

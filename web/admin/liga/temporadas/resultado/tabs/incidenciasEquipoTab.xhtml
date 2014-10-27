@@ -52,14 +52,16 @@
             <p:commandButton value="Guardar" actionListener="#{resultadoBean.guardarEventoPartido}"
                              style="width: 100px" 
                              update=" :growlAdmin , equipoIncident ,
-                             eventQuantity, eventQuantityLabel ,eventosEquipo "/>
+                             eventQuantity, eventQuantityLabel ,eventosEquipo "
+                             rendered="#{!loginBean.isConsultor}"/>
             <p:commandButton id="deleteEventoEquipo"
                              value="Eliminar" 
                              disabled="#{empty resultadoBean.tablaEventoEquipo.evento}"
                              actionListener="#{resultadoBean.eliminarEventoPartido}"
                              style="width: 100px" 
                              update=" :growlAdmin, eventosEquipo , equipoIncident ,
-                             eventQuantity, eventQuantityLabel"/>
+                             eventQuantity, eventQuantityLabel"
+                             rendered="#{!loginBean.isConsultor}"/>
         </h:panelGrid>
 
     </h:panelGrid>

@@ -16,7 +16,8 @@
                                          value="Guardar Cambios" 
                                          action="#{resultadoBean.guardar}"
                                          disabled="#{empty resultadoBean.partido}" 
-                                         update=":detalleForm :growlAdmin"/>
+                                         update=":detalleForm :growlAdmin"
+                                         rendered="#{!loginBean.isConsultor}"/>
 
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">

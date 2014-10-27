@@ -20,13 +20,15 @@
                                          value="Crear Categoria" 
                                          actionListener="#{categoriaBean.prepareCreate}" 
                                          update=":CategoriaCreateForm" 
-                                         oncomplete="PF('CategoriaCreateDialog').show()"/>
+                                         oncomplete="PF('CategoriaCreateDialog').show()"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                          value="Editar Categoria"
                                          actionListener="#{categoriaBean.prepareEdit}"
                                          update=":CategoriaEditForm" 
                                          oncomplete="PF('CategoriaEditDialog').show()" 
-                                         disabled="#{empty categoriaBean.selected.nombre}"/>
+                                         disabled="#{empty categoriaBean.selected.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{categoriaBean.returnAdminPage}"

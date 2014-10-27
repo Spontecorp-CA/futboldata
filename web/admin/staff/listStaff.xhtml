@@ -34,12 +34,14 @@
                                          value="Agregar staff" 
                                          actionListener="#{staffInClub.prepareEdit}"
                                          update=":StaffEditForm" 
-                                         oncomplete="PF('StaffEditDialog').show()" />
+                                         oncomplete="PF('StaffEditDialog').show()"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="deleteButton" icon="ui-icon-pencil" 
                                          value="Desvincular Staff" 
                                          oncomplete="PF('StaffDeleteDialog').show()"
                                          update=":StaffDeleteForm"
-                                         disabled="#{empty staffInClub.staff.personaId.nombre}" />
+                                         disabled="#{empty staffInClub.staff.personaId.nombre}" 
+                                         rendered="#{!loginBean.isConsultor}"/>
 
                         <p:commandButton id="clubButton" icon="ui-icon-pencil" 
                                          value="Listado Clubes" 

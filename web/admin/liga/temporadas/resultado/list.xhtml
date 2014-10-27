@@ -25,7 +25,8 @@
                                          actionListener="#{configBean.prepareEditPartido}"   
                                          update=":PartidoEditForm"                                        
                                          oncomplete="PF('PartidoEditDialog').show()" 
-                                         disabled="#{empty configBean.partido.id}"/>
+                                         disabled="#{empty configBean.partido.id}"
+                                         rendered="#{!loginBean.isConsultor}"/>
 
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">

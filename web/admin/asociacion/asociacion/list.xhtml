@@ -20,7 +20,8 @@
                                          value="Crear Asociacion" 
                                          update=":createForm"
                                          actionListener="#{asociacionBean.prepareCreate}"
-                                         oncomplete="PF('CreateDialog').show()" />  
+                                         oncomplete="PF('CreateDialog').show()"
+                                         rendered="#{!loginBean.isConsultor}"/>  
                         <p:commandButton id="ButtonEdit" 
                                          icon="ui-icon-pencil" 
                                          value="Editar Asociacion" 
@@ -28,7 +29,7 @@
                                          update=":editForm"
                                          oncomplete="PF('EditDialog').show()" 
                                          disabled="#{empty asociacionBean.asociacion.nombre}"
-                                         />    
+                                         rendered="#{!loginBean.isConsultor}"/>    
                         <p:commandButton id="ButtonView" 
                                          icon="ui-icon-pencil" 
                                          value="Ver Asociacion" 
@@ -41,7 +42,8 @@
                                          icon="ui-icon-flag" 
                                          value="Ver Staff" 
                                          action="#{staffInClub.gotoStaffPage(asociacionBean.asociacion)}"
-                                         disabled="#{empty asociacionBean.asociacion.nombre}"/>
+                                         disabled="#{empty asociacionBean.asociacion.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
 
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">

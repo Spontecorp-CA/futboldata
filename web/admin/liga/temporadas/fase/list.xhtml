@@ -20,13 +20,15 @@
                                      value="Crear Fase" 
                                      actionListener="#{configBean.prepareCreateFase()}"
                                      update=":FaseCreateForm"
-                                     oncomplete="PF('FaseCreateDialog').show()"/>
+                                     oncomplete="PF('FaseCreateDialog').show()"
+                                     rendered="#{!loginBean.isConsultor}"/>
                     <p:commandButton id="editButtonFase" icon="ui-icon-pencil" 
                                      value="Editar Fase" 
                                      actionListener="#{configBean.prepareEditFase()}"   
                                      update=":FaseEditForm"                                        
                                      oncomplete="PF('FaseEditDialog').show()" 
-                                     disabled="#{empty configBean.fase.nombre}"/>
+                                     disabled="#{empty configBean.fase.nombre}"
+                                     rendered="#{!loginBean.isConsultor}"/>
                 </p:toolbarGroup>
                 <p:toolbarGroup align="right">
                     <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"

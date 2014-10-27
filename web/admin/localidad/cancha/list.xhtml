@@ -20,18 +20,20 @@
                                              value="Crear Cancha" 
                                              actionListener="#{canchaBean.prepareCreate}" 
                                              update=":CanchaCreateForm" 
-                                             oncomplete="PF('CanchaCreateDialog').show()"/>
+                                             oncomplete="PF('CanchaCreateDialog').show()"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="viewButton" icon="ui-icon-search" 
                                              value="Ver Cancha" 
                                              update=":CanchaViewForm" 
                                              oncomplete="PF('CanchaViewDialog').show()" 
-                                             disabled="#{empty canchaBean.selected}"/>
+                                             disabled="#{empty canchaBean.selected}" />
                             <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                              value="Editar Cancha"
                                              actionListener="#{canchaBean.prepareEdit}"
                                              update=":CanchaEditForm" 
                                              oncomplete="PF('CanchaEditDialog').show()" 
-                                             disabled="#{empty canchaBean.selected}"/>
+                                             disabled="#{empty canchaBean.selected}"
+                                             rendered="#{!loginBean.isConsultor}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{canchaBean.returnAdminPage}"

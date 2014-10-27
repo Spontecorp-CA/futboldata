@@ -20,18 +20,15 @@
                                              value="Crear Posición" 
                                              actionListener="#{posicionBean.prepareCreate}" 
                                              update=":PosicionCreateForm" 
-                                             oncomplete="PF('PosicionCreateDialog').show()"/>
-<!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
-                                             value="Ver Competición" 
-                                             update=":LigaViewForm" 
-                                             oncomplete="PF('LigaViewDialog').show()" 
-                                             disabled="#{empty posicionBean.selected}"/>-->
+                                             oncomplete="PF('PosicionCreateDialog').show()"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                              value="Editar Posición"
                                              actionListener="#{posicionBean.prepareEdit}"
                                              update=":PosicionEditForm" 
                                              oncomplete="PF('PosicionEditDialog').show()" 
-                                             disabled="#{empty posicionBean.selected}"/>
+                                             disabled="#{empty posicionBean.selected}"
+                                             rendered="#{!loginBean.isConsultor}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{posicionBean.returnAdminPage}"

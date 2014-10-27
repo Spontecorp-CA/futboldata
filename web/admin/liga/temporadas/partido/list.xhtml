@@ -15,13 +15,15 @@
                                  actionListener="#{configBean.prepareCreatePartido}"
                                  update=":PartidoCreateForm :PartidoListForm:editButton 
                                  :PartidoListForm:detalleButton"
-                                 oncomplete="PF('PartidoCreateDialog').show()"/>
+                                 oncomplete="PF('PartidoCreateDialog').show()"
+                                 rendered="#{!loginBean.isConsultor}"/>
                 <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                  value="Editar Partido" 
                                  actionListener="#{configBean.prepareEditPartido}"   
                                  update=":PartidoEditForm"                                        
                                  oncomplete="PF('PartidoEditDialog').show()" 
-                                 disabled="#{empty configBean.partido}"/>
+                                 disabled="#{empty configBean.partido}"
+                                 rendered="#{!loginBean.isConsultor}"/>
                 <p:commandButton id="detalleButton" icon="ui-icon-pencil" 
                                  value="Detalles Partido" 
                                  action="#{resultadoBean.gotoResultadoPage(configBean.partido)}"                                        

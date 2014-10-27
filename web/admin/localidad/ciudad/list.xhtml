@@ -21,12 +21,14 @@
                                              value="Crear Ciudad" 
                                              actionListener="#{ciudadBean.prepareCreate}" 
                                              update=":CiudadCreateForm" 
-                                             oncomplete="PF('CiudadCreateDialog').show()"/>
+                                             oncomplete="PF('CiudadCreateDialog').show()"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                              value="Editar Ciudad" 
                                              update=":CiudadEditForm" 
                                              oncomplete="PF('CiudadEditDialog').show()" 
-                                             disabled="#{empty ciudadBean.ciudad}"/>
+                                             disabled="#{empty ciudadBean.ciudad}"
+                                             rendered="#{!loginBean.isConsultor}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"

@@ -20,13 +20,15 @@
                                  value="Crear Temporada" 
                                  actionListener="#{configBean.prepareCreateTemporada}"
                                  update=":TemporadaCreateForm"
-                                 oncomplete="PF('TemporadaCreateDialog').show()"/>
+                                 oncomplete="PF('TemporadaCreateDialog').show()"
+                                 rendered="#{!loginBean.isConsultor}"/>
                 <p:commandButton id="editButtonTemporada" icon="ui-icon-pencil" 
                                  value="Editar Temporada" 
                                  actionListener="#{configBean.prepareEditTemporada}"   
                                  update=":TemporadaEditForm"                                        
                                  oncomplete="PF('TemporadaEditDialog').show()" 
-                                 disabled="#{empty configBean.temporada.nombre}"/>
+                                 disabled="#{empty configBean.temporada.nombre}"
+                                 rendered="#{!loginBean.isConsultor}"/>
                
                 <p:commandButton id="viewButtonTemporada" icon="ui-icon-pencil" 
                                  value="Ver Temporada" 

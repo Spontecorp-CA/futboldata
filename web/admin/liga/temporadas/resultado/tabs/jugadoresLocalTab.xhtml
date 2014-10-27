@@ -32,7 +32,8 @@
                                      actionListener="#{resultadoBean.preEditConvocado(resultadoBean.convocatoriaLocal)}"
                                      update=":ConvocadoEditDlg"
                                      disabled="#{empty resultadoBean.equipoHasJugador.jugadorId}"
-                                     oncomplete="PF('ConvocadoEditDialog').show()" />
+                                     oncomplete="PF('ConvocadoEditDialog').show()" 
+                                     rendered="#{!loginBean.isConsultor}"/>
                 </f:facet>
             </p:dataTable>
 
@@ -64,7 +65,8 @@
                                      value="Sacar" 
                                      action="#{resultadoBean.removeConvocado(resultadoBean.convocadoLocal)}"
                                      update=":detalleForm:menu ,:growlAdmin"
-                                     disabled="#{empty resultadoBean.convocadoLocal.convocatoriaId}">
+                                     disabled="#{empty resultadoBean.convocadoLocal.convocatoriaId}"
+                                     rendered="#{!loginBean.isConsultor}">
                     </p:commandButton>
                 </f:facet>
             </p:dataTable>

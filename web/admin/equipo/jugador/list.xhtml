@@ -21,13 +21,15 @@
                                          value="Crear Jugador" 
                                          actionListener="#{jugadorBean.prepareCreate}" 
                                          update=":JugadorCreateForm" 
-                                         oncomplete="PF('JugadorCreateDialog').show()"/>
+                                         oncomplete="PF('JugadorCreateDialog').show()"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                          value="Editar Jugador" 
                                          actionListener="#{jugadorBean.prepareEdit}"
                                          update=":JugadorEditForm" 
                                          oncomplete="PF('JugadorEditDialog').show()" 
-                                         disabled="#{empty jugadorBean.jugador.personaId.nombre}"/>
+                                         disabled="#{empty jugadorBean.jugador.personaId.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="viewButton" icon="ui-icon-search" 
                                          value="Ver Jugador" 
                                          actionListener="#{jugadorBean.prepareEdit}"

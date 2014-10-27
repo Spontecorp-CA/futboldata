@@ -20,7 +20,8 @@
                                              icon="ui-icon-plus"
                                              action="#{clubBean.prepareCreate}"
                                              update=":ClubCreateForm" 
-                                             oncomplete="PF('ClubCreateDialog').show()"/>
+                                             oncomplete="PF('ClubCreateDialog').show()"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="viewButton"
                                              value="Ver Club" 
                                              icon="ui-icon-search"                                             
@@ -34,7 +35,8 @@
                                              actionListener="#{clubBean.prepareEdit}"
                                               update=":ClubEditForm"
                                              oncomplete="PF('ClubEditDialog').show()" 
-                                             disabled="#{empty clubBean.club.nombre}"/>
+                                             disabled="#{empty clubBean.club.nombre}"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="addStaffButton" 
                                              icon="ui-icon-flag" 
                                              value="Ver Staff" 

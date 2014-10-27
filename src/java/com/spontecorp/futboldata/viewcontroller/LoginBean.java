@@ -151,26 +151,26 @@ public class LoginBean implements Serializable {
 
     private void resetPermissions() {
         isAdmin = false;
-        isConsultor = false;
+//        isConsultor = false;
         isEditor = false;
         isSupervisor = false;
     }
     
     private void setAdminPermissions(){
         isAdmin = true;
-        isConsultor = true;
+//        isConsultor = true;
         isEditor = true;
         isSupervisor = true;
     }
     
     private void setSuperPermissions(){
-        isConsultor = true;
+//        isConsultor = true;
         isEditor = true;
         isSupervisor = true;
     }
     
     private void setEditPermissions(){
-        isConsultor = true;
+//        isConsultor = true;
         isEditor = true;
     }
 }

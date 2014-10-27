@@ -22,18 +22,15 @@
                                              value="Crear Equipo" 
                                              actionListener="#{equipoBean.prepareCreate}" 
                                              update=":EquipoCreateForm" 
-                                             oncomplete="PF('EquipoCreateDialog').show()"/>
-                            <!--                            <p:commandButton id="viewButton" icon="ui-icon-search" 
-                                                                         value="#{bundle.View}" 
-                                                                         update=":EquipoViewForm" 
-                                                                         oncomplete="PF('EquipoViewDialog').show()" 
-                                                                         disabled="#{empty equipoController.selected}"/>-->
+                                             oncomplete="PF('EquipoCreateDialog').show()"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                              value="Editar Equipo"
                                              actionListener="#{equipoBean.prepareEdit}"
                                              update=":EquipoEditForm" 
                                              oncomplete="PF('EquipoEditDialog').show()" 
-                                             disabled="#{empty equipoBean.selected}"/>
+                                             disabled="#{empty equipoBean.selected}"
+                                             rendered="#{!loginBean.isConsultor}"/>
 
                             <p:commandButton id="addButton" icon="ui-icon-pencil" 
                                              value="Ver Jugadores" 

@@ -20,14 +20,16 @@
                                          icon="ui-icon-plus"
                                          action="#{eventoBean.prepareCreate}"
                                          update=":EventoCreateForm" 
-                                         oncomplete="PF('EventoCreateDialog').show()"/>
+                                         oncomplete="PF('EventoCreateDialog').show()"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="editButton" 
                                          icon="ui-icon-pencil" 
                                          value="Editar Evento del Partido"                                             
                                          actionListener="#{eventoBean.prepareEdit}"
                                          update=":EventoEditForm"
                                          oncomplete="PF('EventoEditDialog').show()" 
-                                         disabled="#{empty eventoBean.selected.nombre}"/>
+                                         disabled="#{empty eventoBean.selected.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{eventoBean.returnAdminPage}"

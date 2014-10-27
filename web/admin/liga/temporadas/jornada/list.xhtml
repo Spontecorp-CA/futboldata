@@ -15,13 +15,15 @@
                                  value="Crear Jornada" 
                                  actionListener="#{configBean.prepareCreateJornada}"
                                  update=":JornadaCreateForm"
-                                 oncomplete="PF('JornadaCreateDialog').show()"/>
+                                 oncomplete="PF('JornadaCreateDialog').show()"
+                                 rendered="#{!loginBean.isConsultor}"/>
                 <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                  value="Editar Jornada" 
                                  actionListener="#{configBean.prepareEditJornada}"   
                                  update=":JornadaEditForm"                                        
                                  oncomplete="PF('JornadaEditDialog').show()" 
-                                 disabled="#{empty configBean.jornada.id}"/>
+                                 disabled="#{empty configBean.jornada.id}"
+                                 rendered="#{!loginBean.isConsultor}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"

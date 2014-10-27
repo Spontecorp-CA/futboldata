@@ -16,9 +16,13 @@
             <p:fieldset style="width: 85%" legend="Lista de Tipos de Arbitro" >
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-                        <p:commandButton value="Nuevo" action="#{TipoArbitroBean.prepareCreate()}"/>
-                        <p:commandButton value="Administración" action="#{TipoArbitroBean.returnAdminPage()}"
-                                         immediate="true"/>
+                        <p:commandButton value="Nuevo" 
+                                         action="#{TipoArbitroBean.prepareCreate()}"
+                                         rendered="#{!loginBean.isConsultor}"/>
+                        <p:commandButton value="Administración" 
+                                         action="#{TipoArbitroBean.returnAdminPage()}"
+                                         immediate="true"
+                                         rendered="#{!loginBean.isConsultor}"/>
                     </p:toolbarGroup>                    
                 </p:toolbar>
                 <br />

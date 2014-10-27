@@ -21,7 +21,8 @@
                                              value="Crear Competición" 
                                              actionListener="#{ligaBean.prepareCreate}" 
                                              update=":LigaCreateForm" 
-                                             oncomplete="PF('LigaCreateDialog').show()"/>
+                                             oncomplete="PF('LigaCreateDialog').show()"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="viewButton" icon="ui-icon-search" 
                                              value="Ver Competición" 
                                              update=":LigaViewForm" 
@@ -32,7 +33,8 @@
                                              actionListener="#{ligaBean.prepareEdit}"
                                              update=":LigaEditForm" 
                                              oncomplete="PF('LigaEditDialog').show()" 
-                                             disabled="#{empty ligaBean.selected}"/>
+                                             disabled="#{empty ligaBean.selected}"
+                                             rendered="#{!loginBean.isConsultor}"/>
                             <p:commandButton id="addStaffButton" 
                                              icon="ui-icon-flag" 
                                              value="Ver Staff" 

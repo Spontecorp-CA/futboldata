@@ -75,11 +75,13 @@
         <p:commandButton value="Guardar" action="#{resultadoBean.createEvento}"
                          style="width: 140px" 
                          update="eventos ,min :growlAdmin , equipo ,jugador ,staff ,evento 
-                         tipoEvento ,dato ,cantidad "/>
+                         tipoEvento ,dato ,cantidad "
+                         rendered="#{!loginBean.isConsultor}"/>
         <p:commandButton id="editButtonE" value="Eliminar" action="#{resultadoBean.deleteEvento}"
                          update="eventos :growlAdmin "
                          style="width: 140px"
-                         disabled="#{empty resultadoBean.eventoSelected.id}"/>
+                         disabled="#{empty resultadoBean.eventoSelected.id}"
+                         rendered="#{!loginBean.isConsultor}"/>
     </h:panelGrid>
 
     <p:dataTable id="eventos" value="#{resultadoBean.eventos}"  

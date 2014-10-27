@@ -27,12 +27,14 @@
                                          actionListener="#{equipoInLigaBean.prepareEdit}"
                                          update=":EquipoEditForm" 
                                          oncomplete="PF('EquipoEditDialog').show()" 
-                                         disabled="#{empty equipoInLigaBean.competicion.nombre}"/>
+                                         disabled="#{empty equipoInLigaBean.competicion.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="deleteButton" icon="ui-icon-closethick" 
                                          value="Desvincular Equipo" 
                                          action="#{equipoInLigaBean.delete}"
                                          update=":EquipoListForm:equipos"
-                                         disabled="#{empty equipoInLigaBean.equipoInLiga.equipoId.nombre}">
+                                         disabled="#{empty equipoInLigaBean.equipoInLiga.equipoId.nombre}"
+                                         rendered="#{!loginBean.isConsultor}">
                             <p:confirm header="Confirmacion" 
                                        message="¿Estas seguro de desvincular el equipo?" 
                                        icon="ui-icon-alert" />

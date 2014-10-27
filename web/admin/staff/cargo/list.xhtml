@@ -20,14 +20,16 @@
                                              value="Crear Posición" 
                                              actionListener="#{cargoBean.prepareCreate}" 
                                              update=":CargoCreateForm" 
-                                             oncomplete="PF('CargoCreateDialog').show()"/>
+                                             oncomplete="PF('CargoCreateDialog').show()"
+                                             rendered="#{!loginBean.isConsultor}"/>
 
                             <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                              value="Editar Posición"
                                              actionListener="#{cargoBean.prepareEdit}"
                                              update=":CargoEditForm" 
                                              oncomplete="PF('CargoEditDialog').show()" 
-                                             disabled="#{empty cargoBean.selected}"/>
+                                             disabled="#{empty cargoBean.selected}"
+                                             rendered="#{!loginBean.isConsultor}"/>
                         </p:toolbarGroup>
                         <p:toolbarGroup align="right">
                             <p:commandButton value="Administración" action="#{cargoBean.returnAdminPage}"

@@ -36,7 +36,8 @@
                                  actionListener="#{resultadoBean.preEditArbitro}"
                                  update=":ArbitroEditDlg"
                                  disabled="#{empty resultadoBean.arbitro.personaId}"
-                                 oncomplete="PF('ArbitroEditDialog').show()" />
+                                 oncomplete="PF('ArbitroEditDialog').show()"
+                                 rendered="#{!loginBean.isConsultor}"/>
             </f:facet>
         </p:dataTable>
         <p:dataTable  id="arbitrosConvocados"
@@ -68,7 +69,8 @@
                                  value="Sacar" 
                                  action="#{resultadoBean.removeArbitro()}"
                                  update="arbitrosConvocados , :growlAdmin"                                                     
-                                 disabled="#{empty resultadoBean.partidoArbitro.arbitroId}"/>
+                                 disabled="#{empty resultadoBean.partidoArbitro.arbitroId}"
+                                 rendered="#{!loginBean.isConsultor}"/>
             </f:facet>
         </p:dataTable>
     </h:panelGrid>

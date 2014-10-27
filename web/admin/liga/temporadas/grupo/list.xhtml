@@ -14,13 +14,15 @@
                                  value="Crear Grupo" 
                                  actionListener="#{configBean.prepareCreateGrupo}"
                                  update=":GrupoCreateForm :GrupoListForm:editButton"
-                                 oncomplete="PF('GrupoCreateDialog').show()"/>
+                                 oncomplete="PF('GrupoCreateDialog').show()"
+                                 rendered="#{!loginBean.isConsultor}"/>
                 <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                  value="Editar Grupo" 
                                  actionListener="#{configBean.prepareEditGrupo}"   
                                  update=":GrupoEditForm"                                        
                                  oncomplete="PF('GrupoEditDialog').show()" 
-                                 disabled="#{empty configBean.grupo.nombre}"/>
+                                 disabled="#{empty configBean.grupo.nombre}"
+                                 rendered="#{!loginBean.isConsultor}"/>
             </p:toolbarGroup>
             <p:toolbarGroup align="right">
                 <p:commandButton value="Administración" action="#{configBean.returnAdminPage}"
