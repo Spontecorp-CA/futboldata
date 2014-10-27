@@ -64,6 +64,8 @@
     <properties>
       <!-- Conexión para pruebas-->
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data?zeroDateTimeBehavior=convertToNull"/>
+      <!-- Conexión para producción-->
+      <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data_prod?zeroDateTimeBehavior=convertToNull"/>-->
       <!-- Conexión para databalonazos-->
       <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://spontedev32:3306/futbol_data_balonazos?zeroDateTimeBehavior=convertToNull"/>-->
       <!-- DAtos comunes a pruebas y databalonazos -->

@@ -20,10 +20,12 @@
         <p:growl id="growlAdmin" life="3000" />
 
         <p:layout fullPage="true">
-            <p:layoutUnit id="top" position="north" size="120">
+            <p:layoutUnit id="top" position="north" size="135">
                 <!--ui:insert name="top">Top</ui:insert-->
                 <h:graphicImage id="bannerTop" name="banner_new.png" 
                                 library="images" styleClass="centerImage"/>
+                <h:outputLabel value="Bienvenido: #{loginBean.current.nombre} #{loginBean.current.apellido}. 
+                               #{loginBean.current.organizacionId.nombre}" styleClass="welcome_user"/>
             </p:layoutUnit> 
 
             <!--            <p:layoutUnit position="south" size="100">
