@@ -12,19 +12,24 @@ import java.util.Map;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
+import static net.sf.dynamicreports.report.builder.DynamicReports.field;
 import static net.sf.dynamicreports.report.builder.DynamicReports.grid;
 import static net.sf.dynamicreports.report.builder.DynamicReports.grp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.sbt;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
+import net.sf.dynamicreports.report.builder.FieldBuilder;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.component.PageXofYBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
+import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.grid.ColumnTitleGroupBuilder;
 import net.sf.dynamicreports.report.builder.group.ColumnGroupBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
+import net.sf.dynamicreports.report.constant.ListType;
 import net.sf.dynamicreports.report.definition.datatype.DRIDataType;
 import net.sf.dynamicreports.report.exception.DRException;
+import org.apache.velocity.Template;
 
 /**
  *
@@ -36,13 +41,17 @@ public class ReporteDinamico {
     public JasperReportBuilder generarReporteDinamico(DynamicReport dynamicR, String titulo, Collection<?> collection) throws DRException {
 
         JasperReportBuilder report = report();
-
+        //prueba new 
+        FieldBuilder<Integer> idField = field("id", type.integerType());
+        report.title(Templates.createTitleComponent("Otra cosa"),columnPair("hola", idField));
+        report.titleOnANewPage();
         report
                 .setTemplate(Templates.reportTemplate)
                 .title(Templates.createTitleComponent(titulo));
+   
 
         DynamicReport dynamicReport = dynamicR;
-
+        
         for (String dyString : (dynamicReport.getSubTitles())) {
             report.addTitle(cmp.text(dyString).setStyle(Templates.bold12CenteredStyle)
                     .setHorizontalAlignment(HorizontalAlignment.CENTER));
@@ -130,4 +139,13 @@ public class ReporteDinamico {
 
         return report;
     }
+
+    private VerticalListBuilder columnPair(String title, FieldBuilder<?> value) {
+
+        TextFieldBuilder<String> titleCmp = cmp.text(title)
+                .setStyle(Templates.columnTitleStyle);
+        TextFieldBuilder<?> valueCmp = cmp.text(value);
+        return cmp.verticalList(titleCmp, valueCmp);
+    }
+
 }

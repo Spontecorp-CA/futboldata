@@ -66,6 +66,8 @@
                         <h:outputText id ="llave" value="#{resultadoBean.partido.llaveId.nombre}" />
 
                     </p:panelGrid>
+                    <h:commandLink value="Informe Arbitral" action="#{resultadoBean.createPDF(actionEvent)}" 
+                                   target="_blank" />
                 </h:panelGroup>                
                 <p:accordionPanel id="menu" activeIndex="#{resultadoBean.indexTab}">
                     <f:ajax event="tabChange"  listener="#{resultadoBean.onTabChange}"/>

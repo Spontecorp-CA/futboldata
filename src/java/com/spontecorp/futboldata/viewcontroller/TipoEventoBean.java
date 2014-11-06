@@ -33,6 +33,7 @@ public class TipoEventoBean implements Serializable {
     private TipoEvento selected;
     private List<TipoEvento> items;
     private List<TipoEvento> filteredEvento = null;
+       
 
     private final TipoEventoFacade tipoEventoFacade;
 
@@ -41,7 +42,8 @@ public class TipoEventoBean implements Serializable {
 
     public TipoEventoBean() {
         tipoEventoFacade = new TipoEventoFacade();
-        bean = (LoginBean) Util.findBean("loginBean");
+        bean = (LoginBean) Util.findBean("loginBean");    
+
     }
 
     public TipoEvento getSelected() {
@@ -61,9 +63,7 @@ public class TipoEventoBean implements Serializable {
     }
 
     public List<TipoEvento> getItems() {
-        if (items == null) {
             items = tipoEventoFacade.findAll(bean.getIdOrganizacion());
-        }
         return items;
     }
 
@@ -88,6 +88,7 @@ public class TipoEventoBean implements Serializable {
     public void create() {
         if (!existeNombreStatus(selected.getNombre())) {
             selected.setStatus(Util.ACTIVO);
+            selected.setOrganizacionId(bean.getIdOrganizacion());
             persist(PersistAction.CREATE, "Status de Partido creado con éxito");
             if (!Util.isValidationFailed()) {
                 items = null;    // Invalidate list of items to trigger re-query.

@@ -34,14 +34,24 @@ import com.spontecorp.futboldata.jpacontroller.PartidoEventoEquipoFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoEventoFacade;
 import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.StaffFacade;
+import com.spontecorp.futboldata.reportes.template.ClasificacionesReport;
+import com.spontecorp.futboldata.reportes.template.InformeArbitralReport;
+import com.spontecorp.futboldata.reportes.view.ReportesBean;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.report.constant.PageOrientation;
+import net.sf.dynamicreports.report.constant.PageType;
+import net.sf.dynamicreports.report.exception.DRException;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.primefaces.event.TabChangeEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -936,5 +946,22 @@ public class ResultadoBean implements Serializable {
         comboEventoEquipo = null;
         eventosEquipo = null;
         tablaEventos = null;
+    }
+    
+        public void createPDF(ActionEvent actionEvent) throws IOException {
+        try {
+//            ClasificacionesReport clasificacionesReport = new ClasificacionesReport();
+
+ 
+            JasperReportBuilder builder = InformeArbitralReport.crearReporte("hola");
+
+            JasperPrint jasperPrint = builder.toJasperPrint();
+            Util.exportarPDF(jasperPrint);
+
+        } catch (DRException ex) {
+            java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+        }
     }
 }
