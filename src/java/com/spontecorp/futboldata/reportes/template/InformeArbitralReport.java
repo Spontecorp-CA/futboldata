@@ -4,14 +4,21 @@
  */
 package com.spontecorp.futboldata.reportes.template;
 
+import com.spontecorp.futboldata.entity.Arbitro;
 import com.spontecorp.futboldata.entity.Convocado;
+import com.spontecorp.futboldata.entity.Equipo;
+import com.spontecorp.futboldata.entity.Partido;
+import com.spontecorp.futboldata.entity.PartidoArbitro;
+import com.spontecorp.futboldata.entity.PartidoEvento;
+import com.spontecorp.futboldata.entity.Staff;
+import com.spontecorp.futboldata.utilities.Util;
 import java.awt.Color;
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
+import static net.sf.dynamicreports.report.builder.DynamicReports.asc;
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.field;
@@ -20,9 +27,9 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.report;
 import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
 import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import net.sf.dynamicreports.report.builder.FieldBuilder;
+import net.sf.dynamicreports.report.builder.column.ComponentColumnBuilder;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
 import net.sf.dynamicreports.report.builder.component.HorizontalListBuilder;
-import net.sf.dynamicreports.report.builder.component.MultiPageListBuilder;
 import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
@@ -33,8 +40,6 @@ import net.sf.dynamicreports.report.constant.LineDirection;
 import net.sf.dynamicreports.report.constant.ListType;
 import net.sf.dynamicreports.report.datasource.DRDataSource;
 import net.sf.dynamicreports.report.definition.ReportParameters;
-import net.sf.dynamicreports.report.definition.expression.DRIExpression;
-import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
 
 /**
@@ -42,35 +47,48 @@ import net.sf.jasperreports.engine.JRDataSource;
  * @author sponte03
  */
 public class InformeArbitralReport {
+
     private static FieldBuilder<?> titularField;
+    private static Partido partido;
 
-    public static JasperReportBuilder crearReporte(String comentario) {
+    public static JasperReportBuilder crearReporte(Partido partido, List<Convocado> equipoLocal,
+            List<Convocado> equipoVisitante, List<Staff> staffLocal, List<Staff> staffVisitante,
+            List<PartidoArbitro> arbitros, List<PartidoEvento> partidoEventos) {
 
-        SubreportBuilder subreportEquipoL = reporteEquipo("Equipo Local").setDataSource(createDataSource2());
-        SubreportBuilder subreportEquipoV = reporteEquipo("Equipo Visitante").setDataSource(createDataSource3());
+        List<PartidoEvento> partidoEventosL = getPartidoEvento(partido.getEquipoLocalId(), partidoEventos);
+        List<PartidoEvento> partidoEventosV = getPartidoEvento(partido.getEquipoVisitanteId(), partidoEventos);
 
-        SubreportBuilder subreportStaffVisitante = reporteStaff("Staff Visitante").setDataSource(createDataStaff());
-        SubreportBuilder subreportStaffLocal = reporteStaff("Staff Local").setDataSource(createDataStaff());
+        InformeArbitralReport.partido = partido;
 
-        SubreportBuilder subreportArbitro = reporteArbitro().setDataSource(createDataArbitro());
+        SubreportBuilder subreportPartido = reportePartido();
 
-        SubreportBuilder subreportCambioL = reporteCambios("Equipo Local").setDataSource(createDataCambio()).setWidth(100);
-        SubreportBuilder subreportCambioV = reporteCambios("Equipo Visitante").setDataSource(createDataCambio()).setWidth(100);
+        SubreportBuilder subreportEquipoL = reporteEquipo("Equipo Local").setDataSource(createDataEquipo(equipoLocal));
+        SubreportBuilder subreportEquipoV = reporteEquipo("Equipo Visitante").setDataSource(createDataEquipo(equipoVisitante));
 
-        SubreportBuilder subreportTarjetaL = reporteTarjetas("Tarjeta Equipo Local").setDataSource(createDataTarjeta());
-        SubreportBuilder subreportTarjetaV = reporteTarjetas("Tarjeta Equipo Visitante").setDataSource(createDataTarjeta());
+        SubreportBuilder subreportStaffVisitante = reporteStaff("Staff Visitante").setDataSource(createDataStaff(staffVisitante));
+        SubreportBuilder subreportStaffLocal = reporteStaff("Staff Local").setDataSource(createDataStaff(staffLocal));
 
-        SubreportBuilder subreportGolesL = reporteGoles("Goles Equipo Local").setDataSource(createDataGoles());
-        SubreportBuilder subreportGolesV = reporteGoles("Goles Equipo Visitante").setDataSource(createDataGoles());
-        comentario = "Holatregdfgfffffffffffffffffgggggggggggggggddddddddddddggggggdff";
+        SubreportBuilder subreportArbitro = reporteArbitro().setDataSource(createDataArbitro(arbitros));
+
+        SubreportBuilder subreportCambioL = reporteCambios("Equipo Local").setDataSource(createDataCambio(partidoEventosL));
+        SubreportBuilder subreportCambioSalidaL = reporteCambiosSalida("").setDataSource(createDataCambioSalida(partidoEventosL));
+
+        SubreportBuilder subreportCambioV = reporteCambios("Equipo Visitante").setDataSource(createDataCambio(partidoEventosV));
+        SubreportBuilder subreportCambioSalidaV = reporteCambiosSalida("").setDataSource(createDataCambioSalida(partidoEventosV));
+
+        SubreportBuilder subreportTarjetaL = reporteTarjetas("Tarjeta Equipo Local").setDataSource(createDataTarjeta(getTarjetas(partidoEventosL)));
+        SubreportBuilder subreportTarjetaV = reporteTarjetas("Tarjeta Equipo Visitante").setDataSource(createDataTarjeta(getTarjetas(partidoEventosV)));
+
+        SubreportBuilder subreportGolesL = reporteGoles("Goles Equipo Local").setDataSource(createDataGoles(partidoEventosL));
+        SubreportBuilder subreportGolesV = reporteGoles("Goles Equipo Visitante").setDataSource(createDataGoles(partidoEventosV));
         JasperReportBuilder builder;
         builder = null;
         builder = report()
                 .setTemplate(Templates.reportTemplate)
                 .detailFooter(cmp.verticalGap(20))
                 .pageFooter(Templates.footerComponent)
-                .title(Templates.createTitleComponent("Otro Intento"),
-                        cmp.verticalList(reportePartido(),
+                .title(Templates.createTitleComponent("Informe Arbitral"),
+                        cmp.verticalList(subreportPartido,
                                 cmp.line().setDirection(LineDirection.BOTTOM_UP),
                                 cmp.verticalGap(20),
                                 subreportEquipoL,
@@ -80,14 +98,16 @@ public class InformeArbitralReport {
                                 subreportStaffVisitante,
                                 cmp.verticalGap(20),
                                 subreportArbitro))
-                .setDataSource(createDataSource())
+                .setDataSource(createDataPartido(partido))
                 .title(cmp.text("Detalles Partido"),
-                        cmp.horizontalList(subreportCambioL, cmp.horizontalGap(5), subreportCambioV),
+                        cmp.horizontalList(subreportCambioL, subreportCambioSalidaL),
+                        cmp.verticalGap(20),
+                        cmp.horizontalList(subreportCambioV, subreportCambioSalidaV),
                         cmp.verticalGap(20),
                         cmp.horizontalList(subreportTarjetaL, cmp.horizontalGap(5), subreportTarjetaV),
                         cmp.verticalGap(20),
                         cmp.horizontalList(subreportGolesL, cmp.horizontalGap(5), subreportGolesV))
-                .columns(col.componentColumn("Comentario", cmp.text(comentario)));
+                .columns(col.componentColumn("Comentario", cmp.text(partido.getObservaciones())));
 
         return builder;
     }
@@ -115,18 +135,18 @@ public class InformeArbitralReport {
         FieldBuilder<String> categoria = field("categoria", type.stringType());
         FieldBuilder<?> local = field("local", type.stringType());
         FieldBuilder<?> visitante = field("visitante", type.stringType());
-        FieldBuilder<Date> fecha = field("orderdate", type.dateType());
+        FieldBuilder<Date> fecha = field("fecha", type.dateType());
         FieldBuilder<String> grupo = field("grupo", type.stringType());
-        FieldBuilder<Date> hora = field("orderdate", type.timeHourToFractionType());
+        FieldBuilder<Date> hora = field("hora", type.timeHourToFractionType());
         FieldBuilder<?> estadio = field("estadio", type.stringType());
-        FieldBuilder<?> temporada = field("temporada", type.stringType());
-        FieldBuilder<?> fase = field("fase", type.stringType());
-        FieldBuilder<?> jornada = field("jornada", type.integerType());
-        FieldBuilder<?> golL = field("golL", type.stringType());
-        FieldBuilder<?> golV = field("golV", type.stringType());
-        FieldBuilder<?> statusP = field("statusPartidoId.nombre", type.stringType());
+        FieldBuilder<String> temporada = field("temporada", type.stringType());
+        FieldBuilder<String> fase = field("fase", type.stringType());
+        FieldBuilder<Integer> jornada = field("jornada", type.integerType());
+        FieldBuilder<?> golL = field("golL", type.integerType());
+        FieldBuilder<?> golV = field("golV", type.integerType());
+        FieldBuilder<?> statusP = field("status", type.stringType());
         FieldBuilder<?> llave = field("llave", type.stringType());
-        FieldBuilder<?> ciudad = field("ciudadId.nombre", type.stringType());
+        FieldBuilder<?> ciudad = field("ciudad", type.stringType());
         FieldBuilder<?> listadoN = field("listadoN", type.stringType());
 
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
@@ -158,7 +178,7 @@ public class InformeArbitralReport {
                         col.componentColumn(columnPair("Lista n°", listadoN))
                 )
                 .detailFooter(cmp.verticalGap(20))
-                .setDataSource(createDataSource());
+                .setDataSource(createDataPartido(partido));
         SubreportBuilder subreport = cmp.subreport(reporte);
         return subreport;
 
@@ -175,21 +195,21 @@ public class InformeArbitralReport {
 
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
-        
+
         titularField = field("titular", Integer.class);
 
-        TextColumnBuilder<String> nombre = col.column("Nombre", "item2", type.stringType());
-        TextColumnBuilder<String> apellido = col.column("Apellido", "item2", type.stringType());
-        TextColumnBuilder<Integer> camisa = col.column("n° Camisa", "camisa", type.integerType()).setFixedColumns(2);
-        TextColumnBuilder<String> titular = col.column("Tit",new ExpressionColumn()).setFixedColumns(2);
-        TextColumnBuilder<Integer> sumplente = col.column("Sup", "suplente", type.integerType()).setFixedColumns(2);
+        TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
+        TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
+        TextColumnBuilder<Integer> camisa = col.column("n° Cam", "camisa", type.integerType()).setFixedColumns(3);
+        TextColumnBuilder<Integer> capitan = col.column("Cap", "capitan", type.integerType()).setFixedColumns(3);
+        TextColumnBuilder<String> titular = col.column("Tit", new ExpressionColumnTitu()).setFixedColumns(2);
+        TextColumnBuilder<String> sumplente = col.column("Sup", new ExpressionColumnSuple()).setFixedColumns(2);
         TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
-        TextColumnBuilder<String> equipo = col.column("Equipo", "equipo", type.stringType());
-        TextColumnBuilder<String> nacionalidad = col.column("Nac", "nacionalidad", type.stringType()).setFixedColumns(2);
-        TextColumnBuilder<String> cedula = col.column("Cedula", "documentoIdentidad", type.stringType()).setFixedColumns(11);
-        TextColumnBuilder<?> fechaNacimiento = col.column("Fecha N.", "fechaNac", type.dateType()).setFixedColumns(8);
+        TextColumnBuilder<String> nacionalidad = col.column("Nac", "nacionalidad", type.stringType()).setFixedColumns(8);
+        TextColumnBuilder<String> cedula = col.column("Cedula", "cedula", type.stringType()).setFixedColumns(8);
+        TextColumnBuilder<?> fechaNacimiento = col.column("Fecha N.", "fechaN", type.dateType()).setFixedColumns(8);
 
-        ColumnTitleGroupBuilder tituloAlioneacion = grid.titleGroup("Alineacion", camisa, titular, sumplente);
+        ColumnTitleGroupBuilder tituloAlioneacion = grid.titleGroup("Alineacion", camisa, titular, sumplente, capitan);
         ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, nombre, apellido, nacionalidad, cedula, fechaNacimiento);
 
         JasperReportBuilder reporte = report()
@@ -197,7 +217,7 @@ public class InformeArbitralReport {
                 .setColumnStyle(textStyle)
                 .fields(titularField = field("titular", Integer.class))
                 .columnGrid(ListType.HORIZONTAL_FLOW, correlativo, tituloAlioneacion, tituloEquipoLocal)
-                .columns(equipo, titular, sumplente,
+                .columns(titular, sumplente, capitan,
                         correlativo, camisa,
                         nombre, apellido, nacionalidad, cedula, fechaNacimiento);
         SubreportBuilder subreport = cmp.subreport(reporte);
@@ -220,16 +240,17 @@ public class InformeArbitralReport {
         TextColumnBuilder<String> nombre = col.column("Nombre", "personaId.nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "personaId.apellido", type.stringType());
         TextColumnBuilder<String> cargo = col.column("Cargo", "cargoId.nombre", type.stringType());
-        TextColumnBuilder<String> cedula = col.column("Asociacion", "arbitroId.asociacionId.nombre", type.stringType());
+        TextColumnBuilder<String> cedula = col.column("Cedula", "personaId.documentoIdentidad", type.stringType());
+        TextColumnBuilder<String> cefvf = col.column("C.E.F.V.F.", "cefvf", type.stringType());
 
         ColumnTitleGroupBuilder tituloStaff
-                = grid.titleGroup(localOVisitante, nombre, apellido, cargo, cedula);
+                = grid.titleGroup(localOVisitante, nombre, apellido, cargo, cedula, cefvf);
 
         JasperReportBuilder reporte = report()
                 .setColumnTitleStyle(columnTitleStyle)
                 .setColumnStyle(textStyle)
                 .columnGrid(ListType.HORIZONTAL_FLOW, tituloStaff)
-                .columns(nombre, apellido, cargo, cedula);
+                .columns(nombre, apellido, cargo, cedula, cefvf);
 
         SubreportBuilder subreportBuilder = cmp.subreport(reporte);
         return subreportBuilder;
@@ -252,15 +273,16 @@ public class InformeArbitralReport {
         TextColumnBuilder<String> apellido = col.column("Apellido", "arbitroId.personaId.apellido", type.stringType());
         TextColumnBuilder<String> tipo = col.column("Tipo", "tipoArbitroId.nombre", type.stringType());
         TextColumnBuilder<String> asociacion = col.column("Asociación", "arbitroId.asociacionId.nombre", type.stringType());
+        TextColumnBuilder<String> liga = col.column("Liga", "liga", type.stringType());
 
         ColumnTitleGroupBuilder tituloStaff
-                = grid.titleGroup("Cuerpo Arbitral", nombre, apellido, tipo, asociacion);
+                = grid.titleGroup("Cuerpo Arbitral", nombre, apellido, tipo, asociacion, liga);
 
         JasperReportBuilder reporte = report()
                 .setColumnTitleStyle(columnTitleStyle)
                 .setColumnStyle(textStyle)
                 .columnGrid(ListType.HORIZONTAL_FLOW, tituloStaff)
-                .columns(nombre, apellido, tipo, asociacion);
+                .columns(nombre, apellido, tipo, asociacion, liga);
 
         SubreportBuilder subreportBuilder = cmp.subreport(reporte);
         return subreportBuilder;
@@ -279,21 +301,56 @@ public class InformeArbitralReport {
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
 
+        ComponentColumnBuilder entrada = col.componentColumn(cmp.text("Entrada"));
+        ComponentColumnBuilder salida = col.componentColumn(cmp.text("Entrada"));
         TextColumnBuilder<String> tipo = col.column("Cambio", "tipo", type.stringType());
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
         TextColumnBuilder<?> minuto = col.column("Min", "min", type.integerType());
         TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
 
-        ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, tipo, nombre, apellido, minuto);
+        ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, entrada, nombre, apellido, minuto);
 
         JasperReportBuilder reporte = report()
                 .setColumnTitleStyle(columnTitleStyle)
                 .setColumnStyle(textStyle)
                 .columnGrid(correlativo, tituloEquipoLocal)
-                .columns(tipo,
+                .columns(tipo, entrada,
                         correlativo, minuto,
-                        nombre, apellido);
+                        nombre, apellido)
+                .sortBy(asc(minuto));
+        SubreportBuilder subreport = cmp.subreport(reporte);
+        return subreport;
+    }
+
+    private static SubreportBuilder reporteCambiosSalida(String localOVisitante) {
+
+        StyleBuilder boldStyle = stl.style().bold();
+        StyleBuilder boldCenteredStyle = stl.style(boldStyle)
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+        StyleBuilder columnTitleStyle = stl.style(boldCenteredStyle)
+                .setBorder(stl.pen1Point())
+                .setBackgroundColor(Color.LIGHT_GRAY);
+
+        StyleBuilder textStyle = stl.style(Templates.columnStyle)
+                .setBorder(stl.pen1Point());
+
+        ComponentColumnBuilder salida = col.componentColumn(cmp.text("Salida"));
+        TextColumnBuilder<String> tipo = col.column("Cambio", "tipo", type.stringType());
+        TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
+        TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
+        TextColumnBuilder<?> minuto = col.column("Min", "min", type.integerType());
+
+        ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, salida, nombre, apellido, minuto);
+
+        JasperReportBuilder reporte = report()
+                .setColumnTitleStyle(columnTitleStyle)
+                .setColumnStyle(textStyle)
+                .columnGrid(tituloEquipoLocal)
+                .columns(tipo, salida,
+                        minuto,
+                        nombre, apellido)
+                .sortBy(asc(minuto));
         SubreportBuilder subreport = cmp.subreport(reporte);
         return subreport;
     }
@@ -325,7 +382,8 @@ public class InformeArbitralReport {
                 .columnGrid(correlativo, tituloEquipoLocal)
                 .columns(tarjeta,
                         correlativo, minuto,
-                        nombre, apellido, numeroCamisa);
+                        nombre, apellido, numeroCamisa)
+                .sortBy(asc(minuto));
         SubreportBuilder subreport = cmp.subreport(reporte);
         return subreport;
     }
@@ -343,106 +401,251 @@ public class InformeArbitralReport {
                 .setBorder(stl.pen1Point());
 
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
-        TextColumnBuilder<String> evento = col.column("Evento", "evento", type.stringType());
+        TextColumnBuilder<String> gol = col.column("Gol", new ExpressionColumnGol());
+        TextColumnBuilder<String> autogol = col.column("Autogol", new ExpressionColumnAutogol());
 
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
         TextColumnBuilder<?> minuto = col.column("Min", "min", type.integerType());
         TextColumnBuilder<?> numeroCamisa = col.column("N° camisa", "camisa", type.integerType());
         TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
 
-        ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, evento, nombre, apellido, minuto, numeroCamisa);
+        ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, gol, autogol, nombre, apellido, minuto, numeroCamisa);
 
+        FieldBuilder<String> eventoField = field("evento", String.class);
         JasperReportBuilder reporte = report()
                 .setColumnTitleStyle(columnTitleStyle)
                 .setColumnStyle(textStyle)
+                .fields(eventoField)
                 .columnGrid(correlativo, tituloEquipoLocal)
-                .columns(evento,
+                .columns(gol, autogol,
                         correlativo, minuto,
-                        nombre, apellido, numeroCamisa);
+                        nombre, apellido, numeroCamisa)
+                .sortBy(asc(minuto));
         SubreportBuilder subreport = cmp.subreport(reporte);
         return subreport;
     }
 
-    private static JRDataSource createDataSource() {
-        DRDataSource dataSource = new DRDataSource("id", "item", "orderdate", "quantity", "unitprice");
-        dataSource.add(5, "Notebook", new Date(), 1, new BigDecimal(500));
+    private static JRDataSource createDataPartido(Partido partido) {
+        DRDataSource dataSource = new DRDataSource("competicion", "numero", "categoria", "local", "visitante", "fecha", "grupo", "hora", "estadio", "temporada", "fase", "jornada", "golL", "golV", "status", "llave", "ciudad", "listadoN");
+        dataSource.add(Util.getCompeticion(partido).getNombre(), partido.getNumero(), partido.getCategoriaId().getNombre(),
+                partido.getEquipoLocalId().getNombre(), partido.getEquipoVisitanteId().getNombre(), partido.getFecha(),
+                Util.getGrupo(partido).getNombre(), partido.getHoraInicio(), partido.getCanchaId().getNombre(),
+                Util.getTemporada(partido).getNombre(), Util.getFase(partido).getNombre(), Util.getJornada(partido).getNumero(), partido.getGolesEquipoLocal(), partido.getGolesEquipoVisitante(), partido.getStatusPartidoId().getNombre(), Util.getLlave(partido).getNombre(), Util.getCiudad(partido).getCiudad()
+        );
 
         return dataSource;
     }
 
-    private static JRDataSource createDataSource2() {
-        Convocado convocado = new Convocado();
-//        convocado.getConvocatoriaId().getEquipoId();
-        DRDataSource dataSource = new DRDataSource("item2", "camisa", "equipo","titular");
-        dataSource.add("Notebookfdg", 3, "EquipoB",1);
-        dataSource.add("Booksdf", 4, "EquipoB",0);
-        dataSource.add("PDAsdfds", 6, "EquipoB",0);
+    private static JRDataSource createDataEquipo(List<Convocado> equipo) {
+        DRDataSource dataSource = new DRDataSource("nombre", "apellido", "camisa", "titular", "nacionalidad", "cedula", "fechaN");
+        for (Convocado equi : equipo) {
+            dataSource.add(equi.getJugadorId().getPersonaId().getNombre(),
+                    equi.getJugadorId().getPersonaId().getApellido(),
+                    equi.getCamiseta(), equi.getTitular(),
+                    equi.getJugadorId().getPersonaId().getNacionalidad(),
+                    equi.getJugadorId().getPersonaId().getDocumentoIdentidad(),
+                    equi.getJugadorId().getPersonaId().getFechaNacimiento());
+        }
+
         return dataSource;
     }
 
-    private static JRDataSource createDataSource3() {
-        Convocado convocado = new Convocado();
-//        convocado.getConvocatoriaId().getEquipoId();
-        DRDataSource dataSource = new DRDataSource("item2", "camisa", "equipo","titular");
-        dataSource.add("Notebookfsdf", 1, "EquipoA",1);
-        dataSource.add("Book2", 2, "EquipoA",0);
-        dataSource.add("PDA3", 5, "EquipoA",1);
-        return dataSource;
-    }
-
-    private static JRDataSource createDataStaff() {
+    private static JRDataSource createDataStaff(List<Staff> staff) {
 //        convocado.getConvocatoriaId().getEquipoId();
         DRDataSource dataSource = new DRDataSource(
-                "personaId.nombre", "personaId.apellido", "cargoId.nombre", "personaId.documentoIdentidad");
-        dataSource.add("Juan", "Perez", "Director TC", "197236.61");
+                "personaId.nombre", "personaId.apellido", "cargoId.nombre", "personaId.documentoIdentidad", "cefvf");
+        for (Staff staffElem : staff) {
+            dataSource.add(staffElem.getPersonaId().getNombre(),
+                    staffElem.getPersonaId().getApellido(),
+                    staffElem.getCargoId().getNombre(),
+                    staffElem.getPersonaId().getDocumentoIdentidad());
+        }
         return dataSource;
     }
 
-    private static JRDataSource createDataArbitro() {
+    private static JRDataSource createDataArbitro(List<PartidoArbitro> arbitros) {
         DRDataSource dataSource = new DRDataSource(
                 "arbitroId.personaId.nombre", "arbitroId.personaId.apellido",
-                "tipoArbitroId.nombre", "arbitroId.asociacionId.nombre");
-        dataSource.add("Feliz", "Montoya", "Principal", "Duaca");
+                "tipoArbitroId.nombre", "arbitroId.asociacionId.nombre", "liga");
+        for (PartidoArbitro arbitro : arbitros) {
+            dataSource.add(arbitro.getArbitroId().getPersonaId().getNombre(),
+                    arbitro.getArbitroId().getPersonaId().getApellido(),
+                    arbitro.getTipoArbitroId().getNombre(),
+                    getAsociacion(arbitro));
+
+        }
         return dataSource;
     }
 
-    private static JRDataSource createDataCambio() {
+    private static String getAsociacion(PartidoArbitro arbitro) {
+        if (arbitro.getArbitroId().getAsociacionId() == null) {
+            return "";
+        } else {
+            return arbitro.getArbitroId().getAsociacionId().getNombre();
+        }
+    }
+
+    private static JRDataSource createDataCambio(List<PartidoEvento> eventos) {
         DRDataSource dataSource = new DRDataSource(
-                "nombre", "apellido",
-                "tipo", "min");
-        dataSource.add("Don", "Juan", "Salida", 10);
-        dataSource.add("Mujica", "PEPE", "Entrada", 10);
+                "nombre", "apellido", "min");
+        for (PartidoEvento evento : getEntrada(eventos)) {
+            dataSource.add(evento.getConvocadoId().getJugadorId().getPersonaId().getNombre(),
+                    evento.getConvocadoId().getJugadorId().getPersonaId().getApellido(),
+                    evento.getMinuto());
+        }
         return dataSource;
     }
 
-    private static JRDataSource createDataTarjeta() {
+    private static List<PartidoEvento> getPartidoEvento(Equipo equipo, List<PartidoEvento> eventos) {
+        List<PartidoEvento> list = new ArrayList<>();
+        for (PartidoEvento evento : eventos) {
+            if (evento.getConvocadoId().getConvocatoriaId().getEquipoId().equals(equipo)) {
+                list.add(evento);
+            }
+        }
+        return list;
+    }
+
+    private static JRDataSource createDataCambioSalida(List<PartidoEvento> eventos) {
+        DRDataSource dataSource = new DRDataSource(
+                "nombre", "apellido", "min");
+        for (PartidoEvento evento : getSalida(eventos)) {
+            dataSource.add(evento.getConvocadoId().getJugadorId().getPersonaId().getNombre(),
+                    evento.getConvocadoId().getJugadorId().getPersonaId().getApellido(),
+                    evento.getMinuto());
+        }
+        return dataSource;
+    }
+
+    private static List<PartidoEvento> getSalida(List<PartidoEvento> eventos) {
+        List<PartidoEvento> salidas = new ArrayList<>();
+        for (PartidoEvento evento : eventos) {
+            if (evento.getEventoId().getNombre().equals("Salida") && evento.getCantidad() == 0) {
+                salidas.add(evento);
+            }
+        }
+        return salidas;
+    }
+
+    private static List<PartidoEvento> getEntrada(List<PartidoEvento> eventos) {
+        List<PartidoEvento> entradas = new ArrayList<>();
+        for (PartidoEvento evento : eventos) {
+            if (evento.getEventoId().getNombre().equals("Entrada") && evento.getCantidad() == 0) {
+                entradas.add(evento);
+            }
+        }
+        return entradas;
+    }
+
+    private static JRDataSource createDataTarjeta(List<PartidoEvento> eventos) {
         DRDataSource dataSource = new DRDataSource(
                 "nombre", "apellido",
                 "tarjeta", "min", "camisa");
-        dataSource.add("Jose", "Diaz", "Amarilla", 10, 12);
-        dataSource.add("Ruben", "Perez", "Roja", 10, 24);
+
+        for (PartidoEvento evento : eventos) {
+            dataSource.add(evento.getConvocadoId().getJugadorId().getPersonaId().getNombre(),
+                    evento.getConvocadoId().getJugadorId().getPersonaId().getApellido(),
+                    evento.getEventoId().getNombre(),
+                    evento.getMinuto(),
+                    evento.getConvocadoId().getCamiseta());
+        }
         return dataSource;
     }
 
-    private static JRDataSource createDataGoles() {
+    private static List<PartidoEvento> getTarjetas(List<PartidoEvento> eventos) {
+        List<PartidoEvento> list = new ArrayList<>();
+        for (PartidoEvento evento : eventos) {
+            String nombre = evento.getEventoId().getNombre();
+            if (evento.getCantidad() == 0) {
+                if (nombre.equals("Roja") || nombre.equals("Amarilla") || nombre.equals("Roja Directa")) {
+                    list.add(evento);
+                }
+            }
+
+        }
+        return list;
+    }
+
+    private static JRDataSource createDataGoles(List<PartidoEvento> eventos) {
         DRDataSource dataSource = new DRDataSource(
                 "nombre", "apellido", "min", "camisa", "evento");
-        dataSource.add("Goyo", "Diaz", 10, 12, "Gol");
-        dataSource.add("Josebas", "Perez", 10, 24, "Autogol");
+        for (PartidoEvento evento : getGoles(eventos)) {
+            dataSource.add(evento.getConvocadoId().getJugadorId().getPersonaId().getNombre(),
+                    evento.getConvocadoId().getJugadorId().getPersonaId().getApellido(),
+                    evento.getMinuto(),
+                    evento.getConvocadoId().getCamiseta(),
+                    evento.getEventoId().getNombre());
+        }
         return dataSource;
     }
+    
+    private static List<PartidoEvento> getGoles(List<PartidoEvento> eventos){
+        List<PartidoEvento> list = new ArrayList<>();
+        for (PartidoEvento evento : eventos) {
+            String nombre = evento.getEventoId().getNombre();
+            if(nombre.equals("Gol")|| nombre.equals("Autogol")){
+                list.add(evento);
+            }
+        }
+        return list;
+    }
 
-    private static class ExpressionColumn extends AbstractSimpleExpression<String> {
+    private static class ExpressionColumnGol extends AbstractSimpleExpression<String> {
+
+        @Override
+        public String evaluate(ReportParameters reportParameters) {
+            String evento;
+            evento = reportParameters.getValue("evento");
+            if (evento.equals("Gol")) {
+                return " X";
+            } else {
+
+                return "";
+            }
+        }
+    }
+
+    private static class ExpressionColumnAutogol extends AbstractSimpleExpression<String> {
+
+        @Override
+        public String evaluate(ReportParameters reportParameters) {
+            String titular;
+            titular = reportParameters.getValue("evento");
+            if (titular.equals("Autogol")) {
+                return " X";
+            } else {
+
+                return "";
+            }
+        }
+    }
+
+    private static class ExpressionColumnTitu extends AbstractSimpleExpression<String> {
 
         @Override
         public String evaluate(ReportParameters reportParameters) {
             int titular;
             titular = reportParameters.getValue("titular");
             if (titular == 1) {
-                return "T";
+                return " X";
             } else {
-                
-                return "S";
+
+                return "";
+            }
+        }
+    }
+
+    private static class ExpressionColumnSuple extends AbstractSimpleExpression<String> {
+
+        @Override
+        public String evaluate(ReportParameters reportParameters) {
+            int titular;
+            titular = reportParameters.getValue("titular");
+            if (titular == 1) {
+                return "";
+            } else {
+
+                return " X";
             }
         }
     }

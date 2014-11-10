@@ -6,6 +6,7 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,10 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Convocado.findByTitular", query = "SELECT c FROM Convocado c WHERE c.titular = :titular"),
     @NamedQuery(name = "Convocado.findByTiempoJugado", query = "SELECT c FROM Convocado c WHERE c.tiempoJugado = :tiempoJugado")})
 public class Convocado implements Serializable {
+    @OneToMany(mappedBy = "convocadoId")
+    private Collection<PartidoEvento> partidoEventoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -150,6 +155,15 @@ public class Convocado implements Serializable {
             return jugadorId.getPersonaId().toString();
         }
 
+    }
+
+    @XmlTransient
+    public Collection<PartidoEvento> getPartidoEventoCollection() {
+        return partidoEventoCollection;
+    }
+
+    public void setPartidoEventoCollection(Collection<PartidoEvento> partidoEventoCollection) {
+        this.partidoEventoCollection = partidoEventoCollection;
     }
     
 }

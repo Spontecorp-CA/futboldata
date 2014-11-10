@@ -1,5 +1,13 @@
 package com.spontecorp.futboldata.utilities;
 
+import com.spontecorp.futboldata.entity.Ciudad;
+import com.spontecorp.futboldata.entity.Competicion;
+import com.spontecorp.futboldata.entity.Fase;
+import com.spontecorp.futboldata.entity.Grupo;
+import com.spontecorp.futboldata.entity.Jornada;
+import com.spontecorp.futboldata.entity.Llave;
+import com.spontecorp.futboldata.entity.Partido;
+import com.spontecorp.futboldata.entity.Temporada;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -209,5 +217,78 @@ public class Util implements Serializable {
     public static <T> T findBean(String beanName) {
         FacesContext context = FacesContext.getCurrentInstance();
         return (T) context.getApplication().evaluateExpressionGet(context, "#{" + beanName + "}", Object.class);
+    }
+
+    public static Competicion getCompeticion(Partido partido) {
+        Competicion competicion = null;
+        if (partido.getLlaveId() == null) {
+            competicion = partido.getJornadaId().getGrupoId().getFaseId().getTemporadaId().getCompeticionId();
+        } else {
+            competicion = partido.getLlaveId().getFaseId().getTemporadaId().getCompeticionId();
+        }
+        return competicion;
+
+    }
+
+    public static Temporada getTemporada(Partido partido) {
+        Temporada temporada = null;
+        if (partido.getLlaveId() == null) {
+            temporada = partido.getJornadaId().getGrupoId().getFaseId().getTemporadaId();
+        } else {
+            temporada = partido.getLlaveId().getFaseId().getTemporadaId();
+        }
+        return temporada;
+
+    }
+
+    public static Grupo getGrupo(Partido partido) {
+        Grupo grupo = new Grupo();
+        grupo.setNombre("");
+        if (partido.getLlaveId() == null) {
+            grupo = partido.getJornadaId().getGrupoId();
+        }
+        return grupo;
+
+    }
+
+    public static Fase getFase(Partido partido) {
+        Fase fase = null;
+        if (partido.getLlaveId() == null) {
+            fase = partido.getJornadaId().getGrupoId().getFaseId();
+        } else {
+            fase = partido.getLlaveId().getFaseId();
+        }
+        return fase;
+    }
+
+    public static Ciudad getCiudad(Partido partido) {
+        Ciudad ciudad = new Ciudad();
+        ciudad.setCiudad("");
+        if (partido.getCanchaId() != null) {
+            if (partido.getCanchaId().getDireccionId().getCiudadId() != null) {
+                ciudad = partido.getCanchaId().getDireccionId().getCiudadId();
+            }
+        }
+        return ciudad;
+    }
+
+    public static Llave getLlave(Partido partido) {
+        Llave llave = new Llave();
+        llave.setNombre("");
+        if (partido.getLlaveId() != null) {
+            llave = partido.getLlaveId();
+        }
+        return llave;
+    }
+
+    public static Jornada getJornada(Partido partido) {
+        Jornada jornada = new Jornada();
+        jornada.setAlias("");
+        jornada.setNumero(-1);
+        
+        if (partido.getJornadaId() != null) {
+            jornada = partido.getJornadaId();
+        }
+        return jornada;
     }
 }

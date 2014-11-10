@@ -33,6 +33,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PartidoEvento.findById", query = "SELECT p FROM PartidoEvento p WHERE p.id = :id"),
     @NamedQuery(name = "PartidoEvento.findByMinuto", query = "SELECT p FROM PartidoEvento p WHERE p.minuto = :minuto")})
 public class PartidoEvento implements Serializable {
+    @JoinColumn(name = "convocado_id", referencedColumnName = "id")
+    @ManyToOne
+    private Convocado convocadoId;
     @Column(name = "cantidad")
     private Integer cantidad;
     @Lob
@@ -165,6 +168,14 @@ public class PartidoEvento implements Serializable {
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public Convocado getConvocadoId() {
+        return convocadoId;
+    }
+
+    public void setConvocadoId(Convocado convocadoId) {
+        this.convocadoId = convocadoId;
     }
     
 }
