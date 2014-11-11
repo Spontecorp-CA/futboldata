@@ -22,6 +22,22 @@
                              style="width: 150px">
                 <f:selectItems value="#{statusPartidoBean.items}"/>
             </p:selectOneMenu>
+            
+            <h:outputLabel value="Status de Nomina:" for="nomina"/> 
+            <h:outputLabel value="Asistencia del Partido:" for="asistencia" />
+            <br/>
+            <p:selectOneMenu id="nomina" value="#{resultadoBean.partido.aprobacionNomina}"
+                             required="true"
+                             requiredMessage="Debe seleccionar el status"
+                             style="width: 150px">
+                <f:selectItem itemLabel="No Aprobado" itemValue="No Aprobado" />
+                <f:selectItem itemLabel="Aprobado" itemValue="Aprobado" />
+            </p:selectOneMenu>
+            
+            <p:inputText value="#{resultadoBean.partido.asistencia}" 
+                         validatorMessage="Tiene que ser un valor Numerico" >
+             <f:validateDoubleRange minimum="0" maximum="150000" />
+            </p:inputText>
         </h:panelGrid>
     </p:fieldset>
     <p:fieldset legend="Prorroga" rendered="#{empty resultadoBean.partido.jornadaId}">

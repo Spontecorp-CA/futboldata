@@ -29,7 +29,7 @@
                                      style="width: 250px"/>
                         <h:outputLabel value="Documento Id:" for="did"/>
                         <p:inputText id="did" value="#{arbitroBean.selected.personaId.documentoIdentidad}"
-                                      requiredMessage="Debe colocar el documento"
+                                     requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{arbitroBean.selected.personaId.sexo}">
@@ -56,6 +56,14 @@
                                          panelStyle="width:250px">
                             <f:selectItems value="#{arbitroBean.asociacionesAvalaible}"/>
                         </p:selectOneMenu> 
+                        <h:outputLabel value="Liga:" for="liga"/>
+                        <p:selectOneMenu id="liga" 
+                                         value="#{arbitroBean.selected.competicionId}"
+                                         style="width: 250px"
+                                         panelStyle="width:250px">
+                            <f:selectItem itemLabel="---" value="#{null}" />
+                            <f:selectItems value="#{ligaBean.items}"/>
+                        </p:selectOneMenu> 
                         <h:outputLabel value="Foto:" for="foto"/>
                         <p:fileUpload id="foto" 
                                       value="#{arbitroBean.selected.personaId.foto}"
@@ -68,7 +76,7 @@
                         <p:selectOneMenu id="status" value="#{arbitroBean.selected.status}"
                                          converter= "javax.faces.Integer"
                                          style="width: 250px"
-                                         
+
                                          requiredMessage="Debe repetir el password">
                             <f:selectItem itemLabel="Activo" itemValue="1"/>
                             <f:selectItem itemLabel="Inactivo" itemValue="0"/>
@@ -96,7 +104,7 @@
                         <h:outputLabel value="Dirección:" for="direccion"/>
                         <p:inputTextarea id="direccion"
                                          value="#{arbitroBean.selected.personaId.direccionId.direccion}"
-                                          requiredMessage="Debe colocar un email"
+                                         requiredMessage="Debe colocar un email"
                                          validatorMessage="Email inválido"
                                          rows="3" cols="33"
                                          style="width: 250px">
@@ -105,19 +113,19 @@
                         <h:graphicImage id="Perfil" style="height: 100px"
                                         url="#{arbitroBean.hostImagen}#{arbitroBean.selected.personaId.foto}"/> 
                     </h:panelGrid>
-                    
+
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>
                         <p:inputMask id="telefono" 
                                      value="#{arbitroBean.selected.personaId.telefono}"
-                                    
+
                                      requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"
                                      mask="(9999) 999.9999"/>  
                         <h:outputLabel value="Celular:" for="celular"/>
                         <p:inputText id="celular" 
                                      value="#{arbitroBean.selected.personaId.celular}"
-                                      requiredMessage="Debe colocar un teléfono"
+                                     requiredMessage="Debe colocar un teléfono"
                                      style="width: 250px"/>
 
 

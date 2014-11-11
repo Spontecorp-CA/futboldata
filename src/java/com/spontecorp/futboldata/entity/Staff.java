@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -42,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Staff.findByFechaDesde", query = "SELECT s FROM Staff s WHERE s.fechaDesde = :fechaDesde"),
     @NamedQuery(name = "Staff.findByFechaHasta", query = "SELECT s FROM Staff s WHERE s.fechaHasta = :fechaHasta")})
 public class Staff implements Serializable {
+    @Size(max = 45)
+    @Column(name = "cefvf")
+    private String cefvf;
     @Column(name = "organizacion_id")
     private Integer organizacionId;
     private static final long serialVersionUID = 1L;
@@ -253,6 +257,14 @@ public class Staff implements Serializable {
 
     public void setOrganizacionId(Integer organizacionId) {
         this.organizacionId = organizacionId;
+    }
+
+    public String getCefvf() {
+        return cefvf;
+    }
+
+    public void setCefvf(String cefvf) {
+        this.cefvf = cefvf;
     }
     
 }

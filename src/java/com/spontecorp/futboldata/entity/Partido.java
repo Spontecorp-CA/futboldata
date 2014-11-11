@@ -53,6 +53,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Partido.findByGolesLocalPenalties", query = "SELECT p FROM Partido p WHERE p.golesLocalPenalties = :golesLocalPenalties"),
     @NamedQuery(name = "Partido.findByGolesVisitantePenalties", query = "SELECT p FROM Partido p WHERE p.golesVisitantePenalties = :golesVisitantePenalties")})
 public class Partido implements Serializable {
+    @Size(max = 45)
+    @Column(name = "aprobacion_nomina")
+    private String aprobacionNomina;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "partidoId")
     private Collection<PartidoEventoEquipo> partidoEventoEquipoCollection;
     @JoinColumn(name = "categoria_id", referencedColumnName = "id")
@@ -408,6 +411,14 @@ public class Partido implements Serializable {
 
     public void setPartidoEventoEquipoCollection(Collection<PartidoEventoEquipo> partidoEventoEquipoCollection) {
         this.partidoEventoEquipoCollection = partidoEventoEquipoCollection;
+    }
+
+    public String getAprobacionNomina() {
+        return aprobacionNomina;
+    }
+
+    public void setAprobacionNomina(String aprobacionNomina) {
+        this.aprobacionNomina = aprobacionNomina;
     }
     
 }

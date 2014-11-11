@@ -34,6 +34,11 @@
                                      validatorMessage="Sólo puede colocar números en el campo Documento Id">
                             <f:convertNumber />                           
                         </p:inputText>
+
+                        <h:outputLabel value="C.E.F.V.F:" for="cefvf"/>
+                        <p:inputText id="cefvf" value="#{staffBean.staff.cefvf}"
+                                     style="width: 250px">                            
+                        </p:inputText>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{staffBean.staff.personaId.sexo}">
                             <f:selectItem itemLabel="M" itemValue="M"/>
@@ -101,8 +106,8 @@
                                          rows="3" cols="33"
                                          style="width: 250px">
                         </p:inputTextarea>
-                      
-          
+
+
                     </h:panelGrid>
                     <h:panelGrid columns="2" title="Contacto">
                         <h:outputLabel value="Teléfono:" for="telefono"/>

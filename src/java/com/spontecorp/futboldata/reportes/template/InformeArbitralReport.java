@@ -401,8 +401,8 @@ public class InformeArbitralReport {
                 .setBorder(stl.pen1Point());
 
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
-        TextColumnBuilder<String> gol = col.column("Gol", new ExpressionColumnGol());
-        TextColumnBuilder<String> autogol = col.column("Autogol", new ExpressionColumnAutogol());
+        TextColumnBuilder<String> gol = col.column("Gol", new ExpressionColumnGol()).setFixedColumns(3);
+        TextColumnBuilder<String> autogol = col.column("Autogol", new ExpressionColumnAutogol()).setFixedColumns(3);
 
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
         TextColumnBuilder<?> minuto = col.column("Min", "min", type.integerType());
@@ -426,12 +426,17 @@ public class InformeArbitralReport {
     }
 
     private static JRDataSource createDataPartido(Partido partido) {
-        DRDataSource dataSource = new DRDataSource("competicion", "numero", "categoria", "local", "visitante", "fecha", "grupo", "hora", "estadio", "temporada", "fase", "jornada", "golL", "golV", "status", "llave", "ciudad", "listadoN");
+        DRDataSource dataSource = new DRDataSource("competicion", "numero", "categoria",
+                "local", "visitante", "fecha", "grupo", "hora", "estadio", "temporada",
+                "fase", "jornada", "golL", "golV", "status", "llave", "ciudad", "listadoN");
         dataSource.add(Util.getCompeticion(partido).getNombre(), partido.getNumero(), partido.getCategoriaId().getNombre(),
                 partido.getEquipoLocalId().getNombre(), partido.getEquipoVisitanteId().getNombre(), partido.getFecha(),
                 Util.getGrupo(partido).getNombre(), partido.getHoraInicio(), partido.getCanchaId().getNombre(),
-                Util.getTemporada(partido).getNombre(), Util.getFase(partido).getNombre(), Util.getJornada(partido).getNumero(), partido.getGolesEquipoLocal(), partido.getGolesEquipoVisitante(), partido.getStatusPartidoId().getNombre(), Util.getLlave(partido).getNombre(), Util.getCiudad(partido).getCiudad()
-        );
+                Util.getTemporada(partido).getNombre(), Util.getFase(partido).getNombre(),
+                Util.getJornada(partido).getNumero(), partido.getGolesEquipoLocal(),
+                partido.getGolesEquipoVisitante(), partido.getStatusPartidoId().getNombre(),
+                Util.getLlave(partido).getNombre(), Util.getCiudad(partido).getCiudad(),
+                partido.getAprobacionNomina());
 
         return dataSource;
     }
@@ -458,7 +463,8 @@ public class InformeArbitralReport {
             dataSource.add(staffElem.getPersonaId().getNombre(),
                     staffElem.getPersonaId().getApellido(),
                     staffElem.getCargoId().getNombre(),
-                    staffElem.getPersonaId().getDocumentoIdentidad());
+                    staffElem.getPersonaId().getDocumentoIdentidad(),
+                    staffElem.getCefvf());
         }
         return dataSource;
     }
@@ -471,7 +477,7 @@ public class InformeArbitralReport {
             dataSource.add(arbitro.getArbitroId().getPersonaId().getNombre(),
                     arbitro.getArbitroId().getPersonaId().getApellido(),
                     arbitro.getTipoArbitroId().getNombre(),
-                    getAsociacion(arbitro));
+                    getAsociacion(arbitro),getLiga(arbitro));
 
         }
         return dataSource;
@@ -479,6 +485,14 @@ public class InformeArbitralReport {
 
     private static String getAsociacion(PartidoArbitro arbitro) {
         if (arbitro.getArbitroId().getAsociacionId() == null) {
+            return "";
+        } else {
+            return arbitro.getArbitroId().getAsociacionId().getNombre();
+        }
+    }
+
+    private static String getLiga(PartidoArbitro arbitro) {
+        if (arbitro.getArbitroId().getAsociacionId()== null) {
             return "";
         } else {
             return arbitro.getArbitroId().getAsociacionId().getNombre();
@@ -578,12 +592,12 @@ public class InformeArbitralReport {
         }
         return dataSource;
     }
-    
-    private static List<PartidoEvento> getGoles(List<PartidoEvento> eventos){
+
+    private static List<PartidoEvento> getGoles(List<PartidoEvento> eventos) {
         List<PartidoEvento> list = new ArrayList<>();
         for (PartidoEvento evento : eventos) {
             String nombre = evento.getEventoId().getNombre();
-            if(nombre.equals("Gol")|| nombre.equals("Autogol")){
+            if (nombre.equals("Gol") || nombre.equals("Autogol")) {
                 list.add(evento);
             }
         }

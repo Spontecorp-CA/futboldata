@@ -32,6 +32,10 @@
                         <p:inputText id="did" value="#{staffBean.persona.documentoIdentidad}"
                                      requiredMessage="Debe colocar el documento"
                                      style="width: 250px"/>
+                        <h:outputLabel value="C.E.F.V.F:" for="cefvf"/>
+                        <p:inputText id="cefvf" value="#{staffBean.staff.cefvf}"
+                                     style="width: 250px">                            
+                        </p:inputText>
                         <h:outputLabel value="* Sexo:" for="sex"/>
                         <p:selectOneRadio id="sex" value="#{staffBean.persona.sexo}">
                             <f:selectItem itemLabel="M" itemValue="M"/>

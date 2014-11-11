@@ -649,7 +649,9 @@ public class ResultadoBean implements Serializable {
     
     public String gotoResultadoPage(Partido partido) {
         this.partido = partido;
-        
+        if(partido.getAsistencia() == null){
+            partido.setAsistencia(0);
+        }
         recreateModel();
         convocatoriaLocal = getConvocatoriaLocal();
         convocatoriaVisitante = getConvocatoriaVisitante();

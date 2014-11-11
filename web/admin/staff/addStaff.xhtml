@@ -18,7 +18,7 @@
                 <p:panelGrid columns="2" >
                     <h:outputText value="Fecha de Ingreso:"/>
                     <p:calendar id="fechaEntrada" 
-                                value="#{staffBean.staff.fechaDesde}"
+                                value="#{staffInClub.staff.fechaDesde}"
                                 navigator="true" 
                                 pattern="dd/mm/yyyy" 
                                 locale="es"
@@ -31,7 +31,12 @@
                                      required="true"
                                      requiredMessage="Debe seleccionar un Cargo">                       
                         <f:selectItems value="#{staffInClub.cargoList}"/>                    
-                    </p:selectOneMenu>
+                    </p:selectOneMenu> 
+
+                    <h:outputLabel value="C.E.F.V.F:" for="cefvf"/>
+                    <p:inputText id="cefvf" value="#{staffInClub.staff.cefvf}"
+                                 style="width: 250px">                            
+                    </p:inputText>
                 </p:panelGrid>
                 <p:dataTable id="staff" var="staff" value="#{staffInClub.staffListAll}"
                              rowKey="#{staff.id}"
@@ -64,7 +69,7 @@
 
 
                     <p:column headerText="Status">
-                        <h:outputText value="#{status == 1?'Activa':'Inactiva'}"/>
+                        <h:outputText value="#{staff.status == 1?'Activa':'Inactiva'}"/>
                     </p:column>
                 </p:dataTable>
 
