@@ -60,6 +60,17 @@
     <class>com.spontecorp.futboldata.entity.Organizacion</class>
     <class>com.spontecorp.futboldata.entity.ArbitroPremio</class>
     <class>com.spontecorp.futboldata.entity.ClubPremio</class>
+    <class>com.spontecorp.futboldata.entity.CompeticionHasJugador</class>
+    <class>com.spontecorp.futboldata.entity.Direccion_1</class>
+    <class>com.spontecorp.futboldata.entity.Agente_1</class>
+    <class>com.spontecorp.futboldata.entity.Pais_1</class>
+    <class>com.spontecorp.futboldata.entity.Jugador_1</class>
+    <class>com.spontecorp.futboldata.entity.Asociacion_1</class>
+    <class>com.spontecorp.futboldata.entity.Categoria_1</class>
+    <class>com.spontecorp.futboldata.entity.Persona_1</class>
+    <class>com.spontecorp.futboldata.entity.Competicion_1</class>
+    <class>com.spontecorp.futboldata.entity.Posicion_1</class>
+    <class>com.spontecorp.futboldata.entity.Ciudad_1</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <!-- Conexión para pruebas-->
