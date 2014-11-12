@@ -34,7 +34,7 @@
                 <f:selectItem itemLabel="Aprobado" itemValue="Aprobado" />
             </p:selectOneMenu>
             
-            <p:inputText value="#{resultadoBean.partido.asistencia}" 
+            <p:inputText id="asistencia" value="#{resultadoBean.partido.asistencia}" 
                          validatorMessage="Tiene que ser un valor Numerico" >
              <f:validateDoubleRange minimum="0" maximum="150000" />
             </p:inputText>
