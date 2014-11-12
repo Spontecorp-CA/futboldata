@@ -33,10 +33,10 @@
                         <f:selectItems value="#{staffInClub.cargoList}"/>                    
                     </p:selectOneMenu> 
 
-                    <h:outputLabel value="C.E.F.V.F:" for="cefvf"/>
-                    <p:inputText id="cefvf" value="#{staffInClub.staff.cefvf}"
-                                 style="width: 250px">                            
-                    </p:inputText>
+                    <!--                    <h:outputLabel value="C.E.F.V.F:" for="cefvf"/>
+                                        <p:inputText id="cefvf" value="#{staffInClub.staff.cefvf}"
+                                                     style="width: 250px">                            
+                                        </p:inputText>-->
                 </p:panelGrid>
                 <p:dataTable id="staff" var="staff" value="#{staffInClub.staffListAll}"
                              rowKey="#{staff.id}"
@@ -65,6 +65,9 @@
                     <p:column headerText="Documento Identidad" sortBy="jugador.personaId.documentoIdentidad"
                               filterBy="personaId.documentoIdentidad">
                         <h:outputText value="#{staff.documentoIdentidad}"/>
+                    </p:column>
+                    <p:column headerText="C.E.F.V.F" >
+                        <h:outputText value="#{staff.cefvf}"/>
                     </p:column>
 
 

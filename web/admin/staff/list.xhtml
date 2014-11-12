@@ -75,8 +75,12 @@
                         <h:outputText value="#{staff.celular}"/>
                     </p:column>
 
+                    <p:column headerText="C.E.F.V.F">
+                        <h:outputText value="#{staff.cefvf}"/>
+                    </p:column>
+
                     <p:column headerText="Status">
-                        <h:outputText   value="#{status== 0?'INACTIVO':'ACTIVO'}"/>
+                        <h:outputText   value="#{staff.status== 1?'ACTIVO':'INACTIVO'}"/>
                     </p:column>
 
                 </p:dataTable>

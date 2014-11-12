@@ -137,7 +137,8 @@ public class StaffFacade extends AbstractFacade<Staff> implements Serializable {
         List<Persona> staffList = null;
         EntityManager em = getEntityManager();
         try {
-            String query = "select distinct p from Persona p, Staff s where s.personaId = p ";
+            String query = "select distinct p from Persona p, Staff s where s.personaId = p "
+                    + "AND s.status = 1 AND s.personaId.status = 1";
             if (organizacion != 1) {
                 query = query + "AND s.organizacionId =:organizacion";
             }

@@ -50,6 +50,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Persona.findByEmail", query = "SELECT p FROM Persona p WHERE p.email = :email"),
     @NamedQuery(name = "Persona.findByStatus", query = "SELECT p FROM Persona p WHERE p.status = :status")})
 public class Persona implements Serializable {
+    @Size(max = 45)
+    @Column(name = "cefvf")
+    private String cefvf;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -305,6 +308,14 @@ public class Persona implements Serializable {
     @Override
     public String toString() {
         return nombre + " " + apellido;
+    }
+
+    public String getCefvf() {
+        return cefvf;
+    }
+
+    public void setCefvf(String cefvf) {
+        this.cefvf = cefvf;
     }
     
 }

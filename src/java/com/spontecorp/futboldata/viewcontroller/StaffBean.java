@@ -181,6 +181,7 @@ public class StaffBean implements Serializable {
                     || persona.getDocumentoIdentidad().equals("")) {
                 persona.setRedSocialCollection(redes);
                 persona.setDireccionId(direccion);
+                persona.setStatus(Util.ACTIVO);
                 staff.setPersonaId(persona);
                 controllerStaff.create(staff);
                 recreateModel();

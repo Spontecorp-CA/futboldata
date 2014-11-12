@@ -464,7 +464,7 @@ public class InformeArbitralReport {
                     staffElem.getPersonaId().getApellido(),
                     staffElem.getCargoId().getNombre(),
                     staffElem.getPersonaId().getDocumentoIdentidad(),
-                    staffElem.getCefvf());
+                    staffElem.getPersonaId().getCefvf());
         }
         return dataSource;
     }

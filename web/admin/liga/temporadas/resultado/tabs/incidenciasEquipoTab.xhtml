@@ -28,18 +28,18 @@
             </p:selectOneMenu>
 
            
-            <p:selectOneMenu  id="equipoTipoEvento" value="#{resultadoBean.tipoEvento}" 
+            <p:selectOneMenu  id="equipoTipoEvento" value="#{resultadoBean.tipoEventoE}" 
                               style="width: 140px;">
                 <f:selectItem itemLabel="-------------"  value="#{null}" />
                 <f:selectItems value="#{tipoEventoBean.getItemsT('E')}" />
                 <p:ajax  event="valueChange" 
-                         listener="#{resultadoBean.TipoEventoSelected(changeEvent)}"
+                         listener="#{resultadoBean.TipoEventoSelectedE(changeEvent)}"
                          update="equipoIncident" />
             </p:selectOneMenu>
             
             <p:selectOneMenu id="equipoIncident" value="#{resultadoBean.equipoEvento.eventoId}" style="width: 140px">
                 <f:selectItem itemLabel="-------------"  value="#{null}" />
-                <f:selectItems value="#{resultadoBean.comboEvento}" />
+                <f:selectItems value="#{resultadoBean.comboEventoEquipo}" />
                 <p:ajax event="valueChange" update="eventQuantity, eventQuantityLabel" />
             </p:selectOneMenu>
 
