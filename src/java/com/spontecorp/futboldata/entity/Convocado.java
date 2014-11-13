@@ -39,6 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Convocado.findByTitular", query = "SELECT c FROM Convocado c WHERE c.titular = :titular"),
     @NamedQuery(name = "Convocado.findByTiempoJugado", query = "SELECT c FROM Convocado c WHERE c.tiempoJugado = :tiempoJugado")})
 public class Convocado implements Serializable {
+    @Column(name = "capitan")
+    private Integer capitan;
+    @JoinColumn(name = "competicion_has_jugador_id", referencedColumnName = "id")
+    @ManyToOne
+    private CompeticionHasJugador competicionHasJugadorId;
     @OneToMany(mappedBy = "convocadoId")
     private Collection<PartidoEvento> partidoEventoCollection;
     private static final long serialVersionUID = 1L;
@@ -164,6 +169,22 @@ public class Convocado implements Serializable {
 
     public void setPartidoEventoCollection(Collection<PartidoEvento> partidoEventoCollection) {
         this.partidoEventoCollection = partidoEventoCollection;
+    }
+
+    public CompeticionHasJugador getCompeticionHasJugadorId() {
+        return competicionHasJugadorId;
+    }
+
+    public void setCompeticionHasJugadorId(CompeticionHasJugador competicionHasJugadorId) {
+        this.competicionHasJugadorId = competicionHasJugadorId;
+    }
+
+    public Integer getCapitan() {
+        return capitan;
+    }
+
+    public void setCapitan(Integer capitan) {
+        this.capitan = capitan;
     }
     
 }

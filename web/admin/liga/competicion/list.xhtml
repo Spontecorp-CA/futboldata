@@ -45,6 +45,11 @@
                                              value="Agregar Equipos" 
                                              action="#{equipoInLigaBean.gotoEquipoInLigaPage(ligaBean.selected)}"
                                              disabled="#{empty ligaBean.selected.nombre}"/>
+                            <p:commandButton id="addJugadorButton" 
+                                             icon="ui-icon-plusthick" 
+                                             value="Agregar Jugadores" 
+                                             action="#{competicionHasJugadorBean.gotoCompeticionHasJugadorPage(ligaBean.selected)}"
+                                             disabled="#{empty ligaBean.selected.nombre}"/>
                             <p:commandButton id="configButton" icon="ui-icon-calendar" 
                                              value="Calendarios"
                                              action="#{configBean.gotoConfig()}"
@@ -73,12 +78,14 @@
                         <p:ajax event="rowSelect" update=":LigaListForm:createButton 
                                 :LigaListForm:viewButton :LigaListForm:editButton 
                                 :LigaListForm:configButton :LigaListForm:addStaffButton 
-                                :LigaListForm:addTeamButton"/>
+                                :LigaListForm:addTeamButton
+                                :LigaListForm:addJugadorButton"/>
                         onstart="#{configBean.setLiga(ligaBean.selected)}"/>
                         <p:ajax event="rowUnselect" update=":LigaListForm:createButton 
                                 :LigaListForm:viewButton :LigaListForm:editButton 
                                 :LigaListForm:configButton :LigaListForm:addStaffButton 
-                                :LigaListForm:addTeamButton"/>
+                                :LigaListForm:addTeamButton
+                                :LigaListForm:addJugadorButton"/>
 
                         <p:column id="ligaColummn" headerText="Liga">
                             <h:outputText value="#{item.nombre}"/>

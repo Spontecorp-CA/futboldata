@@ -197,29 +197,31 @@ public class InformeArbitralReport {
                 .setBorder(stl.pen1Point());
 
         titularField = field("titular", Integer.class);
+        FieldBuilder<Integer> capitanField = field("capitan", Integer.class);
 
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
-        TextColumnBuilder<Integer> camisa = col.column("n° Cam", "camisa", type.integerType()).setFixedColumns(3);
-        TextColumnBuilder<Integer> capitan = col.column("Cap", "capitan", type.integerType()).setFixedColumns(3);
+        TextColumnBuilder<Integer> camisa = col.column("n° Cam", "camisa", type.integerType()).setFixedColumns(2);
+        TextColumnBuilder<String> capitan = col.column("Cap", new ExpressionColumnCap()).setFixedColumns(2);
         TextColumnBuilder<String> titular = col.column("Tit", new ExpressionColumnTitu()).setFixedColumns(2);
         TextColumnBuilder<String> sumplente = col.column("Sup", new ExpressionColumnSuple()).setFixedColumns(2);
         TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
-        TextColumnBuilder<String> nacionalidad = col.column("Nac", "nacionalidad", type.stringType()).setFixedColumns(8);
-        TextColumnBuilder<String> cedula = col.column("Cedula", "cedula", type.stringType()).setFixedColumns(8);
-        TextColumnBuilder<?> fechaNacimiento = col.column("Fecha N.", "fechaN", type.dateType()).setFixedColumns(8);
+        TextColumnBuilder<String> nacionalidad = col.column("Nac", "nacionalidad", type.stringType()).setFixedColumns(7);
+        TextColumnBuilder<String> cedula = col.column("Cedula", "cedula", type.stringType()).setFixedColumns(7);
+        TextColumnBuilder<?> fechaNacimiento = col.column("Fecha N.", "fechaN", type.dateType()).setFixedColumns(7);
+        TextColumnBuilder<?> ficha = col.column("Ficha", "ficha", type.stringType()).setFixedColumns(6);
 
         ColumnTitleGroupBuilder tituloAlioneacion = grid.titleGroup("Alineacion", camisa, titular, sumplente, capitan);
-        ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, nombre, apellido, nacionalidad, cedula, fechaNacimiento);
+        ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, nombre, apellido, nacionalidad, cedula, fechaNacimiento, ficha);
 
         JasperReportBuilder reporte = report()
                 .setColumnTitleStyle(columnTitleStyle)
                 .setColumnStyle(textStyle)
-                .fields(titularField = field("titular", Integer.class))
+                .fields(titularField,capitanField)
                 .columnGrid(ListType.HORIZONTAL_FLOW, correlativo, tituloAlioneacion, tituloEquipoLocal)
                 .columns(titular, sumplente, capitan,
                         correlativo, camisa,
-                        nombre, apellido, nacionalidad, cedula, fechaNacimiento);
+                        nombre, apellido, nacionalidad, cedula, fechaNacimiento, ficha);
         SubreportBuilder subreport = cmp.subreport(reporte);
         return subreport;
 
@@ -442,14 +444,15 @@ public class InformeArbitralReport {
     }
 
     private static JRDataSource createDataEquipo(List<Convocado> equipo) {
-        DRDataSource dataSource = new DRDataSource("nombre", "apellido", "camisa", "titular", "nacionalidad", "cedula", "fechaN");
+        DRDataSource dataSource = new DRDataSource("nombre", "apellido", "camisa", "titular", "nacionalidad", "cedula", "fechaN", "ficha", "capitan");
         for (Convocado equi : equipo) {
             dataSource.add(equi.getJugadorId().getPersonaId().getNombre(),
                     equi.getJugadorId().getPersonaId().getApellido(),
                     equi.getCamiseta(), equi.getTitular(),
                     equi.getJugadorId().getPersonaId().getNacionalidad(),
                     equi.getJugadorId().getPersonaId().getDocumentoIdentidad(),
-                    equi.getJugadorId().getPersonaId().getFechaNacimiento());
+                    equi.getJugadorId().getPersonaId().getFechaNacimiento(),
+                    Util.getFicha(equi), equi.getCapitan());
         }
 
         return dataSource;
@@ -477,7 +480,7 @@ public class InformeArbitralReport {
             dataSource.add(arbitro.getArbitroId().getPersonaId().getNombre(),
                     arbitro.getArbitroId().getPersonaId().getApellido(),
                     arbitro.getTipoArbitroId().getNombre(),
-                    getAsociacion(arbitro),getLiga(arbitro));
+                    getAsociacion(arbitro), getLiga(arbitro));
 
         }
         return dataSource;
@@ -492,7 +495,7 @@ public class InformeArbitralReport {
     }
 
     private static String getLiga(PartidoArbitro arbitro) {
-        if (arbitro.getArbitroId().getAsociacionId()== null) {
+        if (arbitro.getArbitroId().getAsociacionId() == null) {
             return "";
         } else {
             return arbitro.getArbitroId().getAsociacionId().getNombre();
@@ -660,6 +663,21 @@ public class InformeArbitralReport {
             } else {
 
                 return " X";
+            }
+        }
+    }
+
+    private static class ExpressionColumnCap extends AbstractSimpleExpression<String> {
+
+        @Override
+        public String evaluate(ReportParameters reportParameters) {
+            int titular;
+            titular = reportParameters.getValue("capitan");
+            if (titular == 1) {
+                return " X";
+            } else {
+
+                return " ";
             }
         }
     }

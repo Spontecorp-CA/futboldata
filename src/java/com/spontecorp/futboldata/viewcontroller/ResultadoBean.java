@@ -7,6 +7,7 @@ package com.spontecorp.futboldata.viewcontroller;
 import com.spontecorp.futboldata.entity.Arbitro;
 import com.spontecorp.futboldata.entity.Clasificacion;
 import com.spontecorp.futboldata.entity.ClasificacionGrupo;
+import com.spontecorp.futboldata.entity.CompeticionHasJugador;
 import com.spontecorp.futboldata.entity.Convocado;
 import com.spontecorp.futboldata.entity.Convocatoria;
 import com.spontecorp.futboldata.entity.Equipo;
@@ -23,6 +24,7 @@ import com.spontecorp.futboldata.entity.Staff;
 import com.spontecorp.futboldata.entity.TipoEvento;
 import com.spontecorp.futboldata.jpacontroller.ClasificacionFacade;
 import com.spontecorp.futboldata.jpacontroller.ClasificacionGrupoFacade;
+import com.spontecorp.futboldata.jpacontroller.CompeticionHasJugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocadoFacade;
 import com.spontecorp.futboldata.jpacontroller.ConvocatoriasFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoEnGrupoFacade;
@@ -85,6 +87,7 @@ public class ResultadoBean implements Serializable {
     private TipoEvento tipoEventoE;
     private int tipoCantidadEvento;
     private ClasificacionGrupo clasificacionGrupo;
+    private boolean  capitan;
 
     private double cant_percent;
 
@@ -101,6 +104,7 @@ public class ResultadoBean implements Serializable {
     private final EventoFacade eventoFacade;
     private final JornadaFacade jornadaFacade;
     private final PartidoEventoEquipoFacade eventoEquipoFacade;
+    private final CompeticionHasJugadorFacade competicionHasJugadorFacade;
 
     private List<Evento> comboEvento;
     private List<Evento> comboEventoEquipo;
@@ -170,6 +174,7 @@ public class ResultadoBean implements Serializable {
         eventoFacade = new EventoFacade();
         equipoEnGrupoFacade = new EquipoEnGrupoFacade();
         jornadaFacade = new JornadaFacade();
+        competicionHasJugadorFacade = new CompeticionHasJugadorFacade();
         bean = (LoginBean) Util.findBean("loginBean");
     }
 
@@ -194,6 +199,9 @@ public class ResultadoBean implements Serializable {
     }
 
     public void editConvocado() {
+        if(capitan){
+            convocado.setCapitan(1);
+        }
         if (convocado.getConvocatoriaId() == convocatoriaLocal) {
             editConvocado(convocatoriaLocal, convocadoEquipoLocal);
         } else {
@@ -241,11 +249,21 @@ public class ResultadoBean implements Serializable {
 
     public void editConvocado(Convocatoria convocatoria, List<Convocado> convocados) {
         try {
-            if (convocadoFacade.getConvocado(convocado.getJugadorId(), convocatoria) == null) {
+            Convocado convocadoTem = convocadoFacade.getConvocado(convocado.getJugadorId(), convocatoria);
+            CompeticionHasJugador competicionHasJugador = competicionHasJugadorFacade.
+                    getCompeticionHasJugador(convocado.getJugadorId(), Util.getCompeticion(partido));
+            if (convocadoTem == null) {
+                if (competicionHasJugador != null) {
+                    convocado.setCompeticionHasJugadorId(competicionHasJugador);
+                }
                 convocadoFacade.edit(convocado);
                 Util.addSuccessMessage("Se agrego el convocado con exito");
                 convocados.add(convocado);
             } else {
+                if (competicionHasJugador != null) {
+                    convocadoTem.setCompeticionHasJugadorId(competicionHasJugador);
+                }
+                convocadoFacade.edit(convocadoTem);
                 Util.addErrorMessage("Ya se agrego el Jugador a la Convocatoria");
             }
         } catch (Exception e) {
@@ -290,6 +308,15 @@ public class ResultadoBean implements Serializable {
         return convocatoriaVisitante;
     }
 
+    public boolean isCapitan() {
+        return capitan;
+    }
+
+    public void setCapitan(boolean capitan) {
+        this.capitan = capitan;
+    }
+
+    
     public Convocado getConvocado() {
         if (convocado == null) {
             convocado = new Convocado();

@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./../../../WEB-INF/templates/adminTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Jugadores
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="CompeticionHasJugadorForm">
+
+            <p:fieldset style="width: 85%" legend="Lista de Jugadores de: #{competicionHasJugadorBean.competicion.nombre}" >
+
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Nombre de Competición: " for="nombreLiga" style="font-weight: bold"/>
+                    <h:outputText id="nombreLiga" value="#{competicionHasJugadorBean.competicion.nombre}"/>
+                </h:panelGrid>
+                <p:toolbar>
+                    <p:toolbarGroup align="left">
+               
+
+                        <p:commandButton id="equipoButton" icon="ui-icon-search" 
+                                         value="Administración de Equipo" 
+                                         action="#{equipoBean.gotoEquiposPage}"/>
+
+                        <p:commandButton id="competicionButton" icon="ui-icon-search" 
+                                         value="Listado de Ligas" 
+                                         action="#{ligaBean.gotoLiga}" />
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
+                                         immediate="true"/>
+                    </p:toolbarGroup>                  
+                </p:toolbar>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Equipo:" for="equipoInLiga" />
+                    <p:selectOneMenu id="equipoInLiga" 
+                                     value="#{competicionHasJugadorBean.equipoInLiga}">
+                        <f:selectItems value="#{competicionHasJugadorBean.equipoInLigas}" />
+                    </p:selectOneMenu>
+
+                    <p:commandButton value="Cargar Jugadores" actionListener="#{competicionHasJugadorBean.cargarJugadores}"
+                                     update=":CompeticionHasJugadorForm :growlAdmin">
+                        <f:ajax render="jugadores" />
+                    </p:commandButton>
+                    <p:commandButton value="Guardar Cambios" 
+                                     actionListener="#{competicionHasJugadorBean.guardar}"
+                                     update=":CompeticionHasJugadorForm :growlAdmin">
+                    </p:commandButton>
+                        
+                </h:panelGrid>
+                <p:dataTable id="jugadores" var="competicionHasJugador"  
+                             value="#{competicionHasJugadorBean.items}"
+                             rowKey="#{competicionHasJugador}"
+                             selection="#{competicionHasJugadorBean.competicionHasJugador}" 
+                             paginator="true" rows="15"
+                             editable="true" editMode="cell">   
+                    <p:ajax event="rowSelect" 
+                            update=":CompeticionHasJugadorForm:display  " />
+                    <f:ajax execute="equipos" event="rowSelect"  />
+                    <p:ajax event="rowUnselect"/>
+
+
+                    <f:facet name="header">
+                        Lista de Jugadores en: #{competicionHasJugadorBean.competicion.nombre}
+                    </f:facet>
+                    <p:column headerText="Nombre" sortBy="jugadorId.personaId.nombre"
+                              filterBy="jugadorId.personaId.nombre">
+                        <h:outputText value="#{competicionHasJugador.jugadorId.personaId.nombre}"/>
+                    </p:column>
+
+                    <p:column headerText="Apellido" sortBy="jugadorId.personaId.apellido"
+                              filterBy="jugadorId.personaId.apellido" >
+                        <h:outputText value="#{competicionHasJugador.jugadorId.personaId.apellido}"/>
+                    </p:column>
+                    <p:column headerText="Numero de Ficha" >
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{competicionHasJugador.ficha}"/>
+                            </f:facet>
+                            <f:facet name="input" >
+                                <p:inputText value="#{competicionHasJugador.ficha}" />
+                            </f:facet>
+
+                        </p:cellEditor>
+
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <h:outputText value="#{competicionHasJugador.status == 1?'Activo':'Inactivo'}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:fieldset>
+            <p:dialog id="dialog" header="Detelles Jugadore" widgetVar="equipoDialog" resizable="false"
+                      showEffect="fade" hideEffect="explode">
+
+                <h:panelGrid id="display" columns="2" cellpadding="4">
+
+                    <f:facet name="header">
+                        <p:graphicImage value="#{competicionHasJugadorBean.hostImagen}#{competicionHasJugadorBean.competicion.nombre}"/>
+                        <br/>
+                        <h:outputText value="Nombre:#{competicionHasJugadorBean.competicionHasJugador.jugadorId}"/>
+                    </f:facet>
+
+                </h:panelGrid>
+            </p:dialog>
+            <p:confirmDialog id="confirdialog" global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton  id="siButton" value="Si"
+                                  type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>     
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

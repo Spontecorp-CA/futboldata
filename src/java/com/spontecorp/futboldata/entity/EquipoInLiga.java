@@ -98,7 +98,7 @@ public class EquipoInLiga implements Serializable {
 
     @Override
     public String toString() {
-        return "com.spontecorp.futboldata.entity.EquipoInLiga[ id=" + id + " ]";
+        return equipoId.toString();
     }
 
     public Integer getStatus() {

@@ -6,6 +6,7 @@
 package com.spontecorp.futboldata.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,9 +17,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,6 +35,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CompeticionHasJugador.findById", query = "SELECT c FROM CompeticionHasJugador c WHERE c.id = :id"),
     @NamedQuery(name = "CompeticionHasJugador.findByFicha", query = "SELECT c FROM CompeticionHasJugador c WHERE c.ficha = :ficha")})
 public class CompeticionHasJugador implements Serializable {
+    @Column(name = "status")
+    private Integer status;
+    @OneToMany(mappedBy = "competicionHasJugadorId")
+    private Collection<Convocado> convocadoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -110,6 +117,23 @@ public class CompeticionHasJugador implements Serializable {
     @Override
     public String toString() {
         return "com.spontecorp.futboldata.entity.CompeticionHasJugador[ id=" + id + " ]";
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    @XmlTransient
+    public Collection<Convocado> getConvocadoCollection() {
+        return convocadoCollection;
+    }
+
+    public void setConvocadoCollection(Collection<Convocado> convocadoCollection) {
+        this.convocadoCollection = convocadoCollection;
     }
 
 }

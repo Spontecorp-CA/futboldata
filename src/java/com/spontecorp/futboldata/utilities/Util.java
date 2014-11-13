@@ -2,6 +2,7 @@ package com.spontecorp.futboldata.utilities;
 
 import com.spontecorp.futboldata.entity.Ciudad;
 import com.spontecorp.futboldata.entity.Competicion;
+import com.spontecorp.futboldata.entity.Convocado;
 import com.spontecorp.futboldata.entity.Fase;
 import com.spontecorp.futboldata.entity.Grupo;
 import com.spontecorp.futboldata.entity.Jornada;
@@ -281,11 +282,21 @@ public class Util implements Serializable {
         return llave;
     }
 
+    public static String getFicha(Convocado convocado) {
+        String ficha = "";
+        if (convocado.getCompeticionHasJugadorId() != null) {
+            if (convocado.getCompeticionHasJugadorId().getFicha() != null) {
+                ficha = convocado.getCompeticionHasJugadorId().getFicha();
+            }
+        }
+        return ficha;
+    }
+
     public static Jornada getJornada(Partido partido) {
         Jornada jornada = new Jornada();
         jornada.setAlias("");
         jornada.setNumero(-1);
-        
+
         if (partido.getJornadaId() != null) {
             jornada = partido.getJornadaId();
         }

@@ -26,10 +26,10 @@
                     <p:spinner value="#{resultadoBean.convocado.camiseta}" min="0" max="100" />
                     <br/>
                     <p:selectOneRadio id="titular" value="#{resultadoBean.convocado.titular}"
-                                     converter= "javax.faces.Integer"
-                                     style="width: 250px"
-                                     required="true"
-                                     requiredMessage="Debe seleccionar el status">
+                                      converter= "javax.faces.Integer"
+                                      style="width: 250px"
+                                      required="true"
+                                      requiredMessage="Debe seleccionar el status">
                         <f:selectItem itemLabel="Titular" itemValue="1"/>
                         <f:selectItem itemLabel="Suplente" itemValue="0"/>
                     </p:selectOneRadio>
@@ -37,6 +37,9 @@
                     <p:selectOneMenu value="#{resultadoBean.convocado.posicionId}">
                         <f:selectItems value="#{posicionBean.items}"/>
                     </p:selectOneMenu>
+
+                    <h:outputText value="Capitan:" />
+                    <p:selectBooleanCheckbox value="#{resultadoBean.capitan}" />
                 </h:panelGrid>
 
                 <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
