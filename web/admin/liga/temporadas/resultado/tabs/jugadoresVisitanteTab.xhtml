@@ -57,6 +57,7 @@
                 </p:column>   
                 <p:column headerText="Posicion :">
                     <h:outputText value="#{convocado.titular == 1 ? '(T)': '(S)'}"/>
+                    <h:outputText value="#{convocado.capitan == 1 ? '(C)': ''}"/>
                     <h:outputText value="#{convocado.posicionId.nombre}"/>
                 </p:column>    
                 <f:facet name="footer">

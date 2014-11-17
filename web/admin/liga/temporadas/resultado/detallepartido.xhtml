@@ -66,8 +66,14 @@
                         <h:outputText id ="llave" value="#{resultadoBean.partido.llaveId.nombre}" />
 
                     </p:panelGrid>
-                    <h:commandLink value="Informe Arbitral" action="#{resultadoBean.createPDF(actionEvent)}" 
-                                   target="_blank" />
+                    <p:panelGrid columns="2" >
+                        <h:commandLink value="Informe Arbitral" action="#{resultadoBean.createPDF(actionEvent)}" 
+                                       target="_blank" />
+                        <h:commandLink  value="Informe Arbitral(Blanco)" action="#{resultadoBean.createPDFBlanco(actionEvent)}" 
+                                        target="_blank" />
+
+                    </p:panelGrid>
+
                 </h:panelGroup>                
                 <p:accordionPanel id="menu" activeIndex="#{resultadoBean.indexTab}">
                     <f:ajax event="tabChange"  listener="#{resultadoBean.onTabChange}"/>

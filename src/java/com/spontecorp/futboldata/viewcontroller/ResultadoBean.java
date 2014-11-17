@@ -38,6 +38,7 @@ import com.spontecorp.futboldata.jpacontroller.PartidoFacade;
 import com.spontecorp.futboldata.jpacontroller.StaffFacade;
 import com.spontecorp.futboldata.reportes.template.ClasificacionesReport;
 import com.spontecorp.futboldata.reportes.template.InformeArbitralReport;
+import com.spontecorp.futboldata.reportes.template.InformeArbitralReportBlanco;
 import com.spontecorp.futboldata.reportes.view.ReportesBean;
 import com.spontecorp.futboldata.utilities.Util;
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class ResultadoBean implements Serializable {
     private TipoEvento tipoEventoE;
     private int tipoCantidadEvento;
     private ClasificacionGrupo clasificacionGrupo;
-    private boolean  capitan;
+    private boolean capitan;
 
     private double cant_percent;
 
@@ -199,7 +200,7 @@ public class ResultadoBean implements Serializable {
     }
 
     public void editConvocado() {
-        if(capitan){
+        if (capitan) {
             convocado.setCapitan(1);
         }
         if (convocado.getConvocatoriaId() == convocatoriaLocal) {
@@ -316,7 +317,6 @@ public class ResultadoBean implements Serializable {
         this.capitan = capitan;
     }
 
-    
     public Convocado getConvocado() {
         if (convocado == null) {
             convocado = new Convocado();
@@ -998,8 +998,27 @@ public class ResultadoBean implements Serializable {
         try {
 
             JasperReportBuilder builder;
-            builder = InformeArbitralReport.crearReporte(partido, convocadoEquipoLocal, convocadoEquipoVisitante, (List) partido.getEquipoLocalId().getStaffCollection(), (List) partido.getEquipoVisitanteId().getStaffCollection(),
+            builder = InformeArbitralReport.crearReporte(partido, convocadoEquipoLocal,
+                    convocadoEquipoVisitante, staffFacade.findStaffListByEquipo(partido.getEquipoLocalId()),
+                    staffFacade.findStaffListByEquipo(partido.getEquipoVisitanteId()),
                     partidoArbitros, eventos);
+
+            JasperPrint jasperPrint = builder.toJasperPrint();
+            Util.exportarPDF(jasperPrint);
+
+        } catch (DRException ex) {
+            java.util.logging.Logger.getLogger(ReportesBean.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+        }
+    }
+
+    public void createPDFBlanco(ActionEvent actionEvent) throws IOException {
+        try {
+
+            JasperReportBuilder builder;
+            builder = InformeArbitralReportBlanco.crearReporte(partido, jugadorEquipoLocal,
+                    jugadorEquipoVisitante);
 
             JasperPrint jasperPrint = builder.toJasperPrint();
             Util.exportarPDF(jasperPrint);

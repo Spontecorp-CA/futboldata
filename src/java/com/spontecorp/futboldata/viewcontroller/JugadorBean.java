@@ -19,16 +19,27 @@ import com.spontecorp.futboldata.jpacontroller.PosicionFacade;
 import com.spontecorp.futboldata.jpacontroller.RedSocialFacade;
 import com.spontecorp.futboldata.jpacontroller.TipoRedSocialFacade;
 import com.spontecorp.futboldata.utilities.Util;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +66,7 @@ public class JugadorBean implements Serializable {
     private List<RedSocial> redes;
     private List<RedSocial> redesEliminar;
     private List<Jugador> filteredJugador;
+    private List<Jugador> listaTemporal;
 
     private final JugadorFacade controllerJugador;
 
@@ -66,6 +78,7 @@ public class JugadorBean implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(Jugador.class);
     private final LoginBean bean;
+    private UploadedFile file;
 
     public JugadorBean() {
         controllerJugador = new JugadorFacade();
@@ -270,6 +283,22 @@ public class JugadorBean implements Serializable {
         return jugador;
     }
 
+    public List<Jugador> getListaTemporal() {
+        return listaTemporal;
+    }
+
+    public void setListaTemporal(List<Jugador> listaTemporal) {
+        this.listaTemporal = listaTemporal;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
     }
@@ -323,5 +352,63 @@ public class JugadorBean implements Serializable {
     public String getHostImagen() {
         String host = Util.getHostImagen() + "jugador/";
         return host;
+    }
+
+    public void leerArchivo(FileUploadEvent even) {
+        Iterator<Row> rowIterator;
+        listaTemporal = new ArrayList<>();
+        UploadedFile file2 = even.getFile();
+        if (file2 != null) {
+            try {
+                if (file2.getFileName().endsWith(".xls")) {
+                    HSSFWorkbook workbook = new HSSFWorkbook(file2.getInputstream());
+                    HSSFSheet sheet = workbook.getSheetAt(0);
+                    rowIterator = sheet.iterator();
+                } else {
+                    XSSFWorkbook workbook = new XSSFWorkbook(file2.getInputstream());
+                    XSSFSheet sheet = workbook.getSheetAt(0);
+                    rowIterator = sheet.iterator();
+                }
+
+//Create Workbook instance holding reference to .xlsx file
+                //Get first/desired sheet from the workbook
+                //Iterate through each rows one by one
+                rowIterator.next();
+                while (rowIterator.hasNext()) {
+                    Row row = rowIterator.next();
+                    //For each row, iterate through all the columns
+                    Iterator<Cell> cellIterator = row.cellIterator();
+
+                    Jugador jugadorTemp = new Jugador();
+                    jugadorTemp.setPersonaId(new Persona());
+                    while (cellIterator.hasNext()) {
+                        Cell cell = cellIterator.next();
+                        //Check the cell type and format accordingly
+                        switch (cell.getCellType()) {
+                            case Cell.CELL_TYPE_NUMERIC:
+                                System.out.print(cell.getNumericCellValue() + " ");
+                                break;
+                            case Cell.CELL_TYPE_STRING:
+                                System.out.print(cell.getStringCellValue() + " Cell Index:" + cell.getColumnIndex()
+                                        + " Row Index:" + cell.getRowIndex() + " ");
+                                switch (cell.getColumnIndex()) {
+                                    case 0:
+                                        jugadorTemp.getPersonaId().setNombre(cell.getStringCellValue());
+                                    case 1:
+                                        jugadorTemp.getPersonaId().setApellido(cell.getStringCellValue());
+
+                                }
+
+                                break;
+                        }
+                    }
+                    System.out.println("");
+                    listaTemporal.add(jugadorTemp);
+                }
+            } catch (Exception e) {
+                logger.debug("Error al leer archivo", e);
+            }
+        }
+
     }
 }

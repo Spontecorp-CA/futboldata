@@ -36,6 +36,10 @@
                                          update=":JugadorViewForm" 
                                          oncomplete="PF('JugadorViewDialog').show()" 
                                          disabled="#{empty jugadorBean.jugador.personaId.nombre}"/>
+                        <p:commandButton id="cargarButton" icon="ui-icon-search" 
+                                         value="Cargar Jugadores" 
+                                         update=":JugadorCargarForm" 
+                                         oncomplete="PF('JugadorCargarDialog').show()" />
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
@@ -73,14 +77,6 @@
                     <p:column headerText="Dirección">
                         <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
                     </p:column>
-
-<!--                    <p:column headerText="Red Social">
-                        <p:dataList value="#{jugadorBean.getRedSocials(jugador.personaId)}" var="redsocial">
-                            <h:outputText value="#{redsocial.tipoRedSocialId.url}/#{redsocial.usuario}"/>
-                        </p:dataList>
-
-                    </p:column>-->
-
                     <p:column headerText="Telefono">
                         <h:outputText value="#{jugador.personaId.telefono}"/>
                     </p:column>
@@ -94,26 +90,11 @@
 
                 </p:dataTable>
             </p:fieldset>
-            
-<!--            <p:dialog id="dialog" header="Detalles Jugador" widgetVar="jugadorDialog" resizable="false"
-                      showEffect="fade" hideEffect="explode">
 
-                <h:panelGrid id="display" columns="2" cellpadding="4">
-
-                    <f:facet name="header">
-                        <p:graphicImage value="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>
-                        <br/>
-                        <h:outputText value="Nombre:#{jugadorBean.jugador.personaId.nombre}
-                                      #{jugadorBean.jugador.personaId.apellido}"/>
-                    </f:facet>
-
-                </h:panelGrid>
-            </p:dialog>-->
         </h:form>
-        
         <ui:include src="create.xhtml"/>
         <ui:include src="edit.xhtml"/>
         <ui:include src="view.xhtml"/>
+        <ui:include src="cargar.xhtml"/>
     </ui:define>
-
 </ui:composition>

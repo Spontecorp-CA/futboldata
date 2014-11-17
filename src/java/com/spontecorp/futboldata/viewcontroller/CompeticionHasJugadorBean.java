@@ -4,15 +4,12 @@
  */
 package com.spontecorp.futboldata.viewcontroller;
 
-import com.spontecorp.futboldata.entity.Competicion;
+import com.spontecorp.futboldata.entity.Categoria;
 import com.spontecorp.futboldata.entity.Equipo;
 import com.spontecorp.futboldata.entity.CompeticionHasJugador;
 import com.spontecorp.futboldata.entity.Competicion;
 import com.spontecorp.futboldata.entity.EquipoHasJugador;
 import com.spontecorp.futboldata.entity.EquipoInLiga;
-import com.spontecorp.futboldata.entity.Jugador;
-import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
-import com.spontecorp.futboldata.jpacontroller.EquipoFacade;
 import com.spontecorp.futboldata.jpacontroller.CompeticionHasJugadorFacade;
 import com.spontecorp.futboldata.jpacontroller.CompeticionFacade;
 import com.spontecorp.futboldata.jpacontroller.EquipoHasJugadorFacade;
@@ -41,7 +38,6 @@ public class CompeticionHasJugadorBean implements Serializable {
     private List<Competicion> itemsLiga = null;
     private List<CompeticionHasJugador> filteredCompeticionHasJugador;
 
-
     private final CompeticionHasJugadorFacade controllerCompeticionHasJugador;
     private final CompeticionFacade controllerCompeticion;
     private final CompeticionFacade controllerLiga;
@@ -51,6 +47,7 @@ public class CompeticionHasJugadorBean implements Serializable {
     private Equipo equipo;
     private CompeticionHasJugador competicionHasJugador;
     private EquipoInLiga equipoInLiga;
+    private Categoria categoria;
     private final LoginBean bean;
     private List<EquipoInLiga> equipoInLigas;
     private final EquipoInLigaFacade controllerEquipoInLiga;
@@ -63,6 +60,17 @@ public class CompeticionHasJugadorBean implements Serializable {
         controllerLiga = new CompeticionFacade();
         controllerEquipoHasJugador = new EquipoHasJugadorFacade();
         bean = (LoginBean) Util.findBean("loginBean");
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        if (categoria == null) {
+            categoria = new Categoria();
+        }
+        this.categoria = categoria;
     }
 
     public EquipoInLiga getEquipoInLiga() {
@@ -109,6 +117,9 @@ public class CompeticionHasJugadorBean implements Serializable {
     }
 
     public void setEquipo(Equipo equipo) {
+        if (equipo == null) {
+            equipo = new Equipo();
+        }
         this.equipo = equipo;
     }
 
@@ -127,14 +138,7 @@ public class CompeticionHasJugadorBean implements Serializable {
     }
 
     public List<EquipoInLiga> getEquipoInLigas() {
-        if (equipoInLigas == null) {
-            equipoInLigas = controllerEquipoInLiga.getListEquipoInLiga(this.liga);
-        }
-        return equipoInLigas;
-    }
-
-    public List<EquipoInLiga> getEquipoInLigas(Competicion liga) {
-            equipoInLigas = controllerEquipoInLiga.getListEquipoInLiga(liga);
+        equipoInLigas = controllerEquipoInLiga.getEquipoInLigas(liga, categoria);
         return equipoInLigas;
     }
 
@@ -168,28 +172,28 @@ public class CompeticionHasJugadorBean implements Serializable {
     public void prepareEdit() {
         competicionHasJugador = new CompeticionHasJugador();
     }
-    
-    public void cargarJugadores(){
+
+    public void cargarJugadores() {
         logger.debug("Llamo el metido");
         items = new ArrayList<>();
-        if(equipoInLiga != null){
-                    List<EquipoHasJugador> equipoHasJugadors = 
-                controllerEquipoHasJugador.getListEquipoHasJugador(equipoInLiga.getEquipoId());
-        for (EquipoHasJugador equipoHasJugador : equipoHasJugadors) {
-            competicionHasJugador = controllerCompeticionHasJugador.getCompeticionHasJugador(equipoHasJugador.getJugadorId(), liga);
-            if(competicionHasJugador == null){
-                competicionHasJugador = new CompeticionHasJugador();
-                competicionHasJugador.setCompeticionId(liga);
-                competicionHasJugador.setJugadorId(equipoHasJugador.getJugadorId());
-                competicionHasJugador.setStatus(ACTIVO);
+        if (equipo != null) {
+            List<EquipoHasJugador> equipoHasJugadors
+                    = controllerEquipoHasJugador.getListEquipoHasJugador(equipoInLiga.getEquipoId());
+            for (EquipoHasJugador equipoHasJugador : equipoHasJugadors) {
+                competicionHasJugador = controllerCompeticionHasJugador.getCompeticionHasJugador(equipoHasJugador.getJugadorId(), liga);
+                if (competicionHasJugador == null) {
+                    competicionHasJugador = new CompeticionHasJugador();
+                    competicionHasJugador.setCompeticionId(liga);
+                    competicionHasJugador.setJugadorId(equipoHasJugador.getJugadorId());
+                    competicionHasJugador.setStatus(ACTIVO);
+                }
+                items.add(competicionHasJugador);
+
             }
-            items.add(competicionHasJugador);
-            
-        }
-        }else{
+        } else {
             Util.addErrorMessage("Seleccione el equipo.");
-        } 
-        logger.debug("Tamaño de la lista "+ items.size());
+        }
+        logger.debug("Tamaño de la lista " + items.size());
     }
 
     public void guardar() {

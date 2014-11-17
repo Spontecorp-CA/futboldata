@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="title">
+        Administración de Jugadores
+    </ui:define>
+
+    <p:dialog id="JugadorCargarDlg" widgetVar="JugadorCargarDialog" modal="true"
+              resizable="false" appendTo="@(body)" header="Carga de Jugadores"
+              position="top">
+        <h:form id="JugadorCargarForm">
+
+            <p:fieldset style="width: 85%" legend="Crear Jugador">                
+
+                <br />
+
+                <h:panelGrid columns="1" title="Datos Personales"
+                             styleClass="top-aligned-columns">
+
+                    <p:fileUpload id="archivo" value="#{jugadorBean.file}" mode="advanced" 
+                                  fileUploadListener="#{jugadorBean.leerArchivo}"
+                                  update=":JugadorCargarForm:jugadores">
+                        
+                    </p:fileUpload>
+                    <p:commandButton id="cargar" value="Cargar Archivo" 
+                                     actionListener="#{jugadorBean.leerArchivo()}" >
+                    </p:commandButton>
+                    <p:dataTable id="jugadores" var="jugador"  value="#{jugadorBean.listaTemporal}"
+                                 rowKey="#{jugador.id}"
+                                 paginator="true" rows="10"
+                                 filteredValue="#{jugadorBean.filteredJugador}" >   
+                        <p:ajax event="rowSelect"
+                                update=":JugadorListForm:createButton :JugadorListForm:editButton 
+                                :JugadorListForm:viewButton"/>
+    <!--                            listener="#{jugadorBean.prepareEdit}" 
+                                oncomplete="PF('JugadorViewDialog').show()"/>-->
+                        <p:ajax event="rowUnselect" 
+                                update=":JugadorListForm:createButton :JugadorListForm:editButton 
+                                :JugadorListForm:viewButton" />
+
+                        <p:column headerText="Nombre" sortBy="personaId.nombre"
+                                  filterBy="personaId.nombre">
+                            <h:outputText value="#{jugador.personaId.nombre}"/>
+                        </p:column>
+
+                        <p:column headerText="Apellido"  sortBy="personaId.apellido"
+                                  filterBy="personaId.apellido">
+                            <h:outputText value="#{jugador.personaId.apellido}"/>
+                        </p:column>
+                        <p:column headerText="Ciudad">
+                            <h:outputText value="#{jugador.personaId.direccionId.ciudadId.ciudad}"/>
+                        </p:column>
+                        <p:column headerText="Dirección">
+                            <h:outputText value="#{jugador.personaId.direccionId.direccion}"/>
+                        </p:column>
+                        <p:column headerText="Telefono">
+                            <h:outputText value="#{jugador.personaId.telefono}"/>
+                        </p:column>
+                        <p:column headerText="Celular">
+                            <h:outputText value="#{jugador.personaId.celular}"/>
+                        </p:column>
+
+                        <p:column headerText="Status">
+                            <h:outputText   value="#{jugador.status== 0?'INACTIVO':'ACTIVO'}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+                <h:panelGroup id="messagePanel" layout="block" style="border-style: solid; border-color: red">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:panelGrid columns="2" styleClass="top-aligned-columns">
+
+
+                    <p:commandButton actionListener="#{jugadorBean.cargar}" value="Guardar" 
+                                     update="JugadorCargarForm,:JugadorListForm:jugadores,:growlAdmin" 
+                                     oncomplete="handleSubmit(args,'JugadorCargarDialog');"/>
+                    <p:commandButton value="Cancelar" onclick="JugadorCargarDialog.hide()"/>
+                </h:panelGrid>
+            </p:fieldset>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>

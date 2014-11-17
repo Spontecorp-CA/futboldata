@@ -62,11 +62,12 @@ public class InformeArbitralReport {
 
         SubreportBuilder subreportPartido = reportePartido();
 
-        SubreportBuilder subreportEquipoL = reporteEquipo("Equipo Local").setDataSource(createDataEquipo(equipoLocal));
-        SubreportBuilder subreportEquipoV = reporteEquipo("Equipo Visitante").setDataSource(createDataEquipo(equipoVisitante));
+        SubreportBuilder subreportEquipoL = reporteEquipo("Equipo Local(" + partido.getEquipoLocalId().getNombre() + ")")
+                .setDataSource(createDataEquipo(equipoLocal));
+        SubreportBuilder subreportEquipoV = reporteEquipo("Equipo Visitante("+partido.getEquipoVisitanteId().getNombre()+")").setDataSource(createDataEquipo(equipoVisitante));
 
-        SubreportBuilder subreportStaffVisitante = reporteStaff("Staff Visitante").setDataSource(createDataStaff(staffVisitante));
-        SubreportBuilder subreportStaffLocal = reporteStaff("Staff Local").setDataSource(createDataStaff(staffLocal));
+        SubreportBuilder subreportStaffVisitante = reporteStaff("Cuerpo Técnico Visitante").setDataSource(createDataStaff(staffVisitante));
+        SubreportBuilder subreportStaffLocal = reporteStaff("Cuerpo Técnico Local").setDataSource(createDataStaff(staffLocal));
 
         SubreportBuilder subreportArbitro = reporteArbitro().setDataSource(createDataArbitro(arbitros));
 
@@ -107,16 +108,20 @@ public class InformeArbitralReport {
                         cmp.horizontalList(subreportTarjetaL, cmp.horizontalGap(5), subreportTarjetaV),
                         cmp.verticalGap(20),
                         cmp.horizontalList(subreportGolesL, cmp.horizontalGap(5), subreportGolesV))
-                .columns(col.componentColumn("Comentario", cmp.text(partido.getObservaciones())));
+                .columns(col.componentColumn("Observaciones Arbitro", cmp.text(partido.getObservaciones())));
 
         return builder;
     }
 
-    private static VerticalListBuilder columnPair(String title, FieldBuilder<?> value) {
+    private static VerticalListBuilder columnPair(String title, FieldBuilder<?> value, String patter) {
 
         TextFieldBuilder<String> titleCmp = cmp.text(title)
                 .setStyle(Templates.columnTitleStyle);
-        TextFieldBuilder<?> valueCmp = cmp.text(value);
+        TextFieldBuilder<?> valueCmp = cmp.text(value).setHorizontalAlignment(HorizontalAlignment.CENTER);
+        if (patter != null) {
+            valueCmp.setPattern(patter);
+        }
+
         return cmp.verticalList(titleCmp, valueCmp);
     }
 
@@ -148,6 +153,7 @@ public class InformeArbitralReport {
         FieldBuilder<?> llave = field("llave", type.stringType());
         FieldBuilder<?> ciudad = field("ciudad", type.stringType());
         FieldBuilder<?> listadoN = field("listadoN", type.stringType());
+        FieldBuilder<?> asistencia = field("asistencia", type.integerType());
 
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
@@ -156,26 +162,27 @@ public class InformeArbitralReport {
                 .setColumnStyle(textStyle)
                 .columnGrid(ListType.HORIZONTAL_FLOW)
                 .fields(competicion, numeroPartido, categoria, local, visitante, fecha, grupo, hora, estadio, temporada,
-                        fase, jornada, golL, golV, statusP, llave, ciudad, listadoN)
+                        fase, jornada, golL, golV, statusP, asistencia, llave, ciudad, listadoN)
                 .columns(
-                        col.componentColumn(columnPair("Competicion", competicion)),
-                        col.componentColumn(columnPair("n°Partido", numeroPartido)),
-                        col.componentColumn(columnPair("Categoria", categoria)),
-                        col.componentColumn(columnPair("Local", local)),
-                        col.componentColumn(columnPair("Visitante", visitante)),
-                        col.componentColumn(columnPair("Fecha", fecha)),
-                        col.componentColumn(columnPair("Grupo", grupo)),
-                        col.componentColumn(columnPair("Hora", hora)),
-                        col.componentColumn(columnPair("Estadio", estadio)),
-                        col.componentColumn(columnPair("Temporada", temporada)),
-                        col.componentColumn(columnPair("Fase", fase)),
-                        col.componentColumn(columnPair("Jornada", jornada)),
-                        col.componentColumn(columnPair("Goles V", golV)),
-                        col.componentColumn(columnPair("Goles L", golL)),
-                        col.componentColumn(columnPair("Status", statusP)),
-                        col.componentColumn(columnPair("Llave", llave)),
-                        col.componentColumn(columnPair("Ciudad", ciudad)),
-                        col.componentColumn(columnPair("Lista n°", listadoN))
+                        col.componentColumn(columnPair("Competicion", competicion, null)),
+                        col.componentColumn(columnPair("n°Partido", numeroPartido, null)),
+                        col.componentColumn(columnPair("Categoria", categoria, null)),
+                        col.componentColumn(columnPair("Local", local, null)),
+                        col.componentColumn(columnPair("Visitante", visitante, null)),
+                        col.componentColumn(columnPair("Fecha", fecha, "EEE dd/MM/yyyy")),
+                        col.componentColumn(columnPair("Grupo", grupo, null)),
+                        col.componentColumn(columnPair("Hora", hora, "hh:mm a")),
+                        col.componentColumn(columnPair("Estadio", estadio, null)),
+                        col.componentColumn(columnPair("Temporada", temporada, null)),
+                        col.componentColumn(columnPair("Fase", fase, null)),
+                        col.componentColumn(columnPair("Jornada", jornada, null)),
+                        col.componentColumn(columnPair("Goles L", golL, null)),
+                        col.componentColumn(columnPair("Goles V", golV, null)),
+                        col.componentColumn(columnPair("Status", statusP, null)),
+                        col.componentColumn(columnPair("Asistencia", asistencia, null)),
+                        col.componentColumn(columnPair("Llave", llave, null)),
+                        col.componentColumn(columnPair("Ciudad", ciudad, null)),
+                        col.componentColumn(columnPair("Lista n°", listadoN, null))
                 )
                 .detailFooter(cmp.verticalGap(20))
                 .setDataSource(createDataPartido(partido));
@@ -205,10 +212,11 @@ public class InformeArbitralReport {
         TextColumnBuilder<String> capitan = col.column("Cap", new ExpressionColumnCap()).setFixedColumns(2);
         TextColumnBuilder<String> titular = col.column("Tit", new ExpressionColumnTitu()).setFixedColumns(2);
         TextColumnBuilder<String> sumplente = col.column("Sup", new ExpressionColumnSuple()).setFixedColumns(2);
-        TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
+        TextColumnBuilder<Integer> correlativo = col.reportRowNumberColumn("n°").setFixedColumns(2);
         TextColumnBuilder<String> nacionalidad = col.column("Nac", "nacionalidad", type.stringType()).setFixedColumns(7);
         TextColumnBuilder<String> cedula = col.column("Cedula", "cedula", type.stringType()).setFixedColumns(7);
-        TextColumnBuilder<?> fechaNacimiento = col.column("Fecha N.", "fechaN", type.dateType()).setFixedColumns(7);
+        TextColumnBuilder<?> fechaNacimiento = col.column("Fecha N.", "fechaN", type.dateType())
+                .setFixedColumns(7).setPattern("dd/MM/yyyy");
         TextColumnBuilder<?> ficha = col.column("Ficha", "ficha", type.stringType()).setFixedColumns(6);
 
         ColumnTitleGroupBuilder tituloAlioneacion = grid.titleGroup("Alineacion", camisa, titular, sumplente, capitan);
@@ -217,7 +225,7 @@ public class InformeArbitralReport {
         JasperReportBuilder reporte = report()
                 .setColumnTitleStyle(columnTitleStyle)
                 .setColumnStyle(textStyle)
-                .fields(titularField,capitanField)
+                .fields(titularField, capitanField)
                 .columnGrid(ListType.HORIZONTAL_FLOW, correlativo, tituloAlioneacion, tituloEquipoLocal)
                 .columns(titular, sumplente, capitan,
                         correlativo, camisa,
@@ -303,13 +311,12 @@ public class InformeArbitralReport {
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
 
-        ComponentColumnBuilder entrada = col.componentColumn(cmp.text("Entrada"));
-        ComponentColumnBuilder salida = col.componentColumn(cmp.text("Entrada"));
+        ComponentColumnBuilder entrada = col.componentColumn("Cambio",cmp.text("Entrada"));
         TextColumnBuilder<String> tipo = col.column("Cambio", "tipo", type.stringType());
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
         TextColumnBuilder<?> minuto = col.column("Min", "min", type.integerType());
-        TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
+        TextColumnBuilder<Integer> correlativo = col.reportRowNumberColumn("n°").setFixedColumns(2);
 
         ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, entrada, nombre, apellido, minuto);
 
@@ -337,7 +344,7 @@ public class InformeArbitralReport {
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
 
-        ComponentColumnBuilder salida = col.componentColumn(cmp.text("Salida"));
+        ComponentColumnBuilder salida = col.componentColumn("Cambio",cmp.text("Salida"));
         TextColumnBuilder<String> tipo = col.column("Cambio", "tipo", type.stringType());
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
@@ -374,7 +381,7 @@ public class InformeArbitralReport {
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
         TextColumnBuilder<?> minuto = col.column("Min", "min", type.integerType());
         TextColumnBuilder<?> numeroCamisa = col.column("N° camisa", "camisa", type.integerType());
-        TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
+        TextColumnBuilder<Integer> correlativo = col.reportRowNumberColumn("n°").setFixedColumns(2);
 
         ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, tarjeta, nombre, apellido, minuto, numeroCamisa);
 
@@ -404,12 +411,12 @@ public class InformeArbitralReport {
 
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> gol = col.column("Gol", new ExpressionColumnGol()).setFixedColumns(3);
-        TextColumnBuilder<String> autogol = col.column("Autogol", new ExpressionColumnAutogol()).setFixedColumns(3);
+        TextColumnBuilder<String> autogol = col.column("Autogol", new ExpressionColumnAutogol()).setFixedColumns(4);
 
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
         TextColumnBuilder<?> minuto = col.column("Min", "min", type.integerType());
         TextColumnBuilder<?> numeroCamisa = col.column("N° camisa", "camisa", type.integerType());
-        TextColumnBuilder<Integer> correlativo = col.pageRowNumberColumn("n°").setFixedColumns(2);
+        TextColumnBuilder<Integer> correlativo = col.reportRowNumberColumn("n°").setFixedColumns(2);
 
         ColumnTitleGroupBuilder tituloEquipoLocal = grid.titleGroup(localOVisitante, gol, autogol, nombre, apellido, minuto, numeroCamisa);
 
@@ -430,7 +437,7 @@ public class InformeArbitralReport {
     private static JRDataSource createDataPartido(Partido partido) {
         DRDataSource dataSource = new DRDataSource("competicion", "numero", "categoria",
                 "local", "visitante", "fecha", "grupo", "hora", "estadio", "temporada",
-                "fase", "jornada", "golL", "golV", "status", "llave", "ciudad", "listadoN");
+                "fase", "jornada", "golL", "golV", "status", "llave", "ciudad", "listadoN", "asistencia");
         dataSource.add(Util.getCompeticion(partido).getNombre(), partido.getNumero(), partido.getCategoriaId().getNombre(),
                 partido.getEquipoLocalId().getNombre(), partido.getEquipoVisitanteId().getNombre(), partido.getFecha(),
                 Util.getGrupo(partido).getNombre(), partido.getHoraInicio(), partido.getCanchaId().getNombre(),
@@ -438,7 +445,7 @@ public class InformeArbitralReport {
                 Util.getJornada(partido).getNumero(), partido.getGolesEquipoLocal(),
                 partido.getGolesEquipoVisitante(), partido.getStatusPartidoId().getNombre(),
                 Util.getLlave(partido).getNombre(), Util.getCiudad(partido).getCiudad(),
-                partido.getAprobacionNomina());
+                partido.getAprobacionNomina(), partido.getAsistencia());
 
         return dataSource;
     }
@@ -495,10 +502,10 @@ public class InformeArbitralReport {
     }
 
     private static String getLiga(PartidoArbitro arbitro) {
-        if (arbitro.getArbitroId().getAsociacionId() == null) {
+        if (arbitro.getArbitroId().getCompeticionId() == null) {
             return "";
         } else {
-            return arbitro.getArbitroId().getAsociacionId().getNombre();
+            return arbitro.getArbitroId().getCompeticionId().getNombre();
         }
     }
 

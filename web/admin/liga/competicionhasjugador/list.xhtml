@@ -22,7 +22,7 @@
                 </h:panelGrid>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
-               
+
 
                         <p:commandButton id="equipoButton" icon="ui-icon-search" 
                                          value="Administración de Equipo" 
@@ -37,11 +37,20 @@
                                          immediate="true"/>
                     </p:toolbarGroup>                  
                 </p:toolbar>
-                <h:panelGrid columns="2">
+                <h:panelGrid columns="4">
+                    <h:outputLabel value="Categoria:" for="categoria" />
+                    <p:selectOneMenu id="categoria" 
+                                     value="#{competicionHasJugadorBean.categoria}" >
+                        <f:selectItem value="#{null}" itemLabel="-----" />
+                        <f:selectItems value="#{categoriaBean.items}" />
+                        <f:ajax render="equipoInLiga" />
+                    </p:selectOneMenu>
+
                     <h:outputLabel value="Equipo:" for="equipoInLiga" />
                     <p:selectOneMenu id="equipoInLiga" 
                                      value="#{competicionHasJugadorBean.equipoInLiga}">
-                        <f:selectItems value="#{competicionHasJugadorBean.equipoInLigas}" />
+                        <f:selectItem value="#{null}" itemLabel="-----" />
+                        <f:selectItems value="#{competicionHasJugadorBean.equipoInLigas}"  />
                     </p:selectOneMenu>
 
                     <p:commandButton value="Cargar Jugadores" actionListener="#{competicionHasJugadorBean.cargarJugadores}"
@@ -52,7 +61,7 @@
                                      actionListener="#{competicionHasJugadorBean.guardar}"
                                      update=":CompeticionHasJugadorForm :growlAdmin">
                     </p:commandButton>
-                        
+
                 </h:panelGrid>
                 <p:dataTable id="jugadores" var="competicionHasJugador"  
                              value="#{competicionHasJugadorBean.items}"

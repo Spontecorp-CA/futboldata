@@ -124,9 +124,7 @@ public class EquipoHasJugadorBean implements Serializable {
     }
 
     public List<Jugador> getItemJugador() {
-        if (itemsJugador == null) {
             itemsJugador = controllerJugador.findAll(bean.getIdOrganizacion());
-        }
         return itemsJugador;
     }
 
