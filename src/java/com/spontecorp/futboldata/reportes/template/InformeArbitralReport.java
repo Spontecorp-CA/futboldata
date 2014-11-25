@@ -182,7 +182,7 @@ public class InformeArbitralReport {
                         col.componentColumn(columnPair("Asistencia", asistencia, null)),
                         col.componentColumn(columnPair("Llave", llave, null)),
                         col.componentColumn(columnPair("Ciudad", ciudad, null)),
-                        col.componentColumn(columnPair("Lista n°", listadoN, null))
+                        col.componentColumn(columnPair("Plantillas", listadoN, null))
                 )
                 .detailFooter(cmp.verticalGap(20))
                 .setDataSource(createDataPartido(partido));

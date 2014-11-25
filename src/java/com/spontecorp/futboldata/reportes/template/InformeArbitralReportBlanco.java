@@ -180,7 +180,7 @@ public class InformeArbitralReportBlanco {
                         col.componentColumn(columnPair("Asistencia", asistencia, null)),
                         col.componentColumn(columnPair("Llave", llave, null)),
                         col.componentColumn(columnPair("Ciudad", ciudad, null)),
-                        col.componentColumn(columnPair("Lista n°", listadoN, null))
+                        col.componentColumn(columnPair("Plantillas", listadoN, null))
                 )
                 .detailFooter(cmp.verticalGap(20))
                 .setDataSource(createDataPartido(partido));
@@ -473,7 +473,7 @@ public class InformeArbitralReportBlanco {
 //        convocado.getConvocatoriaId().getEquipoId();
         DRDataSource dataSource = new DRDataSource(
                 "personaId.nombre", "personaId.apellido", "cargoId.nombre", "personaId.documentoIdentidad", "cefvf");
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             dataSource.add(" ");
         }
         return dataSource;
@@ -484,7 +484,7 @@ public class InformeArbitralReportBlanco {
                 "arbitroId.personaId.nombre", "arbitroId.personaId.apellido",
                 "tipoArbitroId.nombre", "arbitroId.asociacionId.nombre", "liga");
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             dataSource.add(" ");
         }
         return dataSource;
@@ -509,7 +509,7 @@ public class InformeArbitralReportBlanco {
     private static JRDataSource createDataCambio(List<PartidoEvento> eventos) {
         DRDataSource dataSource = new DRDataSource(
                 "nombre", "apellido", "min");
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 9; i++) {
             dataSource.add(" ");
         }
         return dataSource;
@@ -528,7 +528,7 @@ public class InformeArbitralReportBlanco {
     private static JRDataSource createDataCambioSalida(List<PartidoEvento> eventos) {
         DRDataSource dataSource = new DRDataSource(
                 "nombre", "apellido", "min");
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 9; i++) {
             dataSource.add(" ");
         }
         return dataSource;
@@ -559,7 +559,7 @@ public class InformeArbitralReportBlanco {
                 "nombre", "apellido",
                 "tarjeta", "min", "camisa");
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 10; i++) {
             dataSource.add(" ");
         }
         return dataSource;
@@ -582,7 +582,7 @@ public class InformeArbitralReportBlanco {
     private static JRDataSource createDataGoles(List<PartidoEvento> eventos) {
         DRDataSource dataSource = new DRDataSource(
                 "nombre", "apellido", "min", "camisa", "evento");
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
             dataSource.add(" ");
         }
         return dataSource;
