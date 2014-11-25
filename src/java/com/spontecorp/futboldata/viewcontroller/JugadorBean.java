@@ -377,31 +377,95 @@ public class JugadorBean implements Serializable {
                     Iterator<Cell> cellIterator = row.cellIterator();
 
                     Jugador jugadorTemp = new Jugador();
-                    jugadorTemp.setPersonaId(new Persona());
+                    Direccion dir = new Direccion();
+                    Persona person = new Persona();
+                    person.setDireccionId(dir);
+                    jugadorTemp.setPersonaId(person);
+
                     while (cellIterator.hasNext()) {
                         Cell cell = cellIterator.next();
                         //Check the cell type and format accordingly
                         switch (cell.getCellType()) {
                             case Cell.CELL_TYPE_NUMERIC:
-                                System.out.print(cell.getNumericCellValue() + " ");
+                                switch (cell.getColumnIndex()) {
+                                    case 5:
+                                        jugadorTemp.getPersonaId().setFechaNacimiento(
+                                                cell.getDateCellValue());
+                                        break;
+
+                                    case 8:
+                                        jugadorTemp.setAltura(cell.getNumericCellValue());
+                                        break;
+                                    case 9:
+                                        jugadorTemp.setPeso(cell.getNumericCellValue());
+                                        break;
+                                }
                                 break;
                             case Cell.CELL_TYPE_STRING:
                                 System.out.print(cell.getStringCellValue() + " Cell Index:" + cell.getColumnIndex()
                                         + " Row Index:" + cell.getRowIndex() + " ");
                                 switch (cell.getColumnIndex()) {
                                     case 0:
-                                        jugadorTemp.getPersonaId().setNombre(cell.getStringCellValue());
+                                        jugadorTemp.getPersonaId().setNombre(
+                                                cell.getStringCellValue());
+                                        break;
                                     case 1:
-                                        jugadorTemp.getPersonaId().setApellido(cell.getStringCellValue());
+                                        jugadorTemp.getPersonaId().setApellido(
+                                                cell.getStringCellValue());
+                                        break;
+                                    case 2:
+                                        jugadorTemp.getPersonaId().setDocumentoIdentidad(
+                                                cell.getStringCellValue());
+                                        break;
+                                    case 3:
+                                        jugadorTemp.getPersonaId().setApodo(
+                                                cell.getStringCellValue());
+                                        break;
+                                    case 4:
+                                        if (cell.getStringCellValue().equalsIgnoreCase("M")) {
+                                            jugadorTemp.getPersonaId().setSexo("M");
+                                        } else if (cell.getStringCellValue().equalsIgnoreCase("F")) {
+                                            jugadorTemp.getPersonaId().setSexo("F");
+                                        }
+                                        break;
 
+                                    case 6:
+                                        jugadorTemp.getPersonaId().getDireccionId().setDireccion(
+                                                cell.getStringCellValue());
+                                        break;
+                                    case 7:
+                                        jugadorTemp.setCamiseta(Integer.getInteger(cell.getStringCellValue()));
+                                        break;
+                                    case 10:
+                                        String destreza = cell.getStringCellValue();
+                                        if (destreza.equalsIgnoreCase("Z")) {
+                                            jugadorTemp.setZurdo(0);
+                                        } else if (destreza.equalsIgnoreCase("D")) {
+                                            jugadorTemp.setZurdo(1);
+                                        } else if (destreza.equalsIgnoreCase("A")) {
+                                            jugadorTemp.setZurdo(2);
+                                        }
+                                        break;
+                                    case 11:
+                                        jugadorTemp.getPersonaId().setTelefono(
+                                                cell.getStringCellValue());
+                                        break;
+                                    case 12:
+                                        jugadorTemp.getPersonaId().setCelular(
+                                                cell.getStringCellValue());
+                                        break;
+                                    case 13:
+                                        jugadorTemp.getPersonaId().setEmail(
+                                                cell.getStringCellValue());
+                                        break;
                                 }
-
                                 break;
                         }
+
                     }
-                    System.out.println("");
                     listaTemporal.add(jugadorTemp);
                 }
+
             } catch (Exception e) {
                 logger.debug("Error al leer archivo", e);
             }
