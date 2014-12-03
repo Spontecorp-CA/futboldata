@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author jgcastillo
  */
-public class PartidoFacade extends AbstractFacade<Partido> implements Serializable{
+public class PartidoFacade extends AbstractFacade<Partido> implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(PartidoFacade.class);
 
@@ -103,7 +103,7 @@ public class PartidoFacade extends AbstractFacade<Partido> implements Serializab
             q = em.createQuery(query, Partido.class);
             q.setParameter("fase", fase);
             partidos = q.getResultList();
-            
+
             query = "SELECT p FROM Partido p WHERE p.jornadaId.grupoId.faseId =:fase "
                     + "ORDER BY p.fecha   DESC";
             q = em.createQuery(query, Partido.class);
@@ -166,7 +166,7 @@ public class PartidoFacade extends AbstractFacade<Partido> implements Serializab
         }
         return partidos;
     }
-    
+
     public List<Partido> findPartidos(Jornada jornada, Categoria categoria) {
         EntityManager em = getEntityManager();
         List<Partido> partidos = null;
@@ -182,13 +182,13 @@ public class PartidoFacade extends AbstractFacade<Partido> implements Serializab
         }
         return partidos;
     }
-    
-    public List<Partido> findPartidos(Grupo grupo, Categoria categoria){
+
+    public List<Partido> findPartidos(Grupo grupo, Categoria categoria) {
         EntityManager em = getEntityManager();
         List<Partido> partidos = null;
         try {
             String query = "SELECT p FROM Partido p WHERE p.jornadaId.grupoId = :grupo "
-                            + "AND p.categoriaId = :categoria";
+                    + "AND p.categoriaId = :categoria";
             Query q = em.createQuery(query);
             q.setParameter("grupo", grupo);
             q.setParameter("categoria", categoria);
@@ -198,7 +198,23 @@ public class PartidoFacade extends AbstractFacade<Partido> implements Serializab
         }
         return partidos;
     }
-    
+
+    public List<Partido> findPartidos(Llave llave, Categoria categoria) {
+        EntityManager em = getEntityManager();
+        List<Partido> partidos = null;
+        try {
+            String query = "SELECT p FROM Partido p WHERE p.llaveId =:llave "
+                    + "AND p.categoriaId = :categoria";
+            Query q = em.createQuery(query);
+            q.setParameter("llave", llave);
+            q.setParameter("categoria", categoria);
+            partidos = q.getResultList();
+        } catch (Exception e) {
+            logger.error("Error recuperando los partidos de un grupo y categoria", e);
+        }
+        return partidos;
+    }
+
     public List<Partido> findAll(int organizacion) {
         List<Partido> partidos = null;
         EntityManager em = getEntityManager();

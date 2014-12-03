@@ -882,9 +882,11 @@ public class ConfigBean implements Serializable {
         }
         if (grupo != null && categoria != null) {
             partidos = getPartidos(grupo, categoria);
+            return;
         }
         if (grupo != null) {
             partidos = partidoFacade.findPartidos(grupo);
+            return;
         } else if (fase != null) {
             partidos = partidoFacade.findPartidos(fase);
 
@@ -912,7 +914,11 @@ public class ConfigBean implements Serializable {
     }
 
     public List<Partido> getPartidosXLlave() {
-        partidos = partidoFacade.findPartidos(llave);
+        if (categoria != null) {
+            partidos = partidoFacade.findPartidos(llave, categoria);
+        } else {
+            partidos = partidoFacade.findPartidos(llave);
+        }
         return partidos;
     }
 
@@ -1061,6 +1067,5 @@ public class ConfigBean implements Serializable {
 
         }
     }
-  
 
 }
