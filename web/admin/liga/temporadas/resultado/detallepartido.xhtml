@@ -62,9 +62,14 @@
                         <h:outputText id="grupo" value="#{resultadoBean.partido.jornadaId.grupoId.nombre}"/>
                         <h:outputText id="jornada" value="#{resultadoBean.partido.jornadaId.numero}" />
 
-                        <h:outputLabel value="Llave: " for ="llave" />
-                        <h:outputText id ="llave" value="#{resultadoBean.partido.llaveId.nombre}" />
+                        <h:outputLabel value="Llave: " for ="llave" style="font-weight: bold;" />
+                        <h:outputLabel value="Categoria: " for ="categoria" style="font-weight: bold;" />
+                        <h:outputLabel />
+                        <h:outputLabel />
 
+                        <h:outputText id ="llave" value="#{resultadoBean.partido.llaveId.nombre}" />
+                        <h:outputText id="categoria" value="#{resultadoBean.partido.categoriaId.nombre}" />
+                        
                     </p:panelGrid>
                     <p:panelGrid columns="2" >
                         <h:commandLink value="Informe Arbitral" action="#{resultadoBean.createPDF(actionEvent)}" 

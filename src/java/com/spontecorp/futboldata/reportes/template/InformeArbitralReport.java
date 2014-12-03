@@ -20,6 +20,7 @@ import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.expression.AbstractSimpleExpression;
 import static net.sf.dynamicreports.report.builder.DynamicReports.asc;
 import static net.sf.dynamicreports.report.builder.DynamicReports.cmp;
+import static net.sf.dynamicreports.report.builder.DynamicReports.cnd;
 import static net.sf.dynamicreports.report.builder.DynamicReports.col;
 import static net.sf.dynamicreports.report.builder.DynamicReports.field;
 import static net.sf.dynamicreports.report.builder.DynamicReports.grid;
@@ -34,6 +35,7 @@ import net.sf.dynamicreports.report.builder.component.SubreportBuilder;
 import net.sf.dynamicreports.report.builder.component.TextFieldBuilder;
 import net.sf.dynamicreports.report.builder.component.VerticalListBuilder;
 import net.sf.dynamicreports.report.builder.grid.ColumnTitleGroupBuilder;
+import net.sf.dynamicreports.report.builder.style.ConditionalStyleBuilder;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.constant.LineDirection;
@@ -48,7 +50,7 @@ import net.sf.jasperreports.engine.JRDataSource;
  */
 public class InformeArbitralReport {
 
-    private static FieldBuilder<?> titularField;
+    private static FieldBuilder<Integer> titularField;
     private static Partido partido;
 
     public static JasperReportBuilder crearReporte(Partido partido, List<Convocado> equipoLocal,
@@ -64,7 +66,7 @@ public class InformeArbitralReport {
 
         SubreportBuilder subreportEquipoL = reporteEquipo("Equipo Local(" + partido.getEquipoLocalId().getNombre() + ")")
                 .setDataSource(createDataEquipo(equipoLocal));
-        SubreportBuilder subreportEquipoV = reporteEquipo("Equipo Visitante("+partido.getEquipoVisitanteId().getNombre()+")").setDataSource(createDataEquipo(equipoVisitante));
+        SubreportBuilder subreportEquipoV = reporteEquipo("Equipo Visitante(" + partido.getEquipoVisitanteId().getNombre() + ")").setDataSource(createDataEquipo(equipoVisitante));
 
         SubreportBuilder subreportStaffVisitante = reporteStaff("Cuerpo Técnico Visitante").setDataSource(createDataStaff(staffVisitante));
         SubreportBuilder subreportStaffLocal = reporteStaff("Cuerpo Técnico Local").setDataSource(createDataStaff(staffLocal));
@@ -205,6 +207,11 @@ public class InformeArbitralReport {
 
         titularField = field("titular", Integer.class);
         FieldBuilder<Integer> capitanField = field("capitan", Integer.class);
+        ConditionalStyleBuilder condition1;
+        condition1 = stl.conditionalStyle(cnd.greaterOrEquals(titularField, 1))
+                .setBackgroundColor(Color.WHITE);
+        ConditionalStyleBuilder condition2 = stl.conditionalStyle(cnd.smaller(titularField, 1))
+                .setBackgroundColor(Color.WHITE);
 
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
@@ -226,6 +233,7 @@ public class InformeArbitralReport {
                 .setColumnTitleStyle(columnTitleStyle)
                 .setColumnStyle(textStyle)
                 .fields(titularField, capitanField)
+                .detailRowHighlighters(condition1,condition2)
                 .columnGrid(ListType.HORIZONTAL_FLOW, correlativo, tituloAlioneacion, tituloEquipoLocal)
                 .columns(titular, sumplente, capitan,
                         correlativo, camisa,
@@ -311,7 +319,7 @@ public class InformeArbitralReport {
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
 
-        ComponentColumnBuilder entrada = col.componentColumn("Cambio",cmp.text("Entrada"));
+        ComponentColumnBuilder entrada = col.componentColumn("Cambio", cmp.text("Entrada"));
         TextColumnBuilder<String> tipo = col.column("Cambio", "tipo", type.stringType());
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());
@@ -344,7 +352,7 @@ public class InformeArbitralReport {
         StyleBuilder textStyle = stl.style(Templates.columnStyle)
                 .setBorder(stl.pen1Point());
 
-        ComponentColumnBuilder salida = col.componentColumn("Cambio",cmp.text("Salida"));
+        ComponentColumnBuilder salida = col.componentColumn("Cambio", cmp.text("Salida"));
         TextColumnBuilder<String> tipo = col.column("Cambio", "tipo", type.stringType());
         TextColumnBuilder<String> nombre = col.column("Nombre", "nombre", type.stringType());
         TextColumnBuilder<String> apellido = col.column("Apellido", "apellido", type.stringType());

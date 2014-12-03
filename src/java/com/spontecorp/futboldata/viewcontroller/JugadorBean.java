@@ -363,6 +363,7 @@ public class JugadorBean implements Serializable {
                     rowIterator = sheet.iterator();
                 } else {
                     XSSFWorkbook workbook = new XSSFWorkbook(file2.getInputstream());
+ 
                     XSSFSheet sheet = workbook.getSheetAt(0);
                     rowIterator = sheet.iterator();
                 }
@@ -388,9 +389,16 @@ public class JugadorBean implements Serializable {
                         switch (cell.getCellType()) {
                             case Cell.CELL_TYPE_NUMERIC:
                                 switch (cell.getColumnIndex()) {
+                                    case 2:
+                                        jugadorTemp.getPersonaId().setDocumentoIdentidad(
+                                                String.valueOf(cell.getNumericCellValue()));
+                                        break;
                                     case 5:
                                         jugadorTemp.getPersonaId().setFechaNacimiento(
                                                 cell.getDateCellValue());
+                                        break;
+                                    case 7:
+                                        jugadorTemp.setCamiseta((int)Math.round(cell.getNumericCellValue()));
                                         break;
 
                                     case 8:
@@ -399,6 +407,7 @@ public class JugadorBean implements Serializable {
                                     case 9:
                                         jugadorTemp.setPeso(cell.getNumericCellValue());
                                         break;
+
                                 }
                                 break;
                             case Cell.CELL_TYPE_STRING:
@@ -413,10 +422,7 @@ public class JugadorBean implements Serializable {
                                         jugadorTemp.getPersonaId().setApellido(
                                                 cell.getStringCellValue());
                                         break;
-                                    case 2:
-                                        jugadorTemp.getPersonaId().setDocumentoIdentidad(
-                                                cell.getStringCellValue());
-                                        break;
+
                                     case 3:
                                         jugadorTemp.getPersonaId().setApodo(
                                                 cell.getStringCellValue());
@@ -433,9 +439,7 @@ public class JugadorBean implements Serializable {
                                         jugadorTemp.getPersonaId().getDireccionId().setDireccion(
                                                 cell.getStringCellValue());
                                         break;
-                                    case 7:
-                                        jugadorTemp.setCamiseta(Integer.getInteger(cell.getStringCellValue()));
-                                        break;
+
                                     case 10:
                                         String destreza = cell.getStringCellValue();
                                         if (destreza.equalsIgnoreCase("Z")) {

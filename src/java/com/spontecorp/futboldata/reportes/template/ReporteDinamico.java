@@ -42,9 +42,9 @@ public class ReporteDinamico {
 
         JasperReportBuilder report = report();
         //prueba new 
-        FieldBuilder<Integer> idField = field("id", type.integerType());
-        report.title(Templates.createTitleComponent("Otra cosa"),columnPair("hola", idField));
-        report.titleOnANewPage();
+//        FieldBuilder<Integer> idField = field("id", type.integerType());
+//        report.title(Templates.createTitleComponent("Otra cosa"),columnPair("hola", idField));
+//        report.titleOnANewPage();
         report
                 .setTemplate(Templates.reportTemplate)
                 .title(Templates.createTitleComponent(titulo));
