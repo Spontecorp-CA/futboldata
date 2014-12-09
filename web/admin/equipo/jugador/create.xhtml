@@ -10,13 +10,16 @@
         Administración de Jugadores
     </ui:define>
 
-    <p:dialog id="JugadorCreateDlg" widgetVar="JugadorCreateDialog" modal="true"
-              resizable="false" appendTo="@(body)" header="Creación de Jugadores">
-        <h:form id="JugadorCreateForm">
+    <p:dialog id="JugadorCreateDlg" widgetVar="JugadorCreateDialog" modal="false"
+              resizable="true"  height="80%" 
+              minimizable="true" maximizable="true"
+               header="Creación de Jugadores"
+               closeOnEscape="true" >
+        <h:form id="JugadorCreateForm" style="width: 85%" >
 
-            <p:fieldset style="width: 85%" legend="Crear Jugador">                
-
-                <br />
+            <p:fieldset style="width: 80%" legend="Crear Jugador">                
+<!--appendTo="@(body)"-->
+<!--                <br />-->
                 <h:panelGrid columns="3" styleClass="top-aligned-columns">
                     <h:panelGrid columns="2" title="Datos Personales"
                                  styleClass="top-aligned-columns">

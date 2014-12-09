@@ -47,7 +47,8 @@
                 <p:dataTable id="staffs" var="staff"  value="#{staffBean.items}"
                              rowKey="#{staff.id}"
                              selection="#{staffBean.persona}" 
-                             selectionMode="single">   
+                             selectionMode="single" paginator="true"
+                             rows="20">   
                     <p:ajax event="rowSelect" 
                             update=":StaffListForm:createButton :StaffListForm:editButton 
                             :StaffListForm:editButton :StaffListForm:viewButton"  />

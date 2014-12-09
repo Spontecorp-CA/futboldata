@@ -10,13 +10,17 @@
         Administración de Jugadores
     </ui:define>
 
-    <p:dialog id="JugadorEditDlg" widgetVar="JugadorEditDialog" modal="true"
-              resizable="false" appendTo="@(body)" header="Edición de Jugadores">
-        <h:form id="JugadorEditForm">
+    <p:dialog id="JugadorEditDlg" widgetVar="JugadorEditDialog" 
+              header="Edición de Jugadores"
+              modal="false" 
+              resizable="true" height="80%"
+              minimizable="true" maximizable="true"
+              closeOnEscape="true" >
+        <h:form id="JugadorEditForm" style="width: 85%">
+            <!--appendTo="@(body)"-->
+            <p:fieldset style="width: 80%" legend="Editar Jugador">                
 
-            <p:fieldset style="width: 85%" legend="Editar Jugador">                
-
-                <br />
+                <!--<br />-->
                 <h:panelGrid columns="3" id="display" styleClass="top-aligned-columns">
                     <h:panelGrid columns="2" title="Datos Personales"
                                  styleClass="top-aligned-columns">
@@ -66,7 +70,8 @@
 
                         </p:fileUpload>
                         &nbsp; 
-                        <h:graphicImage id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>       
+                        <h:graphicImage height="100" 
+                                        id="Perfil" url="#{jugadorBean.hostImagen}#{jugadorBean.jugador.personaId.foto}"/>       
 
                         <h:outputLabel value="* status:" for="status"/>
 
@@ -129,6 +134,7 @@
                             </p:selectOneMenu>
                             <p:spacer/>
                         </h:panelGrid>
+                        <h:outputLabel value="Categoria: " for="categoria"/>
                         <p:selectOneMenu id="categoria" value="#{jugadorBean.jugador.categoriaId}"
                                          required="true"
                                          requiredMessage="Ingrese la categoria del Jugador"
