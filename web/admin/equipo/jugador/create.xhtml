@@ -11,10 +11,11 @@
     </ui:define>
 
     <p:dialog id="JugadorCreateDlg" widgetVar="JugadorCreateDialog" modal="false"
-              resizable="true"  height="80%" 
+              resizable="true"  style="width: 100%"
               minimizable="true" maximizable="true"
                header="Creación de Jugadores"
-               closeOnEscape="true" >
+               closeOnEscape="true" 
+               onHide="JugadorCreateDialog.toggleMaximize();">
         <h:form id="JugadorCreateForm" style="width: 85%" >
 
             <p:fieldset style="width: 80%" legend="Crear Jugador">                

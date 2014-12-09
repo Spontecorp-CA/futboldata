@@ -20,13 +20,13 @@
                                          value="Crear Staff" 
                                          actionListener="#{staffBean.prepareCreate}" 
                                          update=":StaffCreateForm" 
-                                         oncomplete="PF('StaffCreateDialog').show()"
+                                         oncomplete="PF('StaffCreateDialog').show();StaffCreateDialog.toggleMaximize();"
                                          rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                          value="Editar Staff" 
                                          actionListener="#{staffBean.prepareEdit}"
                                          update=":StaffEditForm" 
-                                         oncomplete="PF('StaffEditDialog').show()" 
+                                         oncomplete="PF('StaffEditDialog').show();StaffEditDialog.toggleMaximize();" 
                                          disabled="#{empty staffBean.persona.nombre}"
                                          rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="viewButton" icon="ui-icon-pencil" 

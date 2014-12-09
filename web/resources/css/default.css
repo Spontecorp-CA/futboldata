@@ -66,7 +66,7 @@ ul,li {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    background-image: url(#{resource['images:background_admin.png']});
+    background-image: url(/FutbolData/javax.faces.resource/background_admin.png.xhtml?ln=images);
     background-repeat: no-repeat;
     height: 100%;
 }
@@ -89,7 +89,7 @@ ul,li {
 }
 
 .admin_message ul{
-    list-style-image: url(#{resource['images:bullet_green.png']});
+    list-style-image: url(/FutbolData/javax.faces.resource/bullet_green.png.xhtml?ln=images);
 }
 
 .ui-datatable, .ui-datatable-even{

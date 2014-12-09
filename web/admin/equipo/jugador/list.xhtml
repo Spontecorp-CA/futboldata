@@ -21,20 +21,20 @@
                                          value="Crear Jugador" 
                                          actionListener="#{jugadorBean.prepareCreate}" 
                                          update=":JugadorCreateForm" 
-                                         oncomplete="PF('JugadorCreateDialog').show()"
+                                         oncomplete="PF('JugadorCreateDialog').show();JugadorCreateDialog.toggleMaximize();"
                                          rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="editButton" icon="ui-icon-pencil" 
                                          value="Editar Jugador" 
                                          actionListener="#{jugadorBean.prepareEdit}"
                                          update=":JugadorEditForm" 
-                                         oncomplete="PF('JugadorEditDialog').show()" 
+                                         oncomplete="PF('JugadorEditDialog').show();JugadorEditDialog.toggleMaximize();" 
                                          disabled="#{empty jugadorBean.jugador.personaId.nombre}"
                                          rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="viewButton" icon="ui-icon-search" 
                                          value="Ver Jugador" 
                                          actionListener="#{jugadorBean.prepareEdit}"
                                          update=":JugadorViewForm" 
-                                         oncomplete="PF('JugadorViewDialog').show()" 
+                                         oncomplete="PF('JugadorViewDialog').show();" 
                                          disabled="#{empty jugadorBean.jugador.personaId.nombre}"/>
 <!--                        <p:commandButton id="cargarButton" icon="ui-icon-search" 
                                          value="Cargar Jugadores" 
