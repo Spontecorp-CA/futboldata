@@ -47,7 +47,8 @@
                     </p:toolbarGroup>
                 </p:toolbar>
 
-                <p:dataTable id="jugadores" var="jugador"  value="#{jugadorBean.items}"
+                <p:dataTable id="jugadores" var="jugador"  
+                             value="#{jugadorBean.items}"
                              rowKey="#{jugador.id}"
                              selection="#{jugadorBean.jugador}" 
                              selectionMode="single"
@@ -71,8 +72,9 @@
                               filterBy="personaId.apellido">
                         <h:outputText value="#{jugador.personaId.apellido}"/>
                     </p:column>
-                    <p:column headerText="Ciudad">
-                        <h:outputText value="#{jugador.personaId.direccionId.ciudadId.ciudad}"/>
+                    <p:column headerText="Documento Id"
+                              filterBy="personaId.documentoIdentidad">
+                        <h:outputText value="#{jugador.personaId.documentoIdentidad}"/>
                     </p:column>
                     <p:column headerText="Categoria">
                         <h:outputText value="#{jugador.categoriaId.nombre}"/>
