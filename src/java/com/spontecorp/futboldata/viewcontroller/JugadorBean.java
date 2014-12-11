@@ -271,7 +271,7 @@ public class JugadorBean implements Serializable {
         jugador.getPersonaId().setRedSocialCollection(redes);
         logger.debug("Esta editando un Jugador");
         controllerJugador.edit(jugador);
-        if (redSocial != null) {
+        if (redesEliminar != null) {
             for (RedSocial redEliminar : redesEliminar) {
                 controllerRedSocial.remove(redEliminar);
             }
