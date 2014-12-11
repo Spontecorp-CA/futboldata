@@ -29,8 +29,8 @@
                         <p:commandButton id="createButton" icon="ui-icon-pencil" 
                                          value="Agregar Jugador" 
                                          actionListener="#{equipoHasJugadorBean.prepareEdit}"
-                                         update=":JugadorEditForm" 
-                                         oncomplete="PF('JugadorEditDialog').show()" 
+                                         update=":JugadorAddForm" 
+                                         oncomplete="PF('JugadorAddDialog').show()" 
                                          disabled="#{empty equipoHasJugadorBean.equipo.nombre}"
                                          rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="deleteButton" icon="ui-icon-pencil" 
@@ -40,11 +40,24 @@
                                          disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}"
                                          rendered="#{!loginBean.isConsultor}">
                         </p:commandButton>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Jugador" 
+                                         actionListener="#{jugadorBean.prepareEdit(equipoHasJugadorBean.equipoHasJugador.jugadorId)}"
+                                         update=":JugadorEditForm" 
+                                         oncomplete="PF('JugadorEditDialog').show();JugadorEditDialog.toggleMaximize();" 
+                                         disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
+                        <p:commandButton id="viewButton" icon="ui-icon-search" 
+                                         value="Ver Jugador" 
+                                         actionListener="#{jugadorBean.prepareEdit(equipoHasJugadorBean.equipoHasJugador.jugadorId)}"
+                                         update=":JugadorViewForm" 
+                                         oncomplete="PF('JugadorViewDialog').show();" 
+                                         disabled="#{empty equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}"/>
 
                         <p:commandButton id="equipoButton" icon="ui-icon-pencil" 
                                          value="Listado Equipos" 
                                          action="#{equipoBean.gotoEquiposPage}"
-                        />
+                                         />
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
@@ -60,11 +73,13 @@
                              paginator="true" rows="10"
                              filteredValue="#{equipoHasJugadorBean.filteredEquipoHasJugador}" >   
                     <p:ajax event="rowSelect" 
-                            update=":JugadorListForm:display :JugadorListForm:deleteButton :JugadorListForm:confirdialog" 
+                            update=":JugadorListForm:display :JugadorListForm:deleteButton :JugadorListForm:confirdialog
+                            :JugadorListForm:viewButton :JugadorListForm:editButton"         
                             oncomplete="PF('jugadorDialog').show()"  />
                     <f:ajax execute="jugadores" event="rowSelect"  />
                     <p:ajax event="rowUnselect"
-                            update=":JugadorListForm:deleteButton"/>
+                            update=":JugadorListForm:deleteButton 
+                            :JugadorListForm:viewButton :JugadorListForm:editButton"/>
 
 
                     <f:facet name="header">
@@ -89,16 +104,15 @@
                         <h:outputText value="#{equipoHasJugador.jugadorId.posicionId.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="Fecha Entrada" sortBy="fechaEntrada">
-                        <h:outputText  value="#{equipoHasJugador.fechaEntrada}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
+                    <p:column headerText="Documento ID" 
+                              filterBy="jugadorId.personaId.documentoIdentidad">
+                        <h:outputText  value="#{equipoHasJugador.jugadorId.personaId.documentoIdentidad}" />
 
                     </p:column>
 
-                    <p:column headerText="Fecha Salida"
-                              sortBy="fechaSalida">
-                        <h:outputText value="#{equipoHasJugador.fechaSalida}"/>
+                    <p:column headerText="Categoria"
+                              filterBy="jugadorId.categoriaId.nombre">
+                        <h:outputText value="#{equipoHasJugador.jugadorId.categoriaId.nombre}"/>
                     </p:column>
 
 
@@ -118,7 +132,7 @@
                         <p:graphicImage value="#{equipoHasJugadorBean.hostImagen}#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.foto}"/>
                         <br/>
                         <h:outputText value="Nombre:#{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.nombre}
-                                     #{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.apellido}"/>
+                                      #{equipoHasJugadorBean.equipoHasJugador.jugadorId.personaId.apellido}"/>
                     </f:facet>
 
                 </h:panelGrid>
@@ -130,6 +144,8 @@
         </h:form>
         <ui:include src="deletejugador.xhtml"/>
         <ui:include src="agregarjugador.xhtml"/>
+        <ui:include src="../jugador/edit.xhtml"/>
+        <ui:include src="../jugador/view.xhtml"/>
     </ui:define>
 
 </ui:composition>

@@ -229,6 +229,13 @@ public class JugadorBean implements Serializable {
         ciudadesAvalaible();
     }
 
+    public void prepareEdit(Jugador jugador) {
+        this.jugador = jugador;
+        redes = getRedSocials(jugador.getPersonaId());
+        pais = jugador.getPersonaId().getDireccionId().getCiudadId().getPaisId();
+        ciudadesAvalaible();
+    }
+
     public void ciudadesAvailable(Pais pais) {
         ciudades = Util.getSelectItems(controllerCiudad.findCiudadxPais(pais));
     }
@@ -264,8 +271,10 @@ public class JugadorBean implements Serializable {
         jugador.getPersonaId().setRedSocialCollection(redes);
         logger.debug("Esta editando un Jugador");
         controllerJugador.edit(jugador);
-        for (RedSocial redEliminar : redesEliminar) {
-            controllerRedSocial.remove(redEliminar);
+        if (redSocial != null) {
+            for (RedSocial redEliminar : redesEliminar) {
+                controllerRedSocial.remove(redEliminar);
+            }
         }
 
         Util.addSuccessMessage("Se edito exitosamente el Jugador");
@@ -363,7 +372,7 @@ public class JugadorBean implements Serializable {
                     rowIterator = sheet.iterator();
                 } else {
                     XSSFWorkbook workbook = new XSSFWorkbook(file2.getInputstream());
- 
+
                     XSSFSheet sheet = workbook.getSheetAt(0);
                     rowIterator = sheet.iterator();
                 }
@@ -398,7 +407,7 @@ public class JugadorBean implements Serializable {
                                                 cell.getDateCellValue());
                                         break;
                                     case 7:
-                                        jugadorTemp.setCamiseta((int)Math.round(cell.getNumericCellValue()));
+                                        jugadorTemp.setCamiseta((int) Math.round(cell.getNumericCellValue()));
                                         break;
 
                                     case 8:

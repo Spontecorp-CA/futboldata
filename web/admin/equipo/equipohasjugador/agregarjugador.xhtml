@@ -10,9 +10,9 @@
         Lista de Jugadores para Agregar al Equipo
     </ui:define>
 
-    <p:dialog id="JugadorEditDlg" widgetVar="JugadorEditDialog" modal="true"
+    <p:dialog id="JugadorAddDlg" widgetVar="JugadorAddDialog" modal="true"
               resizable="false" appendTo="@(body)" header="Agregar Jugadores">
-        <h:form id="JugadorEditForm">
+        <h:form id="JugadorAddForm">
 
             <p:fieldset style="width: 85%" legend="Agregar Jugador">                
                 <p:panelGrid columns="2" >
@@ -20,7 +20,7 @@
                     <p:calendar id="fechaEntrada" 
                                 value="#{equipoHasJugadorBean.equipoHasJugador.fechaEntrada}"
                                 navigator="true" 
-                                pattern="dd/mm/yyyy" 
+                                pattern="dd/MM/yyyy" 
                                 locale="es"
                                 showOn="button"/>
 
@@ -33,8 +33,8 @@
                              selectionMode="single"
                              paginator="true" rows="10"
                              filteredValue="#{equipoHasJugadorBean.filteredJugador}" > 
-                    <p:ajax event="rowSelect" update=":JugadorEditForm:editButton"  />
-                    <p:ajax event="rowUnselect" update=":JugadorEditForm:editButton" />
+                    <p:ajax event="rowSelect" update=":JugadorAddForm:editButton"  />
+                    <p:ajax event="rowUnselect" update=":JugadorAddForm:editButton" />
 
                     <f:facet name="header">
                         Lista de Jugadores para Agregar al Equipo
@@ -51,7 +51,7 @@
                         <h:outputText value="#{jugador.personaId.apellido}"/>
                     </p:column>
 
-                    <p:column headerText="Camiseta" sortBy=".camiseta" filterBy="camiseta">
+                    <p:column headerText="Camiseta" sortBy="camiseta" filterBy="camiseta">
                         <h:outputText value="#{jugador.camiseta}"/>
                     </p:column>
                     <p:column headerText="Posicion" sortBy="posicionId.nombre" 
@@ -59,16 +59,14 @@
                         <h:outputText value="#{jugador.posicionId.nombre}"/>
                     </p:column>
 
-                    <p:column headerText="Nacionalidad" sortBy="jugador.personaId.nacionalidad"
-                              filterBy="personaId.nacionalidad">
-                        <h:outputText value="#{jugador.personaId.nacionalidad}"/>
-                    </p:column>
-
                     <p:column headerText="Documento Identidad" sortBy="jugador.personaId.documentoIdentidad"
                               filterBy="personaId.documentoIdentidad">
                         <h:outputText value="#{jugador.personaId.documentoIdentidad}"/>
                     </p:column>
-
+                    <p:column headerText="Categoria" sortBy="jugador.categoriaId.nombre"
+                              filterBy="categoriaId.nombre">
+                        <h:outputText value="#{jugador.categoriaId.nombre}"/>
+                    </p:column>
 
                     <p:column headerText="Status">
                         <h:outputText value="#{jugador.status == 1?'Activa':'Inactiva'}"/>
@@ -80,7 +78,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton id="editButton" actionListener="#{equipoHasJugadorBean.create()}" value="Guardar" 
-                                 update="JugadorEditForm,:JugadorListForm:jugadores,:growlAdmin" 
+                                 update="JugadorAddForm,:JugadorListForm:jugadores,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'JugadorEditDialog');"
                                  disabled="#{empty equipoHasJugadorBean.jugador.personaId.nombre}"
                                  />
