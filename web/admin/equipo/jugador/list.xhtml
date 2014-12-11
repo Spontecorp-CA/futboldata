@@ -36,10 +36,10 @@
                                          update=":JugadorViewForm" 
                                          oncomplete="PF('JugadorViewDialog').show();" 
                                          disabled="#{empty jugadorBean.jugador.personaId.nombre}"/>
-<!--                        <p:commandButton id="cargarButton" icon="ui-icon-search" 
-                                         value="Cargar Jugadores" 
-                                         update=":JugadorCargarForm" 
-                                         oncomplete="PF('JugadorCargarDialog').show()" />-->
+                        <!--                        <p:commandButton id="cargarButton" icon="ui-icon-search" 
+                                                                 value="Cargar Jugadores" 
+                                                                 update=":JugadorCargarForm" 
+                                                                 oncomplete="PF('JugadorCargarDialog').show()" />-->
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
@@ -76,7 +76,8 @@
                               filterBy="personaId.documentoIdentidad">
                         <h:outputText value="#{jugador.personaId.documentoIdentidad}"/>
                     </p:column>
-                    <p:column headerText="Categoria">
+                    <p:column headerText="Categoria"
+                              filterBy="categoriaId.nombre" >
                         <h:outputText value="#{jugador.categoriaId.nombre}"/>
                     </p:column>
                     <p:column headerText="Altura">
