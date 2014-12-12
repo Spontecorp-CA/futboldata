@@ -15,25 +15,25 @@
         <h:form id="StaffListForm">
 
             <p:fieldset style="width: 85%" legend="Lista de Staff"  >
-                
+
                 <h:panelGroup>
-                 <h4>   
-                <h:outputText value="Nombre del Club : #{clubBean.selected.nombre} " 
-                                  rendered="#{not empty staffInClub.club.nombre}" />      
-                <h:outputText value="Nombre del Equipo : #{staffInClub.equipo.nombre} " 
-                                  rendered="#{not empty staffInClub.equipo.nombre}"/>     
-                <h:outputText value="Nombre del Competicion : #{staffInClub.competicion.nombre} " 
-                                  rendered="#{not empty staffInClub.competicion.nombre}"/>     
-                <h:outputText value="Nombre del Asociacion : #{staffInClub.asociacion.nombre} " 
-                                  rendered="#{not empty staffInClub.asociacion.nombre}"/>  
-                </h4>
+                    <h4>   
+                        <h:outputText value="Nombre del Club : #{clubBean.selected.nombre} " 
+                                      rendered="#{not empty staffInClub.club.nombre}" />      
+                        <h:outputText value="Nombre del Equipo : #{staffInClub.equipo.nombre} " 
+                                      rendered="#{not empty staffInClub.equipo.nombre}"/>     
+                        <h:outputText value="Nombre del Competicion : #{staffInClub.competicion.nombre} " 
+                                      rendered="#{not empty staffInClub.competicion.nombre}"/>     
+                        <h:outputText value="Nombre del Asociacion : #{staffInClub.asociacion.nombre} " 
+                                      rendered="#{not empty staffInClub.asociacion.nombre}"/>  
+                    </h4>
                 </h:panelGroup>
                 <p:toolbar>
                     <p:toolbarGroup align="left">
                         <p:commandButton id="createButton" icon="ui-icon-pencil" 
                                          value="Agregar staff" 
                                          actionListener="#{staffInClub.prepareEdit}"
-                                         update=":StaffEditForm" 
+                                         update=":StaffAddForm" 
                                          oncomplete="PF('StaffEditDialog').show()"
                                          rendered="#{!loginBean.isConsultor}"/>
                         <p:commandButton id="deleteButton" icon="ui-icon-pencil" 
@@ -42,6 +42,19 @@
                                          update=":StaffDeleteForm"
                                          disabled="#{empty staffInClub.staff.personaId.nombre}" 
                                          rendered="#{!loginBean.isConsultor}"/>
+                        <p:commandButton id="editButton" icon="ui-icon-pencil" 
+                                         value="Editar Staff" 
+                                         actionListener="#{staffBean.prepareEdit(staffInClub.staff.personaId)}"
+                                         update=":StaffEditForm" 
+                                         oncomplete="PF('StaffEditDialog').show();StaffEditDialog.toggleMaximize();" 
+                                         disabled="#{empty staffInClub.staff.personaId.nombre}"
+                                         rendered="#{!loginBean.isConsultor}"/>
+                        <p:commandButton id="viewButton" icon="ui-icon-pencil" 
+                                         value="Ver Staff" 
+                                         actionListener="#{staffBean.prepareEdit(staffInClub.staff.personaId)}"
+                                         update=":StaffViewForm" 
+                                         oncomplete="PF('StaffViewDialog').show()" 
+                                         disabled="#{empty staffInClub.staff.personaId.nombre}"/>
 
                         <p:commandButton id="clubButton" icon="ui-icon-pencil" 
                                          value="Listado Clubes" 
@@ -49,12 +62,13 @@
                         <p:commandButton id="equipoButton" icon="ui-icon-pencil" 
                                          value="Listado Equipo" 
                                          action="#{staffInClub.gotoEquipoPage}"/>
-                        <p:commandButton id="asociacionButton" icon="ui-icon-pencil" 
-                                         value="Listado de Asociacion" 
-                                         action="#{staffInClub.gotoAsociacionPage}"/>
-                        <p:commandButton id="competicionButton" icon="ui-icon-pencil" 
-                                         value="Listado de Ligas" 
-                                         action="#{staffInClub.gotoCompeticionPage}"/>
+
+                        <!--                        <p:commandButton id="asociacionButton" icon="ui-icon-pencil" 
+                                                                 value="Listado de Asociacion" 
+                                                                 action="#{staffInClub.gotoAsociacionPage}"/>
+                                                <p:commandButton id="competicionButton" icon="ui-icon-pencil" 
+                                                                 value="Listado de Ligas" 
+                                                                 action="#{staffInClub.gotoCompeticionPage}"/>-->
                     </p:toolbarGroup>
                     <p:toolbarGroup align="right">
                         <p:commandButton value="Administración" action="#{ciudadBean.returnAdminPage}"
@@ -69,10 +83,12 @@
                              paginator="true" rows="10"
                              filteredValue="#{staffInClub.filterededStaffList}" >   
                     <p:ajax event="rowSelect" 
-                            update=":StaffListForm:deleteButton :StaffListForm:confirdialog"  />
+                            update=":StaffListForm:deleteButton :StaffListForm:confirdialog
+                            :StaffListForm:viewButton :StaffListForm:editButton  "/>
                     <f:ajax execute="staffs" event="rowSelect"  />
                     <p:ajax event="rowUnselect"
-                            update=":StaffListForm:deleteButton"/>
+                            update=":StaffListForm:deleteButton
+                            :StaffListForm:viewButton :StaffListForm:editButton  "/>
 
 
                     <f:facet name="header">
@@ -100,6 +116,9 @@
         </h:form>
         <ui:include src="deleteStaff.xhtml"/>
         <ui:include src="addStaff.xhtml"/>
+        <ui:include src="view.xhtml"/>
+        <ui:include src="edit.xhtml"/>
+
     </ui:define>
 
 </ui:composition>

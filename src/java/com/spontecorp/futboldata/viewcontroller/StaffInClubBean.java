@@ -126,6 +126,9 @@ public class StaffInClubBean implements Serializable {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
+        if(staff.getPersonaId()!= null){
+                    this.persona = staff.getPersonaId();
+        }
     }
 
     public Club getClub() {

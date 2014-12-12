@@ -78,13 +78,13 @@
                             </f:facet>
                             <h:outputText value="#{equipo.clubId.nombre}"/>
                         </p:column>
-                        <p:column headerText="Equipo">
+                        <p:column headerText="Equipo" filterBy="nombre">
                             <h:outputText value="#{equipo.nombre}"/>
                         </p:column>
-                        <p:column headerText="Siglas">
+                        <p:column headerText="Siglas" filterBy="abreviacion">
                             <h:outputText value="#{equipo.abreviacion}"/>
                         </p:column>
-                        <p:column headerText="Categoría">
+                        <p:column headerText="Categoría" filterBy="categoriaId.nombre">
                             <h:outputText value="#{equipo.categoriaId.nombre}"/>
                         </p:column>                    
                         <p:column headerText="Status">

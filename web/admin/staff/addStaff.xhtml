@@ -10,9 +10,9 @@
         Lista de Jugadores para Agregar al Equipo
     </ui:define>
 
-    <p:dialog id="StaffEditDlg" widgetVar="StaffEditDialog" modal="true"
+    <p:dialog id="StaffAddDlg" widgetVar="StaffEditDialog" modal="true"
               resizable="false" appendTo="@(body)" header="Agregar Staff">
-        <h:form id="StaffEditForm">
+        <h:form id="StaffAddForm">
 
             <p:fieldset style="width: 85%" legend="Agregar  Staff">                
                 <p:panelGrid columns="2" >
@@ -44,8 +44,8 @@
                              selectionMode="single"
                              paginator="true" rows="10"
                              filteredValue="#{staffInClub.filterededStaffList}" > 
-                    <p:ajax event="rowSelect" update=":StaffEditForm:editButton"  />
-                    <p:ajax event="rowUnselect" update=":StaffEditForm:editButton" />
+                    <p:ajax event="rowSelect" update=":StaffAddForm:editButton"  />
+                    <p:ajax event="rowUnselect" update=":StaffAddForm:editButton" />
 
                     <f:facet name="header">
                         Lista de Staff para Agregar al Club
@@ -81,7 +81,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <p:commandButton id="editButton" actionListener="#{staffInClub.create}" value="Guardar" 
-                                 update="StaffEditForm,:StaffListForm:staffs,:growlAdmin" 
+                                 update="StaffAddForm,:StaffListForm:staffs,:growlAdmin" 
                                  oncomplete="handleSubmit(args,'StaffEditDialog');"
                                  disabled="#{empty staffInClub.persona.nombre}"
                                  />

@@ -26,7 +26,7 @@
                                           style="width: 250px"/>
                             <h:outputLabel value="Apodo:" for="apodo"/>
                             <h:outputText id="apodo" value="#{jugadorBean.jugador.personaId.apodo}"                                    
-                                         style="width: 250px"/>
+                                          style="width: 250px"/>
                             <h:outputLabel value="* Sexo:" for="sex"/>
                             <h:outputText id="sex" 
                                           value="#{jugadorBean.jugador.personaId.sexo == 'M'? 'Masculino':'Femenino'}"/>
@@ -92,7 +92,10 @@
 
                             <h:outputLabel value="Posición: " for="posicion"/>
                             <h:outputText id="posicion" value="#{jugadorBean.jugador.posicionId.nombre}"
-                                          style="width: 250"/>
+                                          style="width: 250px"/>
+                            <h:outputLabel value="Categoria: " for="categoria"/>
+                            <h:outputText id="categoria" value="#{jugadorBean.jugador.categoriaId.nombre}"
+                                          style="width: 250px"/>
                         </h:panelGrid>
 
                         <h:panelGrid columns="2" title="Contacto">
