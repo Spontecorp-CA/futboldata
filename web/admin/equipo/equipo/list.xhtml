@@ -31,6 +31,13 @@
                                              oncomplete="PF('EquipoEditDialog').show()" 
                                              disabled="#{empty equipoBean.selected}"
                                              rendered="#{!loginBean.isConsultor}"/>
+                            <p:commandButton id="viewButton" icon="ui-icon-pencil" 
+                                             value="Ver Equipo"
+                                             actionListener="#{equipoBean.prepareEdit}"
+                                             update=":EquipoViewForm" 
+                                             oncomplete="PF('EquipoViewDialog').show()" 
+                                             disabled="#{empty equipoBean.selected}"
+                                             />
 
                             <p:commandButton id="addButton" icon="ui-icon-pencil" 
                                              value="Ver Jugadores" 
@@ -64,11 +71,12 @@
                         <p:ajax event="rowSelect"   update=":EquipoListForm:createButton 
                                 :EquipoListForm:editButton 
                                 :EquipoListForm:addButton, :EquipoListForm:addStaffButton,
-                                :EquipoListForm:dialog" oncomplete="PF('equipoDialog').show()"
+                                :EquipoListForm:dialog  :EquipoListForm:viewButton " 
+                                oncomplete="PF('equipoDialog').show()"
                                 listener="#{equipoHasJugadorBean.setEquipo(equipoBean.selected)}"/>
                         <p:ajax event="rowUnselect" update=":EquipoListForm:createButton 
                                 :EquipoListForm:editButton :EquipoListForm:addButton,
-                                :EquipoListForm:addStaffButton"/>
+                                :EquipoListForm:addStaffButton :EquipoListForm:viewButton"/>
 
                         <p:column id="clubColumn" headerText="Club" filterBy="clubId.nombre">
                             <f:facet name="filter">
@@ -109,6 +117,7 @@
             </h:form>
             <ui:include src="create.xhtml"/>
             <ui:include src="edit.xhtml"/>
+            <ui:include src="view.xhtml"/>
         </ui:define>   
 
     </ui:composition>

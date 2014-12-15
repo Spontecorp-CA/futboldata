@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns="http://www.w3.org/1999/xhtml">
+    <ui:composition>
+        <p:dialog id="EquipoViewDlg" widgetVar="EquipoViewDialog" modal="true" 
+                  resizable="false" appendTo="@(body)" header="Viewar Equipo">
+            <h:form id="EquipoViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{equipoBean.selected != null}">
+                        <h:outputLabel value="* Nombre:" for="nombre"/>
+                        <p:outputLabel id="nombre" value="#{equipoBean.selected.nombre}"
+                                     style="width: 250px"/>
+                        <h:outputLabel value="* Abreviación Del Equipo:" for="siglas"/>
+                        <p:outputLabel id="siglas" value="#{equipoBean.selected.abreviacion}"
+
+                                     style="width: 250px">                                                                  
+                        </p:outputLabel>          
+
+                        <h:outputLabel value="* Club:" for="club"/>
+                        <p:outputLabel id="club"                                    
+                                         value="#{equipoBean.selected.clubId}"
+                                         style="width: 250px">                       
+                            <f:selectItems value="#{equipoBean.clubAvailable}"/>
+                        </p:outputLabel>
+
+                        <h:outputLabel value="* Categoria:" for="categoria"/>
+                        <p:outputLabel id="categoria" 
+                                         value="#{equipoBean.selected.categoriaId}"
+                                         style="width: 250px">                       
+                        </p:outputLabel>
+
+                        <h:outputText value="Logo del Equipo:"/>
+                        <h:graphicImage height="120" width="120"
+                                        id="Logo" url="#{equipoBean.hostImagen}#{equipoBean.selected.logo}"/>   
+
+                        <h:outputLabel value="* Status:" for="status" />
+                        <p:outputLabel id="status" value="#{equipoBean.selected.status==0? 'Inactivo':'Activo'}"
+                                         style="width: 250px">
+                        </p:outputLabel>
+                    </p:panelGrid>
+                    <p:commandButton value="Cancelar" onclick="EquipoViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+
