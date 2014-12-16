@@ -10,7 +10,7 @@
         Lista de Jugadores para Agregar al Equipo
     </ui:define>
 
-    <p:dialog id="StaffAddDlg" widgetVar="StaffEditDialog" modal="true"
+    <p:dialog id="StaffAddDlg" widgetVar="StaffAddDialog" modal="true"
               resizable="false" appendTo="@(body)" header="Agregar Staff">
         <h:form id="StaffAddForm">
 
@@ -48,22 +48,22 @@
                     <p:ajax event="rowUnselect" update=":StaffAddForm:editButton" />
 
                     <f:facet name="header">
-                        Lista de Staff para Agregar al Club
+                        Lista de Staff para Agregar
                     </f:facet>
                     <p:column headerText="Nombre" 
-                              sortBy="staff.personaId.nombre" 
-                              filterBy="staff.personaId.nombre">
+                              sortBy="nombre" 
+                              filterBy="nombre">
                         <h:outputText value="#{staff.nombre}"/>
                     </p:column>
 
                     <p:column headerText="Apellido" 
-                              sortBy="personaId.apellido" 
-                              filterBy="personaId.apellido">
+                              sortBy="apellido" 
+                              filterBy="apellido">
                         <h:outputText value="#{staff.apellido}"/>
                     </p:column>                
 
-                    <p:column headerText="Documento Identidad" sortBy="jugador.personaId.documentoIdentidad"
-                              filterBy="personaId.documentoIdentidad">
+                    <p:column headerText="Documento Identidad" sortBy="documentoIdentidad"
+                              filterBy="documentoIdentidad">
                         <h:outputText value="#{staff.documentoIdentidad}"/>
                     </p:column>
                     <p:column headerText="C.E.F.V.F" >
@@ -82,10 +82,10 @@
                 </h:panelGroup>
                 <p:commandButton id="editButton" actionListener="#{staffInClub.create}" value="Guardar" 
                                  update="StaffAddForm,:StaffListForm:staffs,:growlAdmin" 
-                                 oncomplete="handleSubmit(args,'StaffEditDialog');"
+                                 oncomplete="handleSubmit(args,'StaffAddDialog');"
                                  disabled="#{empty staffInClub.persona.nombre}"
                                  />
-                <p:commandButton value="Cancelar" onclick="StaffEditDialog.hide()"/>
+                <p:commandButton value="Cancelar" onclick="StaffAddDialog.hide()"/>
             </p:fieldset>
         </h:form>
     </p:dialog>

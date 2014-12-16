@@ -194,6 +194,7 @@ public class StaffBean implements Serializable {
                 persona.setDireccionId(direccion);
                 persona.setStatus(Util.ACTIVO);
                 staff.setPersonaId(persona);
+                staff.setStatus(Util.ACTIVO);
                 controllerStaff.create(staff);
                 recreateModel();
                 Util.addSuccessMessage("Staff creado satisfactoriamente");
@@ -204,7 +205,9 @@ public class StaffBean implements Serializable {
                 } else {
                     persona.setRedSocialCollection(redes);
                     persona.setDireccionId(direccion);
+                    persona.setStatus(Util.ACTIVO);
                     staff.setPersonaId(persona);
+                    staff.setStatus(Util.ACTIVO);
                     controllerStaff.create(staff);
                     recreateModel();
                     Util.addSuccessMessage("Staff creado satisfactoriamente");
@@ -312,9 +315,7 @@ public class StaffBean implements Serializable {
     }
 
     public List<Persona> getItems() {
-        if (items == null) {
-            items = controllerStaff.findDistinctStaffList(bean.getIdOrganizacion());
-        }
+        items = controllerStaff.findDistinctStaffList(bean.getIdOrganizacion());
         return items;
     }
 
