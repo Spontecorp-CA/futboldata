@@ -362,7 +362,7 @@ public class JugadorBean implements Serializable {
 
     public void leerArchivo(FileUploadEvent even) {
         Iterator<Row> rowIterator;
-        listaTemporal = new ArrayList<>();
+        listaTemporal = new ArrayList<Jugador>();
         UploadedFile file2 = even.getFile();
         if (file2 != null) {
             try {

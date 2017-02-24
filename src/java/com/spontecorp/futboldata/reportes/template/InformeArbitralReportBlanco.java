@@ -516,7 +516,7 @@ public class InformeArbitralReportBlanco {
     }
 
     private static List<PartidoEvento> getPartidoEvento(Equipo equipo, List<PartidoEvento> eventos) {
-        List<PartidoEvento> list = new ArrayList<>();
+        List<PartidoEvento> list = new ArrayList<PartidoEvento>();
         for (PartidoEvento evento : eventos) {
             if (evento.getConvocadoId().getConvocatoriaId().getEquipoId().equals(equipo)) {
                 list.add(evento);
@@ -535,7 +535,7 @@ public class InformeArbitralReportBlanco {
     }
 
     private static List<PartidoEvento> getSalida(List<PartidoEvento> eventos) {
-        List<PartidoEvento> salidas = new ArrayList<>();
+        List<PartidoEvento> salidas = new ArrayList<PartidoEvento>();
         for (PartidoEvento evento : eventos) {
             if (evento.getEventoId().getNombre().equals("Salida") && evento.getCantidad() == 0) {
                 salidas.add(evento);
@@ -545,7 +545,7 @@ public class InformeArbitralReportBlanco {
     }
 
     private static List<PartidoEvento> getEntrada(List<PartidoEvento> eventos) {
-        List<PartidoEvento> entradas = new ArrayList<>();
+        List<PartidoEvento> entradas = new ArrayList<PartidoEvento>();
         for (PartidoEvento evento : eventos) {
             if (evento.getEventoId().getNombre().equals("Entrada") && evento.getCantidad() == 0) {
                 entradas.add(evento);
@@ -566,7 +566,7 @@ public class InformeArbitralReportBlanco {
     }
 
     private static List<PartidoEvento> getTarjetas(List<PartidoEvento> eventos) {
-        List<PartidoEvento> list = new ArrayList<>();
+        List<PartidoEvento> list = new ArrayList<PartidoEvento>();
         for (PartidoEvento evento : eventos) {
             String nombre = evento.getEventoId().getNombre();
             if (evento.getCantidad() == 0) {
@@ -589,7 +589,7 @@ public class InformeArbitralReportBlanco {
     }
 
     private static List<PartidoEvento> getGoles(List<PartidoEvento> eventos) {
-        List<PartidoEvento> list = new ArrayList<>();
+        List<PartidoEvento> list = new ArrayList<PartidoEvento>();
         for (PartidoEvento evento : eventos) {
             String nombre = evento.getEventoId().getNombre();
             if (nombre.equals("Gol") || nombre.equals("Autogol")) {

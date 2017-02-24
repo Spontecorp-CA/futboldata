@@ -125,7 +125,7 @@ public class CompeticionHasJugadorBean implements Serializable {
 
     public List<CompeticionHasJugador> getItems() {
         if (items == null) {
-            items = new ArrayList<>();
+            items = new ArrayList<CompeticionHasJugador>();
         }
         return items;
     }
@@ -175,7 +175,7 @@ public class CompeticionHasJugadorBean implements Serializable {
 
     public void cargarJugadores() {
         logger.debug("Llamo el metido");
-        items = new ArrayList<>();
+        items = new ArrayList<CompeticionHasJugador>();
         if (equipo != null) {
             List<EquipoHasJugador> equipoHasJugadors
                     = controllerEquipoHasJugador.getListEquipoHasJugador(equipoInLiga.getEquipoId());
